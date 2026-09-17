@@ -4,7 +4,7 @@ A durable, model-agnostic knowledge engineering project for distilling a general
 
 ## Current phase
 
-Stage 1 — Canonical Research Plan synthesis complete; Stage 2 remains blocked until the canonical plan is accepted into `main`.
+Stage 2 — Source Collection. The canonical Stage 1 research plan is accepted in `main`.
 
 ## Source of truth
 
@@ -15,7 +15,7 @@ This repository is the durable project truth. Chat transcripts are not authorita
 1. Read `AGENTS.md`.
 2. Read `planning/STAGE1_RESEARCH_PLAN.md` for the canonical research plan.
 3. Read `prompts/KIMI_ARCHITECTURE_DISTILLATION_TASK.md` for the full mission and deliverable contract.
-4. Do not begin a new stage unless its gate has been accepted in repository state.
+4. Follow the current Stage 2 control issue and your assigned branch; do not advance to Stage 3 without the Stage 2 gate.
 
 ## Current orchestration
 
