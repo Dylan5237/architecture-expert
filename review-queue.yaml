@@ -1,0 +1,103 @@
+# Review Queue — Stage 2 (Primary Researcher: Kimi)
+# 记录来源缺口、冲突、待复核项。状态：open / adjudicated
+version: 1
+stage: 2
+updated: 2026-09-17
+
+items:
+  - id: RQ2-001
+    type: url-reverify
+    status: open
+    summary: 以下 URL 经搜索交叉验证但未逐字打开终验，建议 Chief Architect 或下游一次 fetch 终验
+    refs:
+      - S-024 (Herlihy & Wing PDF)
+      - S-027 (Brewer CAP 12 Years InfoQ slug)
+      - S-032 (Gray Transaction Concept MSR 页)
+      - S-053 (Cook web.mit.edu 镜像，非作者官方站)
+      - S-060 (GitHub 2018 postmortem 精确 URL)
+      - S-065 (AWS Kinesis message/11201 编号)
+      - S-068 (Allspaw Etsy blameless postmortems)
+      - S-069 (Netflix Hystrix 2012 文精确 URL)
+      - S-078 (Delimitrou & Kozyrakis DOI 尾号)
+      - S-101 (Kiro specs 文档路径)
+      - S-105 (Android architecture 指南页)
+      - S-109 (Shopify deconstructing monolith URL)
+
+  - id: RQ2-002
+    type: evidence-gap
+    status: open
+    severity: material
+    summary: Embedded/Edge 形态仅 S-104 (Elecia White) 一个 A 级来源；AUTOSAR 官方架构材料分散未定位到可引用条目；ISO 26262 等功能安全标准未覆盖
+    domains: [embedded-edge]
+    marker: NEEDS_EVIDENCE
+
+  - id: RQ2-003
+    type: evidence-gap
+    status: open
+    severity: material
+    summary: Apple/Desktop 应用架构无官方架构指南（负结果已登记 S-106）；Desktop 形态整体仅依赖该负结果与社区材料，缺正向权威来源
+    domains: [mobile-desktop]
+    marker: NEEDS_EVIDENCE
+
+  - id: RQ2-004
+    type: contested
+    status: open
+    summary: CAP 被普遍误读为「三选二」；Gilbert/Lynch 原文的 consistency 是 linearizable 原子寄存器语义，与数据库 ACID 的 C 不同。S-026 vs S-027 为纠正材料，Stage 3/4 引用 CAP 时必须携带此限定
+    refs: [S-026, S-027]
+    marker: CONTESTED
+
+  - id: RQ2-005
+    type: contested
+    status: open
+    summary: FLP 常被误读为「分布式共识不可能」；原文仅为完全异步+确定性+单 crash fault 下无保证终止；DLS 1988 (S-031) 部分同步为其直接回应
+    refs: [S-030, S-031]
+    marker: CONTESTED
+
+  - id: RQ2-006
+    type: contested
+    status: open
+    summary: USL (S-079) 1993 CMG 原始论文无公开可验证全文；只能以 Springer 2007 书籍为锚；σ/κ 物理解读有学界争议。不得作为 Mother Principle 的唯一支撑
+    refs: [S-079]
+    marker: NEEDS_EVIDENCE
+
+  - id: RQ2-007
+    type: contested
+    status: open
+    summary: 任务书将 strangler pattern 归因为 Greg Young——经核实公认原始出处为 Fowler 2004 (S-011)；Greg Young 关联的是 CQRS/Event Sourcing。建议修正任务书归因
+    refs: [S-011]
+    marker: CONTESTED
+
+  - id: RQ2-008
+    type: vendor-bias
+    status: open
+    summary: Agent 工程来源 (S-098..S-103, S-111) 全部为厂商材料，均有商业立场（Anthropic 反框架立场服务其 API 直连模式；Spec Kit 有 default-tool gravity；OpenAI SDK 无 1.0 API 承诺）。引用时须标 vendor evidence，不得升级为普适架构真理
+    refs: [S-098, S-099, S-100, S-101, S-102, S-103, S-111]
+    marker: CONTEXT_DEPENDENT
+
+  - id: RQ2-009
+    type: contradiction
+    status: open
+    summary: 单体 vs 微服务的正面权威论证不对称：微服务侧缺少与 DHH (S-108)/Shopify (S-109) 同等质量的「微服务在何种条件下正确」一手论证（Fowler microservices 文章未在本轮收录）。Stage 3 前建议补 Fowler «Microservices» 及 «Monolith First» 两条目
+    refs: [S-108, S-109]
+    marker: NEEDS_EVIDENCE
+
+  - id: RQ2-010
+    type: evidence-gap
+    status: open
+    severity: minor
+    summary: GC/内存压力、Enterprise Integration Patterns (Hohpe)、Go GC Guide 等性能/资源补充材料未收录（预算限制）；Tail-at-Scale 类补充 (S-078) 已收
+    domains: [performance, resources]
+    marker: NEEDS_EVIDENCE
+
+  - id: RQ2-011
+    type: conflict-signal
+    status: open
+    summary: Knight Capital 损失金额口径差（~$440M vs SEC 口径 >$460M）；CrowdStrike Delta 诉讼主张 gross negligence 属未决诉讼主张。引用数字时须带口径说明
+    refs: [S-062, S-064]
+    marker: CONTESTED
+
+  - id: RQ2-012
+    type: note
+    status: open
+    summary: 付费标准/书籍（ISO 25010/42010 正文、Gray & Reuter、Adya 论文、SAIP、DDIA 等）未取得全文，notes 基于目录/作者公开材料/广泛学术引用，未暗示已读全文。Stage 4 提取原则时若需精确页码证据须合法获取
+    marker: UNKNOWN
