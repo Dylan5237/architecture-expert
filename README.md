@@ -4,7 +4,11 @@ A durable, model-agnostic knowledge engineering project for distilling a general
 
 ## Current phase
 
-Bootstrap / Stage 1 — Research Plan.
+Stage 1 — Research Plan: complete on this branch, awaiting human review. Stage 2 (source collection) has NOT started.
+
+## Index
+
+- `planning/STAGE_1_RESEARCH_PLAN.md` — Stage 1 research plan (this branch's deliverable)
 
 ## Source of truth
 
