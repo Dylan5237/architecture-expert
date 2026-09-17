@@ -15,3 +15,7 @@ This repository is the durable project truth. Chat transcripts are not authorita
 1. Read `AGENTS.md`.
 2. Execute `prompts/KIMI_ARCHITECTURE_DISTILLATION_TASK.md`.
 3. Complete only Stage 1, persist outputs, commit them, then stop for architecture review.
+
+## Stage 1 output (this branch)
+
+- Plan: `planning/STAGE1_RESEARCH_PLAN.md` (WorkBuddy submission for the Issue #1 bake-off; awaiting Chief Architect review)
