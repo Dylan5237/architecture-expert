@@ -1,0 +1,1 @@
+Read `AGENTS.md`, then execute `prompts/KIMI_ARCHITECTURE_DISTILLATION_TASK.md` exactly as the project mission. Use authoritative web/public sources plus GitHub as the durable control plane. Complete **Stage 1 — Research Plan only**, persist and commit the Stage 1 outputs, then stop and report the commit SHA for review. Do not start source collection yet.
