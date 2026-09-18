@@ -485,8 +485,9 @@ evidence_baseline: "Stage 2 accepted corpus (source-manifest.yaml, S-001..S-113)
 
 ### V-014-C locality（推理/变更/数据/故障的距离成本）
 - Working definition: 推理成本、变更成本、数据移动成本、故障传播随「距离」（跨模块/进程/机器/组织边界数）增长的一般倾向。
+- Do not conflate with: Herlihy-Wing locality（可组合性；见 V-011-B）——禁止互借（N-8）。
 - Status: CONTEXT_QUALIFIED（是多种机制的共同倾向而非单一机制；Stage 4 需拆分检验——Stage 4 hypothesis，词汇层只作骨架）
-- Source IDs: S-001, S-024（locality 在 Herlihy-Wing 有完全不同的专用含义=可组合性，禁止混淆）
+- Source IDs: S-001
 
 ### V-014-D change amplification
 - Working definition: 一次概念变更迫使多处代码/配置/部署变更的现象；change locality 的反面度量。
