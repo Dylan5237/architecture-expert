@@ -3,7 +3,7 @@ id: STAGE4-PRINCIPLE-BOUNDARY-AUDIT
 type: challenger-audit
 stage: 4
 pass: A (blind independent)
-challenger: WorkBuddy / GLM 5.3 (semantic boundary analysis) + Codex harness (repository, git, read-back)
+challenger: Codex harness (repository, git, read-back) + GLM 5.3 (semantic boundary analysis)
 baseline: d6a7808611742dda6e2e6f9fa0154b12ae67b4a3
 issue: 9
 date: 2026-09-18
