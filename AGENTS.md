@@ -4,9 +4,11 @@
 
 Build a general-purpose Architecture Expert from structured knowledge, reasoning procedures, evidence rules, progressive disclosure, and adversarial evaluation. Do not reduce this project to a long system prompt or a checklist collection.
 
-## Durable truth
+## Durable control plane and evidence authority
 
-Git is the durable source of project truth. Chat history is not a fact source. All accepted research plans, source manifests, principles, knowledge structures, evaluations, decisions, and prompts must be persisted in the repository.
+This Git repository is the **canonical durable source of truth for accepted project artifacts**: research plans, source manifests, vocabulary, principles, knowledge structures, evaluations, decisions, and prompts. Chat history is not authoritative project state.
+
+External authoritative sources remain the evidentiary basis for architecture claims. In later project-specific use, code/config/runtime evidence may be authoritative for current behavior. Do not confuse repository acceptance state with external factual authority.
 
 ## Work discipline
 
@@ -25,6 +27,6 @@ Git is the durable source of project truth. Chat history is not a fact source. A
 
 Stop and explicitly surface a decision when there is a genuine unresolved trade-off, conflicting authoritative evidence, irreversible architectural commitment, product-policy choice, or a scope expansion that changes the mission.
 
-## Initial gate
+## Current gate
 
-The first execution must complete **Stage 1 — Research Plan only**, persist it, commit it, and stop. Do not begin source collection until the plan is reviewed.
+Read `TASK.md` and the active stage control issue before starting work. Complete only the currently authorized stage, persist and commit its artifacts, then stop for the Chief Architect gate. Never advance to the next stage on your own.
