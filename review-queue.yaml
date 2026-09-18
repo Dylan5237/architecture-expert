@@ -1,83 +1,72 @@
 # Review Queue — Stage 2 (Primary Researcher: Kimi)
 # 记录来源缺口、冲突、待复核项。状态：open / adjudicated
-version: 1
+version: 2
 stage: 2
-updated: 2026-09-17
+updated: 2026-09-18
+remediation_basis: "Issue #3 CA decision D-B1..D-B3 / R1..R4；统计以 source-manifest.yaml 为单一事实源"
 
 items:
   - id: RQ2-001
     type: url-reverify
-    status: open
-    summary: 以下 URL 经搜索交叉验证但未逐字打开终验，建议 Chief Architect 或下游一次 fetch 终验
-    refs:
-      - S-024 (Herlihy & Wing PDF)
-      - S-027 (Brewer CAP 12 Years InfoQ slug)
-      - S-032 (Gray Transaction Concept MSR 页)
-      - S-053 (Cook web.mit.edu 镜像，非作者官方站)
-      - S-060 (GitHub 2018 postmortem 精确 URL)
-      - S-065 (AWS Kinesis message/11201 编号)
-      - S-068 (Allspaw Etsy blameless postmortems)
-      - S-069 (Netflix Hystrix 2012 文精确 URL)
-      - S-078 (Delimitrou & Kozyrakis DOI 尾号)
-      - S-101 (Kiro specs 文档路径)
-      - S-105 (Android architecture 指南页)
-      - S-109 (Shopify deconstructing monolith URL)
+    status: adjudicated
+    summary: "原 13 条 needs-reverify 全部完成终验处置（R1）：S-024/065/078/101 升级 direct-open；S-027/032/053/060/068/105/106/109 升级 search-cross-verified 并附 access_status/canonical_url；S-069 降级 historical-background（access_status: unresolved）。剩余 needs-reverify 仅 S-069 一条"
+    refs: [S-069]
 
   - id: RQ2-002
     type: evidence-gap
     status: open
     severity: material
-    summary: Embedded/Edge 形态仅 S-104 (Elecia White) 一个 A 级来源；AUTOSAR 官方架构材料分散未定位到可引用条目；ISO 26262 等功能安全标准未覆盖
+    summary: "Embedded/Edge：R3 已补 S-113 FreeRTOS 官方文档（B 级），与 S-104 (A 级) 形成两锚点；AUTOSAR 与 ISO 26262 仍未定位到公开可引用条目，不降低证据标准"
     domains: [embedded-edge]
     marker: NEEDS_EVIDENCE
 
   - id: RQ2-003
     type: evidence-gap
     status: open
-    severity: material
-    summary: Apple/Desktop 应用架构无官方架构指南（负结果已登记 S-106）；Desktop 形态整体仅依赖该负结果与社区材料，缺正向权威来源
+    severity: reduced
+    summary: "Desktop：R3 已补 S-112 Electron process model（platform-normative 正向权威）；Apple 侧维持负结果登记（S-106），按 owner 裁决不主张意图性结论；Desktop 形态整体仍偏薄"
     domains: [mobile-desktop]
     marker: NEEDS_EVIDENCE
 
   - id: RQ2-004
     type: contested
     status: open
-    summary: CAP 被普遍误读为「三选二」；Gilbert/Lynch 原文的 consistency 是 linearizable 原子寄存器语义，与数据库 ACID 的 C 不同。S-026 vs S-027 为纠正材料，Stage 3/4 引用 CAP 时必须携带此限定
+    summary: "CAP 被普遍误读为「三选二」；Gilbert/Lynch 原文的 consistency 是 linearizable 原子寄存器语义。Stage 3/4 引用 CAP 必须携带此限定"
     refs: [S-026, S-027]
     marker: CONTESTED
 
   - id: RQ2-005
     type: contested
     status: open
-    summary: FLP 常被误读为「分布式共识不可能」；原文仅为完全异步+确定性+单 crash fault 下无保证终止；DLS 1988 (S-031) 部分同步为其直接回应
+    summary: FLP 常被误读为「分布式共识不可能」；DLS 1988 部分同步为其直接回应
     refs: [S-030, S-031]
     marker: CONTESTED
 
   - id: RQ2-006
     type: contested
     status: open
-    summary: USL (S-079) 1993 CMG 原始论文无公开可验证全文；只能以 Springer 2007 书籍为锚；σ/κ 物理解读有学界争议。不得作为 Mother Principle 的唯一支撑
+    summary: USL 1993 CMG 原始论文无公开可验证全文；S-079 已加结构化 evidence_marker: NEEDS_EVIDENCE（R4）；不得作为 Mother Principle 唯一支撑
     refs: [S-079]
     marker: NEEDS_EVIDENCE
 
   - id: RQ2-007
     type: contested
     status: open
-    summary: 任务书将 strangler pattern 归因为 Greg Young——经核实公认原始出处为 Fowler 2004 (S-011)；Greg Young 关联的是 CQRS/Event Sourcing。建议修正任务书归因
+    summary: 任务书 strangler pattern 归因 Greg Young 有误；公认原始出处为 Fowler 2004 (S-011)。建议修正任务书归因
     refs: [S-011]
     marker: CONTESTED
 
   - id: RQ2-008
     type: vendor-bias
     status: open
-    summary: Agent 工程来源 (S-098..S-103, S-111) 全部为厂商材料，均有商业立场（Anthropic 反框架立场服务其 API 直连模式；Spec Kit 有 default-tool gravity；OpenAI SDK 无 1.0 API 承诺）。引用时须标 vendor evidence，不得升级为普适架构真理
+    summary: Agent 工程来源 (S-098..S-103, S-111) 全部为厂商材料；引用须标 vendor evidence，不得升级为普适架构真理。claim-relative 纪律：官方文档仅对自身平台契约 normative
     refs: [S-098, S-099, S-100, S-101, S-102, S-103, S-111]
     marker: CONTEXT_DEPENDENT
 
   - id: RQ2-009
     type: contradiction
     status: open
-    summary: 单体 vs 微服务的正面权威论证不对称：微服务侧缺少与 DHH (S-108)/Shopify (S-109) 同等质量的「微服务在何种条件下正确」一手论证（Fowler microservices 文章未在本轮收录）。Stage 3 前建议补 Fowler «Microservices» 及 «Monolith First» 两条目
+    summary: 微服务 vs 单体论证不对称：反方（DHH S-108/Shopify S-109）实证强，正方一手「何时微服务正确」仍缺。Stage 3 前建议补 Fowler «Microservices»(2014)/«Monolith First»(2015)（本轮 remediation 不扩大范围，留作 Stage 3 入口动作）
     refs: [S-108, S-109]
     marker: NEEDS_EVIDENCE
 
@@ -85,19 +74,42 @@ items:
     type: evidence-gap
     status: open
     severity: minor
-    summary: GC/内存压力、Enterprise Integration Patterns (Hohpe)、Go GC Guide 等性能/资源补充材料未收录（预算限制）；Tail-at-Scale 类补充 (S-078) 已收
+    summary: GC/内存压力、Enterprise Integration Patterns (Hohpe)、Go GC Guide 等未收录（预算限制）
     domains: [performance, resources]
     marker: NEEDS_EVIDENCE
 
   - id: RQ2-011
     type: conflict-signal
     status: open
-    summary: Knight Capital 损失金额口径差（~$440M vs SEC 口径 >$460M）；CrowdStrike Delta 诉讼主张 gross negligence 属未决诉讼主张。引用数字时须带口径说明
+    summary: Knight Capital 损失口径差（~$440M vs >$460M）；CrowdStrike Delta 诉讼主张未决。引用数字须带口径说明
     refs: [S-062, S-064]
     marker: CONTESTED
 
   - id: RQ2-012
     type: note
     status: open
-    summary: 付费标准/书籍（ISO 25010/42010 正文、Gray & Reuter、Adya 论文、SAIP、DDIA 等）未取得全文，notes 基于目录/作者公开材料/广泛学术引用，未暗示已读全文。Stage 4 提取原则时若需精确页码证据须合法获取
+    summary: 付费标准/书籍未取得全文；notes 基于公开材料，未暗示已读全文；Stage 4 需页码级证据时合法获取
     marker: UNKNOWN
+
+  - id: RQ2-013
+    type: challenger-lead-disposition
+    status: adjudicated
+    summary: "R3：CH-S-01..CH-S-12 逐条 disposition（详见下表）"
+    dispositions:
+      - {ch: CH-S-01, lead: "SQLite 官方架构文档（单进程嵌入式 DB）", disposition: needs_evidence, note: "可信候选（官方文档存在），本轮 bounded cycle 未采集；留作 Stage 3+ 单进程形态补源首选"}
+      - {ch: CH-S-02, lead: "LMDB 论文与设计文档", disposition: needs_evidence, note: "Howard & Chu 2011 可信候选；本轮未采集"}
+      - {ch: CH-S-03, lead: "Electron process model 官方文档", disposition: admitted, note: "S-112；platform-normative evidence，非通用架构真理"}
+      - {ch: CH-S-04, lead: "Raymond Chen / The Old New Thing（Win32 兼容工程）", disposition: "rejected(secondary)", note: "工程叙事博客级材料，非 primary/official 规范；H8 兼容性的强例证已由 S-044/S-045 契约级来源承载；可在后续 stage 作 stack annex 重提"}
+      - {ch: CH-S-05, lead: "Android 进程生命周期/权限模型文档", disposition: needs_evidence, note: "S-105 覆盖架构指南；进程生命周期文档未单独采集"}
+      - {ch: CH-S-06, lead: "iOS 应用生命周期/后台执行文档", disposition: needs_evidence, note: "未采集；与 S-106 负结果关联（Apple 官方材料为机制级）"}
+      - {ch: CH-S-07, lead: "WASI Preview 2 / Component Model", disposition: needs_evidence, note: "强候选（capability-based 安全与 S-092 呼应）；本轮 bounded cycle 未采集，优先列入 Stage 3+ 补源"}
+      - {ch: CH-S-08, lead: "FreeRTOS / Zephyr 官方设计文档", disposition: admitted, note: "S-113 FreeRTOS 已收录；Zephyr 侧本轮搜索未确认官方设计文档页，标 needs_evidence"}
+      - {ch: CH-S-09, lead: "MISRA C / IEC 61508", disposition: "rejected(paid-normative-text-inaccessible)", note: "按 CA 决议不得引用不可访问的付费规范原文；公开解读仅可支撑其暴露的主张；保留在研究范围，非 gate 项"}
+      - {ch: CH-S-10, lead: "ONNX Runtime / llama.cpp 架构材料", disposition: needs_evidence, note: "仓库 discussion 为二手材料；未定位到权威设计文档；Local AI Tool 形态暂由 S-107/S-098..S-103 覆盖"}
+      - {ch: CH-S-11, lead: "MCP 规范", disposition: "rejected(not-universal-principle-evidence)", note: "按 CA caution：可作集成/运行时契约示例，不足以作 Local-AI 通用架构原则证据；本轮不收录"}
+      - {ch: CH-S-12, lead: "Web 平台约束（WHATWG / web.dev）", disposition: "rejected(this-cycle)", note: "D-3 已裁定不设一级 Web 域、跨切面覆盖；browser/runtime 候选留待 Stage 4 按原则测试需要定向采集"}
+
+  - id: RQ2-014
+    type: standing-risk
+    status: open
+    summary: "持续风险（承 Challenger R-1/R-2/R-3）：①Mother Principle 跨形态测试须按 D-5 记录例证分布（当前后端/分布式例证约 55-60%）；②DDIA 锚定 1e，2e Early Release 引用前须先建条目（S-023 verification_note 已登记）；③postmortem 幸存者偏差，Stage 5 评测素材选取时对冲"
