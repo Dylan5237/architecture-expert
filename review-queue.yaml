@@ -32,7 +32,7 @@ items:
   - id: RQ2-004
     type: contested
     status: open
-    summary: "CAP 被普遍误读为「三选二」；Gilbert/Lynch 原文的 consistency 是 linearizable 原子寄存器语义。Stage 3/4 引用 CAP 必须携带此限定（已落入 02_VOCABULARY V-010）"
+    summary: "CAP 被普遍误读为「三选二」；Gilbert/Lynch 原文的 consistency 是 linearizable 原子寄存器语义。Stage 3/4 引用 CAP 必须携带此限定"
     refs: [S-026, S-027]
     marker: CONTESTED
 

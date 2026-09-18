@@ -6,7 +6,7 @@ author: kimi-k3 (Primary Researcher / Vocabulary Synthesizer)
 branch: research/stage3-vocabulary
 date: 2026-09-18
 remediated: 2026-09-18
-remediation_basis: "Issue #6 CA adjudication R-1..R-11 + Origin 规则；challenge/stage3-codex-glm@7465d82"
+remediation_basis: "Issue #6 CA adjudication R-1..R-11 + Origin 规则；challenge/stage3-codex-glm@7465d82；final re-gate M1/M3"
 issue: 6
 evidence_baseline: "Stage 2 accepted corpus (S-001..S-113, source-manifest.yaml)"
 ---
@@ -14,9 +14,9 @@ evidence_baseline: "Stage 2 accepted corpus (S-001..S-113, source-manifest.yaml)
 
 ## 产物
 
-- `02_VOCABULARY.md` v2 — 20 个 mandatory collision families（V-001..V-020）+ 8 个补充词条（V-021-A..H）+ 15 条归一裁决登记（N-1..N-15）。
+- `02_VOCABULARY.md` v2 — 20 个 mandatory collision families（V-001..V-020）+ 8 个补充词条（V-021-A..H）+ 16 条归一裁决登记（N-1..N-16）。
 
-## Remediation 记录（R-1..R-11）
+## Remediation 记录（R-1..R-11 + M1）
 
 | R | 内容 | 落点 |
 |---|---|---|
@@ -31,6 +31,7 @@ evidence_baseline: "Stage 2 accepted corpus (S-001..S-113, source-manifest.yaml)
 | R-9 | 新增 stateless 消歧（REST S-039 vs LLM-call S-103，机制禁止互借）；S-087 用于 scalability≠单任务更快 | V-021-H / V-006-D |
 | R-10 | 删除「无 timeout 即无界」绝对化——缺任何有效时间界才 potentially unbounded；cancellation 拆 RPC 传播（S-042）vs structured-scope（S-084..086） | V-008-A/C |
 | R-11 | Strangler 与 expand-contract 拆开；S-011 只支撑 Strangler；expand-contract 标 NEEDS_EVIDENCE 且无来源 | V-021-F/G；V-013-C 不再引 S-011 |
+| M1 | V-019-D EDA 降为 NEEDS_EVIDENCE（S-040/S-041 仅相邻证据）；不新增收益主张 | V-019-D + N-16 |
 
 ## Origin / META 变更
 
@@ -40,7 +41,7 @@ evidence_baseline: "Stage 2 accepted corpus (S-001..S-113, source-manifest.yaml)
 
 ## Stage 4 lexical gate（OD-4 落地，对后续所有 P-* 生效）
 
-后续任何 P-* 文件使用以下高风险词时，**必须限定具体义项或显式引用对应 V- 词条**，违反即 gate fail：
+后续任何 P-* 文件使用以下高风险词时，**必须限定具体义项或显式引用对应 V-* 词条**，违反即 gate fail：
 
 - consistency → 必须带 ACID/CAP/replica/cache 后缀（V-010）；
 - atomicity / atomic → 必须带 transaction 或 consistency(CAP) 后缀（V-011-E）；
