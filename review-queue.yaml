@@ -1,9 +1,10 @@
-# Review Queue — Stage 2 (Primary Researcher: Kimi)
+# Review Queue — Stages 2-3 (Primary Researcher: Kimi)
 # 记录来源缺口、冲突、待复核项。状态：open / adjudicated
-version: 2
-stage: 2
+version: 3
+stage: 3
 updated: 2026-09-18
-remediation_basis: "Issue #3 CA decision D-B1..D-B3 / R1..R4；统计以 source-manifest.yaml 为单一事实源"
+remediation_basis: "Issue #3 CA decision D-B1..D-B3 / R1..R4；Issue #6 CA adjudication R-1..R-11；统计以 source-manifest.yaml 为单一事实源"
+# RQ2 段为 Stage 2 adjudication 保留原样；Stage 3 仅追加 RQ3 回流项，未修改已有内容
 
 items:
   - id: RQ2-001
@@ -31,7 +32,7 @@ items:
   - id: RQ2-004
     type: contested
     status: open
-    summary: "CAP 被普遍误读为「三选二」；Gilbert/Lynch 原文的 consistency 是 linearizable 原子寄存器语义。Stage 3/4 引用 CAP 必须携带此限定"
+    summary: "CAP 被普遍误读为「三选二」；Gilbert/Lynch 原文的 consistency 是 linearizable 原子寄存器语义。Stage 3/4 引用 CAP 必须携带此限定（已落入 02_VOCABULARY V-010）"
     refs: [S-026, S-027]
     marker: CONTESTED
 
@@ -113,3 +114,59 @@ items:
     type: standing-risk
     status: open
     summary: "持续风险（承 Challenger R-1/R-2/R-3）：①Mother Principle 跨形态测试须按 D-5 记录例证分布（当前后端/分布式例证约 55-60%）；②DDIA 锚定 1e，2e Early Release 引用前须先建条目（S-023 verification_note 已登记）；③postmortem 幸存者偏差，Stage 5 评测素材选取时对冲"
+
+  # ============ Stage 3 backflow（追加段，不修改上方 Stage 2 adjudication）============
+
+  - id: RQ3-001
+    type: evidence-backflow
+    status: open
+    origin_stage: 3
+    summary: "coupling / change-locality 缺专门权威来源：当前 V-014 族仅锚 SAIP 谱系（S-001/S-005/S-023）；H5b/H7 的 Stage 4 检验依赖定向补源（Challenger B-1）。建议候选：Parnas 1975「Software Aspect of Strategic Defense Systems」或 Constantine/Yourdon 结构化设计原始文献，待 Stage 4 定向核验"
+    domains: [fundamentals, evolution]
+    marker: NEEDS_EVIDENCE
+    refs: [V-014-A, V-014-C, V-014-D]
+
+  - id: RQ3-002
+    type: evidence-backflow
+    status: open
+    origin_stage: 3
+    summary: "Java StructuredTaskScope 官方文档未收录：V-007-E 的 Java 侧 realization 标 NEEDS_EVIDENCE（JEP 453+ 预览系列）。补源后可升稳；当前 Virtual Threads (S-087) 明确不作 structured concurrency 的 alias"
+    domains: [concurrency, lifecycle]
+    marker: NEEDS_EVIDENCE
+    refs: [V-007-E, S-087]
+
+  - id: RQ3-003
+    type: evidence-backflow
+    status: open
+    origin_stage: 3
+    summary: "microservices 正方一手证据（承 RQ2-009，Stage 3 词汇层再次触碰：V-019-C 维持 CONTESTED）。建议候选：Fowler «Microservices»(2014)/«Monolith First»(2015) 或 Newman «Building Microservices»；Stage 4 原则提取引用风格收益主张前必须闭环"
+    domains: [fundamentals, evolution]
+    marker: NEEDS_EVIDENCE
+    refs: [RQ2-009, V-019-C]
+
+  - id: RQ3-004
+    type: evidence-backflow
+    status: open
+    origin_stage: 3
+    summary: "WASI Preview 2 / Component Model 未收录：V-016-C capability 词条只有原则层锚（S-092），缺公开可验证的 capability-based security 平台实例。候选：wasi.dev 官方 + component-model proposal（CH-S-07 已预登记为强候选）"
+    domains: [security, embedded-edge, local-first]
+    marker: NEEDS_EVIDENCE
+    refs: [V-016-C, S-092]
+
+  - id: RQ3-005
+    type: evidence-backflow
+    status: open
+    origin_stage: 3
+    summary: "UI 主线程权威来源缺失：V-021-D 只锚 Node 事件循环（S-088/S-089）；浏览器主线程同构形态无来源（WHATWG/web.dev 本轮 rejected-this-cycle，CH-S-12）。Stage 4 若原则触及 UI 形态需定向采集"
+    domains: [runtime, performance]
+    marker: NEEDS_EVIDENCE
+    refs: [V-021-D]
+
+  - id: RQ3-006
+    type: evidence-backflow
+    status: open
+    origin_stage: 3
+    summary: "expand-contract 一手出处核验：V-021-G 已标 NEEDS_EVIDENCE 且无来源（S-011 只支撑 Strangler，R-11 已拆分）。若保留完整 tactic 家族，需定向补源（候选：Fowler/Pragmatic 谱系的 parallel change 论述，待核验）；否则保持降级"
+    domains: [evolution]
+    marker: NEEDS_EVIDENCE
+    refs: [V-021-G]
