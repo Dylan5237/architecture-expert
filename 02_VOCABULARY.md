@@ -7,7 +7,7 @@ author: kimi-k3 (Primary Researcher / Vocabulary Synthesizer)
 branch: research/stage3-vocabulary
 date: 2026-09-18
 remediated: 2026-09-18
-remediation_basis: "Issue #6 CA adjudication R-1..R-11 + Origin 规则；challenge/stage3-codex-glm@7465d82"
+remediation_basis: "Issue #6 CA adjudication R-1..R-11 + Origin 规则；challenge/stage3-codex-glm@7465d82；final re-gate M1"
 issue: 6
 evidence_baseline: "Stage 2 accepted corpus (source-manifest.yaml, S-001..S-113)"
 ---
@@ -640,8 +640,8 @@ evidence_baseline: "Stage 2 accepted corpus (source-manifest.yaml, S-001..S-113)
 ### V-019-D event-driven / EDA
 - Working definition: 以事件为首要集成机制的形态。
 - Do not conflate with: event sourcing（持久化策略，S-040）——二者常搭配但独立。
-- Status: CONTEXT_QUALIFIED
-- Source IDs: S-040, S-041
+- Status: NEEDS_EVIDENCE（S-040/S-041 属 Event Sourcing / CQRS 相邻证据，不构成强直接 EDA 定义证据；本条不含 EDA 收益主张）
+- Source IDs: S-040, S-041（相邻证据）
 
 ### V-019-E local-first
 - Working definition: 数据主副本在用户设备、云端仅同步的形态（Ink & Switch 七属性）。
@@ -757,3 +757,4 @@ evidence_baseline: "Stage 2 accepted corpus (source-manifest.yaml, S-001..S-113)
 | N-13 | resilience vs fault tolerance 排序 | 无全序；failure-model-relative（V-005-C/D） | STABLE（无源排序断言已移除） |
 | N-14 | container 双义（C4 可部署抽象 vs Docker OS 隔离单元） | 引用必须带 C4 或 OS 限定（V-002-B 注记） | CONTEXT_QUALIFIED |
 | N-15 | workflow 双义（agent-orchestration vs business-process） | 强制后缀（V-020-B） | CONTEXT_QUALIFIED |
+| N-16 | EDA 定义证据强度 | S-040/S-041 仅相邻证据，V-019-D 降为 NEEDS_EVIDENCE（M1） | NEEDS_EVIDENCE |
