@@ -21,8 +21,8 @@ issue: 3
 
 - 来源总数：**113**（S-001..S-113；sources/ 目录另含 index.md，共 114 文件）
 - Tier：**A 77 / B 33 / C 3**（S-069 由 B 降为 C；新增 S-112/S-113 为 B）
-- verification：**direct-open 50 / search-cross-verified 50 / offline-publication 12 / needs-reverify 1**（仅 S-069）
-- access_status 受影响条目：moved 3（S-032/060/105/106 中 4 条：S-032、S-060、S-105、S-106）/ bot-blocked 2（S-027、S-053）/ unresolved 1（S-069）/ offline-only 1（S-079）
+- verification：**direct-open 49 / search-cross-verified 52 / offline-publication 11 / needs-reverify 1**（仅 S-069）
+- access_status 受影响条目：moved 4（S-032、S-060、S-105、S-106）/ bot-blocked 2（S-027、S-053）/ unresolved 1（S-069）/ offline-only 1（S-079）
 - postmortem 8 篇 + 聚合索引 2 个 + historical-background 1 个（S-069）
 
 ## 覆盖矩阵（18 个强制域；remediation 后）
