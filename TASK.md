@@ -1,20 +1,21 @@
-Read `AGENTS.md`, `planning/STAGE1_RESEARCH_PLAN.md`, the accepted Stage 2 evidence corpus (`source-manifest.yaml`, `sources/`, `review-queue.yaml`), the sealed Stage 3 vocabulary (`02_VOCABULARY.md`), and GitHub Issue #9.
+Read `AGENTS.md`, `planning/STAGE1_RESEARCH_PLAN.md`, the accepted Stage 2 evidence corpus (`source-manifest.yaml`, `sources/`, `review-queue.yaml`), the sealed Stage 3 vocabulary (`02_VOCABULARY.md`), the sealed Stage 4 candidate set (`principles/`), the Stage 4 reports, and GitHub Issue #12.
 
-Execute **Stage 4 — Principle Extraction only**.
+Execute **Stage 5 — Contradiction & Counterexample Review only**.
 
-Primary goal: produce evidence-grounded **candidate** `P-*` principle files. Stage 4 does not finalize the Constitution and does not perform full Stage 5 contradiction/counterexample review.
+Primary goal: actively falsify, narrow, merge-candidate, demote, reject, or retain the 11 Stage 4 candidates. Do not defend the candidate set by default.
 
-Required Primary outputs are defined in Issue #9:
-- `principles/index.md`
-- `principles/P-*.md`
-- `reports/STAGE4_EXTRACTION.md`
+Required Primary outputs are defined in Issue #12:
+- `reports/STAGE5_FALSIFICATION.md`
+- atomic falsification dossiers under `reports/stage5/`
+- targeted Stage 5 source additions only when they materially affect a disposition/D-test
+- optional appended `RQ5-*` items in `review-queue.yaml`
 
-The Stage 1 H1..H11 hypotheses are inputs to test, not protected conclusions. Each must receive a disposition.
+Execute D-01..D-14 exactly as preregistered unless a test is explicitly shown invalid.
 
-Every candidate must include mechanism, protected properties, applicability, trade-offs, source links, cross-shape checks, and a serious Stage 5 falsification/counterexample plan.
+Targeted external research is allowed only for concrete falsification/counterexample questions. Do not reopen broad Source Collection or search for extra support merely to rescue a candidate.
 
-Honor the Stage 3 lexical gate. Do not silently fill RQ3 evidence gaps from model memory. Use `NEEDS_EVIDENCE` and `BACKFLOW_TRIGGER` where appropriate.
+Do not mutate canonical `principles/P-*.md` during the initial Stage 5 campaign. Stage 5 reports dispositions; Stage 6 performs first-principles reduction.
 
-Do not begin Stage 5. Do not draft `01_CONSTITUTION.md`. Do not reduce to final Mother Principles, build canonical failure-pattern/tactic ontology, or generate the Agent prompt.
+Do not begin Stage 6. Do not draft `01_CONSTITUTION.md`. Do not build the Stage 7 ontology or final Agent prompt.
 
-Use the branch and role assigned in Issue #9. Persist and commit all Stage 4 artifacts, then stop and report the fixed commit SHA for the Chief Architect gate.
+Use the branch and role assigned in Issue #12. Persist and commit all Stage 5 artifacts, then stop and report the fixed commit SHA for the Chief Architect gate.
