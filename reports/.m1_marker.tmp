@@ -1,5 +1,0 @@
-### V-019-D event-driven / EDA
-- Working definition: 以事件为首要集成机制的形态。
-- Do not conflate with: event sourcing（持久化策略，S-040）——二者常搭配但独立。
-- Status: NEEDS_EVIDENCE（S-040/S-041 属 Event Sourcing / CQRS 相邻证据，不构成强直接 EDA 定义证据；本条不含 EDA 收益主张）
-- Source IDs: S-040, S-041（相邻证据）
