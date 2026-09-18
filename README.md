@@ -31,7 +31,7 @@ External authoritative sources remain the evidentiary basis for architecture cla
 ## Current orchestration
 
 - Kimi Research Mode / K3 cluster: Primary Researcher / Synthesizer
-- WorkBuddy Research Mode / GLM 5.3: Independent Challenger
+- Codex harness + GLM 5.3: Independent Challenger / Reconciler
 - Cursor: deterministic repository/eval engineering when needed
 - ChatGPT Chief Architect: synthesis, evidence adjudication, architecture gate
 
