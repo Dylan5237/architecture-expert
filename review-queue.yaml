@@ -1,10 +1,11 @@
-# Review Queue — Stages 2-3 (Primary Researcher: Kimi)
+# Review Queue — Stages 2-5 (Primary Researcher: Kimi)
 # 记录来源缺口、冲突、待复核项。状态：open / adjudicated
-version: 3
-stage: 3
-updated: 2026-09-18
+version: 4
+stage: 5
+updated: 2026-09-20
 remediation_basis: "Issue #3 CA decision D-B1..D-B3 / R1..R4；Issue #6 CA adjudication R-1..R-11；统计以 source-manifest.yaml 为单一事实源"
 # RQ2 段为 Stage 2 adjudication 保留原样；Stage 3 仅追加 RQ3 回流项，未修改已有内容
+# Stage 5 仅追加 RQ5 项，不修改既有 RQ2/RQ3 内容
 
 items:
   - id: RQ2-001
@@ -170,3 +171,55 @@ items:
     domains: [evolution]
     marker: NEEDS_EVIDENCE
     refs: [V-021-G]
+
+  # ============ Stage 5 backflow（追加段，不修改上方历史）============
+
+  - id: RQ5-001
+    type: stage5-contest
+    status: open
+    origin_stage: 5
+    summary: "blast radius 度量方法论缺失（D-10 结果）：代理度量（用户数/请求比例/cell 数）实践存在但无权威来源。影响 Stage 6：P-004 升格不受影响，但 operationalization 段须标缺口"
+    candidates: [P-004]
+    d_test: D-10
+    refs: [S-050]
+    marker: NEEDS_EVIDENCE
+
+  - id: RQ5-002
+    type: stage5-contest
+    status: open
+    origin_stage: 5
+    summary: "「执行模型是否提供某保证」的机械判定方法缺失（P-013 residual）：评审时能否机械化核验保证存在性无权威来源。影响 Stage 6：P-013 operationalization 的自动化程度上限"
+    candidates: [P-013]
+    d_test: null
+    refs: [S-115]
+    marker: NEEDS_EVIDENCE
+
+  - id: RQ5-003
+    type: stage5-contest
+    status: open
+    origin_stage: 5
+    summary: "观测/隐私冲突只有 B 级厂商博客来源（P-007 收窄依据之一）：缺标准/论文级权威。影响 Stage 6：P-007 收窄 statement 的「诊断表面构成攻击面/隐私面」一句的证据等级"
+    candidates: [P-007]
+    d_test: D-11
+    refs: [S-118]
+    marker: NEEDS_EVIDENCE
+
+  - id: RQ5-004
+    type: stage5-contest
+    status: open
+    origin_stage: 5
+    summary: "「负载天然有界系统豁免超载设计」缺专门权威来源（P-012 收窄依据，论证性结论）。影响 Stage 6：豁免条款的证据等级；若 Challenger 找到反例（单机也有幂律负载），P-012 豁免面需重审"
+    candidates: [P-012]
+    d_test: D-12
+    refs: [S-113]
+    marker: NEEDS_EVIDENCE
+
+  - id: RQ5-005
+    type: stage5-contest
+    status: open
+    origin_stage: 5
+    summary: "SQL 隔离级别名义 vs 实际语义差异（Hermitage lead，P-013 good case 的对照陷阱）：「依赖 DBMS 文档承诺的具体语义 vs 依赖 ANSI 标签」的区分缺 corpus 内来源。影响 Stage 7 integration/domain 层，不阻塞 Stage 6"
+    candidates: [P-013, P-010]
+    d_test: null
+    refs: [S-034]
+    marker: NEEDS_EVIDENCE

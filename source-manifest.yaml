@@ -1,13 +1,14 @@
 # Stage 2 Source Manifest — Primary Researcher (Kimi)
 # 规则：权威由 provenance/质量决定，不由语言决定；postmortem 只作实证；
 # verification 取值：direct-open | search-cross-verified | offline-publication | needs-reverify
-manifest_version: 2
-stage: 2
+manifest_version: 3
+stage: 5
 researcher: kimi-k3
 branch: research/stage2-kimi
 created: 2026-09-17
 remediated: 2026-09-18
 remediation_basis: "Issue #3 Chief Architect decision D-B1..D-B3 / R1..R4"
+stage5_extension_basis: "Issue #12 / CA adjudication R5-1..R5-8 + M5-1：S-001..S-113 按 baseline 05cfea49 恢复（immutable history，含 S-074 标题）；S-114..S-122、S-124 为 append-only Stage 5 定向补源；S-123 已移除为 LEAD_ONLY（OD5-6），ID 不复用"
 schema_extension:
   note: "D-B3 批准的最小 schema 扩展（2026-09-18）：verification 不承担 bot-blocked/moved 等网络状态；以下可选字段仅应用于受影响条目，不做全量机械回填"
   optional_fields:
@@ -22,6 +23,9 @@ id_ranges:
   S-070..S-091: cluster-d 性能/并发/资源有界/运行时
   S-092..S-111: cluster-e 安全信任/Agent工程/欠代表形态
   S-112..S-113: stage2-remediation 补源（Desktop 正向权威 / Embedded 官方）
+  S-114..S-122: stage5-falsification 定向补源（append-only；每条注明改变的 attack/D-test）
+  S-124: stage5-falsification 定向补源（OD5-7 授权；P-008 internal-contract GOOD CASE）
+  S-123: "（已移除：OD5-6 demote to LEAD_ONLY；ID 保留不复用）"
 sources:
   - {id: S-001, title: "On the Criteria to Be Used in Decomposing Systems into Modules", author: "David L. Parnas", pub: "CACM 15(12):1053-1058", year: 1972, url: "https://dl.acm.org/doi/10.1145/361598.361623", type: paper, tier: A, clusters: [fundamentals, boundaries, evolution], verification: search-cross-verified}
   - {id: S-002, title: "The Mythical Man-Month (20th anniv. ed.)", author: "Frederick P. Brooks Jr.", pub: Addison-Wesley, year: 1995, url: "offline-publication; https://www.cs.unc.edu/~brooks/", type: book, tier: A, clusters: [fundamentals, complexity], verification: offline-publication}
@@ -136,3 +140,13 @@ sources:
   - {id: S-111, title: "The Next Evolution of the Agents SDK", author: OpenAI, pub: openai.com, year: 2026, url: "https://openai.com/index/the-next-evolution-of-the-agents-sdk/", type: official-doc, tier: B, clusters: [agent-runtime], verification: search-cross-verified}
   - {id: S-112, title: "Electron Process Model (official)", author: "Electron (OpenJS Foundation)", pub: electronjs.org, year: "ongoing", url: "https://www.electronjs.org/docs/latest/tutorial/process-model", type: official-doc, tier: B, clusters: [mobile-desktop, runtime, security], verification: search-cross-verified, access_status: reachable, verification_note: "R3/CH-S-03 admitted；platform-normative，非通用架构真理"}
   - {id: S-113, title: "FreeRTOS Kernel official documentation", author: "FreeRTOS (AWS stewardship)", pub: freertos.org, year: "ongoing", url: "https://www.freertos.org/", type: official-doc, tier: B, clusters: [embedded-edge, runtime, resources], verification: search-cross-verified, access_status: reachable, verification_note: "R3/CH-S-08 admitted（FreeRTOS 侧；Zephyr 侧 needs_evidence）"}
+  - {id: S-114, title: "Making Reliable Distributed Systems in the Presence of Software Errors", author: "Joe Armstrong", pub: "PhD thesis, KTH", year: 2003, url: "https://erlang.org/download/armstrong_thesis_2003.pdf", type: thesis, tier: A, clusters: [lifecycle, failure-model, concurrency], verification: search-cross-verified, access_status: reachable, verification_note: "Stage 5 补源；改变 P-001 攻击 1 结果（supervised tree 是合规 ownership 机制，非普适 runtime invariant）"}
+  - {id: S-115, title: "Erlang System Documentation — Processes", author: "Ericsson / Erlang OTP team", pub: erlang.org, year: "ongoing", url: "https://www.erlang.org/doc/system/ref_man_processes.html", type: official-doc, tier: A, clusters: [concurrency, runtime, distributed], verification: direct-open, access_status: reachable, verification_note: "Stage 5 补源；改变 P-013 攻击 2（good case + 判据先例）；邮箱归接收进程拥有/消费，容量无界属 P-003 资源维度问题"}
+  - {id: S-116, title: "A Guide to the Go Garbage Collector (memory limit)", author: "Go team (Google)", pub: go.dev, year: "ongoing", url: "https://go.dev/doc/gc-guide#Memory_limit", type: official-doc, tier: A, clusters: [resources, runtime, performance], verification: search-cross-verified, access_status: reachable, verification_note: "Stage 5 补源；GOMEMLIMIT 为 soft runtime memory budget；GC 只解决 managed-heap reclamation"}
+  - {id: S-117, title: "How SQLite Is Tested", author: "SQLite Consortium", pub: sqlite.org, year: "ongoing", url: "https://www.sqlite.org/testing.html", type: official-doc, tier: A, clusters: [state-data, reliability, monolith], verification: search-cross-verified, access_status: reachable, verification_note: "Stage 5 补源；仅 testing 页支持的单进程/可靠性 GOOD CASE（不作 admission 证据）"}
+  - {id: S-118, title: "seL4: Formal Verification of an OS Kernel (SOSP 2009)", author: "Klein et al.", pub: "SOSP 2009", year: 2009, url: "https://www.sigops.org/s/conferences/sosp/2009/papers/klein-sosp09.pdf", type: paper, tier: A, clusters: [observability, embedded-edge, security], verification: search-cross-verified, access_status: reachable, verification_note: "Stage 5 补源；仅主张显式假设下的功能正确性证明；不外推为形式验证普遍替代运行时观测"}
+  - {id: S-119, title: "Conflict-free Replicated Data Types (CRDT)", author: "Shapiro, Preguiça, Baquero, Zawirski", pub: "SSS 2011 / INRIA RR-7687", year: 2011, url: "https://hal.inria.fr/hal-00932836", type: paper, tier: A, clusters: [state-data, distributed, local-first], verification: search-cross-verified, access_status: bot-blocked, canonical_url: "https://hal.inria.fr/hal-00932836", verification_note: "Stage 5 补源；HAL 落地页当前验证路径下不可直接访问（access limitation 记录）；仅用于 P-010 D-14 multi-writer + 显式合并语义"}
+  - {id: S-120, title: "RFC 7568 — Deprecating SSLv3", author: "IETF (Barnes, Thomson, Pironti, Langley)", pub: "IETF Standards Track", year: 2015, url: "https://datatracker.ietf.org/doc/html/rfc7568", type: standard, tier: A, clusters: [security, evolution, integration], verification: search-cross-verified, access_status: reachable, verification_note: "Stage 5 补源；仅作「更高优先级规范性安全要求覆盖兼容性」的特定证据，不泛化为 security debt 授权破兼容"}
+  - {id: S-121, title: "PEP 404 — Python 2.8 Un-release Schedule", author: "Python Software Foundation (Barry Warsaw)", pub: peps.python.org, year: 2011, url: "https://peps.python.org/pep-0404/", type: official-doc, tier: A, clusters: [evolution, integration], verification: search-cross-verified, access_status: reachable, verification_note: "Stage 5 补源；仅保留 PEP 404 支持的治理化生态演进主张，不泛化为 technical debt 自动授权破兼容"}
+  - {id: S-122, title: "Arrakis: The Operating System is the Control Plane", author: "Peter et al.", pub: "OSDI 2014 (Best Paper)", year: 2014, url: "https://www.usenix.org/conference/osdi14/technical-sessions/presentation/peter", type: paper, tier: A, clusters: [performance, failure-isolation, runtime], verification: search-cross-verified, access_status: reachable, verification_note: "Stage 5 补源；仅证明 hardware-virtualized I/O 上 device/network/disk 保护的内核控制面机制，不泛化为硬件机制替代所有故障遏制"}
+  - {id: S-124, title: "The Linux Kernel Driver Interface", author: "Greg Kroah-Hartman / Linux Kernel project", pub: "Linux Kernel documentation", year: "ongoing", url: "https://docs.kernel.org/process/stable-api-nonsense.html", type: official-doc, tier: A, clusters: [evolution, integration, boundaries], verification: direct-open, access_status: reachable, verification_note: "Stage 5 定向补源（OD5-7 授权）；P-008 single-owner/internal-contract GOOD CASE；不得泛化为所有内部 API 都应不稳定"}
