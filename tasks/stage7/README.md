@@ -3,7 +3,8 @@
 Stage 7 execution prompts are stored here so chat handoff can remain minimal.
 
 - Cursor Primary: `tasks/stage7/CURSOR_PRIMARY.md`
-- Codex + GLM Challenger: `tasks/stage7/CODEX_CHALLENGER.md`
+- Codex + GLM Challenger Pass A: `tasks/stage7/CODEX_CHALLENGER.md`
+- Codex + GLM Challenger Pass B: `tasks/stage7/CODEX_PASS_B.md`
 
 Control issue: GitHub Issue #18.
 
@@ -14,4 +15,6 @@ Current orchestration:
 - Codex harness + GLM 5.3 = Independent Knowledge-Architecture Challenger
 - ChatGPT = Chief Architect / gate authority
 
-Both agent branches must start from the latest Stage 7 control baseline recorded in Issue #18.
+For Pass B, Codex should read the prompt directly from `origin/main:tasks/stage7/CODEX_PASS_B.md` without merging main into the challenger branch.
+
+Both agent branches must preserve their assigned lineages and fail-closed rules.
