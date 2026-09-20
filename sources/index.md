@@ -14,13 +14,15 @@ updated: 2026-09-18
 | S-023..S-046 | 分布式系统 / 状态与数据 / 集成与契约 |
 | S-047..S-069 | 可靠性 / 故障模型 / 可观测性 / 事故实证（postmortem） |
 | S-070..S-091 | 性能工程 / 并发 / 资源有界 / 运行时执行模型 |
-| S-092..S-111 | 安全与信任 / Agent 工程消费 / 欠代表形态 |
-| S-112..S-113 | Stage 2 remediation 补源（Desktop / Embedded） |
-| S-114..S-123 | Stage 5 证伪定向补源（OTP/Armstrong、Erlang 进程语义、Go GC、SQLite、seL4、CRDT、RFC 7568、PEP 404、Arrakis、eBPF verifier）——每条注明改变的 attack/D-test |
+| S-092..S-111 | 安全与信任 / Agent 工程消费 / 欠代表形态（embedded/desktop/local-first/monolith） |
+| S-112..S-113 | Stage 2 remediation 补源：S-112 Electron（Desktop 正向权威）、S-113 FreeRTOS（Embedded 官方） |
+| S-114..S-122 | Stage 5 证伪定向补源（append-only：Armstrong、Erlang 进程语义、Go GC、SQLite testing、seL4 SOSP09、CRDT、RFC 7568、PEP 404、Arrakis）——每条注明改变的 attack/D-test |
+| S-124 | Stage 5 定向补源（OD5-7）：Linux Kernel Driver Interface——P-008 internal-contract GOOD CASE |
 
 使用规则：
 - postmortem（S-059..S-065, S-091）只作实证证据，不作 Mother Principle 唯一支撑。
 - 厂商 Agent 工程材料（S-098..S-103, S-111）为 vendor evidence，引用须标注。
-- `access_status` / `canonical_url` / `verification_note` / `evidence_marker` 为可选字段，仅应用于受影响条目。
+- `access_status` / `canonical_url` / `verification_note` / `evidence_marker` 为 D-B3 批准的可选字段，仅应用于受影响条目。
 - S-069 为 historical-background（URL unresolved），不得单独支撑 stable 原则。
+- S-123 已移除为 LEAD_ONLY（OD5-6），ID 保留不复用；eBPF verifier 仅作 lead 见 `../reports/STAGE5_FALSIFICATION.md`。
 - 缺口与冲突见 `../review-queue.yaml`。
