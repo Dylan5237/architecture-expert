@@ -3,6 +3,7 @@
 Stage 7 execution prompts are stored here so chat handoff can remain minimal.
 
 - Cursor Primary: `tasks/stage7/CURSOR_PRIMARY.md`
+- Cursor bounded remediation: `tasks/stage7/CURSOR_REMEDIATION.md`
 - Codex + GLM Challenger Pass A: `tasks/stage7/CODEX_CHALLENGER.md`
 - Codex + GLM Challenger Pass B: `tasks/stage7/CODEX_PASS_B.md`
 
