@@ -1,21 +1,30 @@
-Read `AGENTS.md`, `planning/STAGE1_RESEARCH_PLAN.md`, the sealed Constitution (`01_CONSTITUTION.md`), vocabulary (`02_VOCABULARY.md`), Stage 5 GOOD CASE/falsification artifacts, Stage 6 reduction/audit/reconciliation, accepted source corpus/review queue, GitHub Issue #18, and your role-specific prompt under `tasks/stage7/`.
+Read `AGENTS.md`, GitHub Issue #21, `planning/STAGE1_RESEARCH_PLAN.md`, the sealed Stage 7 knowledge substrate, and your role-specific prompt under `tasks/stage8/`.
 
-Execute **Stage 7 — Knowledge Architecture only**.
+Execute **Stage 8 — Reasoning Model only**.
 
-Primary execution prompt:
-- Cursor: `tasks/stage7/CURSOR_PRIMARY.md`
+Primary:
+- Cursor: `tasks/stage8/CURSOR_PRIMARY.md`
 
-Independent Challenger prompt:
-- Codex + GLM 5.3: `tasks/stage7/CODEX_CHALLENGER.md`
+Independent Blind Challenger:
+- Codex + GLM 5.3: `tasks/stage8/CODEX_CHALLENGER.md`
 
-The repository task prompt for the assigned role is authoritative for execution details.
+The role-specific repository prompt is authoritative for execution details.
 
-Shared Stage 7 objective: operationalize the sealed Constitution into a compact, traceable, progressively disclosed knowledge substrate for later reasoning/Agent stages without changing accepted AX/MP semantics.
+Shared objective:
+- create a compact reusable reasoning spine;
+- create materially distinct decision playbooks;
+- create a conditional mechanism-oriented question bank;
+- define evidence/verdict, KNOWLEDGE_DRIFT, ARCH_CONFLICT, stop, escalation and minimum-correction rules;
+- preserve Stage 7 progressive disclosure.
 
-The Constitution is authoritative. Historical P-* files remain historical. AX-005 and MP-011 IDs remain reserved. P-006 remains non-principle lineage.
+Mandatory execution rule:
+- one task = one dedicated worktree = one branch;
+- shared/primary checkout is sync-only;
+- fail closed on branch/HEAD/worktree mismatch.
 
+Do not modify sealed Stage 2–7 semantics.
 No broad source collection.
-No Stage 8.
-No decision playbooks, question bank, Agent prompts/modes, or eval scenarios/results.
+No Stage 9 system prompt or Agent mode files.
+No formal eval scenarios/results.
 
-Use the branch assigned in Issue #18. Persist/commit/push only authorized Stage 7 artifacts, then stop and report the fixed SHA to the Chief Architect gate.
+Use the branch assigned in Issue #21. Commit/push only authorized Stage 8 artifacts, then stop and report the fixed SHA to the Chief Architect gate.
