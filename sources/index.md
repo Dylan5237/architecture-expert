@@ -2,7 +2,7 @@
 id: IDX-SOURCES
 title: sources/ index
 stage: 5
-updated: 2026-09-18
+updated: 2026-09-20
 ---
 # sources/ 索引
 
@@ -14,7 +14,7 @@ updated: 2026-09-18
 | S-023..S-046 | 分布式系统 / 状态与数据 / 集成与契约 |
 | S-047..S-069 | 可靠性 / 故障模型 / 可观测性 / 事故实证（postmortem） |
 | S-070..S-091 | 性能工程 / 并发 / 资源有界 / 运行时执行模型 |
-| S-092..S-111 | 安全与信任 / Agent 工程消费 / 欠代表形态（embedded/desktop/local-first/monolith） |
+| S-092..S-111 | 安全与信任 / Agent 工程消费 / 欠代表形态 |
 | S-112..S-113 | Stage 2 remediation 补源：S-112 Electron（Desktop 正向权威）、S-113 FreeRTOS（Embedded 官方） |
 | S-114..S-122 | Stage 5 证伪定向补源（append-only：Armstrong、Erlang 进程语义、Go GC、SQLite testing、seL4 SOSP09、CRDT、RFC 7568、PEP 404、Arrakis）——每条注明改变的 attack/D-test |
 | S-124 | Stage 5 定向补源（OD5-7）：Linux Kernel Driver Interface——P-008 internal-contract GOOD CASE |
