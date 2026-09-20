@@ -1,10 +1,11 @@
-# Review Queue — Stages 2-3 (Primary Researcher: Kimi)
+# Review Queue — Stages 2-5 (Primary Researcher: Kimi)
 # 记录来源缺口、冲突、待复核项。状态：open / adjudicated
 version: 4
 stage: 5
-updated: 2026-09-18
+updated: 2026-09-20
 remediation_basis: "Issue #3 CA decision D-B1..D-B3 / R1..R4；Issue #6 CA adjudication R-1..R-11；统计以 source-manifest.yaml 为单一事实源"
-# RQ2 段为 Stage 2 adjudication 保留原样；Stage 3 仅追加 RQ3 回流项，未修改已有内容；Stage 5 仅追加 RQ5 项
+# RQ2 段为 Stage 2 adjudication 保留原样；Stage 3 仅追加 RQ3 回流项，未修改已有内容
+# Stage 5 仅追加 RQ5 项，不修改既有 RQ2/RQ3 内容
 
 items:
   - id: RQ2-001

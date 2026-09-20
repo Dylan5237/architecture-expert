@@ -7,9 +7,9 @@ branch: research/stage5-falsification
 date: 2026-09-20
 issue: 12
 baseline: 05cfea4981c77d9a13520762e2e37244d4079bce
-remediation_basis: "Issue #12 CA adjudication R5-1..R5-8；challenge/stage5-falsification@d9d6996 (accepted Pass B)"
+remediation_basis: "Issue #12 CA adjudication R5-1..R5-8 + M5-1..M5-5；challenge/stage5-falsification@d9d6996 (accepted Pass B)"
 ---
-# Stage 5 Falsification Report — 综合（final, 含 R5-1..R5-8 remediation）
+# Stage 5 Falsification Report — 综合（final, 含 remediation）
 
 边界：只做证伪与 disposition 输出；未改 canonical principles/P-*.md；未写 Constitution；未做 Stage 6 reduction。原子 dossier 见 `reports/stage5/P-*.md`（11 份）。immutable-history 已按 baseline `05cfea49` 恢复（S-001..S-113 manifest 记录与 RQ2/RQ3 队列历史原文恢复；Stage 5 追加段 append-only）。
 
@@ -19,17 +19,15 @@ remediation_basis: "Issue #12 CA adjudication R5-1..R5-8；challenge/stage5-fals
 |---|---|---|
 | P-001 Explicit Ownership | **NARROW** | GC 豁免仅限 managed-heap reclamation；supervision 是合规机制非普适 invariant；邮箱归接收进程拥有，容量无界归 P-003 |
 | P-002 Change-Decision Boundaries | **NARROW** | 事前识别变化轴为适用前提；探索期未知变化轴为 GOOD CASE |
-| P-003 Bounded Execution | **NARROW** | lifetime 可 indefinite；per-work execution/wait/retention/retry/queue/concurrency/memory/fan-out 仍需有效界或治理策略（时间维度已恢复） |
+| P-003 Bounded Execution | **NARROW** | lifetime 可 indefinite；per-work execution/wait/retention/retry/queue/concurrency/memory/fan-out 仍需有效界或治理策略 |
 | P-004 Failure Containment | **SURVIVES** | graded/outcome-oriented 保留；替代保证机制证据维度特定化（Arrakis 仅 I/O 保护维度）；eBPF 不作 admitted 证据 |
 | P-006 Change Locality | **DEMOTE** | 降为 P-002 关联 measurable property / review signal；不触发 RQ3-001 |
-| P-007 Designed Diagnostic Surfaces | **NARROW** | question-relative：未被静态证明消解的 operational questions 需可获得证据；隐私/安全为 trade-off |
+| P-007 Designed Diagnostic Surfaces | **NARROW** | question-relative：未被静态证明消解的 operational questions 需可获得证据；隐私/安全为 trade-off（无标量替代律） |
 | P-008 Contract Preservation | **NARROW** | 按消费方独立性分级；更高优先级要求（RFC 7568）或治理化迁移（PEP 404/Linux 内部接口）可显式破兼容 |
 | P-009 Trust Minimization | **NARROW** | 强制点限定在不可信输入/跨权限/外部集成/agent 动作边界 |
 | P-010 Authoritative State | **SURVIVES** | R4 双维 statement 原样存活；CRDT 为确认/GOOD CASE |
 | P-012 Overload Admission | **NARROW** | 准入位置是架构决策；负载天然有界豁免（NEEDS_EVIDENCE 级）；priority scheduling ≠ admission control |
 | P-013 Execution-Model-Honest Correctness | **SURVIVES + TAUTOLOGY_RISK** | 保留 assumed≠provided 经验判别类与 GOOD CASE 保护；Stage 6 若坍缩为同义反复则届时降级 |
-
-无 REJECT、无 MERGE_CANDIDATE。
 
 ## 2. D-01..D-14 最终结果（accepted Pass B，未静默升级）
 
@@ -50,9 +48,9 @@ remediation_basis: "Issue #12 CA adjudication R5-1..R5-8；challenge/stage5-fals
 | D-13 H7 复活检验 | NOT RESURRECTED |
 | D-14 P-010 CRDT | FRAMEWORK HOLDS |
 
-## 3. GOOD CASE / false-positive register（first-class eval fixture 输入，R5-7）
+## 3. GOOD CASE / false-positive register（first-class eval fixture 输入）
 
-以下每条为「表面可疑但架构合法」的判别边界，供未来 Agent eval 的 false-positive fixture 使用（格式：形态 → 不得报 → 依据）：
+以下每条为「表面可疑但架构合法」的判别边界，供未来 Agent eval 的 false-positive fixture 使用（格式：形态 → 不得报 → 依据/限定）：
 
 1. **OTP supervised daemon 无限运行**（S-114/S-115）→ 不得报生命周期/ownership 缺失；supervision 是合规 ownership 机制，但不得当普适 invariant 引用。
 2. **GC 托管堆 + runtime 软预算**（S-116 GOMEMLIMIT）→ 不得报无界内存；GC 只豁免 managed-heap 回收维度的 ownership。
@@ -81,7 +79,7 @@ remediation_basis: "Issue #12 CA adjudication R5-1..R5-8；challenge/stage5-fals
 
 **S-114, S-115, S-116, S-117, S-118, S-119, S-120, S-121, S-122, S-124**（共 10 条；全部 claim-scoped 修正完成，无 related_rq 字段，manifest 已登记）。
 
-## 6. RQ5 分类（R5-8；不关闭、不改写）
+## 6. RQ5 分类（不关闭、不改写）
 
 | ID | 分类 | Stage 6 blocker? |
 |---|---|---|
@@ -93,13 +91,16 @@ remediation_basis: "Issue #12 CA adjudication R5-1..R5-8；challenge/stage5-fals
 
 **没有任何 RQ5 是 Stage 6 research blocker。**
 
-## 7. Stage 6 reduction 输入
+## 7. Stage 6 reduction 输入（计数已修正）
 
-1. 原则集候选：9 个 NARROW statement（P-001/002/003/007/008/009/012 + P-013 带 TAUTOLOGY_RISK 警示）+ 2 个 SURVIVES statement（P-004、P-010，Stage 4 修正版原样）；
-2. P-006 排除；其度量思想并入 P-002 operationalization 或 Stage 7 metrics 层；
-3. Constitution 级抽象候选：「权力（故障/信任）与责任相称」（D-05）；「purpose-fitness 评估框架 + CONTEXTUAL ONLY 的 regulatory/safety/security 约束限定」（D-08）；「最小充分复杂度」元目标；
-4. GOOD CASE register（§3）直接作为 eval false-positive fixture 输入；
-5. 重叠风险已清：D-01/02/04/05/06/07/09 全部 DISTINCT。
+**Stage 6 接收 10 个 surviving candidates：**
+
+- 7 NARROW：P-001, P-002, P-003, P-007, P-008, P-009, P-012；
+- 2 SURVIVES：P-004, P-010（Stage 4 修正版 statement 原样）；
+- 1 SURVIVES + TAUTOLOGY_RISK：P-013（不混入 NARROW 计数；reduction 时若坍缩为同义反复则届时降级）；
+- 1 DEMOTE：P-006——**不进入 principle reduction**，其度量思想并入 P-002 operationalization 或 Stage 7 metrics 层。
+
+Constitution 级抽象候选：「权力（故障/信任）与责任相称」（D-05）；「purpose-fitness 评估框架 + CONTEXTUAL ONLY 的 regulatory/safety/security 约束限定」（D-08）；「最小充分复杂度」元目标。GOOD CASE register（§3）直接作为 eval false-positive fixture 输入。重叠风险已清：D-01/02/04/05/06/07/09 全部 DISTINCT。
 
 ## 8. 真正需要 owner 决策的问题
 
