@@ -1,0 +1,905 @@
+# Stage 7 relationship map
+# Machine-readable. Compact relation vocabulary only.
+# Node IDs and paths must resolve. Edges are claims.
+version: 1
+stage: 7
+node_classes:
+  RUNTIME_KNOWLEDGE:
+    - mother-principle
+    - failure-pattern
+    - tactic
+    - good-case
+  NAVIGATION_VIEW:
+    - domain
+  REFERENCE_ONLY:
+    - evaluation-axiom
+    - historical-candidate
+    - review-signal-lineage
+    - gap
+    - source
+  RETIRED_TOMBSTONE:
+    - retired-reserved
+predicates:
+  DERIVED_FROM:
+    from: [MP]
+    to: [P, retired]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    semantics: lineage
+    meaning: historical or reduction lineage; does not copy evidence
+  EXPLAINS:
+    from: [MP]
+    to: [FP]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: true
+    evidence_inheritance: false
+    semantics: violation-causes-failure
+    meaning: MP explains FP causal family
+  MITIGATED_BY:
+    from: [FP]
+    to: [T]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: true
+    evidence_inheritance: false
+    semantics: intervention
+    meaning: FP is addressed by tactic; not a guarantee of sufficiency
+  RELATED_TO:
+    from: [MP, FP, T, P]
+    to: [MP, FP, T]
+    direction: undirected
+    symmetric: true
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    note_required: true
+    semantics: navigation-only
+    meaning: non-parent navigation; no evidence inheritance
+  DISTINCT_FROM:
+    from: any
+    to: any
+    direction: undirected
+    symmetric: true
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    note: discriminator required
+    semantics: independently-violable
+    meaning: must remain independently diagnosable
+  EVIDENCED_BY:
+    from: [MP, FP]
+    to: [S]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    semantics: direct-citation
+    meaning: sparse load-bearing source; full lists live on atomic pages
+  HAS_GOOD_CASE:
+    from: [MP, FP, T, P]
+    to: [GC]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    semantics: non-violation-boundary
+    meaning: accepted non-violation boundary
+  HAS_GAP:
+    from: [MP]
+    to: [RQ]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    semantics: open-gap
+    meaning: open RQ; do not fill by invention
+notes:
+- 'OPERATIONALIZED_BY is omitted: review-signals/RS-* type is not instantiated.'
+- MP-011 is a retired-reserved node only; no causal edges.
+- AX-005 is not a node (usage-rule; ID reserved).
+- Every edge is a claim. Sibling MPs do not inherit evidence.
+- REFERENCE_ONLY and RETIRED_TOMBSTONE nodes are graph endpoints for lineage/evidence/gap validation and are not default runtime load targets.
+- Router and relationship edges remain infrastructure, not knowledge node types.
+nodes:
+- id: AX-001
+  type: evaluation-axiom
+  path: 01_CONSTITUTION.md
+  title: Evaluation Relativity
+- id: AX-002
+  type: evaluation-axiom
+  path: 01_CONSTITUTION.md
+  title: Product-Contract Protection
+- id: AX-003
+  type: evaluation-axiom
+  path: 01_CONSTITUTION.md
+  title: Contextual Non-Negotiables
+- id: AX-004
+  type: evaluation-axiom
+  path: 01_CONSTITUTION.md
+  title: Minimum Sufficient Complexity
+- id: MP-001
+  type: mother-principle
+  path: principles/MP-001.md
+  title: Explicit Ownership
+- id: MP-002
+  type: mother-principle
+  path: principles/MP-002.md
+  title: Change-Decision Boundaries
+- id: MP-003
+  type: mother-principle
+  path: principles/MP-003.md
+  title: Bounded Execution
+- id: MP-004
+  type: mother-principle
+  path: principles/MP-004.md
+  title: Failure Containment by Scoped Propagation Boundaries
+- id: MP-005
+  type: mother-principle
+  path: principles/MP-005.md
+  title: Trust Minimization
+- id: MP-006
+  type: mother-principle
+  path: principles/MP-006.md
+  title: Obtainable Diagnostic Evidence
+- id: MP-007
+  type: mother-principle
+  path: principles/MP-007.md
+  title: Contract Preservation
+- id: MP-008
+  type: mother-principle
+  path: principles/MP-008.md
+  title: State Authority & Conflict Semantics
+- id: MP-009
+  type: mother-principle
+  path: principles/MP-009.md
+  title: Governed Overload Boundary
+- id: MP-010
+  type: mother-principle
+  path: principles/MP-010.md
+  title: Execution-Model-Honest Correctness
+- id: MP-011
+  type: retired-reserved
+  path: reports/STAGE6_REDUCTION.md
+  title: Power Proportionality (RETIRED / NOT PROMOTED)
+- id: P-001
+  type: historical-candidate
+  path: principles/P-001.md
+  title: Explicit Ownership
+- id: P-002
+  type: historical-candidate
+  path: principles/P-002.md
+  title: Change-Decision Boundaries
+- id: P-003
+  type: historical-candidate
+  path: principles/P-003.md
+  title: Bounded Execution
+- id: P-004
+  type: historical-candidate
+  path: principles/P-004.md
+  title: Failure Containment
+- id: P-006
+  type: review-signal-lineage
+  path: principles/P-006.md
+  title: Change Locality (review-signal lineage)
+- id: P-007
+  type: historical-candidate
+  path: principles/P-007.md
+  title: Designed Diagnostic Surfaces
+- id: P-008
+  type: historical-candidate
+  path: principles/P-008.md
+  title: Contract Preservation
+- id: P-009
+  type: historical-candidate
+  path: principles/P-009.md
+  title: Trust Minimization
+- id: P-010
+  type: historical-candidate
+  path: principles/P-010.md
+  title: Authoritative State
+- id: P-012
+  type: historical-candidate
+  path: principles/P-012.md
+  title: Overload Admission & Graceful Degradation
+- id: P-013
+  type: historical-candidate
+  path: principles/P-013.md
+  title: Execution-Model-Honest Correctness
+- id: FP-001
+  type: failure-pattern
+  path: failure-patterns/FP-001.md
+  title: Unowned Runtime Work
+- id: FP-002
+  type: failure-pattern
+  path: failure-patterns/FP-002.md
+  title: Hidden Variation-Axis Leak
+- id: FP-003
+  type: failure-pattern
+  path: failure-patterns/FP-003.md
+  title: Unbounded Per-Work Dimension
+- id: FP-004
+  type: failure-pattern
+  path: failure-patterns/FP-004.md
+  title: Shared-Resource Failure Cascade
+- id: FP-005
+  type: failure-pattern
+  path: failure-patterns/FP-005.md
+  title: Coupled-Defense Amplification
+- id: FP-006
+  type: failure-pattern
+  path: failure-patterns/FP-006.md
+  title: Excess Privilege at Trust Boundary
+- id: FP-007
+  type: failure-pattern
+  path: failure-patterns/FP-007.md
+  title: Missing Distinguishing Evidence
+- id: FP-008
+  type: failure-pattern
+  path: failure-patterns/FP-008.md
+  title: Ungoverned Independent-Consumer Contract Break
+- id: FP-009
+  type: failure-pattern
+  path: failure-patterns/FP-009.md
+  title: Undefined Authority or Conflict Semantics
+- id: FP-010
+  type: failure-pattern
+  path: failure-patterns/FP-010.md
+  title: Ungoverned Overload Growth
+- id: FP-011
+  type: failure-pattern
+  path: failure-patterns/FP-011.md
+  title: Retry Amplification
+- id: FP-012
+  type: failure-pattern
+  path: failure-patterns/FP-012.md
+  title: Assumed-vs-Provided Guarantee Mismatch
+- id: T-001
+  type: tactic
+  path: tactics/T-001.md
+  title: Supervised / Structured Lifecycle
+- id: T-002
+  type: tactic
+  path: tactics/T-002.md
+  title: Cancellation Propagation
+- id: T-003
+  type: tactic
+  path: tactics/T-003.md
+  title: Timeout / Deadline Bound
+- id: T-004
+  type: tactic
+  path: tactics/T-004.md
+  title: Bounded Queue, Concurrency, Fan-out
+- id: T-005
+  type: tactic
+  path: tactics/T-005.md
+  title: Bounded Retry with Backoff/Jitter
+- id: T-006
+  type: tactic
+  path: tactics/T-006.md
+  title: Admission Control
+- id: T-007
+  type: tactic
+  path: tactics/T-007.md
+  title: Backpressure
+- id: T-008
+  type: tactic
+  path: tactics/T-008.md
+  title: Rejection / Load Shedding
+- id: T-009
+  type: tactic
+  path: tactics/T-009.md
+  title: Functional / Quality Degradation
+- id: T-010
+  type: tactic
+  path: tactics/T-010.md
+  title: Scoped Failure-Domain Isolation
+- id: T-011
+  type: tactic
+  path: tactics/T-011.md
+  title: Least-Privilege Restriction
+- id: T-012
+  type: tactic
+  path: tactics/T-012.md
+  title: Explicit Compatibility Direction and Migration Path
+- id: T-013
+  type: tactic
+  path: tactics/T-013.md
+  title: Explicit Merge / Conflict Semantics
+- id: T-014
+  type: tactic
+  path: tactics/T-014.md
+  title: Diagnostic Evidence Placement and Retention
+- id: T-015
+  type: tactic
+  path: tactics/T-015.md
+  title: Idempotency under Explicit Delivery Semantics
+- id: GC-001
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-002
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-003
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-004
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-005
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-006
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-007
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-008
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-009
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-010
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-011
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-012
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-013
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-014
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-015
+  type: good-case
+  path: cases/good-cases/index.md
+- id: GC-016
+  type: good-case
+  path: cases/good-cases/index.md
+- id: RQ5-001
+  type: gap
+  path: review-queue.yaml
+- id: RQ5-002
+  type: gap
+  path: review-queue.yaml
+- id: RQ5-003
+  type: gap
+  path: review-queue.yaml
+- id: RQ5-004
+  type: gap
+  path: review-queue.yaml
+- id: RQ5-005
+  type: gap
+  path: review-queue.yaml
+- id: RQ3-001
+  type: gap
+  path: review-queue.yaml
+- id: RQ3-002
+  type: gap
+  path: review-queue.yaml
+- id: RQ3-004
+  type: gap
+  path: review-queue.yaml
+- id: RQ3-006
+  type: gap
+  path: review-queue.yaml
+- id: RQ2-004
+  type: gap
+  path: review-queue.yaml
+- id: RQ2-008
+  type: gap
+  path: review-queue.yaml
+- id: DOM-lifecycle
+  type: domain
+  path: domains/lifecycle/index.md
+- id: DOM-evolution
+  type: domain
+  path: domains/evolution/index.md
+- id: DOM-resources
+  type: domain
+  path: domains/resources/index.md
+- id: DOM-reliability
+  type: domain
+  path: domains/reliability/index.md
+- id: DOM-security
+  type: domain
+  path: domains/security/index.md
+- id: DOM-observability
+  type: domain
+  path: domains/observability/index.md
+- id: DOM-integration
+  type: domain
+  path: domains/integration/index.md
+- id: DOM-state-data
+  type: domain
+  path: domains/state-data/index.md
+- id: DOM-overload
+  type: domain
+  path: domains/overload/index.md
+- id: DOM-concurrency
+  type: domain
+  path: domains/concurrency/index.md
+- id: S-001
+  type: source
+  path: sources/S-001.md
+- id: S-023
+  type: source
+  path: sources/S-023.md
+- id: S-025
+  type: source
+  path: sources/S-025.md
+- id: S-044
+  type: source
+  path: sources/S-044.md
+- id: S-047
+  type: source
+  path: sources/S-047.md
+- id: S-048
+  type: source
+  path: sources/S-048.md
+- id: S-050
+  type: source
+  path: sources/S-050.md
+- id: S-052
+  type: source
+  path: sources/S-052.md
+- id: S-072
+  type: source
+  path: sources/S-072.md
+- id: S-084
+  type: source
+  path: sources/S-084.md
+- id: S-088
+  type: source
+  path: sources/S-088.md
+- id: S-092
+  type: source
+  path: sources/S-092.md
+- id: S-109
+  type: source
+  path: sources/S-109.md
+- id: S-114
+  type: source
+  path: sources/S-114.md
+- id: S-115
+  type: source
+  path: sources/S-115.md
+- id: S-117
+  type: source
+  path: sources/S-117.md
+- id: S-118
+  type: source
+  path: sources/S-118.md
+- id: S-119
+  type: source
+  path: sources/S-119.md
+- id: S-124
+  type: source
+  path: sources/S-124.md
+edges:
+- from: MP-001
+  relation: DERIVED_FROM
+  to: P-001
+  note: historical candidate; P-* file immutable
+- from: MP-002
+  relation: DERIVED_FROM
+  to: P-002
+  note: historical candidate; P-* file immutable
+- from: MP-003
+  relation: DERIVED_FROM
+  to: P-003
+  note: historical candidate; P-* file immutable
+- from: MP-004
+  relation: DERIVED_FROM
+  to: P-004
+  note: historical candidate; P-* file immutable
+- from: MP-005
+  relation: DERIVED_FROM
+  to: P-009
+  note: historical candidate; P-* file immutable
+- from: MP-006
+  relation: DERIVED_FROM
+  to: P-007
+  note: historical candidate; P-* file immutable
+- from: MP-007
+  relation: DERIVED_FROM
+  to: P-008
+  note: historical candidate; P-* file immutable
+- from: MP-008
+  relation: DERIVED_FROM
+  to: P-010
+  note: historical candidate; P-* file immutable
+- from: MP-009
+  relation: DERIVED_FROM
+  to: P-012
+  note: historical candidate; P-* file immutable
+- from: MP-010
+  relation: DERIVED_FROM
+  to: P-013
+  note: historical candidate; P-* file immutable
+- from: MP-001
+  relation: EXPLAINS
+  to: FP-001
+- from: MP-002
+  relation: EXPLAINS
+  to: FP-002
+- from: MP-003
+  relation: EXPLAINS
+  to: FP-003
+- from: MP-004
+  relation: EXPLAINS
+  to: FP-004
+- from: MP-004
+  relation: EXPLAINS
+  to: FP-005
+- from: MP-005
+  relation: EXPLAINS
+  to: FP-006
+- from: MP-006
+  relation: EXPLAINS
+  to: FP-007
+- from: MP-007
+  relation: EXPLAINS
+  to: FP-008
+- from: MP-008
+  relation: EXPLAINS
+  to: FP-009
+- from: MP-009
+  relation: EXPLAINS
+  to: FP-010
+- from: MP-009
+  relation: EXPLAINS
+  to: FP-011
+- from: MP-010
+  relation: EXPLAINS
+  to: FP-012
+- from: FP-001
+  relation: MITIGATED_BY
+  to: T-001
+- from: FP-001
+  relation: MITIGATED_BY
+  to: T-002
+- from: FP-003
+  relation: MITIGATED_BY
+  to: T-003
+- from: FP-003
+  relation: MITIGATED_BY
+  to: T-004
+- from: FP-003
+  relation: MITIGATED_BY
+  to: T-005
+- from: FP-004
+  relation: MITIGATED_BY
+  to: T-010
+- from: FP-005
+  relation: MITIGATED_BY
+  to: T-010
+- from: FP-006
+  relation: MITIGATED_BY
+  to: T-011
+- from: FP-007
+  relation: MITIGATED_BY
+  to: T-014
+- from: FP-008
+  relation: MITIGATED_BY
+  to: T-012
+- from: FP-009
+  relation: MITIGATED_BY
+  to: T-013
+- from: FP-010
+  relation: MITIGATED_BY
+  to: T-006
+- from: FP-010
+  relation: MITIGATED_BY
+  to: T-007
+- from: FP-010
+  relation: MITIGATED_BY
+  to: T-008
+- from: FP-010
+  relation: MITIGATED_BY
+  to: T-009
+- from: FP-011
+  relation: MITIGATED_BY
+  to: T-005
+- from: FP-011
+  relation: MITIGATED_BY
+  to: T-006
+- from: FP-011
+  relation: MITIGATED_BY
+  to: T-007
+- from: FP-011
+  relation: MITIGATED_BY
+  to: T-008
+- from: MP-004
+  relation: RELATED_TO
+  to: MP-005
+  note: 'Stage 6 handoff: constrained cross-component impact/power; NOT parent; NO evidence inheritance'
+- from: P-006
+  relation: RELATED_TO
+  to: MP-002
+  note: change amplification is MP-002 review signal/property, not an MP
+- from: FP-010
+  relation: RELATED_TO
+  to: FP-011
+  note: overload growth vs retry-specific amplification; keep separable
+- from: FP-001
+  relation: RELATED_TO
+  to: FP-012
+  note: 'stale async overwrite: attribute via D-02, do not merge FPs'
+- from: T-005
+  relation: RELATED_TO
+  to: T-015
+  note: retry and idempotency cooperate; they are not aliases
+- from: MP-001
+  relation: DISTINCT_FROM
+  to: MP-002
+  note: D-01
+- from: MP-001
+  relation: DISTINCT_FROM
+  to: MP-010
+  note: D-02
+- from: MP-003
+  relation: DISTINCT_FROM
+  to: MP-009
+  note: D-04 peer
+- from: MP-004
+  relation: DISTINCT_FROM
+  to: MP-005
+  note: D-05 peer
+- from: MP-001
+  relation: DISTINCT_FROM
+  to: MP-008
+  note: D-06
+- from: MP-001
+  relation: DISTINCT_FROM
+  to: MP-003
+  note: D-07
+- from: MP-010
+  relation: DISTINCT_FROM
+  to: MP-008
+  note: D-09
+- from: MP-002
+  relation: DISTINCT_FROM
+  to: MP-007
+  note: internal hiding vs independent-consumer contract
+- from: MP-006
+  relation: DISTINCT_FROM
+  to: MP-010
+  note: evidence obtainability vs model-provided guarantee
+- from: AX-002
+  relation: DISTINCT_FROM
+  to: MP-007
+  note: product-contract AX vs compatibility MP
+- from: T-006
+  relation: DISTINCT_FROM
+  to: T-007
+  note: admission != backpressure
+- from: T-006
+  relation: DISTINCT_FROM
+  to: T-008
+  note: admission != rejection/load shedding
+- from: T-006
+  relation: DISTINCT_FROM
+  to: T-009
+  note: admission != degradation
+- from: T-007
+  relation: DISTINCT_FROM
+  to: T-008
+  note: backpressure != load shedding
+- from: T-007
+  relation: DISTINCT_FROM
+  to: T-009
+  note: backpressure != degradation
+- from: T-008
+  relation: DISTINCT_FROM
+  to: T-009
+  note: shedding != degradation
+- from: T-005
+  relation: DISTINCT_FROM
+  to: T-015
+  note: retry != idempotency
+- from: T-010
+  relation: DISTINCT_FROM
+  to: T-011
+  note: failure-domain isolation != privilege reduction
+- from: MP-001
+  relation: HAS_GOOD_CASE
+  to: GC-001
+- from: MP-001
+  relation: HAS_GOOD_CASE
+  to: GC-002
+- from: MP-002
+  relation: HAS_GOOD_CASE
+  to: GC-003
+- from: MP-002
+  relation: HAS_GOOD_CASE
+  to: GC-007
+- from: MP-003
+  relation: HAS_GOOD_CASE
+  to: GC-002
+- from: MP-003
+  relation: HAS_GOOD_CASE
+  to: GC-004
+- from: MP-004
+  relation: HAS_GOOD_CASE
+  to: GC-005
+- from: MP-004
+  relation: HAS_GOOD_CASE
+  to: GC-006
+- from: MP-005
+  relation: HAS_GOOD_CASE
+  to: GC-012
+- from: MP-006
+  relation: HAS_GOOD_CASE
+  to: GC-008
+- from: MP-007
+  relation: HAS_GOOD_CASE
+  to: GC-009
+- from: MP-007
+  relation: HAS_GOOD_CASE
+  to: GC-010
+- from: MP-007
+  relation: HAS_GOOD_CASE
+  to: GC-011
+- from: MP-008
+  relation: HAS_GOOD_CASE
+  to: GC-013
+- from: MP-008
+  relation: HAS_GOOD_CASE
+  to: GC-014
+- from: MP-009
+  relation: HAS_GOOD_CASE
+  to: GC-015
+- from: MP-010
+  relation: HAS_GOOD_CASE
+  to: GC-016
+- from: P-006
+  relation: HAS_GOOD_CASE
+  to: GC-007
+  note: spread alone is not a violation
+- from: MP-001
+  relation: HAS_GAP
+  to: RQ3-002
+  note: Java StructuredTaskScope
+- from: MP-002
+  relation: HAS_GAP
+  to: RQ3-001
+  note: does not rescue P-006
+- from: MP-004
+  relation: HAS_GAP
+  to: RQ5-001
+  note: D-10 blast-radius measurement; not a universal metric
+- from: MP-005
+  relation: HAS_GAP
+  to: RQ3-004
+  note: capability platform instance
+- from: MP-005
+  relation: HAS_GAP
+  to: RQ2-008
+  note: vendor agent evidence
+- from: MP-006
+  relation: HAS_GAP
+  to: RQ5-003
+  note: observation/privacy trade-off evidence weak
+- from: MP-007
+  relation: HAS_GAP
+  to: RQ3-006
+  note: expand-contract omitted as tactic
+- from: MP-008
+  relation: HAS_GAP
+  to: RQ5-005
+  note: SQL isolation name vs actual
+- from: MP-008
+  relation: HAS_GAP
+  to: RQ2-004
+  note: CAP consistency sense
+- from: MP-009
+  relation: HAS_GAP
+  to: RQ5-004
+  note: naturally bounded load exemption
+- from: MP-010
+  relation: HAS_GAP
+  to: RQ5-002
+  note: mechanical guarantee determination
+- from: MP-010
+  relation: HAS_GAP
+  to: RQ5-005
+  note: named vs actual isolation; do not merge with MP-008
+- from: MP-001
+  relation: EVIDENCED_BY
+  to: S-084
+  note: structured concurrency ownership invariant
+- from: MP-001
+  relation: EVIDENCED_BY
+  to: S-114
+  note: OTP supervision as scoped realization
+- from: MP-002
+  relation: EVIDENCED_BY
+  to: S-001
+  note: Parnas information hiding
+- from: MP-002
+  relation: EVIDENCED_BY
+  to: S-109
+  note: independent empirical modular monolith
+- from: MP-003
+  relation: EVIDENCED_BY
+  to: S-072
+  note: Little's Law queue relation
+- from: MP-003
+  relation: EVIDENCED_BY
+  to: S-088
+  note: event-loop per-callback bound
+- from: MP-004
+  relation: EVIDENCED_BY
+  to: S-047
+  note: isolation / containment practice
+- from: MP-004
+  relation: EVIDENCED_BY
+  to: S-117
+  note: SQLite single-process GOOD CASE
+- from: MP-005
+  relation: EVIDENCED_BY
+  to: S-092
+  note: least privilege
+- from: MP-006
+  relation: EVIDENCED_BY
+  to: S-048
+  note: SRE operational evidence obtainability
+- from: MP-006
+  relation: EVIDENCED_BY
+  to: S-118
+  note: seL4 proof-scope GOOD CASE
+- from: MP-007
+  relation: EVIDENCED_BY
+  to: S-044
+  note: compatibility direction
+- from: MP-007
+  relation: EVIDENCED_BY
+  to: S-124
+  note: internal vs external contract GOOD CASE
+- from: MP-008
+  relation: EVIDENCED_BY
+  to: S-023
+  note: state/authority/conflict framing
+- from: MP-008
+  relation: EVIDENCED_BY
+  to: S-119
+  note: CRDT multi-writer GOOD CASE
+- from: MP-009
+  relation: EVIDENCED_BY
+  to: S-048
+  note: overload / SRE — claim-scoped; not inherited by MP-003
+- from: MP-009
+  relation: EVIDENCED_BY
+  to: S-052
+  note: retry storm antipattern
+- from: MP-010
+  relation: EVIDENCED_BY
+  to: S-025
+  note: happens-before / partial order
+- from: MP-010
+  relation: EVIDENCED_BY
+  to: S-115
+  note: model-provided guarantee GOOD CASE precedent
+- from: FP-005
+  relation: EVIDENCED_BY
+  to: S-050
+  note: fallback amplification warning
+- from: FP-011
+  relation: EVIDENCED_BY
+  to: S-052
+  note: named retry-storm antipattern
