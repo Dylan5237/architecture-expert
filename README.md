@@ -32,22 +32,29 @@ External authoritative sources remain the evidentiary basis for architecture cla
 
 1. Read `AGENTS.md`.
 2. Read `TASK.md`.
-3. Read `planning/STAGE1_RESEARCH_PLAN.md`.
-4. Read `01_CONSTITUTION.md` and `02_VOCABULARY.md`.
-5. Read `reports/STAGE6_REDUCTION.md`, `reports/STAGE6_REDUCTION_AUDIT.md`, and `reports/STAGE6_RECONCILIATION.md`.
-6. Read the Stage 5 GOOD CASE / falsification artifacts where needed for non-violation boundaries.
-7. Read `source-manifest.yaml`, `sources/`, and `review-queue.yaml` only as evidence/gap support.
-8. Follow GitHub Issue #18 and your assigned branch.
-9. Do not enter Stage 8 or write reasoning playbooks/question bank/Agent prompts before the Stage 7 gate.
+3. Read your role-specific Stage 7 task prompt under `tasks/stage7/`.
+4. Read `planning/STAGE1_RESEARCH_PLAN.md`.
+5. Read `01_CONSTITUTION.md` and `02_VOCABULARY.md`.
+6. Read `reports/STAGE6_REDUCTION.md`, `reports/STAGE6_REDUCTION_AUDIT.md`, and `reports/STAGE6_RECONCILIATION.md`.
+7. Read the Stage 5 GOOD CASE / falsification artifacts where needed for non-violation boundaries.
+8. Read `source-manifest.yaml`, `sources/`, and `review-queue.yaml` only as evidence/gap support.
+9. Follow GitHub Issue #18 and your assigned branch.
+10. Do not enter Stage 8 before the Stage 7 gate.
+
+## Stage 7 task prompts
+
+- Cursor Primary: `tasks/stage7/CURSOR_PRIMARY.md`
+- Codex + GLM Challenger: `tasks/stage7/CODEX_CHALLENGER.md`
+
+These repository files are the canonical execution prompts for Stage 7.
 
 ## Current orchestration
 
-- Kimi Web K3 Cluster: Primary Knowledge Architect / Ontology Builder
+- Cursor: Primary Knowledge Architect / Ontology Builder
 - Codex harness + GLM 5.3: Independent Knowledge-Architecture Challenger
-- Cursor: deterministic repository/eval engineering when needed
 - ChatGPT Chief Architect: ontology, relationship, progressive-disclosure and architecture gate
 
-Kimi here means the browser-based K3 model-cluster research mode, not a local CLI harness.
+Cursor owns the Primary Stage 7 knowledge-architecture implementation.
 Codex owns deterministic repository integrity for the challenger track; GLM 5.3 owns semantic/category/retrieval challenge.
 
 Historical evaluation/research branches remain preserved as execution evidence. Canonical accepted artifacts live in `main`.
