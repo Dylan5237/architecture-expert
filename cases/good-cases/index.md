@@ -45,7 +45,7 @@ Stable IDs for accepted Stage 5/6 non-violation boundaries. Not eval scenarios. 
 ## GC-003 Exploration with unknown variation axes
 
 - **Context/shape:** prototype / exploration before a likely change decision is identifiable.
-- **Naive false-positive:** missing modularity / no boundaries.
+- **Naive false-positive:** require a stable modular boundary during genuine exploration when the variation axis is not yet identifiable.
 - **Why compliant:** MP-002 does not require speculative boundaries.
 - **Refs:** MP-002; FP-002. Stage 5 §3.3; Stage 6 §10.
 
@@ -108,7 +108,7 @@ Stable IDs for accepted Stage 5/6 non-violation boundaries. Not eval scenarios. 
 ## GC-012 Closed / coarse-grained trust
 
 - **Context/shape:** closed single-user or same-team single deploy unit without relevant untrusted-input / cross-privilege / external-integration / agent-action boundaries.
-- **Naive false-positive:** missing fine-grained internal zero trust.
+- **Naive false-positive:** require fine-grained internal trust separation in a genuinely closed/coarse-trust context; supply-chain/external trust-boundary absence remains a valid flag when those boundaries are present.
 - **Why compliant:** MP-005 does not universalize zero trust. Supply-chain/external-input boundaries remain in scope when present.
 - **Refs:** MP-005; FP-006; T-011. Stage 5 §3.11; Stage 6 §10.
 

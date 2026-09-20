@@ -3,20 +3,112 @@
 # Node IDs and paths must resolve. Edges are claims.
 version: 1
 stage: 7
+node_classes:
+  RUNTIME_KNOWLEDGE:
+    - mother-principle
+    - failure-pattern
+    - tactic
+    - good-case
+  NAVIGATION_VIEW:
+    - domain
+  REFERENCE_ONLY:
+    - evaluation-axiom
+    - historical-candidate
+    - review-signal-lineage
+    - gap
+    - source
+  RETIRED_TOMBSTONE:
+    - retired-reserved
 predicates:
-  DERIVED_FROM: historical or reduction lineage; does not copy evidence
-  EXPLAINS: MP explains FP causal family
-  MITIGATED_BY: FP is addressed by tactic; not a guarantee of sufficiency
-  RELATED_TO: non-parent navigation; no evidence inheritance
-  DISTINCT_FROM: must remain independently diagnosable
-  EVIDENCED_BY: sparse load-bearing source; full lists live on atomic pages
-  HAS_GOOD_CASE: accepted non-violation boundary
-  HAS_GAP: open RQ; do not fill by invention
+  DERIVED_FROM:
+    from: [MP]
+    to: [P, retired]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    semantics: lineage
+    meaning: historical or reduction lineage; does not copy evidence
+  EXPLAINS:
+    from: [MP]
+    to: [FP]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: true
+    evidence_inheritance: false
+    semantics: violation-causes-failure
+    meaning: MP explains FP causal family
+  MITIGATED_BY:
+    from: [FP]
+    to: [T]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: true
+    evidence_inheritance: false
+    semantics: intervention
+    meaning: FP is addressed by tactic; not a guarantee of sufficiency
+  RELATED_TO:
+    from: [MP, FP, T, P]
+    to: [MP, FP, T]
+    direction: undirected
+    symmetric: true
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    note_required: true
+    semantics: navigation-only
+    meaning: non-parent navigation; no evidence inheritance
+  DISTINCT_FROM:
+    from: any
+    to: any
+    direction: undirected
+    symmetric: true
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    note: discriminator required
+    semantics: independently-violable
+    meaning: must remain independently diagnosable
+  EVIDENCED_BY:
+    from: [MP, FP]
+    to: [S]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    semantics: direct-citation
+    meaning: sparse load-bearing source; full lists live on atomic pages
+  HAS_GOOD_CASE:
+    from: [MP, FP, T, P]
+    to: [GC]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    semantics: non-violation-boundary
+    meaning: accepted non-violation boundary
+  HAS_GAP:
+    from: [MP]
+    to: [RQ]
+    direction: directed
+    symmetric: false
+    transitive: false
+    causal: false
+    evidence_inheritance: false
+    semantics: open-gap
+    meaning: open RQ; do not fill by invention
 notes:
 - 'OPERATIONALIZED_BY is omitted: review-signals/RS-* type is not instantiated.'
 - MP-011 is a retired-reserved node only; no causal edges.
 - AX-005 is not a node (usage-rule; ID reserved).
 - Every edge is a claim. Sibling MPs do not inherit evidence.
+- REFERENCE_ONLY and RETIRED_TOMBSTONE nodes are graph endpoints for lineage/evidence/gap validation and are not default runtime load targets.
+- Router and relationship edges remain infrastructure, not knowledge node types.
 nodes:
 - id: AX-001
   type: evaluation-axiom
@@ -552,50 +644,6 @@ edges:
   relation: RELATED_TO
   to: T-015
   note: retry and idempotency cooperate; they are not aliases
-- from: AX-001
-  relation: RELATED_TO
-  to: AX-004
-  note: evaluation frame + cost-side meta-objective; both non-causal
-- from: DOM-lifecycle
-  relation: RELATED_TO
-  to: MP-001
-  note: domain retrieval home
-- from: DOM-evolution
-  relation: RELATED_TO
-  to: MP-002
-  note: domain retrieval home
-- from: DOM-resources
-  relation: RELATED_TO
-  to: MP-003
-  note: domain retrieval home
-- from: DOM-reliability
-  relation: RELATED_TO
-  to: MP-004
-  note: domain retrieval home
-- from: DOM-security
-  relation: RELATED_TO
-  to: MP-005
-  note: domain retrieval home
-- from: DOM-observability
-  relation: RELATED_TO
-  to: MP-006
-  note: domain retrieval home
-- from: DOM-integration
-  relation: RELATED_TO
-  to: MP-007
-  note: domain retrieval home
-- from: DOM-state-data
-  relation: RELATED_TO
-  to: MP-008
-  note: domain retrieval home
-- from: DOM-overload
-  relation: RELATED_TO
-  to: MP-009
-  note: domain retrieval home
-- from: DOM-concurrency
-  relation: RELATED_TO
-  to: MP-010
-  note: domain retrieval home
 - from: MP-001
   relation: DISTINCT_FROM
   to: MP-002

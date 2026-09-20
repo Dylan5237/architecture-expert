@@ -14,19 +14,22 @@ Operationalize the sealed Stage 6 Constitution into a compact, traceable, progre
 
 ## 1. Ontology inventory and stable ID namespaces
 
-| Type | Namespace | Count | Home |
-|---|---|---|---|
-| Evaluation axiom | AX-001..AX-004 | 4 | `01_CONSTITUTION.md` (unchanged) |
-| Mother principle | MP-001..MP-010 | 10 | `principles/MP-*.md` |
-| Retired / reserved | AX-005, MP-011, S-123, P-005, P-011 | — | reserved; not reused |
-| Historical candidate | P-* | existing files | immutable |
-| Review-signal lineage | P-006 only | 1 | historical file + MP-002 + evolution domain |
-| Domain | 10 folders | 10 | `domains/` |
-| Failure pattern | FP-001..FP-012 | 12 | `failure-patterns/` |
-| Tactic | T-001..T-015 | 15 | `tactics/` |
-| GOOD CASE | GC-001..GC-016 | 16 | `cases/good-cases/index.md` |
-| Relationship map | predicates below | 109 nodes / 126 edges | `relationship-map.yaml` |
-| Router | — | 1 | `00_ROUTER.md` |
+| Type | Namespace | Count | Home | Classification |
+|---|---|---|---|---|
+| Evaluation axiom | AX-001..AX-004 | 4 | `01_CONSTITUTION.md` (unchanged) | REFERENCE_ONLY |
+| Mother principle | MP-001..MP-010 | 10 | `principles/MP-*.md` | RUNTIME_KNOWLEDGE |
+| Retired / reserved | AX-005, MP-011, S-123, P-005, P-011 | — | reserved; not reused | RETIRED_TOMBSTONE (MP-011 graph node); AX-005/S-123/P-005/P-011 are reserved IDs, not live nodes |
+| Historical candidate | P-* | existing files | immutable | REFERENCE_ONLY |
+| Review-signal lineage | P-006 only | 1 | historical file + MP-002 + evolution domain | REFERENCE_ONLY |
+| Domain | 10 folders | 10 | `domains/` | NAVIGATION_VIEW |
+| Failure pattern | FP-001..FP-012 | 12 | `failure-patterns/` | RUNTIME_KNOWLEDGE |
+| Tactic | T-001..T-015 | 15 | `tactics/` | RUNTIME_KNOWLEDGE |
+| GOOD CASE | GC-001..GC-016 | 16 | `cases/good-cases/index.md` | RUNTIME_KNOWLEDGE |
+| Gap / source (graph endpoints) | RQ-*, S-* | existing | review queue / `sources/` | REFERENCE_ONLY |
+| Relationship map | predicates below | 109 nodes / 115 edges | `relationship-map.yaml` | infrastructure, not a knowledge node type |
+| Router | — | 1 | `00_ROUTER.md` | infrastructure, not a knowledge node type |
+
+Node classes: RUNTIME_KNOWLEDGE = mother-principle, failure-pattern, tactic, good-case. NAVIGATION_VIEW = domain. REFERENCE_ONLY = evaluation-axiom, historical-candidate, review-signal-lineage, gap, source. RETIRED_TOMBSTONE = retired-reserved. REFERENCE_ONLY and RETIRED_TOMBSTONE nodes are graph endpoints for lineage/evidence/gap validation and are not default runtime load targets. Router and relationship edges remain infrastructure, not knowledge node types.
 
 ID reuse forbidden: AX-005, MP-011, S-123. P-006 is not reactivated as a principle. H7 is not resurrected.
 
@@ -111,7 +114,7 @@ Used: `DERIVED_FROM`, `EXPLAINS`, `MITIGATED_BY`, `RELATED_TO`, `DISTINCT_FROM`,
 
 Omitted: `OPERATIONALIZED_BY` (no RS-* type).
 
-`MP-004 RELATED_TO MP-005` is present as a **non-parent** navigation claim with no evidence inheritance.
+`MP-004 RELATED_TO MP-005` is present as a **non-parent** navigation claim with no evidence inheritance. Exactly five RELATED_TO edges remain (MP-004→MP-005, P-006→MP-002, FP-010→FP-011, FP-001→FP-012, T-005→T-015). Domain retrieval homes stay in the domain index files; they are not RELATED_TO edges. Per-predicate direction, symmetry, transitivity, causality, and evidence-inheritance live in `relationship-map.yaml`. Evidence inheritance is false for all eight predicates.
 
 ## 8. Relationship coverage matrix
 
@@ -121,7 +124,7 @@ Omitted: `OPERATIONALIZED_BY` (no RS-* type).
 | FP-002, FP-012 | — | — | no MITIGATED_BY (deliberate) | — | — | — | — |
 | T-006..T-009 | — | — | DISTINCT_FROM each other | — | — | — | — |
 
-Edge count: 126. Node count: 109. FP-002 has no tactic file because the intervention *is* MP-002. FP-012 has no tactic file because the intervention is primitive selection, not a buzzword tactic.
+Edge count: 115. Node count: 109. FP-002 has no tactic file because the intervention *is* MP-002. FP-012 has no tactic file because the intervention is primitive selection, not a buzzword tactic.
 
 ## 9. Orphan / dangling-reference audit
 
