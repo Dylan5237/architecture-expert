@@ -1,35 +1,71 @@
 ---
 id: IDX-PRINCIPLES
 title: principles/ index
-stage: 4
-status: candidate-set-remediated
-updated: 2026-09-18
-remediation_basis: "Issue #9 CA adjudication R1..R8 (OD4-1..4, CA4-1..11)"
+stage: 7
+status: CANONICAL-INDEX
+updated: 2026-09-20
 ---
-# principles/ 索引（Stage 4 候选集，remediation 后）
+# principles/ 索引
 
-**11 个候选原则**（P-005/P-011 已移除，**ID 保留空号不重排**）。候选 ≠ Mother Principle；Stage 5 证伪后才可能升格。提取依据与 H1..H11 disposition 见 `../reports/STAGE4_EXTRACTION.md`。
+本目录同时存放 **Stage 7 规范 Mother Principles** 与 **Stage 4 历史候选**。两类不可混读。
 
-| ID | 候选 | 对应假设 | 状态 |
+## Canonical Mother Principles（MP-001..MP-010）
+
+权威语义在 `01_CONSTITUTION.md`。下列原子页只作导航与 operationalization 链接，不得改写因果主张。
+
+| ID | Title | Domain | Status |
 |---|---|---|---|
-| P-001 | Explicit Ownership | H2b retain | CANDIDATE |
-| P-002 | Change-Decision Boundaries | H2a retain（收窄） | CANDIDATE |
-| P-003 | Bounded Execution | H3 retain | CANDIDATE |
-| P-004 | Failure Containment ∝ Responsibility | H4 retain+narrow | CANDIDATE（R5 措辞修正后） |
-| ~~P-005~~ | ~~Reversibility-Proportional Deliberation~~ | H5a **DEMOTE → Decision Playbook / decision heuristic**（OD4-2；Stage 8 输入保留于 extraction report） | REMOVED |
-| P-006 | Change Locality | H5b retain | **NEEDS_EVIDENCE / OVERLAP_UNRESOLVED**（Stage 5 D-03 判别后定去留） |
-| P-007 | Designed Diagnostic Surfaces | H6 retain + R6 因果重述 | CANDIDATE（附 Stage 5 条件测试 D-11：找不到结构判别案例则降为 required property） |
-| P-008 | Contract Preservation | H8 retain（重命名） | CANDIDATE（R3 修正后；expand-contract 不作证据） |
-| P-009 | Trust Minimization | H10 retain | CANDIDATE |
-| P-010 | Authoritative State | H11 narrow | CANDIDATE（R4 双维修正后；D-14 CRDT 收窄留 Stage 5） |
-| ~~P-011~~ | ~~Purpose Fitness~~ | H1 **DEMOTE → Constitution / evaluation frame**（OD4-1；Constitution 输入保留于 extraction report） | REMOVED |
-| P-012 | Overload Admission & Graceful Degradation | 证据新增 | CANDIDATE |
-| P-013 | Execution-Model-Honest Correctness | 证据新增 | CANDIDATE（R7 重述后；附 Stage 5 条件测试 D-02/D-09） |
+| [MP-001](MP-001.md) | Explicit Ownership | lifecycle | CANONICAL |
+| [MP-002](MP-002.md) | Change-Decision Boundaries | evolution | CANONICAL |
+| [MP-003](MP-003.md) | Bounded Execution | resources | CANONICAL |
+| [MP-004](MP-004.md) | Failure Containment by Scoped Propagation Boundaries | reliability | CANONICAL |
+| [MP-005](MP-005.md) | Trust Minimization | security | CANONICAL |
+| [MP-006](MP-006.md) | Obtainable Diagnostic Evidence | observability | CANONICAL |
+| [MP-007](MP-007.md) | Contract Preservation | integration | CANONICAL |
+| [MP-008](MP-008.md) | State Authority & Conflict Semantics | state-data | CANONICAL |
+| [MP-009](MP-009.md) | Governed Overload Boundary | overload | CANONICAL |
+| [MP-010](MP-010.md) | Execution-Model-Honest Correctness | concurrency | CANONICAL |
 
-已降级/未成为候选（rationale 见 extraction report §3）：
-- H7 Locality → demote 为 Stage 5 待检验假设（V-014-C 多机制混合倾向，无单一机制；D-13 复活检验）；
-- H9 Controlled Complexity → demote 为 Constitution/meta-objective（元目标非因果主张）；
-- MF-1 idempotency → non-principle（explicit delivery semantics 下的 mechanism/tactic/contract property）；
-- Tail-at-scale hedging、USE method、SLO 等 → tactic/metric 层，不进 P-*。
+Promoted count is 10. Evaluation axioms AX-001..AX-004 live in the Constitution, not in this folder.
 
-词汇 gate：所有 P-* 文件遵守 Stage 3 lexical gate（高风险词带 V-* 引用）。
+## Retired / reserved IDs
+
+| ID | Disposition | Do not |
+|---|---|---|
+| AX-005 | usage-rule only; ID reserved | reuse as AX or MP |
+| **MP-011** | RETIRED / NOT PROMOTED (Stage 6); tombstone in `reports/STAGE6_REDUCTION.md` §2 | reuse, revive as parent of MP-004/MP-005, or convert to AX |
+| P-005 | Stage 4 REMOVED (decision heuristic / Stage 8 input) | reactivate as principle |
+| P-011 | Stage 4 REMOVED (evaluation frame → AX lineage) | reactivate as principle |
+
+MP-004 and MP-005 are **peers**. Stage 7 records `MP-004 RELATED_TO MP-005` only as a non-parent navigation edge.
+
+## Non-principle review-signal / property lineage
+
+| ID | Title | Home | Not |
+|---|---|---|---|
+| [P-006](P-006.md) | Change Locality / change amplification (V-014-D) | MP-002 review signal; `domains/evolution/`; GC-007 | Mother Principle, Failure Pattern, Tactic, or H7 locality revival |
+| RQ5-001 | blast-radius measurement methodology | MP-004 `HAS_GAP`; D-10 NEEDS_EVIDENCE | MP, FP, or admitted universal metric |
+
+No `review-signals/RS-*` type is instantiated. See Stage 7 report §15.
+
+## Historical Stage 4 candidates（P-*，immutable）
+
+以下文件是 Stage 4 候选制品，**不得改写或删除**。Stage 5/6 去留以 Constitution 与 Stage 5/6 报告为准，不以本表旧状态覆盖。
+
+| ID | 候选 | Stage 6 disposition | 历史文件 |
+|---|---|---|---|
+| P-001 | Explicit Ownership | → MP-001 | [P-001.md](P-001.md) |
+| P-002 | Change-Decision Boundaries | → MP-002 | [P-002.md](P-002.md) |
+| P-003 | Bounded Execution | → MP-003 | [P-003.md](P-003.md) |
+| P-004 | Failure Containment | → MP-004 | [P-004.md](P-004.md) |
+| ~~P-005~~ | Reversibility-Proportional Deliberation | REMOVED (Stage 4) | — |
+| P-006 | Change Locality | **非 MP**（review signal / property） | [P-006.md](P-006.md) |
+| P-007 | Designed Diagnostic Surfaces | → MP-006 | [P-007.md](P-007.md) |
+| P-008 | Contract Preservation | → MP-007 | [P-008.md](P-008.md) |
+| P-009 | Trust Minimization | → MP-005 | [P-009.md](P-009.md) |
+| P-010 | Authoritative State | → MP-008 | [P-010.md](P-010.md) |
+| ~~P-011~~ | Purpose Fitness | REMOVED (Stage 4; AX frame) | — |
+| P-012 | Overload Admission & Graceful Degradation | → MP-009 | [P-012.md](P-012.md) |
+| P-013 | Execution-Model-Honest Correctness | → MP-010 | [P-013.md](P-013.md) |
+
+H7 Locality remains demoted (D-13). MF-1 idempotency remains a tactic/contract property (`T-015`), not a principle.
