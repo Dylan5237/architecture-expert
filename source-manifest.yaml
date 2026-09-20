@@ -8,7 +8,7 @@ branch: research/stage2-kimi
 created: 2026-09-17
 remediated: 2026-09-18
 remediation_basis: "Issue #3 Chief Architect decision D-B1..D-B3 / R1..R4"
-stage5_extension_basis: "Issue #12 / CA adjudication R5-1..R5-8：S-001..S-113 按 baseline 05cfea49 恢复（immutable history）；S-114..S-122、S-124 为 append-only Stage 5 定向补源；S-123 已移除为 LEAD_ONLY（OD5-6），ID 不复用"
+stage5_extension_basis: "Issue #12 / CA adjudication R5-1..R5-8 + M5-1：S-001..S-113 按 baseline 05cfea49 恢复（immutable history，含 S-074 标题）；S-114..S-122、S-124 为 append-only Stage 5 定向补源；S-123 已移除为 LEAD_ONLY（OD5-6），ID 不复用"
 schema_extension:
   note: "D-B3 批准的最小 schema 扩展（2026-09-18）：verification 不承担 bot-blocked/moved 等网络状态；以下可选字段仅应用于受影响条目，不做全量机械回填"
   optional_fields:
@@ -100,7 +100,7 @@ sources:
   - {id: S-071, title: "The USE Method", author: "Brendan Gregg", pub: brendangregg.com, year: "ongoing", url: "https://www.brendangregg.com/usemethod.html", type: official-doc, tier: B, clusters: [performance, resources], verification: direct-open}
   - {id: S-072, title: "A Proof for the Queuing Formula: L = λW", author: "John D. C. Little", pub: "Operations Research 9(3):383-387", year: 1961, url: "https://doi.org/10.1287/opre.9.3.383", type: paper, tier: A, clusters: [performance, resources], verification: search-cross-verified}
   - {id: S-073, title: "Little's Law as Viewed on Its 50th Anniversary", author: "John D. C. Little", pub: "Operations Research 59(3)", year: 2011, url: "https://doi.org/10.1287/opre.1110.0940", type: paper, tier: A, clusters: [performance], verification: search-cross-verified}
-  - {id: S-074, title: "Validity of the Single Processor Approach to Achieving Large Scale Computing Capabilities", author: "Gene M. Amdahl", pub: "AFIPS 1967", year: 1967, url: "https://doi.org/10.1145/1465482.1465560", type: paper, tier: A, clusters: [performance, scalability], verification: search-cross-verified}
+  - {id: S-074, title: "Amdahl 1967 (Validity of the Single Processor Approach)", author: "Gene M. Amdahl", pub: "AFIPS 1967", year: 1967, url: "https://doi.org/10.1145/1465482.1465560", type: paper, tier: A, clusters: [performance, scalability], verification: search-cross-verified}
   - {id: S-075, title: "Reevaluating Amdahl's Law", author: "John L. Gustafson", pub: "CACM 31(5)", year: 1988, url: "https://doi.org/10.1145/42411.42415", type: paper, tier: A, clusters: [performance, scalability], verification: search-cross-verified}
   - {id: S-076, title: "Amdahl's Law in the Multicore Era", author: "Hill, Marty", pub: "IEEE Computer 41(7)", year: 2008, url: "https://doi.org/10.1109/MC.2008.209", type: paper, tier: A, clusters: [performance, scalability], verification: search-cross-verified}
   - {id: S-077, title: "The Tail at Scale", author: "Dean, Barroso", pub: "CACM 56(2):74-80", year: 2013, url: "https://doi.org/10.1145/2408776.2408794", type: paper, tier: A, clusters: [performance, distributed], verification: search-cross-verified}
