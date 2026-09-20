@@ -1,29 +1,32 @@
-Read `AGENTS.md`, `planning/STAGE1_RESEARCH_PLAN.md`, the sealed Stage 3 vocabulary (`02_VOCABULARY.md`), the sealed Stage 4 candidate set (`principles/`), the complete Stage 5 falsification/adversarial/reconciliation artifacts, the accepted source corpus/review queue, and GitHub Issue #15.
+Read `AGENTS.md`, `planning/STAGE1_RESEARCH_PLAN.md`, the sealed Constitution (`01_CONSTITUTION.md`), vocabulary (`02_VOCABULARY.md`), Stage 5 GOOD CASE/falsification artifacts, Stage 6 reduction/audit/reconciliation, accepted source corpus/review queue, and GitHub Issue #18.
 
-Execute **Stage 6 — First-Principles Reduction only**.
+Execute **Stage 7 — Knowledge Architecture only**.
 
-Primary goal: reduce the ten Stage 5 surviving candidates into the smallest evidence-grounded Mother Principle set that preserves causal mechanism, independent-failure distinctions, scope, GOOD CASE / false-positive boundaries, and product-contract discipline.
+Primary goal: operationalize the sealed Constitution into a compact, traceable, progressively disclosed knowledge substrate for later reasoning/Agent stages.
 
-Stage 5 fixed inputs:
-- NARROW: P-001, P-002, P-003, P-007, P-008, P-009, P-012
-- SURVIVES: P-004, P-010
-- SURVIVES + TAUTOLOGY_RISK: P-013
-- DEMOTE: P-006 (excluded from principle reduction)
+Required Primary outputs are defined in Issue #18:
+- `00_ROUTER.md`
+- canonical `principles/MP-001..MP-010.md` plus updated `principles/index.md`
+- compact domain indexes
+- `failure-patterns/index.md` + atomic FP-* files
+- `tactics/index.md` + atomic T-* files
+- `cases/good-cases/index.md` with stable GC-* IDs
+- `relationship-map.yaml`
+- `reports/STAGE7_KNOWLEDGE_ARCHITECTURE.md`
+- optional ontology-level proposal for a minimal review-signal/property type only if category separation truly requires it
 
-Required Primary outputs are defined in Issue #15:
-- `01_CONSTITUTION.md`
-- `reports/STAGE6_REDUCTION.md`
+The Constitution is authoritative for AX/MP semantics. Do not rewrite or delete historical P-* files. Do not reactivate AX-005, MP-011, P-006 or H7 as principles.
 
-Keep non-causal Evaluation Axioms (`AX-*`) distinct from causal Mother Principles (`MP-*`). The Mother Principle count must be <=20, but there is no target count.
+Principle, Failure Pattern and Tactic must remain distinct types. GOOD CASES are first-class non-violation boundaries. Every durable relationship edge is a claim and must be defensible from sealed knowledge/evidence.
 
-Do not merge candidates merely for elegance. Preserve D-01/02/04/05/06/07/09 independent-failure information. Preserve the Stage 5 GOOD CASE register as non-violation boundaries.
+Progressive disclosure is mandatory:
 
-P-013 remains subject to the tautology gate: if reduction leaves only “correct systems rely on true guarantees,” demote it instead of promoting an empty Mother Principle.
+`00_ROUTER -> 01_CONSTITUTION -> relevant domain index -> linked MP/FP/T -> source/RQ only when needed`
 
-P-006 stays demoted. Do not reopen RQ3-001 to rescue it.
+Do not optimize for file count and do not duplicate source prose into domain documents.
 
-No broad source collection. If a proposed universal reduction lacks evidence, narrow it, keep children separate, or mark a targeted backflow request for Chief Architect adjudication.
+No broad source collection. If a desired FP/T/relation requires unsupported new knowledge, narrow it, mark a gap, or omit it.
 
-Do not begin Stage 7. Do not create domains/failure-patterns/tactics/relationship-map ontology, decision playbooks, question bank, or Agent prompt.
+Do not begin Stage 8. Do not create decision playbooks, a question bank, Agent mode/system prompts, or eval scenarios/results.
 
-Use the branch and role assigned in Issue #15. Persist and commit all Stage 6 artifacts, then stop and report the fixed commit SHA for the Chief Architect gate.
+Use the branch and role assigned in Issue #18. Persist and commit all Stage 7 artifacts, then stop and report the fixed commit SHA for the Chief Architect gate.
