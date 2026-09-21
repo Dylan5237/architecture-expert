@@ -57,14 +57,27 @@ Never load all ten domains for a focused task.
 
 Compact reusable spine. Not a linear checklist. Issue #21's 18 labels are **coverage of possible dimensions**, not a required path.
 
-### Core (every DP, every task)
+### Pre-routing (not a reasoning stage)
 
-1. **Task class** — select DP; name the object of reasoning.
-2. **Intent & properties** — required properties (V-004-C), real constraints (V-004-D), applicable AX-003 non-negotiables. AX-001: no property-free verdict.
-3. **Evidence baseline** — collect origins allowed by this DP; separate origin from epistemic state (see below).
-4. **Conditional mechanism pass** — activate only overlays/dimensions that the shape, symptom, or gap justifies.
-5. **GC then correction** — before a defect: route relevant GC(s) and test whether the *mechanism* is present. Then minimum correction / alternatives / `ARCH_CONFLICT`.
-6. **Close** — verdict, stop, or escalate. Do not continue to fill unused dimensions.
+Identify the task/object → choose DP + optional overlay. This is selection, not S1.
+
+### Six reasoning stages (every DP, every task)
+
+S1. **Intent / Required Properties / Applicable Non-negotiables** — required properties (V-004-C), real constraints (V-004-D), applicable AX-003 items. AX-001: no property-free finding.
+
+S2. **Evidence Baseline** — collect origins allowed by this DP; type each claim as origin + `claim_epistemic_state` (see below).
+
+S3. **Mechanism Hypotheses + Conditional Knowledge Activation** — activate only overlays/dimensions that the shape, symptom, or gap justifies.
+
+S4. **GOOD CASE / Falsification / Discriminating-Evidence Gate** — before a material defect/risk finding:
+1. identify the candidate mechanism;
+2. check the relevant GC qualifier(s), not only the GC title;
+3. when mechanisms remain ambiguous, seek the cheapest discriminating evidence;
+4. only then proceed to S5 adjudication.
+
+S5. **Adjudication + Minimum Correction / Alternatives / ARCH_CONFLICT** — assign `finding_disposition` where load-bearing; name min correction or alternatives; emit `ARCH_CONFLICT` only as a run-level terminal with its record.
+
+S6. **Terminal Outcome / Stop / Escalation** — set `terminal_outcome`; stop or escalate. Do not continue to fill unused dimensions.
 
 ### Conditional dimensions (activate, do not sequence)
 
@@ -83,7 +96,7 @@ Map to Stage 7 domains. Skip any dimension that cannot change the decision.
 | Overload path | saturation, retry storm, admission/shedding/degradation | `overload/` |
 | Execution-model honesty | ordering, cancellation, clocks, isolation *names*, async completion | `concurrency/` |
 
-Issue #21 steps 14–18 (alternatives, trade-offs, validation, minimum correction, unknowns) live in core steps 5–6, not as extra mandatory tours.
+Issue #21 steps 14–18 (alternatives, trade-offs, validation, minimum correction, unknowns) live in S5–S6, not as extra mandatory tours. Do not add a seventh stage.
 
 ## Progressive disclosure
 
@@ -91,11 +104,18 @@ Default load for a focused task:
 
 `00_ROUTER.md` → `01_CONSTITUTION.md` → this index (select DP + overlay) → **one or two** domain indexes → linked MP/FP/T → GC entry if the surface looks like a violation → named RQ → `sources/` only if the claim is disputed, high-risk, or low-confidence.
 
-Do not load all MP pages. Do not paste Constitution prose into a playbook answer. Project code/config/runtime/ADRs outrank generic knowledge for project-specific claims.
+Do not load all MP pages. Do not paste Constitution prose into a playbook answer. GENERIC_KNOWLEDGE never establishes or overrides a project-specific fact (authority matrix below).
 
-## Evidence origin ≠ epistemic state
+## Typed evidence / finding / terminal fields
 
-**Origin** (where the claim came from):
+Do not use one unlabeled shared enum. Four typed fields:
+
+1. **Evidence Origin** — where the claim came from.
+2. **Claim Epistemic State** (`claim_epistemic_state`) — how far that *claim* may be used.
+3. **Finding Disposition** (`finding_disposition`) — load-bearing finding class, if any.
+4. **Terminal Outcome** (`terminal_outcome`) — why the reasoning *pass* stops (R8-8). Not a per-finding severity.
+
+### Evidence Origin
 
 | Origin | Typical pointer |
 |---|---|
@@ -109,43 +129,73 @@ Do not load all MP pages. Do not paste Constitution prose into a playbook answer
 | GENERIC_KNOWLEDGE | this repository's MP/FP/T/GC/sources |
 | USER_ASSERTION | unverified statement in the task |
 
-**Epistemic state** (how far the claim may be used):
+### Claim Epistemic State
 
-`CONFIRMED` · `HIGH_CONFIDENCE_RISK` · `HYPOTHESIS` · `UNKNOWN` · `CONTESTED` · `NEEDS_EVIDENCE` · `NON_BLOCKING_IMPROVEMENT` · `PERSONAL_PREFERENCE`
+`claim_epistemic_state` is only:
 
-Origin never implies confidence. RUNTIME can be `HYPOTHESIS` (ambiguous metric). GENERIC_KNOWLEDGE can be `CONFIRMED` for a mechanism *family* and still `UNKNOWN` for *this* system.
+`CONFIRMED` · `HYPOTHESIS` · `UNKNOWN` · `CONTESTED` · `NEEDS_EVIDENCE`
 
-### Project-fact precedence
+Not claim-states: `HIGH_CONFIDENCE_RISK`, `NON_BLOCKING_IMPROVEMENT`, `PERSONAL_PREFERENCE` (those are `finding_disposition` values).
 
-- Current behavior: CODE / CONFIG / TEST / RUNTIME > GENERIC_KNOWLEDGE > USER_ASSERTION.
-- Intended behavior: PRODUCT_INTENT > GENERIC_KNOWLEDGE > inference.
-- Architecture intent/history: ARCHITECTURE_INTENT / HISTORY / explicit owner decision > inference.
+Origin never implies confidence. RUNTIME can be `HYPOTHESIS` (ambiguous metric). GENERIC_KNOWLEDGE can be `CONFIRMED` for a mechanism *family* and still `UNKNOWN` for *this* system. `NEEDS_EVIDENCE` may appear as claim-state and as finding/task disposition only because the field name makes the type explicit.
 
-Generic knowledge explains mechanisms and names risks. It does not rewrite project facts.
+### Finding Disposition
 
-### KNOWLEDGE_DRIFT
+`finding_disposition` for load-bearing findings:
 
-Emit `KNOWLEDGE_DRIFT` when:
-
-- two project-fact origins disagree (e.g. ADR vs code; PRD vs runtime);
-- generic knowledge would require denying a project fact;
-- USER_ASSERTION contradicts CODE/RUNTIME/PRODUCT_INTENT and has not been resolved.
-
-Do not silently pick a side. Record: claims, origins, epistemic states, and the next discriminating evidence. Drift is not by itself a BLOCKER; the drifted *behavior vs required property* may be.
-
-## Verdict / severity
-
-| Verdict | Allowed only when |
+| finding_disposition | Allowed only when |
 |---|---|
 | BLOCKER / MUST_FIX | An accepted requirement or applicable non-negotiable is violated; include evidence + mechanism + failure mode + material impact. GC does not apply. |
 | HIGH_CONFIDENCE_RISK | Strong evidence of a material architecture risk; not yet a proven requirement violation. |
 | NEEDS_EVIDENCE | A responsible decision needs a named next observation; stop is allowed. |
 | NON_BLOCKING_IMPROVEMENT | Useful; required properties already protected. |
 | PERSONAL_PREFERENCE | Style/pattern taste. Never a blocker. Never an escalation by itself. |
-| NO_DEFECT | GC matches, or mechanism absent, or properties protected. |
-| ARCH_CONFLICT | Real conflict between required capability and a real constraint; not mere inconvenience. |
 
-“Might be bad” is not a BLOCKER. Pattern unpopularity is not a verdict.
+BLOCKER / MUST_FIX and HIGH_CONFIDENCE_RISK findings **must** include `refutation_or_invalidation` (evidence or condition that would overturn or downgrade the finding). Optional for NEEDS_EVIDENCE, NON_BLOCKING_IMPROVEMENT, PERSONAL_PREFERENCE — do not turn preferences or low-severity notes into proof obligations.
+
+`NO_DEFECT` and `ARCH_CONFLICT` are **not** finding dispositions. They are `terminal_outcome` values (with an `arch_conflict` record when the terminal is ARCH_CONFLICT).
+
+“Might be bad” is not a BLOCKER. Pattern unpopularity is not a finding.
+
+### Project-fact authority matrix
+
+| Claim type | Evidence/authority rule |
+|---|---|
+| Current behavior | CODE + CONFIG + RUNTIME + relevant TEST are complementary evidence, not a fixed total order. Surface disagreement and determine which evidence answers which sub-question. |
+| Product intent | accepted PRODUCT_INTENT is authoritative for required capability/product contract. |
+| Architecture intent/history | accepted ARCHITECTURE_INTENT / HISTORY record intended decisions/history; they do not establish current runtime truth. |
+| Generic mechanisms | GENERIC_KNOWLEDGE explains mechanisms/risks; it never establishes or overrides a project-specific fact. |
+| User assertion | USER_ASSERTION is an unverified claim unless explicitly accepted/grounded as an authoritative project statement. |
+
+Task-specific emphasis is legal and is not a universal total order: DP-005 may start from RUNTIME for an incident timeline; DP-003 may emphasize CODE/CONFIG/TEST for a delta; DP-004 may treat the ADR as authoritative for what the ADR *says*.
+
+### KNOWLEDGE_DRIFT
+
+Canonical triggers are project-truth-surface conflicts only:
+
+1. observed/current behavior vs accepted PRODUCT_INTENT;
+2. observed/current behavior vs accepted ARCHITECTURE_INTENT / accepted historical decision record (includes a stale ADR/doc that claims current behavior inconsistent with actual evidence);
+3. conflicting accepted intent records (product-vs-product, product-vs-architecture, or equivalent accepted project authorities).
+
+Not automatic drift:
+
+- GENERIC_KNOWLEDGE disagrees with a project fact (ordinary applicability/adjudication under S3–S5);
+- bare USER_ASSERTION disagrees with project evidence (verification unless that assertion has become an accepted authoritative project statement).
+
+Do not silently pick a side. Record: competing claims, origins, `claim_epistemic_state`s, and the next discriminating evidence or authority action. Drift is not by itself a BLOCKER; the drifted *behavior vs required property* may produce a finding.
+
+### Terminal outcome
+
+`terminal_outcome` is why the pass stops. It is not a per-finding severity.
+
+| terminal_outcome | Typical stop |
+|---|---|
+| NO_DEFECT | no material mechanism, or GC qualifier matches |
+| MIN_SAFE_FIX_IDENTIFIED | a supported material defect/risk has a clear minimum correction (may coexist with a BLOCKER finding) |
+| NEEDS_EVIDENCE | next discriminating evidence is named |
+| OWNER_TRADE_OFF | multiple viable alternatives remain; owner authority/preference |
+| ARCH_CONFLICT | real capability vs constraint; fill the `arch_conflict` record |
+| NO_DECISION_CHANGING_WORK | further analysis would not change the decision (including a completed min-sufficient design proposal) |
 
 ## ARCH_CONFLICT structure
 
@@ -161,18 +211,18 @@ Required fields:
 - authority owner
 - evidence still needed
 
-AX-002: do not silently weaken the product contract to make implementation easier.
+AX-002: do not silently weaken the product contract to make implementation easier. When `terminal_outcome` is ARCH_CONFLICT, keep this record; ARCH_CONFLICT is not a `finding_disposition`.
 
 ## Stop (any DP)
 
-Stop when **one** is true:
+Stop when **one** is true (semantics unchanged):
 
-1. required properties are protected and no material unresolved risk remains (`NO_DEFECT` or only `NON_BLOCKING_IMPROVEMENT` / `PERSONAL_PREFERENCE`);
-2. a supported material defect is identified and the minimum safe correction is clear;
-3. multiple viable alternatives remain and the trade-off is an owner preference/authority question;
-4. evidence is insufficient and the next discriminating evidence is named (`NEEDS_EVIDENCE`);
-5. a real `ARCH_CONFLICT` needs authority beyond this reasoning pass;
-6. further analysis would add detail but not change the decision.
+1. required properties are protected and no material unresolved risk remains (`terminal_outcome` NO_DEFECT, or only NON_BLOCKING_IMPROVEMENT / PERSONAL_PREFERENCE findings);
+2. a supported material defect is identified and the minimum safe correction is clear (`terminal_outcome` MIN_SAFE_FIX_IDENTIFIED);
+3. multiple viable alternatives remain and the trade-off is an owner preference/authority question (`terminal_outcome` OWNER_TRADE_OFF);
+4. evidence is insufficient and the next discriminating evidence is named (`terminal_outcome` NEEDS_EVIDENCE);
+5. a real `ARCH_CONFLICT` needs authority beyond this reasoning pass (`terminal_outcome` ARCH_CONFLICT);
+6. further analysis would add detail but not change the decision (`terminal_outcome` NO_DECISION_CHANGING_WORK).
 
 Do not continue in order to visit every dimension or question.
 
@@ -202,7 +252,7 @@ Do not escalate: routine mechanism selection with sufficient evidence; implement
 
 ## GOOD CASE rule
 
-Before a defect verdict: load the relevant GC row(s). Ask whether the *mechanism* is present in this system. Compliant alternate forms (OTP supervision, path-level admission, explicit CRDT merge, proof-scoped evidence, exploration without a known axis, …) are `NO_DEFECT`, not “missing pattern X”.
+Before a defect finding: load the relevant GC row(s) and apply S4 (mechanism → GC qualifier → cheapest discriminating evidence → only then adjudicate). Compliant alternate forms (OTP supervision, path-level admission, explicit CRDT merge, proof-scoped evidence, exploration without a known axis, …) yield `terminal_outcome` NO_DEFECT, not “missing pattern X”.
 
 ## Shared output contract
 
@@ -215,14 +265,23 @@ intent_and_properties: [...]
 activated_dimensions: [...]
 question_sets: [Q-…]
 knowledge_route: [domain / MP / FP / T / GC / RQ]
-evidence: [{origin, pointer, epistemic_state}]
-knowledge_drift: none | {claims, origins, next_evidence}
+evidence: [{origin, pointer, claim_epistemic_state}]
+knowledge_drift: none | {claims, origins, claim_epistemic_states, next_evidence}
 gc_checked: [GC-…] | none-applicable
-findings: [{verdict, property, mechanism, failure_mode, impact, min_correction}]
+findings: [{finding_disposition, property, mechanism, failure_mode, impact, min_correction, refutation_or_invalidation}]
 arch_conflict: none | {fields above}
+terminal_outcome: NO_DEFECT | MIN_SAFE_FIX_IDENTIFIED | NEEDS_EVIDENCE | OWNER_TRADE_OFF | ARCH_CONFLICT | NO_DECISION_CHANGING_WORK
 stop_reason: <1–6>
 escalation: none | {owner, decision}
 ```
+
+`claim_epistemic_state` uses only CONFIRMED / HYPOTHESIS / UNKNOWN / CONTESTED / NEEDS_EVIDENCE.
+
+`finding_disposition` uses only BLOCKER / MUST_FIX, HIGH_CONFIDENCE_RISK, NEEDS_EVIDENCE, NON_BLOCKING_IMPROVEMENT, PERSONAL_PREFERENCE.
+
+`refutation_or_invalidation` is required when `finding_disposition` is BLOCKER / MUST_FIX or HIGH_CONFIDENCE_RISK; optional otherwise.
+
+`terminal_outcome` is run-level. A pass may contain a BLOCKER finding and still end `MIN_SAFE_FIX_IDENTIFIED`. Do not put NO_DEFECT or ARCH_CONFLICT on `finding_disposition`.
 
 Fill only activated parts. Empty sections are a smell that the pass did not stop.
 

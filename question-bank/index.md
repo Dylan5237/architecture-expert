@@ -31,10 +31,10 @@ Activate: API/event/storage shape, migration, “internal only” claims. Routes
 ## Q-EVD Evidence / Current Baseline
 
 ### Q-004 What is currently true in code/config/tests/runtime, as opposed to what is asserted?
-Activate: any project-specific claim about current behavior. Precedence: CODE/CONFIG/TEST/RUNTIME > GENERIC_KNOWLEDGE > USER_ASSERTION.
+Activate: any project-specific claim about current behavior. CODE + CONFIG + RUNTIME + relevant TEST are complementary; determine which origin answers which sub-question. GENERIC_KNOWLEDGE never establishes the project fact. USER_ASSERTION stays unverified unless accepted/grounded.
 
 ### Q-005 What was intended (product or ADR), and does it disagree with current behavior?
-Activate: when both intent and current system exist. If they disagree → `KNOWLEDGE_DRIFT`.
+Activate: when both accepted intent (PRODUCT_INTENT or accepted ADR) and current system exist. If they disagree → `KNOWLEDGE_DRIFT`.
 
 ### Q-006 What single observation would distinguish the remaining candidate mechanisms?
 Activate: two or more FPs/mechanisms still fit. Prefer this over a BLOCKER. Routes: MP-006 T-014.
