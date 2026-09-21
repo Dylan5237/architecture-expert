@@ -54,6 +54,7 @@ AUTO is routing, not a sixth DP. Overlays stay table-driven in Stage 8.
 | §11 min correction | index minimum-correction |
 | §12 stop 1–6 / escalate | index stop + escalate |
 | §13 output contract | index shared output schema |
+| §13 AUTO `route` field | OD9-4 user-correctable routing; not a new Stage 8 enum |
 | lexical notes | Constitution usage contract / Router |
 
 No new enum values. No renamed DPs.
@@ -64,7 +65,7 @@ AUTO → no DP (selects one). ARCH_DESIGN → DP-001. ARCH_REVIEW → DP-002. CH
 
 ## 5. Overlay handling
 
-Nine overlay families remain parameters (runtime/concurrency, resources, overload, reliability, trust, observability, integration, evolution, state/data). They tune Q sections and first domain. They must not change finding thresholds, stop, escalation, product-contract protection, or evidence typing. No overlay mode files.
+Nine overlay families remain parameters (runtime/concurrency, resources, overload, reliability, trust, observability, integration, evolution, state/data). AUTO and explicit modes start with **zero overlays**. Activate an overlay only when task shape, symptom, or evidence justifies that mechanism family. “For completeness” is never a valid activation reason. They tune Q sections and first domain. They must not change finding thresholds, stop, escalation, product-contract protection, or evidence typing. No overlay mode files.
 
 ## 6. Context-loading contract
 
@@ -94,7 +95,7 @@ Six stop rules mapped to six `terminal_outcome` values. Escalation remains autho
 
 ## 12. Anti-overengineering preservation
 
-Min-correction five-step rule; no default microservices/event-driven/K8s/DDD; Stage 7 omitted buzzword nodes stay omitted; AX-004 as design goal.
+Min-correction five-step rule; no default microservices/event-driven/K8s/DDD; AX-004 as design goal. Stage 7 omission of a named technique forbids canonical MP/FP/T/GC promotion, best-practice/fashion prescription, and runtime ID minting. The Agent may still **name** a concrete implementation technique as the min correction when (1) its exact mechanism breaks the identified failure, (2) the protected property requires it, and (3) no existing T-* already covers the intervention. Circuit breaker, strangler, event sourcing, hedged requests, expand-contract remain non-canonical labels unless later governed promotion; names are not evidence or universal tactics.
 
 ## 13. Duplication / context-efficiency audit
 
@@ -106,11 +107,13 @@ No vendor chat completions, function/tool schemas, or host-specific CLI flags. H
 
 ## 15. Prompt-language / Stage 8 semantic-drift audit
 
-Checked against sealed `decision-playbooks/index.md` post-R8: same DP objects, same overlay names, same four typed enums, same three drift triggers, same S4 subsequence, same ARCH_CONFLICT fields, same six stops. No new ontology IDs. P-006 remains non-principle; AX-005/MP-011 reserved.
+Checked against sealed `decision-playbooks/index.md` post-R8: same DP objects, same overlay names, same four typed enums, same three drift triggers, same S4 subsequence, same ARCH_CONFLICT fields, same six stops. No new ontology IDs. P-006 remains non-principle; AX-005/MP-011 reserved. §11 omitted-technique wording now matches Stage 8 DP-002: naming a concrete min-correction technique is allowed when no existing T-* covers it; omission is not a naming ban.
 
 ## 16. Representative invocation traces (routing / context only; not eval)
 
 Not expected findings. Not scorecards.
+
+AUTO traces declare user-visible `route: {mode, dp, overlays, basis}`. The basis is a routing explanation for user-correctability, not hidden chain-of-thought. Explicit-mode traces may state mode + DP without an AUTO basis.
 
 **Greenfield capability** — AUTO → ARCH_DESIGN / DP-001; Q-INT/Q-PRP/Q-ALT; at most two shape-implied domains; no current-behavior audit as primary object.
 
@@ -134,4 +137,12 @@ v0.1 is **unevaluated**. Stage 10 owns adversarial eval. Do not paper over knowl
 
 ## 18. Genuine owner decisions only
 
-None. Mode set, overlay-not-persona, and AUTO-as-router are Issue #24 / OD8-2 already fixed. No new DP, overlay, or enum.
+None. Mode set, overlay-not-persona, and AUTO-as-router are Issue #24 / OD8-2 already fixed. No new DP, overlay, or enum. R9-1..R9-3 implement OD9-4 / CA9-3 / CA9-4 as wording-level compilation fixes.
+
+## 19. Remediation R9-1..R9-3
+
+| ID | Change | Files |
+|---|---|---|
+| R9-1 | AUTO user-visible `route: {mode, dp, overlays, basis}`; explicit modes may state mode+DP without AUTO basis; basis is not hidden CoT | prompt §13; AUTO.md stop/output; this report §3/§16 |
+| R9-2 | Start with **zero overlays**; activate only when shape/symptom/evidence justifies the family; “for completeness” never a reason | prompt §3; AUTO.md routing step 3; this report §5 |
+| R9-3 | Stage 7 omission forbids canonical promotion / best-practice / runtime IDs; naming a concrete min-correction technique is allowed when mechanism fits and no existing T-* covers it | prompt §11; this report §12/§15 |

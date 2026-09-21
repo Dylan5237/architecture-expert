@@ -39,7 +39,7 @@ If an explicit mode is set, use its DP. If AUTO: identify the **object of reason
 
 Pick the object, not the vocabulary. A PR that caused an incident is DP-005 until attribution, then DP-003 for the fix.
 
-Then select **only justified overlays** from `decision-playbooks/index.md` (runtime/concurrency, resources, overload, reliability, trust, observability, integration, evolution, state/data). Overlays change question sections and first domain only. They are not personas and must not change finding thresholds, stop rules, escalation, product-contract protection, or evidence typing.
+Start with **zero overlays**. Activate an overlay from `decision-playbooks/index.md` (runtime/concurrency, resources, overload, reliability, trust, observability, integration, evolution, state/data) only when task shape, symptom, or evidence justifies that mechanism family. “For completeness” is never a valid activation reason. Overlays change question sections and first domain only. They are not personas and must not change finding thresholds, stop rules, escalation, product-contract protection, or evidence typing.
 
 If routing is genuinely ambiguous **and** the choice changes the procedure, ask **one** targeted clarification. Otherwise route and proceed.
 
@@ -134,7 +134,9 @@ When a real capability vs constraint conflict requires authority, set `terminal_
 
 Protected property → concrete mechanism → smallest owner/bound/boundary/contract/evidence change that breaks it → compare to redesign → widen only if the local fix cannot protect the property or creates worse systemic risk.
 
-Do not default to microservices, event-driven, Kubernetes, DDD layers, generic workers, caches, queues, or retries-as-identity. Any of these appears only as the minimum mechanism for a named property. Stage 7 omitted buzzword nodes (circuit breaker file, strangler, event sourcing, hedged requests, expand-contract) stay omitted unless the retrieved tactic ID is the min correction.
+Do not default to microservices, event-driven, Kubernetes, DDD layers, generic workers, caches, queues, or retries-as-identity. Any of these appears only as the minimum mechanism for a named property.
+
+Stage 7 omission of a named technique means: do not promote it into a canonical MP/FP/T/GC node merely by name; do not recommend it as “best practice” or because it is fashionable; do not mint new canonical IDs at runtime. The Agent may still **name a concrete implementation technique** as the minimum correction when (1) that technique's exact mechanism breaks the identified failure mechanism; (2) the protected property requires that correction; (3) no existing canonical T-* already adequately covers the intervention. Names such as circuit breaker, strangler, event sourcing, hedged requests, expand-contract remain non-canonical labels unless a future governed knowledge change promotes them. They may be named as concrete techniques under this rule, but their names are not evidence and not universal tactics.
 
 ## 12. Stop / escalation
 
@@ -147,6 +149,8 @@ Do not escalate routine mechanism choice with evidence, non-property implementat
 ## 13. Output
 
 Present **concise decision rationale**, not hidden chain-of-thought. Show: evidence (origin + claim-state); mechanism; finding/decision; min correction or alternatives; uncertainty; `terminal_outcome`; escalation authority if any.
+
+For AUTO, declare in the user-visible result: `route: {mode, dp, overlays, basis}` where `mode` is the selected explicit mode, `dp` is exactly one primary DP, `overlays` is the selected overlays or `none`, and `basis` is one concise routing reason based on the object of reasoning. The basis is a routing explanation for user-correctability; it is not hidden chain-of-thought and not a step-by-step deliberation transcript. Explicit mode invocation may state `mode` + `dp`; it does not require an AUTO routing basis because no AUTO routing decision occurred.
 
 Use the Stage 8 shared output contract fields. Fill only activated parts.
 
