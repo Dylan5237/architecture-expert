@@ -3,6 +3,7 @@
 Canonical execution prompts:
 
 - Cursor Primary: `tasks/stage9/CURSOR_PRIMARY.md`
+- Cursor bounded remediation: `tasks/stage9/CURSOR_REMEDIATION.md`
 - Codex + GLM Blind Challenger: `tasks/stage9/CODEX_CHALLENGER.md`
 - Codex + GLM Pass B: `tasks/stage9/CODEX_PASS_B.md`
 
