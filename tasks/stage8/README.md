@@ -3,6 +3,7 @@
 Stage 8 execution prompts live here so chat handoff remains minimal.
 
 - Cursor Primary: `tasks/stage8/CURSOR_PRIMARY.md`
+- Cursor bounded remediation: `tasks/stage8/CURSOR_REMEDIATION.md`
 - Codex + GLM Blind Challenger: `tasks/stage8/CODEX_CHALLENGER.md`
 - Codex + GLM Pass B: `tasks/stage8/CODEX_PASS_B.md`
 
