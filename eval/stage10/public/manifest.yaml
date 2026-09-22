@@ -1,0 +1,61 @@
+id: STAGE10-RUNNER-PUBLIC-PACK
+version: 1
+status: FROZEN_PUBLIC
+frozen_sut_sha: 96d9ae333ffc5a8076d635b86634b5151ec0bbc5
+frozen_suite_design_sha: ff157eb1947860345a305fb29452b51e09dd3a2b
+public_case_count: 32
+case_ids:
+  - E10-001
+  - E10-002
+  - E10-003
+  - E10-004
+  - E10-005
+  - E10-006
+  - E10-007
+  - E10-008
+  - E10-009
+  - E10-010
+  - E10-011
+  - E10-012
+  - E10-013
+  - E10-014
+  - E10-015
+  - E10-016
+  - E10-017
+  - E10-018
+  - E10-019
+  - E10-020
+  - E10-021
+  - E10-022
+  - E10-023
+  - E10-024
+  - E10-025
+  - E10-026
+  - E10-027
+  - E10-028
+  - E10-029
+  - E10-030
+  - E10-031
+  - E10-032
+case_path_template: eval/stage10/public/{case_id}.md
+runner_task: tasks/stage10/CURSOR_BLINDED_RUNNER.md
+case_order: ascending_case_id
+fresh_context_per_case_required: true
+runner_context_boundary:
+  allowed:
+    - files present in this frozen runner branch
+    - current public case payload
+    - runner protocol
+  forbidden:
+    - web search
+    - external repositories or project sources
+    - other git branches or refs
+    - private evaluation artifacts
+    - oracle, rubric, coverage, scorer notes, design report
+    - outputs from other cases as context for the current case
+  fail_closed_if_unenforceable: true
+run_output_contract:
+  raw_dir: eval/stage10/run/raw
+  metadata: eval/stage10/run/metadata.yaml
+  status: eval/stage10/run/RUN_STATUS.md
+  scoring_forbidden: true
