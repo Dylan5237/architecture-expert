@@ -103,3 +103,26 @@ Before any E10 rerun, execute:
 `tasks/stage10/CODEX_API_CONTROLLER_HARDEN.md`
 
 No E10 case is authorized during controller hardening.
+
+
+## Reference model reset
+
+Owner decision:
+
+`OD10-RM1: DO_NOT_USE_KIMI`
+
+Kimi/Moonshot is excluded from Stage 10 reference evaluation.
+
+Current gate:
+
+`STAGE10_PHASE_C: HOLD_REFERENCE_MODEL_SELECTION`
+
+Selection branch:
+
+`eval/stage10-reference-model`
+
+Task:
+
+`tasks/stage10/CODEX_REFERENCE_MODEL_SELECTION.md`
+
+No E10 rerun and no controller-hardening continuation is authorized until a non-Kimi reference model is selected and frozen.
