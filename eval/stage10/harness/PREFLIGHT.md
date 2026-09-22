@@ -1,0 +1,112 @@
+# Stage 10 Phase C0-R — Reference Runner + Controller Preflight
+
+## Status
+
+**PASS**
+
+## Frozen inputs
+
+- SUT SHA: `96d9ae333ffc5a8076d635b86634b5151ec0bbc5`
+- Suite SHA: `ff157eb1947860345a305fb29452b51e09dd3a2b`
+- PUBLIC-pack SHA: `23a49382c949702446325d30e18d3321d8550c36`
+- Starting HEAD: `23a49382c949702446325d30e18d3321d8550c36` (verified)
+
+## Provider / model / host
+
+- Provider: OpenCode Zen
+- Host: `https://opencode.ai/zen/go/v1` (validated; any other host rejected by adapter and controller)
+- Model: `deepseek-v4-pro` (requested and observed identical on every probe response)
+
+## Generation settings
+
+- `temperature = 0`
+- `max_tokens = 8000`
+- no `top_p` / penalty overrides
+- enforced inside `ReferenceProvider.chat()`; controller re-validates; drift raises immediately
+
+## Secret handling
+
+- Secret source name only: `STAGE10_API_KEY` env var, else local `opencode-go` provider key in `~/.opencodex/config.json`
+- Key never printed/logged/committed; controller metadata redacts secret-named fields (selftest check 17)
+
+## System / mode role mapping
+
+- SYSTEM message 1 = exact frozen `agent/system-prompt-v0.1.md` bytes from the SUT snapshot
+- SYSTEM message 2 = exact frozen `agent/modes/<MODE>.md` bytes from the SUT snapshot
+- USER message = exact PUBLIC case payload (verbatim, future runs)
+- No IDE/project/user-rule injection; dual SYSTEM accepted by provider through the actual adapter path (probe P1)
+
+## Harness / controller hashes (SHA-256, first 16 hex)
+
+- provider_openai_compatible.py: `3C21AA3ABE21EF4A`
+- runner.py: `9557CD02DC1E5E76`
+- controller.py: `4FA3A708E0413A9A`
+
+## Lock mechanism
+
+`O_EXCL` creation of `controller.lock` + Windows `msvcrt` record lock + PID file.
+Second acquisition fails immediately; existing/stale lock files fail closed; never auto-deleted.
+
+## Atomic write mechanism
+
+Temp file in target directory → write → flush → fsync → `os.replace` atomic replace.
+Raw files are never overwritten once written; metadata written after raw with recomputed SHA-256.
+
+## Fresh-context mechanism
+
+Every case constructs a brand-new `messages` list inside `CaseRunner.run_case()`; no conversation/session/response IDs are reused; the only per-case constant is the non-secret routing header, which carries no content. Probe P3 verified marker isolation across two fresh conversations.
+
+## Model-visible tool list
+
+Exactly one tool: `read_sut_file(path)`.
+No web/shell/list/write/git/env tools exist in the harness request path.
+
+## Path sandbox result
+
+Rejects: absolute paths, drive-letter paths, backslash paths, `..` traversal, `eval/**`, `.git/**`, `tasks/**`, paths outside the snapshot realpath, non-files.
+Caps: 200,000 bytes per call; 2,000,000 bytes aggregate per case.
+SUT snapshot materialized read-only from exactly `96d9ae3` via `git archive`; required-file assertion included.
+
+## Provider probes (all synthetic, non-E10)
+
+| Probe | Result | Evidence |
+|---|---|---|
+| P1 dual SYSTEM placement | PASS | reply began `LAYER1-ACK` and ended `LAYER2-END` |
+| P2 read-only tool loop | PASS | model called `read_sut_file("00_ROUTER.md")` (2377 bytes, allow) and answered `knowledge-router` from tool content |
+| P3 fresh-context separation | PASS | second conversation answered `NONE`; marker not leaked |
+| P4 fixed generation settings | PASS | adapter-enforced temperature=0 / max_tokens=8000; model `deepseek-v4-pro` |
+| P5 model identity | PASS | observed model `deepseek-v4-pro` on every response returning the field |
+| P6 session-header isolation | PASS | distinct headers per case (`stage10-ref-preflight-P2-PROBE` / `-P3A` / `-P3B`); one header stable across rounds |
+| P7 readiness/quota | PASS | usage endpoint reachable: rolling 1%, weekly 15%, monthly 48% (status ok) |
+
+Note: an early P2 variant returned the abbreviated answer "router" from a loosely-worded probe; the harness tool loop itself worked (tool called, file served). The probe was re-issued with an explicit verbatim instruction through the same harness path — recorded as probe wording calibration, not model/harness change.
+
+## Model-identity result
+
+Requested = observed = `deepseek-v4-pro` on all provider responses; adapter hard-fails on any drift.
+
+## Session-header policy
+
+`x-opencode-session: stage10-ref-<run_id>-<case_id>`; unique per case, stable across tool rounds of one case, character-validated, non-secret, no content.
+
+## Readiness / quota result
+
+OpenCode Zen usage at preflight: rolling 1% (resets 2026-09-22T15:56:27Z), weekly 15% (resets 2026-09-28), monthly 48% (resets 2026-10-01) — sufficient headroom for 32 cases.
+
+## Controller selftest matrix
+
+`python controller.py selftest` — **all 17 checks PASS**:
+
+exclusive lock; stale lock fails closed; existing evidence gate; fresh per-case state; double failure no raw; atomic raw + sha; atomic metadata parses; sha mismatch detection; missing raw detection; orphan raw detection; duplicate raw HOLD; host rejects non-Zen; model rejects non-deepseek; temperature!=0 rejected; max_tokens!=8000 rejected; session header policy; no secret in metadata.
+
+## No-E10 confirmation
+
+No E10-001..032 payload was read for execution or sent to the provider. All provider probes used newly invented synthetic payloads. No E10 raw output exists anywhere in this branch.
+
+## No-private-eval confirmation
+
+No private oracle, rubric, coverage, or suite-design artifact was read or materialized. Historical Kimi branches were not inspected.
+
+## Blocker
+
+None. Preflight status: **PASS**.
