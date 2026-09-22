@@ -75,3 +75,16 @@ Task:
 `tasks/stage10/CODEX_API_RUNNER_PREFLIGHT.md`
 
 This C0 preflight must not run any E10 case.
+
+
+## Authorized Phase C API run
+
+The isolated API harness passed C0 and is frozen at:
+
+`78059179e103dd7275cad4493c70443b4562c647`
+
+Full blinded execution task:
+
+`tasks/stage10/CODEX_API_RUNNER_FULL.md`
+
+Phase D scoring remains blocked until a fixed raw-output SHA returns.
