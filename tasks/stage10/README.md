@@ -88,3 +88,18 @@ Full blinded execution task:
 `tasks/stage10/CODEX_API_RUNNER_FULL.md`
 
 Phase D scoring remains blocked until a fixed raw-output SHA returns.
+
+
+## Controller hardening after invalid Phase C attempt
+
+The first API full-run attempt was invalidated due to controller concurrency/write-integrity defects and provider quota exhaustion.
+
+A clean rerun branch exists at:
+
+`eval/stage10-api-runner-v2@78059179e103dd7275cad4493c70443b4562c647`
+
+Before any E10 rerun, execute:
+
+`tasks/stage10/CODEX_API_CONTROLLER_HARDEN.md`
+
+No E10 case is authorized during controller hardening.
