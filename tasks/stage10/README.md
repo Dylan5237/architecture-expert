@@ -126,3 +126,26 @@ Task:
 `tasks/stage10/CODEX_REFERENCE_MODEL_SELECTION.md`
 
 No E10 rerun and no controller-hardening continuation is authorized until a non-Kimi reference model is selected and frozen.
+
+
+## Frozen non-Kimi reference model
+
+`STAGE10_REFERENCE_MODEL_GATE: PASS / FROZEN`
+
+Reference model:
+
+- OpenCode Zen
+- `deepseek-v4-pro`
+- `https://opencode.ai/zen/go/v1`
+- temperature 0
+- max_tokens 8000
+
+Clean runner branch:
+
+`eval/stage10-deepseek-runner`
+
+Current task:
+
+`tasks/stage10/CODEX_DEEPSEEK_RUNNER_PREFLIGHT.md`
+
+No E10 case is authorized until the DeepSeek runner/controller preflight passes.
