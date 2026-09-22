@@ -149,3 +149,22 @@ Current task:
 `tasks/stage10/CODEX_DEEPSEEK_RUNNER_PREFLIGHT.md`
 
 No E10 case is authorized until the DeepSeek runner/controller preflight passes.
+
+
+## DeepSeek runner wiring gate
+
+C0-R preflight primitives passed at:
+
+`c177ae764703b7741b14e4a9501f176cf3164f27`
+
+But measured E10 execution remains blocked until the tracked full-suite orchestration path is wired and re-preflighted.
+
+Current gate:
+
+`STAGE10_PHASE_C: HOLD_TRACKED_RUNNER_WIRING`
+
+Task:
+
+`tasks/stage10/CODEX_DEEPSEEK_RUNNER_WIRE_FULL.md`
+
+No E10 case is authorized during this wiring task.
