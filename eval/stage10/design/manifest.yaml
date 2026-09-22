@@ -1,20 +1,25 @@
 id: STAGE10-SUITE-MANIFEST
-version: 1
+version: 2
 suite: stage10-architecture-expert-v0.1
 frozen_sut: 96d9ae333ffc5a8076d635b86634b5151ec0bbc5
 designer: "Codex harness + GLM 5.3 (Independent Eval Designer / Oracle Author)"
 branch: eval/stage10-suite-design
-status: DESIGNED_AWAITING_GATE
+status: REMEDIATED_AWAITING_GATE
 
 structure:
   public/: 32 case files (E10-001..E10-032), runner-exposed after Chief Architect gate
   private/oracle.yaml: single-file oracle, 32 entries, one per public case
   private/coverage.yaml: per-case tag matrix + summary counts
-  rubric.md: 10 dimensions, 0/1/2 anchors, N/A rules, hard-failure registry HF-01..HF-11
+  rubric.md: 10 dimensions, 0/1/2 anchors, N/A rules, hard-failure registry HF-01..HF-12
 
 exposure_rules:
   runner_safe: [eval/stage10/design/public/*, eval/stage10/design/manifest.yaml (case list only)]
   private_forbidden: [eval/stage10/design/private/*, eval/stage10/design/rubric.md (scorer-only), reports/STAGE10_EVAL_SUITE_DESIGN.md]
+
+phase_c_constraints:
+  - runner may use ONLY the frozen SUT repository at SUT_SHA + the PUBLIC case payload
+  - no web search, no external repos, no private oracle/rubric/coverage/report, no scorer notes, no hidden extra evidence
+  - if context isolation cannot be enforced, record limitation and stop
 
 integrity:
   - design branch not merged before blinded runs

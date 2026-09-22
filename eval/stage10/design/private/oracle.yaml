@@ -1,671 +1,1148 @@
-`id`: E10-001
-`expected`:
-  `mode`: ARCH_REVIEW
-  `dp`: DP-002
-  `allowed_alternate_routing`: none (AUTO routes by object: existing system as-is)
-  `overlays`: resources
-  `required_properties`: UI responsiveness; edit durability
-  `candidate_mechanisms`: UI-thread blocking (long foreground work without bound/worker offload); NOT 'missing microservices'; D-07: no owner for background work
-  `knowledge_refs`: FP-003/T-003/T-004; GC-004 n/a (not long-life, it's blocking)
-  `must_find`:
-- blocking work executes on UI thread
-  `must_not_find`:
-- 'move to background service process' as the fix;- microservice prescription;- BLOCKER on SQLite choice
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: offload export to background worker with cancellation + progress; bounded batch; persist edits before export
-  `uncertainty`: none decisive missing
-  `product_contract`: none
-  `hard_failure_triggers`: HF-07 if agent prescribes service split as authority
-  `ambiguity_notes`: clear: code evidence decisive
-  `scoring_notes`: 0/2 dims: routing ok if DP-002; mechanism must name UI-thread blocking
-
-`id`: E10-002
-`expected`:
-  `mode`: ARCH_REVIEW
-  `dp`: DP-002
-  `allowed_alternate_routing`: none
-  `overlays`: overload + resources
-  `required_properties`: availability under flash-sale demand
-  `candidate_mechanisms`: retry amplification (no jitter/backoff growth, synchronized) + unbounded gateway queue + no admission control; D-04: both per-work bound AND overload policy involved
-  `knowledge_refs`: FP-011/FP-010; T-005/T-006; GC-015 n/a
-  `must_find`:
-- retry share 55% = amplification;- unbounded queue before governed boundary;- no admission on path
-  `must_not_find`:
-- 'migrate to microservices' as the fix (violates ADR-0031);- BLOCKER for retry alone without mechanism
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: bounded+backoff+jitter retry; queue bound; admission at gateway; per ADR-0031 gateway-level
-  `uncertainty`: RQ5-004 n/a; ADR-0031 governs placement
-  `product_contract`: ADR-0031 respected or flagged as drift if contradicted
-  `hard_failure_triggers`: HF-07 if microservice prescription; HF-01 if blocker without mechanism
-  `ambiguity_notes`: microservice mention in user request is a decoy
-  `scoring_notes`: D-04 discriminator must appear: retry bound (MP-003) vs path policy (MP-009)
-
-`id`: E10-003
-`expected`:
-  `mode`: INCIDENT_ANALYSIS
-  `dp`: DP-005
-  `allowed_alternate_routing`: none (object = observed failure)
-  `overlays`: lifecycle
-  `required_properties`: workers must not outlive their run
-  `candidate_mechanisms`: orphaned workers: coordinator crash leaves unsupervised children; no cancellation propagation; D-02 adjacent: workers wrote after new consumer started (stale completion)
-  `knowledge_refs`: FP-001; T-001/T-002; GC-001 n/a
-  `must_find`:
-- orphaned workers with no owner;- no cancellation propagation;- March incident was same mechanism misattributed
-  `must_not_find`:
-- 'Kafka/schema design' as primary finding;- microservices rewrite
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: supervision/cancellation link between coordinator and workers (structured lifecycle)
-  `uncertainty`: none decisive missing
-  `product_contract`: none
-  `hard_failure_triggers`: HF-01 if blocker claims data corruption without evidence of corruption extent
-  `ambiguity_notes`: timeline decisive; mechanism clear
-  `scoring_notes`: competing-mechanism discipline: coordinator-ownerless vs schema-migration confusion should be separated
-
-`id`: E10-004
-`expected`:
-  `mode`: ARCH_REVIEW
-  `dp`: DP-002
-  `allowed_alternate_routing`: none
-  `overlays`: state-data
-  `required_properties`: customers must not buy unavailable items
-  `candidate_mechanisms`: undeclared consistency: 10-min poller + 60s cache = 11-15min lag; no explicit authority/conflict declaration; 'eventual consistency' claim without bound
-  `knowledge_refs`: FP-009; T-013; MP-008; V-010 sense required
-  `must_find`:
-- consistency lag violates product intent (PRD §4);- no declared consistency bound or sense
-  `must_not_find`:
-- 'cache is the problem, remove Redis' without mechanism;- BLOCKER before checking whether PRD bound exists
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: declare consistency sense + bound; align poller to bound or move to CDC; gate buys on availability not search-cache
-  `uncertainty`: search team claim = USER_ASSERTION needing verification vs PRD=PRODUCT_INTENT
-  `product_contract`: PRD §4 governs; search team claim does not override
-  `hard_failure_triggers`: HF-04 if search-team assertion overrides accepted PRD
-  `ambiguity_notes`: poller config change (June) may be drift-worthy vs original intent
-  `scoring_notes`: V-010 suffix discipline: agent must demand consistency sense before diagnosing
-
-`id`: E10-005
-`expected`:
-  `mode`: CHANGE_REVIEW
-  `dp`: DP-003
-  `allowed_alternate_routing`: none
-  `overlays`: integration
-  `required_properties`: public API stability commitment (ToS)
-  `candidate_mechanisms`: ungoverned independent-consumer contract break: 1400 external integrators; ToS requires 6-month deprecation; PR violates both
-  `knowledge_refs`: FP-008; T-012; GC-009/GC-010/GC-011 n/a (external consumers)
-  `must_find`:
-- independent consumers exist (1400, external);- no deprecation mechanism;- ToS violation
-  `must_not_find`:
-- 'style guide consistency justifies it' as defense;- NON_BLOCKING classification
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: dual-write both formats + 6-month deprecation per ToS; or reject rename
-  `uncertainty`: none decisive missing
-  `product_contract`: ToS is accepted product contract; style guide is internal preference
-  `hard_failure_triggers`: HF-05 if agent accepts the break silently
-  `ambiguity_notes`: clear: ToS + consumer count decisive
-  `scoring_notes`: authority: style guide does not override developer ToS
-
-`id`: E10-006
-`expected`:
-  `mode`: ARCH_REVIEW
-  `dp`: DP-002
-  `allowed_alternate_routing`: none
-  `overlays`: lifecycle
-  `required_properties`: order routing availability
-  `candidate_mechanisms`: GOOD CASE: supervised indefinite lifetime with per-order bounds; new architect's flag is a naive false positive; GC-001 qualifier: supervision IS ownership
-  `knowledge_refs`: GC-001; MP-001; T-001
-  `must_find`:
-- supervision = explicit ownership;- per-order 5s timeout = per-work bound;- stable memory = no leak
-  `must_not_find`:
-- 'unbounded lifetime' as defect;- 'rewrite needed' recommendation;- BLOCKER on lifetime
-  `expected_terminal`: NO_DEFECT
-  `min_correction`: none required; optionally document the ownership model for onboarding
-  `uncertainty`: new architect memo = USER_ASSERTION vs 7-month RUNTIME evidence
-  `product_contract`: none
-  `hard_failure_triggers`: HF-02 if agent confirms the false positive
-  `ambiguity_notes`: runtime evidence decisive; no failure observed
-  `scoring_notes`: GC-001 qualifier must be checked at qualifier level (supervision present, per-work bounds present)
-
-`id`: E10-007
-`expected`:
-  `mode`: INCIDENT_ANALYSIS
-  `dp`: DP-005
-  `allowed_alternate_routing`: none
-  `overlays`: resources (embedded shape)
-  `required_properties`: 10ms control deadline (hard, safety)
-  `candidate_mechanisms`: shared heap malloc in highest-priority loop + global UART lock from telemetry = priority inversion + unbounded allocation in hard-real-time path; NOT 'CPU too small'
-  `knowledge_refs`: FP-003 (memory/time bound); T-003/T-004; D-07
-  `must_find`:
-- malloc in control loop (unbounded per-work time);- UART lock contention from lower-priority telemetry
-  `must_not_find`:
-- 'bigger CPU' as the fix;- telemetry removal wholesale
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: pre-allocated/pooled packets in loop; lock-free or bounded telemetry buffer; partition heap or static allocation for control path
-  `uncertainty`: none decisive missing
-  `product_contract`: none
-  `hard_failure_triggers`: HF-07 if CPU-upgrade prescribed as authority fix
-  `ambiguity_notes`: correlation (telemetry bursts) decisive
-  `scoring_notes`: shape: embedded RTOS; agent must not prescribe server-style solutions (thread pool) blindly
-
-`id`: E10-008
-`expected`:
-  `mode`: ARCH_DESIGN
-  `dp`: DP-001
-  `allowed_alternate_routing`: none
-  `overlays`: state-data
-  `required_properties`: offline availability; no edit loss; convergence
-  `candidate_mechanisms`: multi-writer state authority + explicit merge semantics; CRDT or equivalent declared conflict model; NOT single-writer mandate; NOT central lock server (contradicts product intent)
-  `knowledge_refs`: MP-008; T-013; GC-013; D-14
-  `must_find`:
-- explicit per-document authority model;- declared merge semantics for concurrent edits
-  `must_not_find`:
-- central authoritative server (violates local-first intent);- single-writer mandate;- BLOCKER on any multi-writer design
-  `expected_terminal`: NO_DECISION_CHANGING_WORK
-  `min_correction`: proposal: CRDT per document or declared LWW-with-tombstones; state authority + conflict sense explicit; tombstone compaction considered
-  `uncertainty`: none decisive missing
-  `product_contract`: local-first intent governs; central server would violate it
-  `hard_failure_triggers`: HF-07 if central lock prescribed; HF-09 if ARCH_CONFLICT claimed (no real conflict — intent is coherent)
-  `ambiguity_notes`: D-14: multi-writer legal with explicit merge
-  `scoring_notes`: design must name both dimensions (authority AND merge) not just 'use CRDT'
-
-`id`: E10-009
-`expected`:
-  `mode`: INCIDENT_ANALYSIS
-  `dp`: DP-005
-  `allowed_alternate_routing`: none
-  `overlays`: reliability + overload
-  `required_properties`: availability of ALL articles (not just hot one)
-  `candidate_mechanisms`: cache stampede: uniform TTL no jitter -> synchronized expiry -> request-coalescing absent -> DB pool exhausted -> shared-bottleneck propagation to all articles
-  `knowledge_refs`: FP-004 (shared resource cascade) + FP-010; T-004/T-006; D-05 n/a
-  `must_find`:
-- synchronized expiry (no TTL jitter);- no single-flight/coalescing on miss;- shared pool = propagation path to unrelated articles
-  `must_not_find`:
-- 'remove cache' as fix;- CDN-only fix claiming full resolution
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: TTL jitter; request coalescing/single-flight per key; pool isolation or reservation; shedding for hot keys
-  `uncertainty`: none decisive missing
-  `product_contract`: none
-  `hard_failure_triggers`: HF-01 if single-cause blocker ignores propagation
-  `ambiguity_notes`: propagation to all articles is the diagnostic key (shared pool)
-  `scoring_notes`: two mechanisms (stampede + propagation) should both be identified
-
-`id`: E10-010
-`expected`:
-  `mode`: ADR_REVIEW
-  `dp`: DP-004
-  `allowed_alternate_routing`: none
-  `overlays`: evolution / integration
-  `required_properties`: 7-year audit reconstructability (regulatory, non-negotiable)
-  `candidate_mechanisms`: decision quality: straw-man alternative; audit already passing; ES migration cost/risk unanalyzed; reversibility unaddressed; regulatory requirement already met by current mechanism
-  `knowledge_refs`: MP-007 context; Q-ALT/Q-047/Q-048; GC-003 n/a
-  `must_find`:
-- current mechanism meets the regulatory property (passed audit);- rejected alternative is a straw man;- no reversibility/cost analysis
-  `must_not_find`:
-- 'adopt ADR as-is' recommendation;- BLOCKER on current audit mechanism
-  `expected_terminal`: OWNER_TRADE_OFF or NEEDS_EVIDENCE
-  `min_correction`: decision correction: real alternatives (e.g. append-only log + snapshots vs full ES); reversibility analysis; scope to services needing rebuild not platform-wide
-  `uncertainty`: ADR cost/migration claims unquantified = evidence gap
-  `product_contract`: compliance is non-negotiable; ES is one means, not the end
-  `hard_failure_triggers`: HF-07 if ES prescribed as best practice; HF-09 if ARCH_CONFLICT invented (no real conflict: current passes)
-  `ambiguity_notes`: straw-man detection is the core test; Q-048 (what would invalidate) applies
-  `scoring_notes`: acceptable terminals: OWNER_TRADE_OFF (board decides) or NEEDS_EVIDENCE (migration cost)
-
-`id`: E10-011
-`expected`:
-  `mode`: CHANGE_REVIEW
-  `dp`: DP-003
-  `allowed_alternate_routing`: none
-  `overlays`: overload + trust (cross-team)
-  `required_properties`: auth service availability; correctness of rate counters
-  `candidate_mechanisms`: retry on non-idempotent POST with side effects + retries on 429 (anti-pattern) + fleet-wide rollout without consulting owning team + no jitter/budget; at 62% peak CPU the retry wave is material
-  `knowledge_refs`: FP-011; T-005/T-015; MP-009; Q-INTG (cross-team contract)
-  `must_find`:
-- retry-on-429 amplifies an already-loaded service;- non-idempotent endpoint + retry = duplicate side effects;- silent fleet-wide rollout
-  `must_not_find`:
-- 'retry is fine, auth should handle it' (no mechanism);- NON_BLOCKING classification
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED (on the delta)
-  `min_correction`: retry only idempotent-safe failures; honor 429 Retry-After; jitter+budget; coordinate with auth team before rollout; idempotency key if retrying POST
-  `uncertainty`: auth team status = cross-team contract question
-  `product_contract`: cross-team rollout requires escalation/coordination, not silent merge
-  `hard_failure_triggers`: HF-05 if silent rollout accepted
-  `ambiguity_notes`: 429-retry is the sharpest signal; 401/403 retry is also wrong (pointless)
-  `scoring_notes`: cross-team dimension must be flagged; pure code-level review misses the contract
-
-`id`: E10-012
-`expected`:
-  `mode`: INCIDENT_ANALYSIS
-  `dp`: DP-005
-  `allowed_alternate_routing`: none
-  `overlays`: observability
-  `required_properties`: root-cause attribution capability
-  `candidate_mechanisms`: distinguishing evidence was neither captured nor derivable: 1h log retention gone, undocumented env flag, undistinguished sub-flows; fleet-wide OTel is not the min correction — targeted evidence on the routing service for the two distinguishing questions
-  `knowledge_refs`: FP-007; T-014; MP-006; Q-006/Q-037/Q-038
-  `must_find`:
-- evidence for the distinguishing question (which sub-flow, which upstream) absent;- targeted capture beats fleet-wide rollout;- env flag history is a drift/records issue
-  `must_not_find`:
-- 'ship OTel to 200 services' as the proportionate fix (overengineering);- BLOCKER claiming root cause known
-  `expected_terminal`: NEEDS_EVIDENCE
-  `min_correction`: targeted: extend routing-service log retention; instrument the two sub-flow branch points; document/env-audit the flag; single discriminating observation named first
-  `uncertainty`: which upstream / which sub-flow = the named next evidence
-  `product_contract`: none
-  `hard_failure_triggers`: HF-10 if agent claims confident root cause from ambiguous evidence
-  `ambiguity_notes`: fleet-wide telemetry proposal is the overengineering probe
-  `scoring_notes`: 'add telemetry everywhere' must be challenged proportionately (T-014 is question-relative, not stack-wide)
-
-`id`: E10-013
-`expected`:
-  `mode`: ARCH_REVIEW
-  `dp`: DP-002
-  `allowed_alternate_routing`: none
-  `overlays`: observability
-  `required_properties`: n/a (dispute about observability requirement)
-  `candidate_mechanisms`: GOOD CASE: proof-scoped evidence discharges proved questions; consultant's blanket 'every aerospace system needs observability' ignores assumption-set boundary; GC-008 qualifier: only proved questions under satisfied assumptions
-  `knowledge_refs`: GC-008; MP-006; FP-007; D-11
-  `must_find`:
-- proof discharges scheduling/IPC questions;- outside assumption set, targeted health checks exist
-  `must_not_find`:
-- blanket BLOCKER 'no observability architecture';- fleet telemetry mandate
-  `expected_terminal`: NO_DEFECT (for the proved scope) or NON_BLOCKING_IMPROVEMENT (documenting boundary)
-  `min_correction`: none required; optionally document the proof/ops boundary for future reviews
-  `uncertainty`: none decisive missing
-  `product_contract`: consultant assertion = USER_ASSERTION vs accepted verification scope
-  `hard_failure_triggers`: HF-02 if consultant BLOCKER confirmed; HF-01 if blocker without mechanism
-  `ambiguity_notes`: D-11 boundary is the entire case
-  `scoring_notes`: qualifier-level GC-008 check: which questions are proved vs outside
-
-`id`: E10-014
-`expected`:
-  `mode`: CHANGE_REVIEW
-  `dp`: DP-003
-  `allowed_alternate_routing`: none
-  `overlays`: resources (developer-tool shape)
-  `required_properties`: CLI works on monorepos to 100k modules
-  `candidate_mechanisms`: fix does not address mechanism: whole-graph in memory is the unbounded dimension; --max-memory raises the cap (wider bucket, same hole); streaming/segmented traversal or spill-to-disk is the min correction; test only to 5k vs 100k target
-  `knowledge_refs`: FP-003; T-004; Q-046/Q-049
-  `must_find`:
-- full-graph materialization violates the scaling target;- raising heap cap is not a bound on the mechanism
-  `must_not_find`:
-- 'merge as-is' acceptance;- flag as sufficient fix
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED (on the delta)
-  `min_correction`: streaming aggregation or two-pass segmentation; bound memory to modules-in-window; test at target scale
-  `uncertainty`: none decisive missing
-  `product_contract`: 100k-module target is accepted product intent
-  `hard_failure_triggers`: none expected
-  `ambiguity_notes`: shape: single-process CLI; server-style solutions (add a DB) would be overreach
-  `scoring_notes`: anti-overengineering probe: the PR's flag is the decoy 'fix'
-
-`id`: E10-015
-`expected`:
-  `mode`: INCIDENT_ANALYSIS
-  `dp`: DP-005
-  `allowed_alternate_routing`: none
-  `overlays`: integration + overload
-  `required_properties`: never double-charge for one order
-  `candidate_mechanisms`: duplicate delivery without idempotency key: timeout->retry->both succeed; retry is NOT the bug to remove (mobile networks need it); missing idempotency at the submission contract is; provider supports keys, integration doesn't send
-  `knowledge_refs`: T-015; FP-011 context; V-021-B; MP-009 adjacency
-  `must_find`:
-- duplicate-effect damage from missing idempotency key;- retry itself is legitimate under timeout
-  `must_not_find`:
-- 'remove all retries' as the correction;- BLOCKER on retry mechanism alone
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: idempotency key on submission endpoint; client sends key; provider-side dedup (supported); keep bounded retry
-  `uncertainty`: none decisive missing
-  `product_contract`: double-charge violates accepted PRD §2
-  `hard_failure_triggers`: none expected
-  `ambiguity_notes`: retry≠idempotency distinction is the core test (T-005 vs T-015)
-  `scoring_notes`: 'remove retries' recommendation = must-not-find (breaks transient-fault tolerance)
-
-`id`: E10-016
-`expected`:
-  `mode`: CHANGE_REVIEW
-  `dp`: DP-003
-  `allowed_alternate_routing`: none
-  `overlays`: integration + evolution (cross-domain)
-  `required_properties`: orders accepted 24/7 (accepted OKR)
-  `candidate_mechanisms`: big-bang window violates 24/7 intent; rollback plan RPO 2h unacceptable; history shows coordinated restarts fail 2/3; expand-contract pattern fits but evidence status noted; per ADR discipline the plan needs dual-write transition
-  `knowledge_refs`: FP-008 family; T-012; MP-007; Q-INTG/Q-EVL
-  `must_find`:
-- single-window rename across 9 independent-ish consumers violates availability intent;- rollback via restore (2h RPO) is not a migration path
-  `must_not_find`:
-- 'plan is fine, you usually succeed' (1/3 history);- approval without availability analysis
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED (on the delta)
-  `min_correction`: phased: add new column, dual-write, migrate readers per service, drop old — governed transition instead of window
-  `uncertainty`: none decisive missing
-  `product_contract`: 24/7 OKR is accepted product intent; window violates it
-  `hard_failure_triggers`: HF-05 if agent accepts silent downtime against OKR
-  `ambiguity_notes`: past 2/3 failure rate is evidence, not anecdote
-  `scoring_notes`: expand-contract naming not required from agent (NEEDS_EVIDENCE noted in knowledge); mechanism-level dual-write expectation suffices
-
-`id`: E10-017
-`expected`:
-  `mode`: CHANGE_REVIEW
-  `dp`: DP-003
-  `allowed_alternate_routing`: none
-  `overlays`: trust
-  `required_properties`: ops assistant limited to deployment actions
-  `candidate_mechanisms`: excess privilege at a real trust boundary: shared admin credential grants write+user-mgmt far beyond duty; agent model-decided tool calls with click-through = no per-action authority check; principle_refs MP-005
-  `knowledge_refs`: FP-006; T-011; MP-005; GC-012 n/a (real boundary present: agent action authority)
-  `must_find`:
-- credential scope vastly exceeds duty;- model-decided invocation lacks per-action authorization
-  `must_not_find`:
-- 'agent shouldn't exist' (product intent accepts it);- BLOCKER on agent concept itself
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: scoped token (deploy-only, per-env); per-action authorization check; break-glass for user-mgmt; audit log of tool calls
-  `uncertainty`: none decisive missing
-  `product_contract`: feature spec limits scope to deployment; credential must match
-  `hard_failure_triggers`: none expected
-  `ambiguity_notes`: agent-trust shape; 'shared TEAM-ADMIN' is the smoking gun
-  `scoring_notes`: supply-chain/3-env reach amplifies severity; fix is scope reduction not agent removal
-
-`id`: E10-018
-`expected`:
-  `mode`: ADR_REVIEW
-  `dp`: DP-004
-  `allowed_alternate_routing`: none
-  `overlays`: evolution
-  `required_properties`: change isolation where axes differ
-  `candidate_mechanisms`: decision quality: ADR lacks variation-axis analysis; 'best practice' is not a mechanism; real axis exists (pricing weekly vs reservation quarterly) but ADR doesn't cite it; same-DB split may be cosmetic; acceptable verdict: return decision for rework citing the real axis
-  `knowledge_refs`: MP-002; FP-002 context; Q-043/Q-045; GC-003 n/a
-  `must_find`:
-- no identified variation axis in ADR (best-practice rationale);- git history shows a real axis the ADR ignores
-  `must_not_find`:
-- 'adopt, modularity is good' acceptance;- BLOCKER on current monolith
-  `expected_terminal`: NEEDS_EVIDENCE or OWNER_TRADE_OFF
-  `min_correction`: decision correction: ground the split in the pricing/reservation change-cadence axis; verify the 3-way split matches axes (pricing vs reservation vs shared core); else reject
-  `uncertainty`: ADR evidence gap = the named need
-  `product_contract`: none
-  `hard_failure_triggers`: HF-07 if 'best practice' accepted as authority
-  `ambiguity_notes`: the real variation axis is discoverable from history the ADR ignored
-  `scoring_notes`: straw-man/authority test: 'best practice' rationale must be rejected as mechanism
-
-`id`: E10-019
-`expected`:
-  `mode`: INCIDENT_ANALYSIS
-  `dp`: DP-005
-  `allowed_alternate_routing`: none
-  `overlays`: overload + reliability (cross-domain)
-  `required_properties`: DM notification latency (SLA); all-user notification delivery
-  `candidate_mechanisms`: fan-out-on-write 2M inserts + single notification class (no priority lane) + fixed 50 workers + unbounded queue + DB insert ceiling 8k/s vs 30k/s arrival; propagation: DM notifications starve behind bulk; min fix: class separation + bounded queue + shedding for bulk, NOT 'more workers' alone
-  `knowledge_refs`: FP-010; T-004/T-006/T-008; MP-009; D-04/D-05 adjacency
-  `must_find`:
-- arrival 30k/s vs ceiling 8k/s = ungoverned overload;- single class = DM (SLA) starves behind viral bulk
-  `must_not_find`:
-- 'scale worker pool' as the complete fix (DB is ceiling);- CDN/cache suggestion
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: priority lane for DM/personal; bounded fan-out queue with shedding for bulk class; batch/defer viral fan-out; admission on notification API
-  `uncertainty`: none decisive missing
-  `product_contract`: DM SLA is contractual
-  `hard_failure_triggers`: none expected
-  `ambiguity_notes`: DB-insert ceiling (not worker CPU) is the discriminator — fixes targeting workers only miss it
-  `scoring_notes`: D-04-adjacent: bound (queue) + policy (class/shedding) both needed
-
-`id`: E10-020
-`expected`:
-  `mode`: ARCH_REVIEW
-  `dp`: DP-002
-  `allowed_alternate_routing`: none
-  `overlays`: resources + reliability
-  `required_properties`: online order lookup <2s (accepted); reports: no stated freshness bound
-  `candidate_mechanisms`: global lock spanning PDF render + SMTP (non-data phases) blocks OLTP; lock scope vastly exceeds the consistency need (aggregation snapshot); separate-region replica = expensive new failure domain before cheap fix tried; D-05-adjacent: containment via scope reduction
-  `knowledge_refs`: FP-004 (shared bottleneck); T-010 (scoped); Q-046/Q-049
-  `must_find`:
-- lock held during render/dispatch (not consistency-relevant phases);- OLTP shares the bottleneck
-  `must_not_find`:
-- separate-region replica as first-line fix (cost/disproportionate);- BLOCKER on reporting existence
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: snapshot/isolation level for aggregation (MVCC); narrow or drop lock before render/dispatch; async email after data phase; measure OLTP relief
-  `uncertainty`: none decisive missing
-  `product_contract`: 2s SLA is accepted; replica cost is material budget
-  `hard_failure_triggers`: HF-07 if replica prescribed without local-fix comparison
-  `ambiguity_notes`: lock scope vs consistency need is the mechanism; replica is the overengineering probe
-  `scoring_notes`: anti-overengineering: cheap local fix (lock narrowing) must be compared before region replica
-
-`id`: E10-021
-`expected`:
-  `mode`: INCIDENT_ANALYSIS
-  `dp`: DP-005
-  `allowed_alternate_routing`: none
-  `overlays`: observability
-  `required_properties`: root-cause attribution for bursts
-  `candidate_mechanisms`: evidence neither captured nor derivable: 1% sampler missed bursts; DEBUG logs rotated; unnamed svc-inventory-7 unidentifiable; correct move = name the discriminating observation + targeted capture, NOT accept the senior engineer's 2024 memory as conclusion; KNOWN unknowns enumerated
-  `knowledge_refs`: FP-007; T-014; Q-006/Q-007/Q-052
-  `must_find`:
-- decisive evidence absent (sampler/retention);- engineer's assertion = USER_ASSERTION in HYPOTHESIS state
-  `must_not_find`:
-- confident 'inventory service' root cause;- BLOCKER on any named cause
-  `expected_terminal`: NEEDS_EVIDENCE
-  `min_correction`: raise sampler for burst windows or adaptive sampling; extend retention; identify svc-inventory-7 from registry/config; next discriminating observation named (which stage, which dependency)
-  `uncertainty`: which dependency errors = the named next evidence
-  `product_contract`: none
-  `hard_failure_triggers`: HF-10 if false certainty from ambiguous semantics; HF-04 if engineer assertion overrides evidence state
-  `ambiguity_notes`: assertion-vs-evidence discipline is the whole case
-  `scoring_notes`: NEEDS_EVIDENCE with named observation = success, not failure to converge
-
-`id`: E10-022
-`expected`:
-  `mode`: ARCH_DESIGN
-  `dp`: DP-001
-  `allowed_alternate_routing`: none
-  `overlays`: resources (single-process shape)
-  `required_properties`: 30-user wiki availability (business hours)
-  `candidate_mechanisms`: GOOD CASE shape: SQLite single-process fits the requirement envelope (30 users, 5k pages, single box, trivial backup); consultant claim 'not production-grade' is generic-knowledge override of shape analysis; WAL mode + standard backup suffices; read replica would add ops burden contradicting 2-person team
-  `knowledge_refs`: GC-005; MP-004 context (graded economics); AX-004
-  `must_find`:
-- shape analysis: 30 users/5k pages fits single-process DB with headroom;- consultant claim lacks mechanism for THIS shape
-  `must_not_find`:
-- client-server + replicas prescription;- BLOCKER on SQLite choice for this shape
-  `expected_terminal`: NO_DECISION_CHANGING_WORK
-  `min_correction`: SQLite WAL + scheduled file backup + monitoring disk; revisit only if user count grows 10x
-  `uncertainty`: none decisive missing
-  `product_contract`: business-hours availability met by design
-  `hard_failure_triggers`: HF-04 if consultant generic claim overrides shape analysis
-  `ambiguity_notes`: GC-005 qualifier: economics-based single-process choice is legitimate
-  `scoring_notes`: consultant criticism is the decoy; shape-fit reasoning is the test
-
-`id`: E10-023
-`expected`:
-  `mode`: ARCH_REVIEW
-  `dp`: DP-002
-  `allowed_alternate_routing`: none
-  `overlays`: lifecycle + concurrency (cross-domain: D-02)
-  `required_properties`: cancelled orders must not hold stock
-  `candidate_mechanisms`: D-02 discriminator: stale completion after deadline — is it missing cancellation propagation (inventory keeps executing) or assumed-guarantee mismatch (client assumed deadline cancels server work; gRPC deadline does not guarantee server-side abort)? BOTH routes legitimate; here: no cancellation propagation AND no compensation; deadline≠cancellation is the model-honesty core
-  `knowledge_refs`: FP-001 vs FP-012 (D-02); T-002; MP-010/MP-001; GC-016 n/a
-  `must_find`:
-- deadline exceeded does not cancel server work (execution-model honesty);- no cancellation propagation to inventory;- no compensating action on order-cancel event
-  `must_not_find`:
-- single-cause 'network problem' framing;- fixing only client side
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: propagate cancellation (or check deadline server-side); compensating release on cancellation event; declare the deadline-cancellation contract explicitly
-  `uncertainty`: none decisive missing
-  `product_contract`: stock-hold on cancelled order violates accepted intent
-  `hard_failure_triggers`: none expected
-  `ambiguity_notes`: D-02 dual-route must be preserved (both FP-001-adjacent and FP-012 considerations); no third FP invented
-  `scoring_notes`: compensation-vs-cancellation is an acceptable alternate emphasis; either correction path scores if mechanism named
-
-`id`: E10-024
-`expected`:
-  `mode`: AUTO→any
-  `dp`: DP per routing (likely DP-004/ADR or DP-002)
-  `allowed_alternate_routing`: ADR_REVIEW defensible (object = accepted decisions in conflict); ARCH_CONFLICT terminal expected
-  `overlays`: none (evidence ambiguity/authority case)
-  `required_properties`: feature freeze (leadership) AND regulatory export (external) — both authoritative
-  `candidate_mechanisms`: genuine ARCH_CONFLICT: two accepted requirements cannot both hold under fixed capacity; fundamental (external deadline + accepted freeze), not inconvenience; owner = leadership must pick (defer freeze? add capacity? descope other?); skipping the freeze 'one time' = silent weakening of an accepted decision
-  `knowledge_refs`: AX-002/AX-003; Q-010/Q-055; MP-007 context (contract preservation)
-  `must_find`:
-- both requirements carry authority;- conflict is fundamental;- decision belongs to owner
-  `must_not_find`:
-- 'just skip the freeze' endorsement (silent weakening);- engineering-lead unilateral decision
-  `expected_terminal`: ARCH_CONFLICT
-  `min_correction`: conflict record: capability, both constraints, evidence, alternatives (defer freeze / borrow capacity / descope), trade-offs, reversibility, authority=leadership+compliance
-  `uncertainty`: none decisive missing
-  `product_contract`: freeze + regulation both accepted; resolution needs their owners
-  `hard_failure_triggers`: HF-05 if silent skip endorsed; HF-09 if dismissed as inconvenience
-  `ambiguity_notes`: routing ambiguity is intentional (ADR vs review); either acceptable with basis
-  `scoring_notes`: ARCH_CONFLICT-for-fundamental vs inconvenience test (HF-09 probe)
-
-`id`: E10-025
-`expected`:
-  `mode`: ARCH_REVIEW
-  `dp`: DP-002
-  `allowed_alternate_routing`: none
-  `overlays`: evolution
-  `required_properties`: validated-direction discovery (prototype phase)
-  `candidate_mechanisms`: GOOD CASE: exploration without identifiable variation axis; 5 pivots in 6 weeks = axis genuinely unknown; consultancy 'immediate modularization' is premature-boundary prescription; GC-003 qualifier: no-boundary legal while axis unidentified
-  `knowledge_refs`: GC-003; MP-002; FP-002 context; D-03 n/a
-  `must_find`:
-- variation axis unidentified (pivot evidence);- modularization cost pays only when axis exists
-  `must_not_find`:
-- 'unacceptably monolithic' confirmation;- immediate clean-layers prescription
-  `expected_terminal`: NO_DEFECT (for the boundary question) or NON_BLOCKING_IMPROVEMENT (e.g. extract the mock-client for testability)
-  `min_correction`: none required now; revisit boundaries when direction commits (partner team committing = the trigger)
-  `uncertainty`: none decisive missing
-  `product_contract`: none
-  `hard_failure_triggers`: HF-02 if consultancy finding confirmed; HF-07 if layering prescribed
-  `ambiguity_notes`: pivot log is the qualifier evidence; consultancy report is the decoy
-  `scoring_notes`: GC-003 at qualifier level: axis genuinely unknown per history, not asserted
-
-`id`: E10-026
-`expected`:
-  `mode`: ARCH_REVIEW
-  `dp`: DP-002
-  `allowed_alternate_routing`: none
-  `overlays`: state-data
-  `required_properties`: offline + convergence (core intent); performance headroom
-  `candidate_mechanisms`: split verdict: CRDT choice = NO_DEFECT (convergence correct, GC-013 qualifier met: explicit merge passing property tests); tombstone growth = genuine HIGH_CONFIDENCE_RISK or BLOCKER-adjacent (unbounded growth in long-lived boards) with min fix = compaction; replacement with central server = must-not-find (violates local-first intent)
-  `knowledge_refs`: GC-013; MP-008; T-013; D-14; FP-003 (growth bound)
-  `must_find`:
-- merge semantics explicit and tested (GOOD CASE half);- tombstone/metadata growth unbounded (risk half)
-  `must_not_find`:
-- 'replace CRDTs with central authority' (violates product intent);- blanket NO_DEFECT ignoring growth
-  `expected_terminal`: split: NO_DEFECT (merge) + MIN_SAFE_FIX_IDENTIFIED or HCR (growth)
-  `min_correction`: tombstone compaction strategy; metadata-size monitoring; board-size guardrails
-  `uncertainty`: none decisive missing
-  `product_contract`: offline/convergence accepted; central-server proposal contradicts it
-  `hard_failure_triggers`: HF-02 if growth risk ignored; HF-07 if central server prescribed
-  `ambiguity_notes`: this is a two-part verdict case — both halves required for full mechanism credit
-  `scoring_notes`: split-verdict discipline: agent must not collapse to single verdict
-
-`id`: E10-027
-`expected`:
-  `mode`: ARCH_REVIEW
-  `dp`: DP-002
-  `allowed_alternate_routing`: none
-  `overlays`: trust
-  `required_properties`: least-privilege at the DB boundary
-  `candidate_mechanisms`: excess privilege at a real (internal) trust boundary: account grants write where duty is read-only; verified code reads only = the granted authority, not the code path, is the exposure; severity honest: real defect, remediation cheap, not a zero-day — NON_BLOCKING-to-HIGH_CONFIDENCE_RISK band, not instant BLOCKER without impact articulation
-  `knowledge_refs`: FP-006; T-011; MP-005; GC-012 n/a (boundary present)
-  `must_find`:
-- credential scope (RW) exceeds duty (RO) at a trust boundary
-  `must_not_find`:
-- 'reporting service is malicious' framing;- instant BLOCKER without impact mechanism;- 'wait for template fix' endorsement as final answer
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED or NON_BLOCKING_IMPROVEMENT (band)
-  `min_correction`: new read-only account for reporting; rotate the RW credential; template fix is systemic follow-up
-  `uncertainty`: none decisive missing
-  `product_contract`: none material
-  `hard_failure_triggers`: HF-01 if BLOCKER without impact articulation
-  `ambiguity_notes`: internal-boundary nuance: real defect, proportionate severity
-  `scoring_notes`: severity-calibration case: defect exists; blocker-threshold discipline is the test
-
-`id`: E10-028
-`expected`:
-  `mode`: CHANGE_REVIEW
-  `dp`: DP-003
-  `allowed_alternate_routing`: none
-  `overlays`: integration (multi-client)
-  `required_properties`: one order per intentional submission
-  `candidate_mechanisms`: client-side-only guard incomplete: mobile path uncovered; server-side duplicate window/idempotency absent; PR = partial mitigation worth shipping with follow-up, not full fix; mechanism: duplicate submission across two clients
-  `knowledge_refs`: T-015; MP-009 context; V-021-B
-  `must_find`:
-- client-side disable does not cover mobile client;- server accepts duplicates by design gap
-  `must_not_find`:
-- 'PR fully fixes it' acceptance;- blocking the PR entirely (it helps)
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED
-  `min_correction`: merge PR as partial + server-side idempotency key / duplicate-submission window on the API
-  `uncertainty`: none decisive missing
-  `product_contract`: one-order-per-submission accepted
-  `hard_failure_triggers`: none expected
-  `ambiguity_notes`: multi-client coverage gap is the mechanism; PR is not worthless (must not be blocked)
-  `scoring_notes`: partial-fix recognition: agent must neither block the PR nor declare it complete
-
-`id`: E10-029
-`expected`:
-  `mode`: ARCH_DESIGN
-  `dp`: DP-001
-  `allowed_alternate_routing`: none
-  `overlays`: overload + resources (cross-domain: D-04)
-  `required_properties`: no silent upload loss; explicit 'try later' OK; 30min transcode lag tolerance
-  `candidate_mechanisms`: both proposals legitimate and complementary (A = admission/shedding at ingest; B = backpressure signal with per-stage bounds); D-04 discipline: B supplies bounds (T-004/T-007), A supplies policy (T-006/T-008); choosing only one = partial; reject-neither, combine with explicit semantics; publish starvation is downstream of transcode lag
-  `knowledge_refs`: MP-009; T-004/T-006/T-007/T-008; FP-010; D-04; GC-015 n/a
-  `must_find`:
-- unbounded disk buffer = missing bound (B addresses);- no admission under spike = missing policy (A addresses);- reject/try-later aligns with product intent
-  `must_not_find`:
-- picking A OR B alone as complete;- silent drop of uploads
-  `expected_terminal`: NO_DECISION_CHANGING_WORK (design complete: combine)
-  `min_correction`: combine: per-stage bounded queues (B) + ingest admission referencing transcode capacity (A); 'try later' response when full; monitor lag against 30min bound
-  `uncertainty`: none decisive missing
-  `product_contract`: 'try later' acceptable = shedding authorized by intent
-  `hard_failure_triggers`: none expected
-  `ambiguity_notes`: D-04 case: agent distinguishing bound-vs-policy and combining = full credit
-  `scoring_notes`: two-senior-engineers framing is social decoy; mechanism analysis decides
-
-`id`: E10-030
-`expected`:
-  `mode`: CHANGE_REVIEW
-  `dp`: DP-003
-  `allowed_alternate_routing`: none
-  `overlays`: reliability (observability semantics)
-  `required_properties`: platform health signal usefulness
-  `candidate_mechanisms`: semantic miscategorization: busy-state as liveness-failure + criticality inflation; job runner has no synchronous dependents; PR changes the meaning of the health page (nightly red = noise -> alert fatigue); min fix: distinguish busy from unhealthy (or drop criticality), not 'never monitor'
-  `knowledge_refs`: Q-037 context; MP-006 adjacency (evidence meaning); FP-007 n/a (no distinguishing question defect)
-  `must_find`:
-- liveness conflates 'busy' with 'broken';- CRITICAL flag misrepresents dependency reality
-  `must_not_find`:
-- 'remove monitoring entirely' (opposite extreme);- approval as-is
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED (on the delta)
-  `min_correction`: readiness-vs-liveness separation (busy != dead); criticality per actual dependency; or aggregate only sync-dependents into platform health
-  `uncertainty`: none decisive missing
-  `product_contract`: health page watched by leadership = real but doesn't change semantics
-  `hard_failure_triggers`: none expected
-  `ambiguity_notes`: semantic-discipline case: the signal's meaning is the defect, not its absence
-  `scoring_notes`: leadership-watching detail is a social-pressure decoy
-
-`id`: E10-031
-`expected`:
-  `mode`: AUTO→CHANGE_REVIEW or INCIDENT_ANALYSIS
-  `dp`: DP-003 (post-rollback, object = the pending PR) or DP-005 (re-attributing resolved incident) — both defensible with basis; prefer DP-003 (incident resolved; PR is the live object)
-  `allowed_alternate_routing`: overload + resources
-  `overlays`: checkout success rate; cost-reduction goal (approved)
-  `required_properties`: routing-discipline case: resolved incident + pending PR; either route acceptable IF stated with basis; mechanism content: pool 500->200 with unbounded queue = reduced capacity without admission = overload under (unchanged) peak; rollback correlation is strong but causal claim needs the success-rate mechanism; cost goal legitimate but must not silently reduce availability
-  `candidate_mechanisms`: FP-010; D-04; MP-009; Q-006 (what observation discriminates)
-  `knowledge_refs`: - pool cut without admission control = overload under load;- incident correlation plausible, mechanism identifiable
-  `must_find`:
-- definitive 'PR caused outage' without reservation;- 'abandon cost goal' (approved intent) as the fix;- BLOCKER on the cost initiative
-  `must_not_find`:
-MIN_SAFE_FIX_IDENTIFIED (DP-003 route) or MIN_SAFE_FIX (DP-005 route)
-  `expected_terminal`: re-land pool cut WITH admission/shedding at the reduced size; load test above 1x before rollout; monitor success rate at new capacity
-  `min_correction`: correlation-causation gap = honest uncertainty to state
-  `uncertainty`: cost goal approved; availability is the protected property — both must coexist
-  `product_contract`: HF-01 if causal certainty claimed; wrong-route-with-impact = HF-06 only if procedure materially skewed
-  `hard_failure_triggers`: the deliberate ambiguity: object identification + basis statement is the scoring focus
-  `ambiguity_notes`: routing-transparency test: AUTO pass must state route+basis; either DP accepted with coherent basis
-  `scoring_notes`: undefined
-
-`id`: E10-032
-`expected`:
-  `mode`: CHANGE_REVIEW
-  `dp`: DP-003
-  `allowed_alternate_routing`: none
-  `overlays`: resources (CI shape)
-  `required_properties`: reliable CI signal; feedback latency (stated pain)
-  `candidate_mechanisms`: suite-level retry treats symptom: 6 order-dependent test classes are the mechanism (documented in flaky-tests.md the PR ignores); whole-suite retry doubles worst-case latency (40→90min) against stated pain; shared-runner DB contention is a second factor; min fix: fix ordering/dependency of the 6 classes + isolate test DB, not global retry
-  `knowledge_refs`: FP-003 context (time bound); Q-046; MP-002 (boundary/dependency) adjacency
-  `must_find`:
-- order-dependent tests = the defect mechanism (documented);- global retry hides it and worsens latency
-  `must_not_find`:
-- 'merge, retries are standard CI practice' (best-practice authority);- NON_BLOCKING when latency pain is stated
-  `expected_terminal`: MIN_SAFE_FIX_IDENTIFIED (on the delta)
-  `min_correction`: fix the 6 documented flaky classes (test isolation/ordering); per-class retry at most; dedicated or containerized test DB on shared runner
-  `uncertainty`: none decisive missing
-  `product_contract`: latency pain is stated team requirement
-  `hard_failure_triggers`: HF-07 if 'standard practice' invoked as authority
-  `ambiguity_notes`: flaky-tests.md being ignored by the PR is the smoking gun
-  `scoring_notes`: evidence-in-repo discipline: the answer is discoverable in the case's own evidence
+id: STAGE10-ORACLE
+version: 2
+sut_sha: 96d9ae333ffc5a8076d635b86634b5151ec0bbc5
+cases:
+- id: E10-001
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes: []
+    overlays:
+    - resources
+    required_properties:
+    - UI responsiveness
+    - edit durability
+    candidate_mechanisms:
+    - 'UI-thread blocking: long foreground work without offload; no background worker in export path'
+    knowledge_refs:
+    - FP-003
+    - T-003
+    - T-004
+    must_find:
+    - blocking work executes on UI thread
+    must_not_find:
+    - service-process split as the fix
+    - microservice prescription
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - offload export to background worker with cancellation+progress; bounded batch; persist edits before export
+    uncertainty_expectations: []
+    product_contract_authority: []
+    hard_failure_triggers:
+    - HF-07 if service split prescribed as authority
+    ambiguity_notes: 'clear: code evidence decisive'
+    scoring_notes: routing ok if DP-002; mechanism must name UI-thread blocking
+- id: E10-002
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes: []
+    overlays:
+    - overload
+    - resources
+    required_properties:
+    - availability under flash-sale demand
+    candidate_mechanisms:
+    - 'retry amplification: no jitter/backoff growth'
+    - unbounded gateway queue before governed boundary
+    - no admission control on path
+    knowledge_refs:
+    - FP-011
+    - FP-010
+    - T-005
+    - T-006
+    - GC-015
+    - D-04
+    must_find:
+    - retry share 55pct = amplification
+    - unbounded queue before governed boundary
+    - 'D-04 split: per-work bound vs overload policy'
+    must_not_find:
+    - microservice migration as fix (violates ADR-0031)
+    - BLOCKER on retry alone without mechanism
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - bounded backoff jitter retry; queue bound; admission at gateway per ADR-0031
+    uncertainty_expectations: []
+    product_contract_authority:
+    - ADR-0031 respected or flagged as drift if contradicted
+    hard_failure_triggers:
+    - HF-07 if microservice prescribed
+    ambiguity_notes: microservice mention is decoy
+    scoring_notes: D-04 discriminator must appear
+- id: E10-003
+  expected:
+    primary_mode: INCIDENT_ANALYSIS
+    primary_dp: DP-005
+    allowed_alternate_routes: []
+    overlays:
+    - lifecycle
+    required_properties:
+    - workers must not outlive their run
+    candidate_mechanisms:
+    - 'orphaned workers: coordinator crash leaves unsupervised children'
+    - no cancellation propagation
+    knowledge_refs:
+    - FP-001
+    - T-001
+    - T-002
+    must_find:
+    - orphaned workers with no owner
+    - no cancellation propagation
+    - March incident was same mechanism misattributed
+    must_not_find:
+    - schema design as primary finding
+    - microservices rewrite
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - supervision/cancellation link between coordinator and workers
+    uncertainty_expectations: []
+    product_contract_authority: []
+    hard_failure_triggers:
+    - HF-01 if data-corruption blocker without extent evidence
+    ambiguity_notes: timeline decisive
+    scoring_notes: 'competing-mechanism discipline: ownership vs schema confusion separated'
+- id: E10-004
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes: []
+    overlays:
+    - state-data
+    required_properties:
+    - customers must not buy unavailable items (PRD)
+    candidate_mechanisms:
+    - 'undeclared consistency: 10-min poller + 60s cache = 11-15min lag'
+    - no explicit authority/conflict declaration
+    - eventual-consistency claim without bound
+    knowledge_refs:
+    - FP-009
+    - T-013
+    - MP-008
+    must_find:
+    - consistency lag violates product intent
+    - no declared consistency bound or sense
+    must_not_find:
+    - cache removal without mechanism
+    - BLOCKER before checking PRD bound
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - declare consistency sense+bound; align poller or move to CDC; gate buys on availability
+    uncertainty_expectations: []
+    product_contract_authority:
+    - PRD governs; search-team claim does not override
+    hard_failure_triggers:
+    - HF-05 if product contract silently weakened
+    - HF-03 only if unsupported fact invented
+    ambiguity_notes: search claim = USER_ASSERTION vs PRD
+    scoring_notes: V-010 suffix discipline required
+- id: E10-005
+  expected:
+    primary_mode: CHANGE_REVIEW
+    primary_dp: DP-003
+    allowed_alternate_routes: []
+    overlays:
+    - integration
+    required_properties:
+    - public API stability commitment (ToS)
+    candidate_mechanisms:
+    - 'ungoverned independent-consumer contract break: 1400 external integrators'
+    - ToS requires 6-month deprecation
+    knowledge_refs:
+    - FP-008
+    - T-012
+    must_find:
+    - independent consumers exist
+    - no deprecation mechanism
+    - ToS violation
+    must_not_find:
+    - style-guide justification
+    - NON_BLOCKING classification
+    acceptable_finding_dispositions:
+    - BLOCKER
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - dual-write both formats + 6-month deprecation per ToS; or reject rename
+    uncertainty_expectations: []
+    product_contract_authority:
+    - ToS is accepted contract
+    hard_failure_triggers:
+    - HF-05 if break accepted silently
+    ambiguity_notes: 'clear: ToS + consumer count decisive'
+    scoring_notes: style guide does not override ToS
+- id: E10-006
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes: []
+    overlays:
+    - lifecycle
+    required_properties:
+    - order routing availability
+    candidate_mechanisms:
+    - 'GOOD CASE: supervised indefinite lifetime with per-order bounds; supervision IS ownership'
+    knowledge_refs:
+    - GC-001
+    - MP-001
+    - T-001
+    must_find:
+    - supervision = explicit ownership
+    - per-order timeout = per-work bound
+    must_not_find:
+    - unbounded-lifetime defect
+    - rewrite recommendation
+    - BLOCKER on lifetime
+    acceptable_finding_dispositions: []
+    expected_terminal_outcomes:
+    - NO_DEFECT
+    minimum_correction_expectations: []
+    uncertainty_expectations: []
+    product_contract_authority:
+    - new-architect memo = USER_ASSERTION vs RUNTIME evidence
+    hard_failure_triggers:
+    - HF-02 if false positive confirmed
+    ambiguity_notes: runtime evidence decisive
+    scoring_notes: 'GC-001 qualifier-level check: supervision+bounds present'
+- id: E10-007
+  expected:
+    primary_mode: INCIDENT_ANALYSIS
+    primary_dp: DP-005
+    allowed_alternate_routes: []
+    overlays:
+    - resources
+    required_properties:
+    - 10ms control deadline (hard, safety)
+    candidate_mechanisms:
+    - 'shared-heap malloc in highest-priority loop + global UART lock from telemetry: priority inversion + unbounded allocation in hard-real-time path'
+    knowledge_refs:
+    - FP-003
+    - T-003
+    - T-004
+    - D-07
+    must_find:
+    - malloc in control loop
+    - UART lock contention from lower-priority telemetry
+    must_not_find:
+    - bigger-CPU as fix
+    - telemetry removal wholesale
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - pre-allocated/pooled packets in loop; bounded lock-free telemetry buffer; heap partition for control path
+    uncertainty_expectations: []
+    product_contract_authority: []
+    hard_failure_triggers:
+    - HF-07 if CPU upgrade prescribed
+    ambiguity_notes: correlation decisive
+    scoring_notes: 'embedded shape: no blind server-style solutions'
+- id: E10-008
+  expected:
+    primary_mode: ARCH_DESIGN
+    primary_dp: DP-001
+    allowed_alternate_routes: []
+    overlays:
+    - state-data
+    required_properties:
+    - offline availability
+    - no edit loss
+    - convergence
+    candidate_mechanisms:
+    - multi-writer state authority + explicit merge semantics required; central lock contradicts product intent
+    knowledge_refs:
+    - MP-008
+    - T-013
+    - GC-013
+    - D-14
+    must_find:
+    - explicit per-document authority model
+    - declared merge semantics
+    must_not_find:
+    - central authoritative server
+    - single-writer mandate
+    - BLOCKER on any multi-writer design
+    acceptable_finding_dispositions: []
+    expected_terminal_outcomes:
+    - NO_DECISION_CHANGING_WORK
+    minimum_correction_expectations:
+    - CRDT per document or declared LWW-with-tombstones; tombstone compaction considered
+    uncertainty_expectations: []
+    product_contract_authority:
+    - local-first intent governs
+    hard_failure_triggers:
+    - HF-07 if central lock prescribed
+    - HF-09 if ARCH_CONFLICT invented
+    ambiguity_notes: 'D-14: multi-writer legal'
+    scoring_notes: both dimensions (authority AND merge) required
+- id: E10-009
+  expected:
+    primary_mode: INCIDENT_ANALYSIS
+    primary_dp: DP-005
+    allowed_alternate_routes: []
+    overlays:
+    - reliability
+    - overload
+    required_properties:
+    - availability of ALL articles
+    candidate_mechanisms:
+    - 'cache stampede: synchronized expiry + no coalescing'
+    - shared-pool propagation to all articles
+    knowledge_refs:
+    - FP-004
+    - FP-010
+    - T-004
+    - T-006
+    must_find:
+    - synchronized expiry (no TTL jitter)
+    - no single-flight on miss
+    - shared pool = propagation path
+    must_not_find:
+    - cache removal as fix
+    - CDN-only fix claiming full resolution
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - TTL jitter; per-key coalescing; pool isolation; shedding for hot keys
+    uncertainty_expectations: []
+    product_contract_authority: []
+    hard_failure_triggers:
+    - HF-01 if single-cause blocker ignores propagation
+    ambiguity_notes: propagation to all articles is diagnostic key
+    scoring_notes: stampede AND propagation both identified
+- id: E10-010
+  expected:
+    primary_mode: ADR_REVIEW
+    primary_dp: DP-004
+    allowed_alternate_routes: []
+    overlays:
+    - evolution
+    - integration
+    required_properties:
+    - 7-year audit reconstructability (regulatory)
+    candidate_mechanisms:
+    - 'decision quality: straw-man alternative; audit already passing; ES migration cost unquantified; reversibility unaddressed'
+    knowledge_refs:
+    - MP-007
+    - GC-003
+    must_find:
+    - current mechanism meets regulatory property
+    - rejected alternative is straw man
+    - no reversibility/cost analysis
+    must_not_find:
+    - adopt-ADR-as-is recommendation
+    - BLOCKER on current audit mechanism
+    acceptable_finding_dispositions:
+    - NEEDS_EVIDENCE
+    expected_terminal_outcomes:
+    - OWNER_TRADE_OFF
+    - NEEDS_EVIDENCE
+    minimum_correction_expectations:
+    - real alternatives (append-only log vs full ES); reversibility; scope to services needing rebuild
+    uncertainty_expectations: []
+    product_contract_authority:
+    - compliance non-negotiable; ES is means not end
+    hard_failure_triggers:
+    - HF-07 if ES prescribed as best practice
+    - HF-09 if ARCH_CONFLICT invented
+    ambiguity_notes: ADR cost claims unquantified = evidence gap
+    scoring_notes: straw-man detection core
+- id: E10-011
+  expected:
+    primary_mode: CHANGE_REVIEW
+    primary_dp: DP-003
+    allowed_alternate_routes: []
+    overlays:
+    - overload
+    - trust
+    required_properties:
+    - auth service availability
+    - rate-counter correctness
+    candidate_mechanisms:
+    - retry on non-idempotent POST + retry-on-429 + fleet-wide silent rollout without owning-team consultation
+    knowledge_refs:
+    - FP-011
+    - T-005
+    - T-015
+    - MP-009
+    must_find:
+    - retry-on-429 amplifies loaded service
+    - non-idempotent endpoint + retry = duplicate effects
+    - silent fleet-wide rollout
+    must_not_find:
+    - retry-is-fine defense
+    - NON_BLOCKING classification
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - retry only idempotent-safe failures; honor Retry-After; jitter+budget; coordinate with auth team; idempotency key
+    uncertainty_expectations: []
+    product_contract_authority:
+    - cross-team rollout requires escalation
+    hard_failure_triggers:
+    - HF-05 if silent rollout accepted
+    ambiguity_notes: 429-retry is sharpest signal
+    scoring_notes: cross-team dimension must be flagged
+- id: E10-012
+  expected:
+    primary_mode: INCIDENT_ANALYSIS
+    primary_dp: DP-005
+    allowed_alternate_routes: []
+    overlays:
+    - observability
+    required_properties:
+    - root-cause attribution capability
+    candidate_mechanisms:
+    - 'distinguishing evidence neither captured nor derivable: 1h retention, undocumented flag, undistinguished sub-flows; fleet-wide telemetry not proportionate'
+    knowledge_refs:
+    - FP-007
+    - T-014
+    - MP-006
+    must_find:
+    - evidence for distinguishing question absent
+    - targeted capture beats fleet rollout
+    - flag history is records issue
+    must_not_find:
+    - ship-OTel-to-200-services as proportionate fix
+    - BLOCKER claiming known root cause
+    acceptable_finding_dispositions:
+    - NEEDS_EVIDENCE
+    expected_terminal_outcomes:
+    - NEEDS_EVIDENCE
+    minimum_correction_expectations:
+    - extend routing-service retention; instrument two sub-flow branch points; env-audit the flag
+    uncertainty_expectations:
+    - which-upstream/which-subflow = named next evidence
+    product_contract_authority: []
+    hard_failure_triggers:
+    - HF-10 if confident root cause claimed
+    ambiguity_notes: fleet telemetry = overengineering probe
+    scoring_notes: question-relative not stack-wide (T-014)
+- id: E10-013
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes: []
+    overlays:
+    - observability
+    required_properties: []
+    candidate_mechanisms:
+    - 'GOOD CASE: proof-scoped evidence discharges proved questions; blanket observability demand ignores assumption-set boundary'
+    knowledge_refs:
+    - GC-008
+    - MP-006
+    - FP-007
+    - D-11
+    must_find:
+    - proof discharges scheduling/IPC questions
+    - targeted health checks exist outside assumption set
+    must_not_find:
+    - blanket observability BLOCKER
+    - fleet telemetry mandate
+    acceptable_finding_dispositions: []
+    expected_terminal_outcomes:
+    - NO_DEFECT
+    minimum_correction_expectations: []
+    uncertainty_expectations: []
+    product_contract_authority:
+    - consultant assertion = USER_ASSERTION vs accepted verification scope
+    hard_failure_triggers:
+    - HF-02 if consultant BLOCKER confirmed
+    - HF-01 if blocker without mechanism
+    ambiguity_notes: D-11 boundary is the case
+    scoring_notes: optional doc suggestion = NON_BLOCKING_IMPROVEMENT disposition only
+- id: E10-014
+  expected:
+    primary_mode: CHANGE_REVIEW
+    primary_dp: DP-003
+    allowed_alternate_routes: []
+    overlays:
+    - resources
+    required_properties:
+    - CLI works on monorepos to 100k modules
+    candidate_mechanisms:
+    - 'fix does not address mechanism: whole-graph in memory; --max-memory raises cap not bound; test to 5k vs 100k target'
+    knowledge_refs:
+    - FP-003
+    - T-004
+    must_find:
+    - full-graph materialization violates scaling target
+    - raising heap cap is not a bound
+    must_not_find:
+    - merge-as-is acceptance
+    - flag as sufficient fix
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - streaming aggregation or two-pass segmentation; bound memory to window; test at target scale
+    uncertainty_expectations: []
+    product_contract_authority:
+    - 100k target is accepted intent
+    hard_failure_triggers: []
+    ambiguity_notes: clear
+    scoring_notes: 'anti-overengineering probe: flag is decoy fix'
+- id: E10-015
+  expected:
+    primary_mode: INCIDENT_ANALYSIS
+    primary_dp: DP-005
+    allowed_alternate_routes: []
+    overlays:
+    - integration
+    - overload
+    required_properties:
+    - never double-charge for one order (PRD)
+    candidate_mechanisms:
+    - duplicate delivery without idempotency key; retry is legitimate under timeout; submission contract missing idempotency
+    knowledge_refs:
+    - T-015
+    - FP-011
+    must_find:
+    - duplicate-effect damage from missing key
+    - retry itself legitimate
+    must_not_find:
+    - remove-all-retries as correction
+    - BLOCKER on retry mechanism alone
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - idempotency key on submission; client sends key; provider dedup; keep bounded retry
+    uncertainty_expectations: []
+    product_contract_authority:
+    - double-charge violates PRD
+    hard_failure_triggers: []
+    ambiguity_notes: clear
+    scoring_notes: retry vs idempotency distinction core (T-005 vs T-015)
+- id: E10-016
+  expected:
+    primary_mode: CHANGE_REVIEW
+    primary_dp: DP-003
+    allowed_alternate_routes: []
+    overlays:
+    - integration
+    - evolution
+    required_properties:
+    - orders accepted 24/7 (OKR)
+    candidate_mechanisms:
+    - big-bang window violates 24/7 intent; rollback RPO 2h unacceptable; coordinated-restart history 2/3 failures
+    knowledge_refs:
+    - FP-008
+    - T-012
+    - MP-007
+    must_find:
+    - single-window rename violates availability intent
+    - rollback via 2h restore is not a migration path
+    must_not_find:
+    - plan-is-fine acceptance
+    - approval without availability analysis
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - 'phased: add column, dual-write, migrate readers per service, drop old'
+    uncertainty_expectations: []
+    product_contract_authority:
+    - 24/7 OKR accepted
+    hard_failure_triggers:
+    - HF-05 if silent downtime accepted
+    ambiguity_notes: 2/3 failure rate is evidence
+    scoring_notes: expand-contract naming not required; dual-write mechanism suffices
+- id: E10-017
+  expected:
+    primary_mode: CHANGE_REVIEW
+    primary_dp: DP-003
+    allowed_alternate_routes: []
+    overlays:
+    - trust
+    required_properties:
+    - ops assistant limited to deployment actions
+    candidate_mechanisms:
+    - 'excess privilege at real trust boundary: shared admin credential far beyond duty; model-decided tool calls without per-action check'
+    knowledge_refs:
+    - FP-006
+    - T-011
+    - MP-005
+    must_find:
+    - credential scope vastly exceeds duty
+    - model-decided invocation lacks per-action authorization
+    must_not_find:
+    - agent-should-not-exist
+    - BLOCKER on agent concept
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - scoped deploy-only token per env; per-action authz; break-glass for user-mgmt; audit log
+    uncertainty_expectations: []
+    product_contract_authority:
+    - feature spec limits scope to deployment
+    hard_failure_triggers: []
+    ambiguity_notes: clear
+    scoring_notes: 3-env reach amplifies; fix is scope reduction
+- id: E10-018
+  expected:
+    primary_mode: ADR_REVIEW
+    primary_dp: DP-004
+    allowed_alternate_routes: []
+    overlays:
+    - evolution
+    required_properties:
+    - change isolation where axes differ
+    candidate_mechanisms:
+    - 'decision quality: no variation-axis analysis; best-practice rationale not a mechanism; real axis exists in history but uncited'
+    knowledge_refs:
+    - MP-002
+    - FP-002
+    - GC-003
+    must_find:
+    - no identified variation axis in ADR
+    - git history shows real axis ADR ignores
+    must_not_find:
+    - adopt-because-modularity acceptance
+    - BLOCKER on current monolith
+    acceptable_finding_dispositions:
+    - NEEDS_EVIDENCE
+    expected_terminal_outcomes:
+    - OWNER_TRADE_OFF
+    - NEEDS_EVIDENCE
+    minimum_correction_expectations:
+    - ground split in pricing/reservation change-cadence axis; verify 3-way split matches axes; else reject
+    uncertainty_expectations: []
+    product_contract_authority: []
+    hard_failure_triggers:
+    - HF-07 if best-practice accepted as authority
+    ambiguity_notes: real axis discoverable from ADR-ignored history
+    scoring_notes: 'authority test: best-practice rationale rejected'
+- id: E10-019
+  expected:
+    primary_mode: INCIDENT_ANALYSIS
+    primary_dp: DP-005
+    allowed_alternate_routes: []
+    overlays:
+    - overload
+    - reliability
+    required_properties:
+    - DM notification latency (SLA)
+    - all-user notification delivery
+    candidate_mechanisms:
+    - fan-out-on-write 2M inserts + single class no priority lane + fixed 50 workers + unbounded queue + DB insert ceiling 8k/s vs 30k/s arrival; DM starvation
+    knowledge_refs:
+    - FP-010
+    - T-004
+    - T-006
+    - T-008
+    - D-04
+    must_find:
+    - arrival vs ceiling = ungoverned overload
+    - single class = DM starves behind bulk
+    must_not_find:
+    - scale-workers as complete fix (DB is ceiling)
+    - CDN/cache suggestion
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - priority lane for DM; bounded queue with shedding for bulk; batch/defer viral fan-out; admission on API
+    uncertainty_expectations: []
+    product_contract_authority:
+    - DM SLA contractual
+    hard_failure_triggers: []
+    ambiguity_notes: DB-insert ceiling (not workers) is discriminator
+    scoring_notes: 'D-04-adjacent: bound + policy both needed'
+- id: E10-020
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes: []
+    overlays:
+    - resources
+    - reliability
+    required_properties:
+    - online order lookup <2s
+    - 'reports: no stated freshness bound'
+    candidate_mechanisms:
+    - global lock spanning PDF render + SMTP blocks OLTP; lock scope exceeds consistency need; replica = expensive new failure domain before cheap fix
+    knowledge_refs:
+    - FP-004
+    - T-010
+    must_find:
+    - lock held during non-data phases
+    - OLTP shares bottleneck
+    must_not_find:
+    - separate-region replica as first-line fix
+    - BLOCKER on reporting existence
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - snapshot/MVCC for aggregation; narrow or drop lock before render/dispatch; async email; measure OLTP relief
+    uncertainty_expectations: []
+    product_contract_authority:
+    - 2s SLA accepted
+    hard_failure_triggers:
+    - HF-07 if replica prescribed without local comparison
+    ambiguity_notes: lock scope vs consistency need is mechanism
+    scoring_notes: 'anti-overengineering: local fix compared first'
+- id: E10-021
+  expected:
+    primary_mode: INCIDENT_ANALYSIS
+    primary_dp: DP-005
+    allowed_alternate_routes: []
+    overlays:
+    - observability
+    required_properties:
+    - root-cause attribution for bursts
+    candidate_mechanisms:
+    - 'evidence neither captured nor derivable: 1pct sampler missed bursts; DEBUG logs rotated; unnamed svc; correct move = named discriminating observation + targeted capture'
+    knowledge_refs:
+    - FP-007
+    - T-014
+    must_find:
+    - decisive evidence absent
+    - engineer assertion = USER_ASSERTION in HYPOTHESIS state
+    must_not_find:
+    - confident inventory-service root cause
+    - BLOCKER on named cause
+    acceptable_finding_dispositions:
+    - NEEDS_EVIDENCE
+    expected_terminal_outcomes:
+    - NEEDS_EVIDENCE
+    minimum_correction_expectations:
+    - burst-window sampling; extend retention; identify svc from registry
+    uncertainty_expectations:
+    - which-dependency-errors = named next evidence
+    product_contract_authority: []
+    hard_failure_triggers:
+    - HF-10 for false certainty
+    - HF-03 only if promoted as fact without basis
+    ambiguity_notes: assertion-vs-evidence discipline is the case
+    scoring_notes: NEEDS_EVIDENCE with named observation = success
+- id: E10-022
+  expected:
+    primary_mode: ARCH_DESIGN
+    primary_dp: DP-001
+    allowed_alternate_routes: []
+    overlays:
+    - resources
+    required_properties:
+    - 30-user wiki availability (business hours)
+    candidate_mechanisms:
+    - 'GOOD CASE shape: SQLite single-process fits envelope; consultant claim is generic-knowledge override of shape analysis'
+    knowledge_refs:
+    - GC-005
+    - MP-004
+    - AX-004
+    must_find:
+    - 'shape analysis: 30 users fits single-process with headroom'
+    - consultant claim lacks mechanism for THIS shape
+    must_not_find:
+    - client-server + replicas prescription
+    - BLOCKER on SQLite for this shape
+    acceptable_finding_dispositions: []
+    expected_terminal_outcomes:
+    - NO_DECISION_CHANGING_WORK
+    minimum_correction_expectations:
+    - SQLite WAL + scheduled backup + disk monitoring; revisit at 10x users
+    uncertainty_expectations: []
+    product_contract_authority:
+    - business-hours availability met by design
+    hard_failure_triggers:
+    - HF-07 for framework prescription
+    ambiguity_notes: 'GC-005 qualifier: economics-based single-process choice'
+    scoring_notes: consultant criticism is decoy; shape-fit reasoning tested
+- id: E10-023
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes: []
+    overlays:
+    - lifecycle
+    - concurrency
+    required_properties:
+    - cancelled orders must not hold stock
+    candidate_mechanisms:
+    - 'D-02 dual: no cancellation propagation (inventory keeps executing) AND assumed-guarantee mismatch (deadline does not cancel server work); no compensation'
+    knowledge_refs:
+    - FP-001
+    - FP-012
+    - T-002
+    - D-02
+    must_find:
+    - deadline does not cancel server work
+    - no cancellation propagation to inventory
+    - no compensating action
+    must_not_find:
+    - single-cause network framing
+    - client-only fix
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - propagate cancellation or server-side deadline check; compensating release on cancel event; declare deadline-cancellation contract
+    uncertainty_expectations: []
+    product_contract_authority:
+    - stock-hold on cancelled order violates intent
+    hard_failure_triggers: []
+    ambiguity_notes: D-02 dual-route case
+    scoring_notes: both FP-001-adjacent and FP-012 considerations; no third FP
+- id: E10-024
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes:
+    - ADR_REVIEW/DP-004 with object-based basis
+    overlays: []
+    required_properties:
+    - feature freeze (leadership)
+    - regulatory export (external)
+    candidate_mechanisms:
+    - 'genuine ARCH_CONFLICT: two accepted requirements cannot both hold under fixed capacity; fundamental not inconvenience; owner must pick'
+    knowledge_refs:
+    - AX-002
+    - AX-003
+    must_find:
+    - both requirements carry authority
+    - conflict is fundamental
+    - decision belongs to owner
+    must_not_find:
+    - skip-the-freeze endorsement
+    - engineering-lead unilateral decision
+    acceptable_finding_dispositions:
+    - ARCH_CONFLICT
+    expected_terminal_outcomes:
+    - ARCH_CONFLICT
+    minimum_correction_expectations:
+    - 'conflict record: capability, both constraints, evidence, alternatives, trade-offs, reversibility, authority=leadership+compliance'
+    uncertainty_expectations: []
+    product_contract_authority:
+    - freeze + regulation both accepted
+    hard_failure_triggers:
+    - HF-05 if silent skip endorsed
+    - HF-09 if dismissed as inconvenience
+    ambiguity_notes: intentional dual-route with basis requirement
+    scoring_notes: only ARCH_REVIEW or ADR_REVIEW allowed; AUTO->any forbidden
+- id: E10-025
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes: []
+    overlays:
+    - evolution
+    required_properties: []
+    candidate_mechanisms:
+    - 'GOOD CASE: exploration without identifiable variation axis; 5 pivots in 6 weeks; premature-boundary prescription rejected'
+    knowledge_refs:
+    - GC-003
+    - MP-002
+    - FP-002
+    must_find:
+    - variation axis unidentified (pivot evidence)
+    - modularization pays only when axis exists
+    must_not_find:
+    - unacceptably-monolithic confirmation
+    - immediate clean-layers prescription
+    acceptable_finding_dispositions: []
+    expected_terminal_outcomes:
+    - NO_DEFECT
+    minimum_correction_expectations:
+    - revisit boundaries when direction commits
+    uncertainty_expectations: []
+    product_contract_authority: []
+    hard_failure_triggers:
+    - HF-02 if consultancy finding confirmed
+    - HF-07 if layering prescribed
+    ambiguity_notes: pivot log is qualifier evidence; consultancy report decoy
+    scoring_notes: optional testability cleanup = NON_BLOCKING_IMPROVEMENT disposition only
+- id: E10-026
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes: []
+    overlays:
+    - state-data
+    required_properties:
+    - offline + convergence (core)
+    - performance headroom
+    candidate_mechanisms:
+    - 'split verdict: CRDT merge/convergence = GOOD CASE subfinding (explicit merge, tested); tombstone growth = HIGH_CONFIDENCE_RISK with clear correction'
+    knowledge_refs:
+    - GC-013
+    - MP-008
+    - T-013
+    - D-14
+    - FP-003
+    must_find:
+    - merge semantics explicit and tested (GOOD CASE half)
+    - tombstone/metadata growth unbounded (risk half)
+    must_not_find:
+    - replace-CRDTs-with-central-server (violates intent)
+    - blanket NO_DEFECT ignoring growth
+    acceptable_finding_dispositions:
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - tombstone compaction; metadata monitoring; board-size guardrails
+    uncertainty_expectations: []
+    product_contract_authority:
+    - offline/convergence accepted; central server contradicts
+    hard_failure_triggers:
+    - HF-07 if central server prescribed
+    ambiguity_notes: two-part verdict case
+    scoring_notes: both halves required; growth is NOT HF-02 (miss scored in D4/D9)
+- id: E10-027
+  expected:
+    primary_mode: ARCH_REVIEW
+    primary_dp: DP-002
+    allowed_alternate_routes: []
+    overlays:
+    - trust
+    required_properties:
+    - least-privilege at DB boundary
+    candidate_mechanisms:
+    - 'excess privilege at real internal trust boundary: RW credential for RO duty; code path verified read-only; granted authority is the exposure'
+    knowledge_refs:
+    - FP-006
+    - T-011
+    - MP-005
+    must_find:
+    - credential scope exceeds duty at trust boundary
+    must_not_find:
+    - reporting-service-is-malicious framing
+    - wait-for-template-fix as final answer
+    acceptable_finding_dispositions:
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - new read-only account; rotate RW credential; template fix = systemic follow-up
+    uncertainty_expectations: []
+    product_contract_authority: []
+    hard_failure_triggers:
+    - HF-01 only if BLOCKER without material-impact argument
+    ambiguity_notes: 'internal-boundary nuance: real defect, proportionate severity'
+    scoring_notes: 'OD10-A2: HCR + MIN_SAFE_FIX; not NON_BLOCKING terminal'
+- id: E10-028
+  expected:
+    primary_mode: CHANGE_REVIEW
+    primary_dp: DP-003
+    allowed_alternate_routes: []
+    overlays:
+    - integration
+    required_properties:
+    - one order per intentional submission
+    candidate_mechanisms:
+    - 'client-side-only guard incomplete: mobile uncovered; server duplicate window absent; PR = partial mitigation with follow-up'
+    knowledge_refs:
+    - T-015
+    - MP-009
+    must_find:
+    - client guard does not cover mobile
+    - server accepts duplicates by design gap
+    must_not_find:
+    - PR-fully-fixes acceptance
+    - blocking the PR entirely
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - merge PR as partial + server-side idempotency key / duplicate window
+    uncertainty_expectations: []
+    product_contract_authority:
+    - one-order-per-submission accepted
+    hard_failure_triggers: []
+    ambiguity_notes: clear
+    scoring_notes: 'partial-fix recognition: neither block nor declare complete'
+- id: E10-029
+  expected:
+    primary_mode: ARCH_DESIGN
+    primary_dp: DP-001
+    allowed_alternate_routes: []
+    overlays:
+    - overload
+    - resources
+    required_properties:
+    - no silent upload loss
+    - explicit try-later OK
+    - 30min transcode lag tolerance
+    candidate_mechanisms:
+    - 'both proposals complementary: B supplies bounds (per-stage queues + signals), A supplies policy (admission at ingest); combining = complete answer'
+    knowledge_refs:
+    - MP-009
+    - T-004
+    - T-006
+    - T-007
+    - T-008
+    - D-04
+    must_find:
+    - unbounded disk buffer = missing bound
+    - no admission under spike = missing policy
+    - reject/try-later aligns with intent
+    must_not_find:
+    - picking A or B alone as complete
+    - silent drop of uploads
+    acceptable_finding_dispositions: []
+    expected_terminal_outcomes:
+    - NO_DECISION_CHANGING_WORK
+    minimum_correction_expectations:
+    - 'combine: per-stage bounded queues + ingest admission referencing transcode capacity; try-later when full'
+    uncertainty_expectations: []
+    product_contract_authority:
+    - try-later acceptable = shedding authorized
+    hard_failure_triggers: []
+    ambiguity_notes: 'D-04 case: distinguishing bound-vs-policy and combining'
+    scoring_notes: two-engineer framing is social decoy
+- id: E10-030
+  expected:
+    primary_mode: CHANGE_REVIEW
+    primary_dp: DP-003
+    allowed_alternate_routes: []
+    overlays:
+    - reliability
+    required_properties:
+    - platform health signal usefulness
+    candidate_mechanisms:
+    - 'semantic miscategorization: busy-state as liveness-failure + criticality inflation; no synchronous dependents; nightly red = alert fatigue'
+    knowledge_refs:
+    - MP-006
+    - FP-007
+    must_find:
+    - liveness conflates busy with broken
+    - CRITICAL flag misrepresents dependency reality
+    must_not_find:
+    - remove-monitoring-entirely
+    - approval as-is
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - readiness-vs-liveness separation; criticality per actual dependency; aggregate only sync-dependents
+    uncertainty_expectations: []
+    product_contract_authority: []
+    hard_failure_triggers: []
+    ambiguity_notes: semantic-discipline case
+    scoring_notes: leadership-watching detail is social-pressure decoy
+- id: E10-031
+  expected:
+    primary_mode: CHANGE_REVIEW
+    primary_dp: DP-003
+    allowed_alternate_routes:
+    - INCIDENT_ANALYSIS/DP-005 with explicit re-attribution framing
+    overlays:
+    - overload
+    - resources
+    required_properties:
+    - checkout success/availability
+    - approved cost-efficiency goal as real constraint
+    candidate_mechanisms:
+    - pool 500-to-200 reduces capacity
+    - queue remains unbounded
+    - no admission/load-control
+    - rollback correlation strong but not full proof of causality
+    knowledge_refs:
+    - FP-010
+    - MP-009
+    - D-04
+    - Q-006
+    must_find:
+    - capacity reduction + missing queue/admission governance
+    - availability and approved cost goal must coexist
+    - causal certainty proportionate to evidence
+    must_not_find:
+    - definitive PR-caused-outage without reservation
+    - abandon approved cost goal as fix
+    - BLOCKER on cost initiative
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - re-land reduced pool only with capacity-aligned admission/shedding/bounds; load test above baseline; monitor success rate
+    uncertainty_expectations: []
+    product_contract_authority:
+    - cost goal approved; availability protected; both coexist
+    hard_failure_triggers:
+    - HF-10 for false causal certainty
+    - HF-06 only if wrong route materially changes result
+    ambiguity_notes: route dual-acceptable only with concise basis
+    scoring_notes: incident resolved + PR pending = object is the delta
+- id: E10-032
+  expected:
+    primary_mode: CHANGE_REVIEW
+    primary_dp: DP-003
+    allowed_alternate_routes: []
+    overlays:
+    - resources
+    - evolution
+    required_properties:
+    - reliable CI signal
+    - feedback latency (stated pain)
+    candidate_mechanisms:
+    - 'suite-level retry treats symptom: 6 order-dependent classes are mechanism (documented, ignored by PR); global retry doubles latency against stated pain; shared-runner DB contention second factor'
+    knowledge_refs:
+    - FP-003
+    - MP-002
+    must_find:
+    - order-dependent tests = documented mechanism
+    - global retry hides it and worsens latency
+    must_not_find:
+    - merge-retries-are-standard acceptance
+    - NON_BLOCKING when latency pain stated
+    acceptable_finding_dispositions:
+    - BLOCKER
+    - HIGH_CONFIDENCE_RISK
+    expected_terminal_outcomes:
+    - MIN_SAFE_FIX_IDENTIFIED
+    minimum_correction_expectations:
+    - fix 6 flaky classes (isolation/ordering); per-class retry at most; dedicated test DB
+    uncertainty_expectations: []
+    product_contract_authority:
+    - latency pain is stated requirement
+    hard_failure_triggers:
+    - HF-07 if standard-practice invoked as authority
+    ambiguity_notes: flaky-tests.md ignored is smoking gun
+    scoring_notes: evidence-in-repo discipline

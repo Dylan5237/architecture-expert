@@ -85,3 +85,41 @@ Every entry re-checked for two-acceptable-conclusion situations: encoded as allo
 3. **OD-3 Runner protocol detail**: authorize the runner-protocol author to forbid supplementary context retrieval beyond the SUT repo (limitation 3) — this is a Phase C document not yet written; the constraint should be mandatory, and the CA should confirm.
 
 No other decisions: suite structure, rubric, hard failures, and exposure rules follow Issue #27 + task contract directly.
+
+---
+
+# Remediation Addendum (Phase A pass 2, 2026-09-22)
+
+Status: REMEDIATED_AWAITING_GATE (was HOLD_PENDING_REMEDIATION). All CA10-A1..A11 findings applied on top of 51c4cc3.
+
+## Remediation matrix
+
+| Finding | Resolution |
+|---|---|
+| CA10-A1 oracle YAML invalid | Rewritten as typed YAML v2 (PyYAML safe_dump); 32 entries one schema; arrays real lists; terminal/disposition separate fields |
+| CA10-A2 E10-031 field-shift | Rebuilt: DP-003 preferred, DP-005 alternate with framing; overlays [overload, resources]; fields realigned per CA content |
+| CA10-A3 terminal/disposition mixing | E10-013 terminal NO_DEFECT (doc suggestion = NBI disposition); E10-025 terminal NO_DEFECT (testability = NBI); E10-026 terminal MIN_SAFE_FIX (growth = HCR finding; multi-terminal removed); E10-027 per OD10-A2 (HCR + MIN_SAFE_FIX). All 32 audited: terminals exclusively the six canonical values |
+| CA10-A4 HF split | HF-11 eval_leakage (narrowed) + HF-12 hidden_cot_exposure added; rubric/manifest updated to HF-01..12; nothing weakened |
+| CA10-A5 HF misassignment | E10-004: HF-05 / HF-03-conditional (HF-04 removed); E10-021: HF-10 + HF-03-conditional (HF-04 removed); E10-022: HF-07 (HF-04 removed); E10-026: growth-miss removed from HF-02 (scored in D4/D9). Full audit: no other mismatches |
+| CA10-A6 E10-031 leakage | Title -> 'Checkout pool tuning after rollback'; note -> 'Fresh context.'; evidence unchanged |
+| CA10-A7 mojibake | U+9225/U+6402 replaced with em-dash in E10-004/015/018/021/023/030; PRD refs normalized to 'PRD Sec. N'; suite scan: only U+2014 remains; zero replacement chars |
+| CA10-A8 count reconciliation | Canonical: 32 total; unambiguous DP-001:3/DP-002:10/DP-003:8/DP-004:2/DP-005:7 (sum 30); route-ambiguous 024/031; requested-AUTO 19; strict route-challenge 6 [002,003,006,013,024,031]; strict goodcase 8; strict ambiguity 6; strict cross-domain 8; coverage summary derives from these |
+| CA10-A9 E10-024 route | allowed_alternate = ['ADR_REVIEW/DP-004 with object-based basis'] only; AUTO->any removed |
+| CA10-A10 coverage YAML | Typed YAML v2; list arrays; normal keys; counts derived+asserted |
+| CA10-A11 machine validation | PyYAML validation: manifest/oracle/coverage parse; 32=32; ID sets identical; keys complete; types correct; terminals within six canonical; dispositions never in terminals; HF refs exist; coverage IDs match; counts reconcile; no dups; no crossover; no run outputs |
+
+## OD10 decisions applied
+
+OD10-A1: scorer stays Codex+GLM, CA adjudicates. OD10-A2: applied to E10-027. OD10-A3: recorded as Phase C constraint in manifest exposure rules (runner = frozen SUT + public payload only; no web/external/private context; stop if unenforceable).
+
+## Validation record
+
+Tool: Python 3.11.9 + PyYAML (yaml.safe_load). Results: oracle 32/32 parse, schema uniform, terminal/disposition separation OK; coverage 32 IDs, strict counts 6/8/6/8, unambiguous sum 30; manifest parses; public mojibake scan zero.
+
+## Freeze recommendation
+
+FREEZE — remediation complete; all CA findings resolved; machine validation green.
+
+## Owner decisions
+
+None new. Prior OD-2 resolved by OD10-A2; OD-3 resolved by OD10-A3 (manifest constraint); OD-1 settled by OD10-A1.
