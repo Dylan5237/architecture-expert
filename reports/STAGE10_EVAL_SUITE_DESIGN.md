@@ -123,3 +123,14 @@ FREEZE — remediation complete; all CA findings resolved; machine validation gr
 ## Owner decisions
 
 None new. Prior OD-2 resolved by OD10-A2; OD-3 resolved by OD10-A3 (manifest constraint); OD-1 settled by OD10-A1.
+---
+
+# Final Gate Microfix (Phase A pass 3, 2026-09-22)
+
+R10A2-1: E10-024 finding-disposition list corrected — ARCH_CONFLICT removed from acceptable_finding_dispositions (now empty; ARCH_CONFLICT remains the terminal outcome with its record expectations in correction/authority fields). All 32 records mechanically revalidated: every disposition value within the canonical five families; every terminal value within the six canonical outcomes; E10-024 was the only violation.
+
+R10A2-2: E10-024 public metadata neutralized — title 'Quarter planning: feature freeze and regulatory export deadline'; task_object 'quarter planning architecture decision under fixed team capacity'. User request, evidence, constraints, AUTO mode, and runner note unchanged; the discoverable tension remains in the evidence.
+
+R10A2-3: manifest status READY_FOR_FREEZE; exposure rules and Phase C isolation constraints preserved. No coverage-count, rubric, HF-registry, or case-count change.
+
+Recommendation remains FREEZE.

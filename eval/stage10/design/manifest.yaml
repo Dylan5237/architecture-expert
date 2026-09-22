@@ -4,7 +4,7 @@ suite: stage10-architecture-expert-v0.1
 frozen_sut: 96d9ae333ffc5a8076d635b86634b5151ec0bbc5
 designer: "Codex harness + GLM 5.3 (Independent Eval Designer / Oracle Author)"
 branch: eval/stage10-suite-design
-status: REMEDIATED_AWAITING_GATE
+status: READY_FOR_FREEZE
 
 structure:
   public/: 32 case files (E10-001..E10-032), runner-exposed after Chief Architect gate

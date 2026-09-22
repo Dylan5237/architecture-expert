@@ -846,8 +846,7 @@ cases:
     must_not_find:
     - skip-the-freeze endorsement
     - engineering-lead unilateral decision
-    acceptable_finding_dispositions:
-    - ARCH_CONFLICT
+    acceptable_finding_dispositions: []
     expected_terminal_outcomes:
     - ARCH_CONFLICT
     minimum_correction_expectations:
