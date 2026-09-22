@@ -1,6 +1,7 @@
 """Stage 10 reference runner: fresh per-case execution against the frozen SUT snapshot.
 
 No E10 case is executed by this module; it only provides the machinery.
+R2 wiring: verbatim final text, observed-model capture, max_tool_rounds=24.
 """
 from __future__ import annotations
 
@@ -8,10 +9,7 @@ import hashlib
 import json
 import os
 import re
-import shutil
-import stat
 import subprocess
-import sys
 import tempfile
 
 from provider_openai_compatible import (
@@ -37,6 +35,7 @@ REQUIRED_SUT_FILES = [
 ]
 PER_CALL_BYTE_CAP = 200_000
 PER_CASE_TOTAL_BUDGET = 2_000_000
+MEASURED_MAX_TOOL_ROUNDS = 24
 TOOL_SCHEMA = {
     "type": "function",
     "function": {
@@ -57,17 +56,17 @@ TOOL_SCHEMA = {
 
 
 def materialize_sut_snapshot(sut_sha: str = SUT_SHA, dest: str | None = None) -> str:
-    """Create a read-only SUT snapshot from exactly the frozen SUT SHA via git archive."""
+    """Create a SUT snapshot from exactly the frozen SUT SHA via git archive."""
     root = dest or tempfile.mkdtemp(prefix="stage10-sut-")
     os.makedirs(root, exist_ok=True)
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
     proc = subprocess.run(
         ["git", "archive", sut_sha],
         capture_output=True,
-        cwd=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")),
+        cwd=repo_root,
     )
     if proc.returncode != 0:
         raise RuntimeError(f"git archive failed for {sut_sha}: {proc.stderr.decode('utf-8', 'replace')[:200]}")
-    # git archive produces tar; extract with tarfile
     import tarfile
     import io
 
@@ -77,6 +76,10 @@ def materialize_sut_snapshot(sut_sha: str = SUT_SHA, dest: str | None = None) ->
     if missing:
         raise RuntimeError(f"SUT snapshot missing required files: {missing}")
     return root
+
+
+def ntpath_backslash(p: str) -> bool:
+    return "\\" in p
 
 
 class PathSandbox:
@@ -131,12 +134,11 @@ class PathSandbox:
         return True, content, size
 
 
-def ntpath_backslash(p: str) -> bool:
-    return "\\" in p
-
-
 class CaseRunner:
-    """One fresh case execution: new messages list, no prior state."""
+    """One fresh case execution: new messages list, no prior state.
+
+    R2-6: build a new CaseRunner per case and per retry.
+    """
 
     def __init__(self, provider: ReferenceProvider, sandbox_root: str,
                  system_prompt: str, mode_contract: str) -> None:
@@ -151,8 +153,16 @@ class CaseRunner:
         self.tool_log: list[dict] = []
 
     def run_case(self, case_id: str, run_id: str, user_payload: str,
-                 max_tool_rounds: int = 8) -> dict:
-        """Fresh conversation. Returns result dict with final content + technical log."""
+                 max_tool_rounds: int = MEASURED_MAX_TOOL_ROUNDS) -> dict:
+        """Fresh conversation. Returns result dict with technical metadata.
+
+        R2-7: final_content preserves the provider's final visible
+        message.content string exactly as returned (no strip). The
+        substantive check uses final_content.strip() != "" only for the
+        attempt decision, never for the stored raw bytes.
+        R2-8: observed model values are captured across rounds.
+        R2-9: measured default ceiling is 24 tool rounds.
+        """
         if not user_payload or not user_payload.strip():
             raise ValueError("case payload must be non-empty")
         session = session_header(run_id, case_id)
@@ -162,8 +172,9 @@ class CaseRunner:
             {"role": "user", "content": user_payload},
         ]
         rounds = 0
-        final_content = ""
+        final_content: str = ""
         finish_reason = None
+        observed_models: list[str | None] = []
         while rounds < max_tool_rounds:
             rounds += 1
             data = self.provider.chat(
@@ -174,6 +185,7 @@ class CaseRunner:
                 temperature=REQUIRED_TEMPERATURE,
                 max_tokens=REQUIRED_MAX_TOKENS,
             )
+            observed_models.append(data.get("model"))
             choices = data.get("choices") or []
             if not choices:
                 raise ProviderError("provider returned no choices")
@@ -181,7 +193,13 @@ class CaseRunner:
             finish_reason = choices[0].get("finish_reason")
             tool_calls = msg.get("tool_calls") or []
             if not tool_calls:
-                final_content = (msg.get("content") or "").strip()
+                content = msg.get("content")
+                if content is None:
+                    final_content = ""
+                elif isinstance(content, str):
+                    final_content = content
+                else:
+                    final_content = str(content)
                 break
             messages.append(msg)
             for tc in tool_calls:
@@ -208,13 +226,20 @@ class CaseRunner:
         else:
             final_content = ""
             finish_reason = "max_tool_rounds"
+        final_observed = None
+        for m in reversed(observed_models):
+            if m is not None:
+                final_observed = m
+                break
         return {
             "case_id": case_id,
             "session": session,
             "rounds": rounds,
             "finish_reason": finish_reason,
             "final_content": final_content,
+            "substantive": final_content.strip() != "",
             "requested_model": REQUIRED_MODEL,
-            "observed_model": None,  # filled by caller from last response if desired
+            "observed_models": observed_models,
+            "final_observed_model": final_observed,
             "tool_log": list(self.tool_log),
         }

@@ -34,3 +34,13 @@ lock/gate/atomic-write/reconcile lifecycle with `finalize_case` / `technical_err
 `STAGE10_API_KEY` env var, else the local `opencode-go` provider key in
 `~/.opencodex/config.json`. The key is never printed, logged, or committed;
 metadata redacts secret-named fields by construction.
+
+
+## R2 wiring (C0-R2)
+
+- `python controller.py run-suite` is the ONLY authorized measured-suite orchestration path (refuses to execute without an explicit measured-run task authorization).
+- `python controller.py readiness` performs the single synthetic PRE10 readiness conversation (host/model/settings/identity/quota).
+- `python controller.py integration-selftest` exercises the same orchestration functions with a deterministic fake provider and synthetic PRE10 cases only (no network, no E10 payload).
+- Measured defaults: `max_tool_rounds = 24`; verbatim final visible content (no strip before raw write); observed model captured per round.
+- Canonical measured outputs (34 files): `eval/stage10/run/raw/E10-001.md..E10-032.md`, `eval/stage10/run/metadata.json`, `eval/stage10/run/RUN_STATUS.md`.
+

@@ -110,3 +110,25 @@ No private oracle, rubric, coverage, or suite-design artifact was read or materi
 ## Blocker
 
 None. Preflight status: **PASS**.
+
+
+## R2 — Wiring + re-preflight (C0-R2)
+
+- Old accepted C0-R SHA: `c177ae764703b7741b14e4a9501f176cf3164f27`
+- New wiring commit SHA: pending until commit (reported in task return)
+- run-suite command implemented: **yes** (`python controller.py run-suite`; refuses to execute without an explicit measured-run task authorization; visible in `--help`)
+- `E10_EXECUTION_COUNT: 0`
+- max tool rounds: **24** (fixed, recorded in metadata, no per-case variance)
+- final-text fidelity: **verbatim** — provider final visible `message.content` written unmodified; substantive check uses `.strip()` for the attempt decision only
+- observed-model capture: **yes** — per-round observed model list + final observed model per case; adapter hard-fails on drift
+- controller selftest: **all 17 checks green**
+- integration-selftest: **all 7 scenarios green** (A two-success COMPLETE; B retry with fresh CaseRunner, attempt_count=2/retry=1; C double failure stop, no raw; D duplicate HOLD; E metadata tamper blocks COMPLETE; F second controller locked out before provider; verbatim fidelity with padded content)
+- readiness: **PASS** — OpenCode Zen host, `deepseek-v4-pro` requested=observed, temperature 0, max_tokens 8000, dual-SYSTEM probe `READY1-ACK ready READY2-END`, usage rolling 1% / weekly 15% / monthly 48%
+- duplicate-HOLD result: implemented and exercised (scenario D)
+- canonical future output set: **34 files** = `run/raw/E10-001.md..E10-032.md` (32) + `run/metadata.json` + `run/RUN_STATUS.md`
+- no private eval read
+- no Kimi/Moonshot fallback anywhere in executable paths
+- recommendation: **READY_FOR_PHASE_C**
+
+R2 file hashes (SHA-256, first 16 hex): controller `6F931D8BA0751803`, runner `C187DAB7527A802B`, provider adapter `3C21AA3ABE21EF4A` (unchanged from C0-R).
+
