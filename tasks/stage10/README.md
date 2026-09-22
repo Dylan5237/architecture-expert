@@ -10,6 +10,8 @@ Current authorized phase:
   `tasks/stage10/CODEX_EVAL_DESIGNER.md`
 - Phase A bounded remediation:
   `tasks/stage10/CODEX_SUITE_REMEDIATION.md`
+- Phase A final suite-gate microfix:
+  `tasks/stage10/CODEX_SUITE_FINAL_MICROFIX.md`
 
 No Agent run is authorized until the Chief Architect freezes the suite and exports PUBLIC inputs.
 
