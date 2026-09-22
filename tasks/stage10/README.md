@@ -60,3 +60,18 @@ It does NOT contain the oracle, rubric, private coverage, scorer notes, or suite
 Control issue: #27.
 
 Phase D scoring is NOT authorized until the blinded runner returns a fixed raw-output SHA.
+
+
+## Alternate Phase C harness preflight
+
+The initial Cursor/Grok IDE runner failed closed before E10-001 because prompt precedence and case-context/tool isolation could not be guaranteed.
+
+A direct-model isolated runner harness preflight is now authorized on:
+
+`eval/stage10-api-runner`
+
+Task:
+
+`tasks/stage10/CODEX_API_RUNNER_PREFLIGHT.md`
+
+This C0 preflight must not run any E10 case.
