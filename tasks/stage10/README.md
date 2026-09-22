@@ -168,3 +168,20 @@ Task:
 `tasks/stage10/CODEX_DEEPSEEK_RUNNER_WIRE_FULL.md`
 
 No E10 case is authorized during this wiring task.
+
+
+## Phase C Attempt #2 authorization
+
+C0-R2 wiring passed at:
+
+`eee10ac4b2042a4ba4921cde6ca04d8ee30d79c1`
+
+Chief Architect found one bounded PUBLIC metadata parser defect before E10 execution.
+
+Final authorization task:
+
+`tasks/stage10/CODEX_DEEPSEEK_MEASURED_RUN_ATTEMPT2.md`
+
+The task may perform the bounded arming microfix, revalidate the exact measured path, and—if all gates pass—execute Phase C Attempt #2 immediately with no intermediate gate.
+
+Phase D remains blocked until measured evidence returns.
