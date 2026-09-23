@@ -23,7 +23,7 @@ ACCEPTED_MODES = ("AUTO", "ARCH_DESIGN", "ARCH_REVIEW", "CHANGE_REVIEW", "ADR_RE
 MEASURED_MAX_TOOL_ROUNDS = 24
 RUN_KIND = "isolated_api_blinded_reference"
 STAGE = 10
-PHASE = "C0-R2"
+PHASE = "C"
 PROVIDER_NAME = "OpenCode Zen"
 API_HOST = "https://opencode.ai/zen/go/v1"
 REQUESTED_MODEL = "deepseek-v4-pro"
@@ -264,10 +264,8 @@ def validate_generation_settings(temperature, max_tokens) -> None:
 # ---- measured orchestration (R2) ----
 
 def parse_requested_mode(public_text: str) -> str:
-    """Parse only the public requested_mode field from a PUBLIC case file."""
-    m = re.search(r"^requested_mode:\s*(\S+)\s*$", public_text, re.MULTILINE)
-    if not m:
-        m = re.search(r"requested_mode:\s*`?([A-Z_]+)`?", public_text)
+    """Parse the public requested_mode field; optional backticks around key and value."""
+    m = re.search(r"^`?requested_mode`?:\s*`?([A-Z_]+)`?\s*$", public_text, re.MULTILINE)
     if not m:
         raise ControllerError("requested_mode not found in PUBLIC case")
     mode = m.group(1)
@@ -280,7 +278,7 @@ def load_public_case(case_id: str) -> tuple[str, str]:
     p = public_case_path(case_id)
     if not p.is_file():
         raise ControllerError(f"PUBLIC case missing: {p}")
-    text = p.read_text(encoding="utf-8")
+    text = p.read_bytes().decode("utf-8")
     mode = parse_requested_mode(text)
     return text, mode
 
@@ -624,7 +622,7 @@ def _synthetic_public_case(tmp_root: Path, case_id: str) -> None:
     d = tmp_root / "eval" / "stage10" / "public"
     d.mkdir(parents=True, exist_ok=True)
     (d / f"{case_id}.md").write_text(
-        "---\nrequested_mode: AUTO\n---\n# Synthetic PRE10 case " + case_id + "\nSynthetic payload only.\n",
+        "---\n`requested_mode`: AUTO\n---\n# Synthetic PRE10 case " + case_id + "\nSynthetic payload only.\n",
         encoding="utf-8",
     )
 
@@ -686,6 +684,26 @@ def integration_selftest() -> int:
     controller_mod_repo["root"] = Path(base)
     try:
         # A. two synthetic cases succeed
+        def scenario_parser():
+            bt = chr(96)
+            tmpl = "---\n" + bt + "requested_mode" + bt + ": {}\n---\nbody\n"
+            for mode in ACCEPTED_MODES:
+                assert parse_requested_mode(tmpl.format(mode)) == mode, mode
+            plain = "---\nrequested_mode: AUTO\n---\n"
+            assert parse_requested_mode(plain) == "AUTO"
+            quoted_val = "---\n" + bt + "requested_mode" + bt + ": " + bt + "AUTO" + bt + "\n---\n"
+            assert parse_requested_mode(quoted_val) == "AUTO"
+            try:
+                parse_requested_mode("---\n" + bt + "requested_mode" + bt + ": TOTALLY_INVALID\n---\n")
+                raise AssertionError("invalid mode accepted")
+            except ControllerError:
+                pass
+            try:
+                parse_requested_mode("---\nno mode here\n---\n")
+                raise AssertionError("missing mode accepted")
+            except ControllerError:
+                pass
+        check("parser six modes + backtick key + rejection", scenario_parser)
         def scenario_a():
             RecordingCaseRunner.instances.clear()
             root = make_env("a")
@@ -994,9 +1012,78 @@ def selftest() -> int:
         shutil.rmtree(base, ignore_errors=True)
 
 
+def cmd_public_dry_run() -> int:
+    """A3: deterministic PUBLIC dry-load gate. No provider/model call."""
+    problems = []
+    expected = CASE_IDS
+    hashes = {}
+    modes = {}
+    for idx, case_id in enumerate(expected, start=1):
+        try:
+            text, mode = load_public_case(case_id)
+        except ControllerError as exc:
+            problems.append(f"{case_id}: {exc}")
+            continue
+        modes[case_id] = mode
+        hashes[case_id] = sha256_file(public_case_path(case_id))
+        want_order = f"E10-{idx:03d}"
+        if case_id != want_order:
+            problems.append(f"order mismatch: {case_id} != {want_order}")
+    if len(set(expected)) != len(expected):
+        problems.append("duplicate case IDs")
+    ok = not problems
+    print(f"PUBLIC_DRY_RUN: {'PASS' if ok else 'FAIL'}")
+    print(f"  count: {len(hashes)}")
+    for cid in expected:
+        if cid in modes:
+            print(f"  {cid} mode={modes[cid]} sha256={hashes[cid]}")
+    for p_ in problems:
+        print(f"  PROBLEM: {p_}")
+    return 0 if ok else 1
+
+
+def cmd_run_suite() -> int:
+    """A5: authorized measured run. Requires STAGE10_MEASURED_AUTH_SHA == git HEAD."""
+    import subprocess
+    from provider_openai_compatible import ReferenceProvider
+    import runner as runner_mod
+    auth = os.environ.get("STAGE10_MEASURED_AUTH_SHA", "").strip()
+    if not auth:
+        print("run-suite: STAGE10_MEASURED_AUTH_SHA not set; refusing measured execution.")
+        return 4
+    head = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True,
+                          cwd=str(harness_dir())).stdout.strip()
+    if head != auth:
+        print(f"run-suite: HEAD {head} != authorized arming SHA {auth}; refusing.")
+        return 4
+    run_root = run_dir_path()
+    evidence = run_evidence_exists(run_root)
+    if evidence:
+        print(f"run-suite: prior measured evidence exists: {evidence}; refusing.")
+        return 5
+    run_id = "attempt2-" + time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()) + "-" + head[:8]
+    print(f"run-suite: measured run_id={run_id}")
+    res = run_measured_suite(run_root, ReferenceProvider, runner_mod.CaseRunner,
+                             case_ids=CASE_IDS, run_id=run_id, harness_sha=head)
+    state = res["status"]
+    recon = res["reconciliation"]
+    print(f"run-suite terminal state: {state}")
+    print(f"  raw_count: {recon['raw_count']}")
+    print(f"  metadata_case_count: {recon['meta_count']}")
+    if res.get("stop_reason"):
+        print(f"  stop_reason: {res['stop_reason']}")
+    if recon.get("duplicates"):
+        for h, ids in recon["duplicates"].items():
+            print(f"  duplicate group {h}: {ids}")
+    if state == "COMPLETE":
+        return 0
+    if state == "HOLD_INTEGRITY_REVIEW":
+        return 6
+    return 7
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Stage 10 measured suite controller")
-    ap.add_argument("command", choices=["selftest", "integration-selftest", "readiness", "run-suite"])
+    ap.add_argument("command", choices=["selftest", "integration-selftest", "readiness", "public-dry-run", "run-suite"])
     args = ap.parse_args()
     if args.command == "selftest":
         return selftest()
@@ -1004,11 +1091,10 @@ def main() -> int:
         return integration_selftest()
     if args.command == "readiness":
         return cmd_readiness()
+    if args.command == "public-dry-run":
+        return cmd_public_dry_run()
     if args.command == "run-suite":
-        print("run-suite is the measured 32-case execution path.")
-        print("It is NOT authorized to run in this task (C0-R2).")
-        print("Refusing to start without an explicit measured-run task authorization.")
-        return 3
+        return cmd_run_suite()
     return 2
 
 
