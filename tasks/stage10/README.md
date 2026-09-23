@@ -185,3 +185,18 @@ Final authorization task:
 The task may perform the bounded arming microfix, revalidate the exact measured path, and—if all gates pass—execute Phase C Attempt #2 immediately with no intermediate gate.
 
 Phase D remains blocked until measured evidence returns.
+
+
+## Phase C Attempt #3
+
+Attempt #2 ended as PARTIAL_TECHNICAL_FAILURE due to a transient transport outage at E10-003. Its successful outputs are preserved but excluded from scoring.
+
+Clean Attempt #3 branch:
+
+`eval/stage10-deepseek-runner-attempt3@c78b8cdd0eb88647170d10256d5139bd6c6a502e`
+
+Task:
+
+`tasks/stage10/CODEX_DEEPSEEK_MEASURED_RUN_ATTEMPT3.md`
+
+Attempt #3 uses the exact frozen arming harness with no code changes and adds a 3x pre-run network-readiness soak on one fixed transport route before E10 execution.
