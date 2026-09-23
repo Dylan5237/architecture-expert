@@ -132,3 +132,43 @@ None. Preflight status: **PASS**.
 
 R2 file hashes (SHA-256, first 16 hex): controller `6F931D8BA0751803`, runner `C187DAB7527A802B`, provider adapter `3C21AA3ABE21EF4A` (unchanged from C0-R).
 
+
+## Phase C Runtime Hardening — DeepSeek transport and output diagnostics
+
+**Recommendation: HOLD_TRANSPORT_UNSTABLE**
+
+### Scope and frozen settings
+
+- Task source: refreshed `origin/main:tasks/stage10/CODEX_DEEPSEEK_RUNTIME_HARDENING.md`.
+- Starting arming SHA: `c78b8cdd0eb88647170d10256d5139bd6c6a502e`.
+- Frozen SUT/suite/PUBLIC-pack SHAs remain unchanged: `96d9ae333ffc5a8076d635b86634b5151ec0bbc5` / `ff157eb1947860345a305fb29452b51e09dd3a2b` / `23a49382c949702446325d30e18d3321d8550c36`.
+- Global settings: `temperature=0`, `max_tokens=16000`, no top_p/penalty or adaptive budget.
+- 16,000 capability probe: **PASS** — HTTP 200, visible dual-SYSTEM readiness response, observed `deepseek-v4-pro`, finish_reason `stop`.
+- Tool-call capability at 16,000: **PASS** — frozen system prompt + AUTO mode read `00_ROUTER.md`, completed 2 rounds (`tool_calls` then `stop`), returned a visible final.
+
+### Transport retry and diagnostics
+
+- Fixed route: `http://127.0.0.1:7897`; `NO_PROXY` cannot bypass the selected route.
+- Per chat round: maximum 3 attempts total; fixed backoff of 1 second then 3 seconds; byte-identical body, model, settings, messages, and session header; no route/provider fallback.
+- Retryable: RemoteDisconnected; connection reset/aborted/refused; socket/URL timeout; TLS EOF; HTTP 502/503/504.
+- Fail closed without retry: HTTP 400/401/403, 429, other 4xx, model drift, malformed successful JSON, semantic/provider capability errors, and other unlisted errors.
+- Case-attempt diagnostics preserve rounds, final finish_reason and substantive status. Per-round metadata records observed model, finish_reason, transport attempts/retries, sanitized retry errors, HTTP status, content-field/content presence and length, reasoning presence/length, and numeric usage summary.
+- Hidden reasoning storage policy: **NEVER STORE TEXT**. The provider adapter removes reasoning fields before returning a response; only presence and length/count metadata is retained.
+- Empty-final preservation: **PASS** — integration scenario G supplied a synthetic `finish_reason=length` with null visible content and reasoning/token counts; diagnostics remained in attempt 1 metadata before the case-level retry succeeded.
+
+### Deterministic and synthetic results
+
+- Deterministic selftest: **27/27 PASS**, provider-free; covers transport retry success/exhaustion, HTTP 403 immediate failure, HTTP 502/503/504 retry, 429 fail-closed, model drift, identical body/no fallback, settings enforcement, malformed JSON no-retry, reasoning-text removal, run-id prefix, fixed-proxy enforcement, and existing lock/atomic/reconciliation/duplicate checks.
+- Integration selftest: **9/9 PASS**, provider-free; includes preservation of empty-final diagnostics before retry.
+- Complex synthetic full-Agent probe: **0/3 usable responses**. All three independent contexts exhausted the fixed 3 transport attempts with TLS EOF before a model response; no prompt tuning occurred and no model-quality inference is made.
+- Fixed-proxy readiness soak: **10/10 usable**, all observed `deepseek-v4-pro`; each completed in one transport attempt; recovered transient retry count: **0**.
+- Tool-loop result: **PASS**, one synthetic tool probe read `00_ROUTER.md`, completed its tool round, and returned visible final content. No hidden reasoning text appeared in persisted metadata or output artifacts.
+- Model identity: all returned responses in the 16k capability probe, tool-loop probe, and 10-call soak reported `deepseek-v4-pro`; the 3 failed complex probes returned no model response to inspect; no drift observed.
+- Run-id hygiene: future measured IDs use `phasec-<UTC timestamp>-<arming-short-sha>`; `run-suite` was not invoked.
+- `E10_EXECUTION_COUNT: 0`.
+- No run evidence directory was created. No private oracle, rubric, coverage, or suite-design artifact was read or added. No PUBLIC/SUT/Agent file was changed. No Kimi/Moonshot fallback exists.
+
+### Blocker
+
+The simple readiness soak was stable, but all 3 required complex synthetic probes exhausted transport retries before receiving responses. Keep the gate at **HOLD_TRANSPORT_UNSTABLE**; do not authorize an E10 run from this preflight.
+

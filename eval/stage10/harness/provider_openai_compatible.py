@@ -5,20 +5,50 @@ No fallback path exists. If the reference is unavailable the caller must fail cl
 """
 from __future__ import annotations
 
+import copy
+import http.client
 import json
 import os
 import re
+import socket
+import ssl
+import time
 import urllib.error
+import urllib.parse
 import urllib.request
 
 REQUIRED_BASE_URL = "https://opencode.ai/zen/go/v1"
 REQUIRED_MODEL = "deepseek-v4-pro"
 REQUIRED_TEMPERATURE = 0
-REQUIRED_MAX_TOKENS = 8000
+REQUIRED_MAX_TOKENS = 16000
+LOCAL_PROXY = "http://127.0.0.1:7897"
+MAX_TRANSPORT_ATTEMPTS = 3
+TRANSPORT_BACKOFF_SECONDS = (1, 3)
+REASONING_FIELDS = frozenset({"reasoning", "reasoning_content", "reasoning_details", "thinking", "analysis"})
+TECHNICAL_RESPONSE_KEY = "_stage10_technical"
+
+
+class _FixedLocalProxyHandler(urllib.request.ProxyHandler):
+    """Use the configured proxy even when process NO_PROXY settings match the host."""
+
+    def proxy_open(self, req, proxy, type):
+        parsed = urllib.parse.urlsplit(proxy)
+        if parsed.scheme not in ("http", "https") or not parsed.netloc or parsed.username or parsed.password:
+            raise urllib.error.URLError("invalid fixed proxy configuration")
+        original_type = req.type
+        proxy_type = parsed.scheme
+        req.set_proxy(parsed.netloc, proxy_type)
+        if original_type == proxy_type or original_type == "https":
+            return None
+        return self.parent.open(req, timeout=req.timeout)
 
 
 class ProviderError(RuntimeError):
     """Raised for any provider transport/identity failure."""
+
+    def __init__(self, message: str, technical_metadata: dict | None = None) -> None:
+        super().__init__(message)
+        self.technical_metadata = technical_metadata or {}
 
 
 def _load_key_from_local_config() -> str | None:
@@ -68,6 +98,107 @@ def session_header(run_id: str, case_id: str) -> str:
     return f"stage10-ref-{run_id}-{case_id}"
 
 
+def _transport_error(exc: BaseException) -> tuple[bool, str, str]:
+    """Classify only the explicitly permitted transient transport failures."""
+    inner = exc.reason if isinstance(exc, urllib.error.URLError) else exc
+    if isinstance(inner, http.client.RemoteDisconnected):
+        return True, inner.__class__.__name__, "remote disconnected"
+    if isinstance(inner, (socket.timeout, TimeoutError)):
+        return True, inner.__class__.__name__, "transport timeout"
+    if isinstance(inner, ssl.SSLEOFError) or (
+        isinstance(inner, ssl.SSLError)
+        and "EOF" in str(getattr(inner, "reason", inner)).upper()
+    ):
+        return True, inner.__class__.__name__, "TLS EOF"
+    if isinstance(inner, ConnectionRefusedError):
+        return True, inner.__class__.__name__, "connection refused"
+    if isinstance(inner, ConnectionResetError):
+        return True, inner.__class__.__name__, "connection reset"
+    if isinstance(inner, ConnectionAbortedError):
+        return True, inner.__class__.__name__, "connection aborted"
+    return False, inner.__class__.__name__, "non-retryable transport failure"
+
+
+def _usage_summary(usage) -> dict | None:
+    """Keep numeric token accounting only; omit prices and arbitrary provider data."""
+    if not isinstance(usage, dict):
+        return None
+    summary = {}
+    for key in ("prompt_tokens", "completion_tokens", "total_tokens", "input_tokens", "output_tokens"):
+        value = usage.get(key)
+        if isinstance(value, (int, float)) and not isinstance(value, bool):
+            summary[key] = value
+    for group in ("prompt_tokens_details", "completion_tokens_details", "input_tokens_details", "output_tokens_details"):
+        details = usage.get(group)
+        if isinstance(details, dict):
+            counts = {
+                key: value for key, value in details.items()
+                if key.endswith("_tokens") and isinstance(value, (int, float)) and not isinstance(value, bool)
+            }
+            if counts:
+                summary[group] = counts
+    return summary or None
+
+
+def _response_diagnostics(data: dict, http_status: int | None,
+                          attempts: int, retry_errors: list[dict]) -> dict:
+    choices = data.get("choices") or []
+    choice = choices[0] if choices and isinstance(choices[0], dict) else {}
+    message = choice.get("message") if isinstance(choice.get("message"), dict) else {}
+    content = message.get("content")
+    reasoning_keys = [key for key in message if key.lower() in REASONING_FIELDS]
+    reasoning_values = [message[key] for key in reasoning_keys if message[key] is not None]
+    reasoning_length = sum(
+        len(value) if isinstance(value, (str, list, dict)) else 0
+        for value in reasoning_values
+    )
+    return {
+        "transport_attempt_count": attempts,
+        "transport_retry_count": max(0, attempts - 1),
+        "retry_errors": copy.deepcopy(retry_errors),
+        "http_status": http_status,
+        "observed_model": data.get("model"),
+        "finish_reason": choice.get("finish_reason"),
+        "content_field_present": "content" in message,
+        "content_present": content is not None,
+        "content_length": len(content) if isinstance(content, str) else (len(content) if isinstance(content, list) else None),
+        "reasoning_present": bool(reasoning_keys),
+        "reasoning_length": reasoning_length if reasoning_values else None,
+        "usage_summary": _usage_summary(data.get("usage")),
+    }
+
+
+def _remove_reasoning_text(value):
+    """Return a response copy without hidden reasoning fields or text."""
+    if isinstance(value, dict):
+        return {
+            key: _remove_reasoning_text(child)
+            for key, child in value.items()
+            if key.lower() not in REASONING_FIELDS
+        }
+    if isinstance(value, list):
+        return [_remove_reasoning_text(child) for child in value]
+    return value
+
+
+def _failure_metadata(attempts: int, retry_errors: list[dict],
+                      http_status: int | None = None, observed_model: str | None = None) -> dict:
+    return {
+        "transport_attempt_count": attempts,
+        "transport_retry_count": max(0, attempts - 1),
+        "retry_errors": copy.deepcopy(retry_errors),
+        "http_status": http_status,
+        "observed_model": observed_model,
+        "finish_reason": None,
+        "content_field_present": False,
+        "content_present": False,
+        "content_length": None,
+        "reasoning_present": False,
+        "reasoning_length": None,
+        "usage_summary": None,
+    }
+
+
 class ReferenceProvider:
     """Minimal OpenAI chat-completions adapter for the frozen reference model."""
 
@@ -81,6 +212,10 @@ class ReferenceProvider:
         self.model = model
         self.timeout_s = timeout_s
         self._key = api_key or load_api_key()
+        self._opener = urllib.request.build_opener(
+            _FixedLocalProxyHandler({"http": LOCAL_PROXY, "https": LOCAL_PROXY})
+        )
+        self._sleep = time.sleep
 
     def chat(self, messages: list[dict], *, tools: list[dict] | None = None,
              tool_choice: str | None = None, session: str | None = None,
@@ -93,7 +228,7 @@ class ReferenceProvider:
         if temperature != REQUIRED_TEMPERATURE:
             raise ProviderError(f"generation settings validation: temperature must be 0, got {temperature}")
         if max_tokens != REQUIRED_MAX_TOKENS:
-            raise ProviderError(f"generation settings validation: max_tokens must be 8000, got {max_tokens}")
+            raise ProviderError(f"generation settings validation: max_tokens must be 16000, got {max_tokens}")
         body: dict = {
             "model": self.model,
             "temperature": temperature,
@@ -112,37 +247,90 @@ class ReferenceProvider:
             if "stage10-ref-" not in session or len(session) > 200:
                 raise ProviderError("session header validation failed")
             headers["x-opencode-session"] = session
-        req = urllib.request.Request(
-            self.base_url + "/chat/completions",
-            data=json.dumps(body).encode("utf-8"),
-            headers=headers,
-            method="POST",
-        )
-        try:
-            with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
-                raw = resp.read().decode("utf-8")
-        except urllib.error.HTTPError as exc:
-            detail = exc.read().decode("utf-8", "replace")[:400]
-            raise ProviderError(f"provider HTTP {exc.code}: {detail}") from exc
-        except urllib.error.URLError as exc:
-            raise ProviderError(f"provider transport error: {exc}") from exc
-        try:
-            data = json.loads(raw)
-        except ValueError as exc:
-            raise ProviderError("provider returned unparseable JSON") from exc
-        observed = data.get("model")
-        if observed is not None and observed != REQUIRED_MODEL:
-            raise ProviderError(
-                f"provider model drift: requested {REQUIRED_MODEL!r}, observed {observed!r}"
+        body_bytes = json.dumps(body, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+        retry_errors: list[dict] = []
+        last_status = None
+        for attempt in range(1, MAX_TRANSPORT_ATTEMPTS + 1):
+            req = urllib.request.Request(
+                self.base_url + "/chat/completions",
+                data=body_bytes,
+                headers=headers,
+                method="POST",
             )
-        return data
+            try:
+                with self._opener.open(req, timeout=self.timeout_s) as resp:
+                    last_status = getattr(resp, "status", None)
+                    raw = resp.read().decode("utf-8")
+            except urllib.error.HTTPError as exc:
+                last_status = exc.code
+                retryable = exc.code in (502, 503, 504)
+                error = {
+                    "attempt": attempt,
+                    "error_class": exc.__class__.__name__,
+                    "error_message": f"HTTP {exc.code}",
+                    "http_status": exc.code,
+                }
+                if retryable:
+                    retry_errors.append(error)
+                    if attempt < MAX_TRANSPORT_ATTEMPTS:
+                        self._sleep(TRANSPORT_BACKOFF_SECONDS[attempt - 1])
+                        continue
+                raise ProviderError(
+                    f"provider HTTP {exc.code}",
+                    _failure_metadata(attempt, retry_errors, last_status),
+                ) from None
+            except Exception as exc:  # noqa: BLE001 - classify the fixed transport allowlist
+                retryable, error_class, error_message = _transport_error(exc)
+                error = {
+                    "attempt": attempt,
+                    "error_class": error_class,
+                    "error_message": error_message,
+                    "http_status": None,
+                }
+                if retryable:
+                    retry_errors.append(error)
+                    if attempt < MAX_TRANSPORT_ATTEMPTS:
+                        self._sleep(TRANSPORT_BACKOFF_SECONDS[attempt - 1])
+                        continue
+                    raise ProviderError(
+                        f"provider transport failed after {attempt} attempts: {error_class} ({error_message})",
+                        _failure_metadata(attempt, retry_errors),
+                    ) from None
+                raise ProviderError(
+                    f"provider transport failure: {error_class} ({error_message})",
+                    _failure_metadata(attempt, retry_errors),
+                ) from None
+
+            try:
+                data = json.loads(raw)
+            except ValueError:
+                raise ProviderError(
+                    "provider returned unparseable JSON",
+                    _failure_metadata(attempt, retry_errors, last_status),
+                ) from None
+            if not isinstance(data, dict):
+                raise ProviderError(
+                    "provider returned an invalid response shape",
+                    _failure_metadata(attempt, retry_errors, last_status),
+                )
+            observed = data.get("model")
+            if observed is not None and observed != REQUIRED_MODEL:
+                raise ProviderError(
+                    f"provider model drift: requested {REQUIRED_MODEL!r}, observed {observed!r}",
+                    _failure_metadata(attempt, retry_errors, last_status, observed),
+                )
+            safe_data = _remove_reasoning_text(data)
+            safe_data[TECHNICAL_RESPONSE_KEY] = _response_diagnostics(data, last_status, attempt, retry_errors)
+            return safe_data
+
+        raise AssertionError("unreachable transport retry loop")
 
     def fetch_usage(self) -> dict | None:
         """Non-secret usage summary if the endpoint supports it."""
         headers = {"Authorization": f"Bearer {self._key}", "User-Agent": "stage10-harness/1.0"}
         req = urllib.request.Request(self.base_url + "/usage", headers=headers, method="GET")
         try:
-            with urllib.request.urlopen(req, timeout=30) as resp:
+            with self._opener.open(req, timeout=30) as resp:
                 return json.loads(resp.read().decode("utf-8"))
         except (urllib.error.URLError, ValueError, OSError):
             return None

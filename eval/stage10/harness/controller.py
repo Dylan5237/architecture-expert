@@ -27,7 +27,7 @@ PHASE = "C"
 PROVIDER_NAME = "OpenCode Zen"
 API_HOST = "https://opencode.ai/zen/go/v1"
 REQUESTED_MODEL = "deepseek-v4-pro"
-GENERATION_SETTINGS = {"temperature": 0, "max_tokens": 8000}
+GENERATION_SETTINGS = {"temperature": 0, "max_tokens": 16000}
 SUT_SHA = "96d9ae333ffc5a8076d635b86634b5151ec0bbc5"
 SUITE_SHA = "ff157eb1947860345a305fb29452b51e09dd3a2b"
 PUBLIC_PACK_SHA = "23a49382c949702446325d30e18d3321d8550c36"
@@ -257,8 +257,8 @@ def validate_provider(host: str, model: str) -> None:
 def validate_generation_settings(temperature, max_tokens) -> None:
     if temperature != 0:
         raise ControllerError(f"temperature must be 0, got {temperature}")
-    if max_tokens != 8000:
-        raise ControllerError(f"max_tokens must be 8000, got {max_tokens}")
+    if max_tokens != 16000:
+        raise ControllerError(f"max_tokens must be 16000, got {max_tokens}")
 
 
 # ---- measured orchestration (R2) ----
@@ -284,6 +284,8 @@ def load_public_case(case_id: str) -> tuple[str, str]:
 
 
 def new_metadata(run_id: str, harness_sha: str | None) -> dict:
+    from provider_openai_compatible import LOCAL_PROXY, MAX_TRANSPORT_ATTEMPTS, TRANSPORT_BACKOFF_SECONDS
+
     return {
         "stage": STAGE,
         "phase": PHASE,
@@ -301,6 +303,11 @@ def new_metadata(run_id: str, harness_sha: str | None) -> dict:
         "api_host": API_HOST,
         "requested_model": REQUESTED_MODEL,
         "generation_settings": dict(GENERATION_SETTINGS),
+        "transport_policy": {
+            "local_proxy": LOCAL_PROXY,
+            "max_attempts_per_round": MAX_TRANSPORT_ATTEMPTS,
+            "backoff_seconds": list(TRANSPORT_BACKOFF_SECONDS),
+        },
         "max_tool_rounds": MEASURED_MAX_TOOL_ROUNDS,
         "prompt_precedence_mapping": "SYSTEM1=agent/system-prompt-v0.1.md; SYSTEM2=agent/modes/<MODE>.md; USER=verbatim PUBLIC case",
         "fresh_context_mechanism": "new messages list per case/attempt; no conversation/response IDs; per-case non-secret session routing header only",
@@ -334,11 +341,14 @@ def case_record(case_id: str, mode: str, start_order: int) -> dict:
         "raw_output_sha256": None,
         "runner_status": None,
         "technical_errors": [],
+        "attempt_diagnostics": [],
     }
 
 
-def provider_readiness(provider) -> dict:
+def provider_readiness(provider, session: str = "stage10-ref-readiness-PRE10") -> dict:
     """R2-4/R2-19: one synthetic PRE10 readiness conversation."""
+    from provider_openai_compatible import TECHNICAL_RESPONSE_KEY
+
     sys1 = "PRE10-READY LAYER1: Begin every reply with the exact token READY1-ACK."
     sys2 = "PRE10-READY LAYER2: End every reply with the exact token READY2-END."
     user = "Reply with the single word ready."
@@ -348,13 +358,24 @@ def provider_readiness(provider) -> dict:
             {"role": "system", "content": sys2},
             {"role": "user", "content": user},
         ],
-        session="stage10-ref-readiness-PRE10",
+        session=session,
     )
     content = (data.get("choices") or [{}])[0].get("message", {}).get("content") or ""
     observed = data.get("model")
-    ok = observed in (None, REQUESTED_MODEL) and content.strip().startswith("READY1-ACK") and content.strip().endswith("READY2-END")
+    ok = observed == REQUESTED_MODEL and content.strip().startswith("READY1-ACK") and content.strip().endswith("READY2-END")
     usage = provider.fetch_usage() if hasattr(provider, "fetch_usage") else None
-    return {"ok": ok, "observed_model": observed, "content_probe": content.strip()[:60], "usage": usage}
+    return {
+        "ok": ok,
+        "observed_model": observed,
+        "content_length": len(content),
+        "technical": data.get(TECHNICAL_RESPONSE_KEY, {}),
+        "usage": usage,
+    }
+
+
+def make_measured_run_id(arming_sha: str, timestamp: str | None = None) -> str:
+    stamp = timestamp or time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    return f"phasec-{stamp}-{arming_sha[:8]}"
 
 
 def execute_attempt(provider, sandbox_root, system_prompt, mode_contract,
@@ -431,6 +452,13 @@ def run_measured_suite(run_root: Path, provider_factory, runner_cls,
                         {"path": t.get("path"), "bytes": t.get("bytes"), "result": t.get("result")}
                         for t in result["tool_log"]
                     ]
+                    rec["attempt_diagnostics"].append({
+                        "attempt": attempts,
+                        "rounds": result["rounds"],
+                        "final_finish_reason": result.get("finish_reason"),
+                        "substantive": bool(result["substantive"]),
+                        "rounds_metadata": result.get("rounds_diagnostics", []),
+                    })
                     if result["substantive"]:
                         rec["runner_status"] = "OK"
                         break
@@ -438,9 +466,30 @@ def run_measured_suite(run_root: Path, provider_factory, runner_cls,
                     result = None
                 except ProviderError as exc:
                     tech_errors.append(f"ProviderError: {exc}")
+                    diag = getattr(exc, "case_diagnostics", {})
+                    if diag.get("rounds") is not None:
+                        rec["rounds_used"].append(diag["rounds"])
+                    round_meta = diag.get("rounds_metadata", [])
+                    rec["attempt_diagnostics"].append({
+                        "attempt": attempts,
+                        "rounds": diag.get("rounds", len(round_meta)),
+                        "final_finish_reason": diag.get("final_finish_reason"),
+                        "substantive": False,
+                        "rounds_metadata": round_meta,
+                    })
+                    if round_meta:
+                        rec["final_observed_model"] = round_meta[-1].get("observed_model") or rec["final_observed_model"]
                     result = None
                 except (OSError, RuntimeError, ValueError) as exc:
                     tech_errors.append(f"{exc.__class__.__name__}: {exc}")
+                    rec["attempt_diagnostics"].append({
+                        "attempt": attempts,
+                        "rounds": 0,
+                        "final_finish_reason": None,
+                        "substantive": False,
+                        "rounds_metadata": [],
+                        "error_class": exc.__class__.__name__,
+                    })
                     result = None
                 if attempts == 1:
                     rec["technical_retry_count"] = 1
@@ -823,6 +872,45 @@ def integration_selftest() -> int:
             assert raw1 == b"  PADDED-SYNTHETIC-ANSWER  \n", raw1
         check("verbatim final text fidelity", scenario_verbatim)
 
+        def scenario_empty_diagnostics():
+            root = make_env("empty-diagnostics")
+            run_root = root / "eval" / "stage10" / "run"
+            empty_final = {
+                "model": REQUESTED_MODEL,
+                "choices": [{"finish_reason": "length", "message": {"role": "assistant", "content": None}}],
+                "_stage10_technical": {
+                    "transport_attempt_count": 1,
+                    "transport_retry_count": 0,
+                    "retry_errors": [],
+                    "http_status": 200,
+                    "observed_model": REQUESTED_MODEL,
+                    "finish_reason": "length",
+                    "content_field_present": True,
+                    "content_present": False,
+                    "content_length": None,
+                    "reasoning_present": True,
+                    "reasoning_length": 321,
+                    "usage_summary": {"completion_tokens": 16000},
+                },
+            }
+            provider = FakeProvider([empty_final, "ok", "ok"])
+            res = run_measured_suite(
+                run_root, lambda: provider, runner_mod.CaseRunner,
+                readiness_result={"ok": True, "observed_model": REQUESTED_MODEL},
+                case_ids=["PRE10-001", "PRE10-002"], run_id="itest-empty-diagnostics",
+            )
+            assert res["status"] == "COMPLETE", (res["status"], res.get("stop_reason"))
+            meta = json.loads((run_root / "metadata.json").read_text(encoding="utf-8"))
+            first_case = meta["cases"][0]
+            first = first_case["attempt_diagnostics"][0]
+            assert first["final_finish_reason"] == "length" and first["substantive"] is False, first
+            round_meta = first["rounds_metadata"][0]
+            assert round_meta["content_field_present"] and not round_meta["content_present"]
+            assert round_meta["reasoning_present"] and round_meta["reasoning_length"] == 321
+            assert "synthetic-hidden" not in json.dumps(meta)
+            assert first_case["attempt_diagnostics"][1]["substantive"] is True
+        check("G empty-final diagnostics preserved before case retry", scenario_empty_diagnostics)
+
         for name, ok, err in checks:
             print(f"  {'PASS' if ok else 'FAIL'}  {name}" + (f"  ({err})" if err else ""))
         if failures:
@@ -852,8 +940,8 @@ def cmd_readiness() -> int:
     print(f"  host: {API_HOST}")
     print(f"  requested_model: {REQUESTED_MODEL}")
     print(f"  observed_model: {res.get('observed_model')}")
-    print(f"  settings: temperature=0 max_tokens=8000")
-    print(f"  probe: {res.get('content_probe')}")
+    print(f"  settings: temperature=0 max_tokens=16000")
+    print(f"  content_length: {res.get('content_length')}")
     if usage:
         u = usage.get("usage", usage)
         print(f"  usage: rolling={u.get('rolling', {}).get('percent')}% weekly={u.get('weekly', {}).get('percent')}% monthly={u.get('monthly', {}).get('percent')}%")
@@ -974,7 +1062,7 @@ def selftest() -> int:
 
         def t14():
             try:
-                validate_generation_settings(0.7, 8000)
+                validate_generation_settings(0.7, 16000)
                 raise AssertionError("temp!=0 accepted")
             except ControllerError:
                 pass
@@ -982,11 +1070,11 @@ def selftest() -> int:
 
         def t15():
             try:
-                validate_generation_settings(0, 4000)
-                raise AssertionError("max_tokens!=8000 accepted")
+                validate_generation_settings(0, 8000)
+                raise AssertionError("max_tokens!=16000 accepted")
             except ControllerError:
                 pass
-        check("max_tokens!=8000 rejected", t15)
+        check("max_tokens!=16000 rejected", t15)
 
         def t16():
             from provider_openai_compatible import session_header
@@ -1000,6 +1088,207 @@ def selftest() -> int:
             txt = (d / "meta" / "E10-C.json").read_text(encoding="utf-8")
             assert "SUPERSECRET" not in txt and "<redacted>" in txt
         check("no secret in metadata", t17)
+
+        def provider_stubs():
+            import io
+            import urllib.error
+            from provider_openai_compatible import (
+                LOCAL_PROXY, MAX_TRANSPORT_ATTEMPTS, REQUIRED_MAX_TOKENS,
+                TECHNICAL_RESPONSE_KEY, TRANSPORT_BACKOFF_SECONDS,
+                ProviderError, ReferenceProvider,
+            )
+
+            class Response:
+                status = 200
+                def __init__(self, payload):
+                    self.payload = payload if isinstance(payload, bytes) else json.dumps(payload).encode("utf-8")
+                def __enter__(self):
+                    return self
+                def __exit__(self, *exc):
+                    return False
+                def read(self):
+                    return self.payload
+
+            class Opener:
+                def __init__(self, actions):
+                    self.actions = list(actions)
+                    self.requests = []
+                def open(self, request, timeout):
+                    self.requests.append((request, timeout))
+                    action = self.actions.pop(0)
+                    if isinstance(action, BaseException):
+                        raise action
+                    return Response(action)
+
+            class TestProvider(ReferenceProvider):
+                def __init__(self, api_key, opener, sleep_fn):
+                    super().__init__(api_key=api_key)
+                    self._opener = opener
+                    self._sleep = sleep_fn
+
+            return io, urllib.error, LOCAL_PROXY, MAX_TRANSPORT_ATTEMPTS, REQUIRED_MAX_TOKENS, TECHNICAL_RESPONSE_KEY, TRANSPORT_BACKOFF_SECONDS, ProviderError, TestProvider, Opener
+
+        def t18():
+            io, urlerror, _, max_attempts, max_tokens, technical_key, _, _, Provider, Opener = provider_stubs()
+            sleeps = []
+            ok = {"model": REQUESTED_MODEL, "choices": [{"finish_reason": "stop", "message": {"role": "assistant", "content": "synthetic-ready"}}]}
+            opener = Opener([urlerror.URLError(ConnectionResetError("synthetic reset")), ok])
+            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
+            data = provider.chat([{"role": "user", "content": "synthetic request"}], session="stage10-ref-selftest-PRE10")
+            meta = data[technical_key]
+            assert max_attempts == 3 and max_tokens == 16000
+            assert meta["transport_attempt_count"] == 2 and meta["transport_retry_count"] == 1, meta
+            assert meta["retry_errors"][0]["error_class"] == "ConnectionResetError", meta
+            assert sleeps == [1], sleeps
+            assert len(opener.requests) == 2
+            first, second = (item[0] for item in opener.requests)
+            assert first.data == second.data, "retry body bytes changed"
+            assert first.full_url == second.full_url == "https://opencode.ai/zen/go/v1/chat/completions"
+            assert json.loads(first.data)["max_tokens"] == 16000
+            assert first.get_header("X-opencode-session") == second.get_header("X-opencode-session")
+            assert all(item[0].full_url.startswith("https://opencode.ai/zen/") for item in opener.requests)
+        check("transport retry succeeds with identical body and no fallback", t18)
+
+        def t19():
+            _, urlerror, _, _, _, technical_key, _, ProviderError, Provider, Opener = provider_stubs()
+            sleeps = []
+            opener = Opener([urlerror.URLError(TimeoutError("synthetic timeout")) for _ in range(3)])
+            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
+            try:
+                provider.chat([{"role": "user", "content": "synthetic request"}])
+                raise AssertionError("transport exhaustion unexpectedly succeeded")
+            except ProviderError as exc:
+                assert exc.technical_metadata["transport_attempt_count"] == 3
+                assert exc.technical_metadata["transport_retry_count"] == 2
+                assert exc.technical_metadata["retry_errors"][-1]["error_message"] == "transport timeout"
+            assert len(opener.requests) == 3 and sleeps == [1, 3], (len(opener.requests), sleeps)
+            assert technical_key == "_stage10_technical"
+        check("transport retry exhausts after three attempts", t19)
+
+        def t20():
+            io, urlerror, _, _, _, _, _, ProviderError, Provider, Opener = provider_stubs()
+            opener = Opener([urlerror.HTTPError("https://opencode.ai/zen/go/v1/chat/completions", 403, "Forbidden", {}, io.BytesIO(b"SYNTHETIC-PRIVATE-BODY"))])
+            sleeps = []
+            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
+            try:
+                provider.chat([{"role": "user", "content": "synthetic request"}])
+                raise AssertionError("HTTP 403 unexpectedly succeeded")
+            except ProviderError as exc:
+                assert exc.technical_metadata["http_status"] == 403
+                assert "SYNTHETIC-PRIVATE-BODY" not in str(exc)
+            assert len(opener.requests) == 1 and sleeps == []
+        check("HTTP 403 fails immediately without response-body logging", t20)
+
+        def t21():
+            _, _, _, _, _, _, _, ProviderError, Provider, Opener = provider_stubs()
+            sleeps = []
+            opener = Opener([{"model": "synthetic-model-drift", "choices": [{"finish_reason": "stop", "message": {"content": "x"}}]}])
+            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
+            try:
+                provider.chat([{"role": "user", "content": "synthetic request"}])
+                raise AssertionError("model drift unexpectedly succeeded")
+            except ProviderError as exc:
+                assert exc.technical_metadata["observed_model"] == "synthetic-model-drift"
+            assert len(opener.requests) == 1 and sleeps == []
+        check("model drift fails immediately", t21)
+
+        def t22():
+            io, _, _, _, _, technical_key, _, _, Provider, Opener = provider_stubs()
+            hidden = "SYNTHETIC-HIDDEN-REASONING"
+            payload = {
+                "model": REQUESTED_MODEL,
+                "choices": [{"finish_reason": "stop", "message": {
+                    "role": "assistant", "content": "VISIBLE-SYNTHETIC-ANSWER", "reasoning_content": hidden,
+                }}],
+                "usage": {"prompt_tokens": 10, "completion_tokens": 7, "total_tokens": 17,
+                          "completion_tokens_details": {"reasoning_tokens": 4}},
+            }
+            provider = Provider(api_key="synthetic-key", opener=Opener([payload]), sleep_fn=lambda _: None)
+            data = provider.chat([{"role": "user", "content": "synthetic request"}])
+            serialized = json.dumps(data)
+            meta = data[technical_key]
+            assert hidden not in serialized and "reasoning_content" not in serialized
+            assert meta["reasoning_present"] and meta["reasoning_length"] == len(hidden)
+            assert meta["content_present"] and meta["content_length"] == len("VISIBLE-SYNTHETIC-ANSWER")
+            assert meta["usage_summary"]["completion_tokens_details"]["reasoning_tokens"] == 4
+            null_payload = {
+                "model": REQUESTED_MODEL,
+                "choices": [{"finish_reason": "stop", "message": {"content": "visible", "reasoning": None}}],
+            }
+            null_data = Provider(api_key="synthetic-key", opener=Opener([null_payload]), sleep_fn=lambda _: None).chat([])
+            null_meta = null_data[technical_key]
+            assert null_meta["reasoning_present"] and null_meta["reasoning_length"] is None
+            assert "reasoning" not in null_data["choices"][0]["message"]
+        check("reasoning text removed; presence and counts retained", t22)
+
+        def t23():
+            _, _, _, _, _, _, _, ProviderError, Provider, Opener = provider_stubs()
+            provider = Provider(api_key="synthetic-key", opener=Opener([]), sleep_fn=lambda _: None)
+            for settings in ({"max_tokens": 8000}, {"temperature": 0.7}):
+                try:
+                    provider.chat([{"role": "user", "content": "synthetic request"}], **settings)
+                    raise AssertionError(f"invalid settings accepted: {settings}")
+                except ProviderError:
+                    pass
+            assert provider._opener.requests == []
+        check("provider enforces fixed max_tokens and temperature", t23)
+
+        def t24():
+            run_id = make_measured_run_id("12345678abcdef", "20260923T075100Z")
+            assert run_id == "phasec-20260923T075100Z-12345678", run_id
+        check("measured run_id uses phasec prefix", t24)
+
+        def t25():
+            io, urlerror, _, _, _, technical_key, _, ProviderError, Provider, Opener = provider_stubs()
+            ok = {"model": REQUESTED_MODEL, "choices": [{"finish_reason": "stop", "message": {"content": "synthetic"}}]}
+            for status in (502, 503, 504):
+                sleeps = []
+                failure = urlerror.HTTPError("https://opencode.ai/zen/go/v1/chat/completions", status, "transient", {}, io.BytesIO(b"synthetic"))
+                opener = Opener([failure, ok])
+                provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
+                data = provider.chat([{"role": "user", "content": "synthetic request"}])
+                meta = data[technical_key]
+                assert meta["transport_attempt_count"] == 2 and meta["retry_errors"][0]["http_status"] == status
+                assert sleeps == [1]
+            sleeps = []
+            rate_limit = urlerror.HTTPError("https://opencode.ai/zen/go/v1/chat/completions", 429, "rate limit", {}, io.BytesIO(b"synthetic"))
+            opener = Opener([rate_limit])
+            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
+            try:
+                provider.chat([{"role": "user", "content": "synthetic request"}])
+                raise AssertionError("429 unexpectedly succeeded")
+            except ProviderError as exc:
+                assert exc.technical_metadata["http_status"] == 429
+            assert len(opener.requests) == 1 and sleeps == []
+        check("HTTP 502/503/504 retry; 429 fails closed", t25)
+
+        def t26():
+            _, _, _, _, _, _, _, ProviderError, Provider, Opener = provider_stubs()
+            sleeps = []
+            opener = Opener([b"not-json"])
+            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
+            try:
+                provider.chat([{"role": "user", "content": "synthetic request"}])
+                raise AssertionError("malformed successful JSON unexpectedly succeeded")
+            except ProviderError as exc:
+                assert exc.technical_metadata["transport_attempt_count"] == 1
+            assert len(opener.requests) == 1 and sleeps == []
+        check("malformed successful JSON fails without retry", t26)
+
+        def t27():
+            import urllib.request
+            from provider_openai_compatible import LOCAL_PROXY, _FixedLocalProxyHandler
+            handler = _FixedLocalProxyHandler({"http": LOCAL_PROXY, "https": LOCAL_PROXY})
+            request = urllib.request.Request("https://opencode.ai/zen/go/v1/chat/completions")
+            original_bypass = urllib.request.proxy_bypass
+            urllib.request.proxy_bypass = lambda host: (_ for _ in ()).throw(AssertionError("proxy bypass consulted"))
+            try:
+                result = handler.proxy_open(request, LOCAL_PROXY, "https")
+            finally:
+                urllib.request.proxy_bypass = original_bypass
+            assert result is None and request.host == "127.0.0.1:7897"
+            assert request._tunnel_host == "opencode.ai"
+        check("fixed LOCAL_PROXY cannot be bypassed by NO_PROXY", t27)
 
         for name, ok, err in checks:
             print(f"  {'PASS' if ok else 'FAIL'}  {name}" + (f"  ({err})" if err else ""))
@@ -1061,7 +1350,7 @@ def cmd_run_suite() -> int:
     if evidence:
         print(f"run-suite: prior measured evidence exists: {evidence}; refusing.")
         return 5
-    run_id = "attempt2-" + time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()) + "-" + head[:8]
+    run_id = make_measured_run_id(head)
     print(f"run-suite: measured run_id={run_id}")
     res = run_measured_suite(run_root, ReferenceProvider, runner_mod.CaseRunner,
                              case_ids=CASE_IDS, run_id=run_id, harness_sha=head)

@@ -16,6 +16,7 @@ from provider_openai_compatible import (
     REQUIRED_MAX_TOKENS,
     REQUIRED_MODEL,
     REQUIRED_TEMPERATURE,
+    TECHNICAL_RESPONSE_KEY,
     ProviderError,
     ReferenceProvider,
     session_header,
@@ -53,6 +54,32 @@ TOOL_SCHEMA = {
         },
     },
 }
+
+ROUND_DIAGNOSTIC_FIELDS = (
+    "transport_attempt_count", "transport_retry_count", "retry_errors", "http_status",
+    "observed_model", "finish_reason", "content_field_present", "content_present",
+    "content_length", "reasoning_present", "reasoning_length", "usage_summary",
+)
+
+
+def _round_diagnostics(metadata: dict | None) -> dict:
+    """Copy the allowlisted technical fields; never carry provider reasoning text."""
+    source = metadata if isinstance(metadata, dict) else {}
+    out = {key: source.get(key) for key in ROUND_DIAGNOSTIC_FIELDS if key in source}
+    retries = out.get("retry_errors")
+    if isinstance(retries, list):
+        out["retry_errors"] = [
+            {
+                key: error.get(key)
+                for key in ("attempt", "error_class", "error_message", "http_status")
+                if key in error
+            }
+            for error in retries if isinstance(error, dict)
+        ]
+    usage = out.get("usage_summary")
+    if not isinstance(usage, dict):
+        out["usage_summary"] = None
+    return out
 
 
 def materialize_sut_snapshot(sut_sha: str = SUT_SHA, dest: str | None = None) -> str:
@@ -175,20 +202,43 @@ class CaseRunner:
         final_content: str = ""
         finish_reason = None
         observed_models: list[str | None] = []
+        rounds_diagnostics: list[dict] = []
+
+        def attach_case_diagnostics(exc: ProviderError) -> None:
+            exc.case_diagnostics = {
+                "rounds": rounds,
+                "final_finish_reason": finish_reason,
+                "substantive": False,
+                "rounds_metadata": list(rounds_diagnostics),
+            }
+
         while rounds < max_tool_rounds:
             rounds += 1
-            data = self.provider.chat(
-                messages,
-                tools=[TOOL_SCHEMA],
-                tool_choice="auto",
-                session=session,
-                temperature=REQUIRED_TEMPERATURE,
-                max_tokens=REQUIRED_MAX_TOKENS,
-            )
-            observed_models.append(data.get("model"))
+            try:
+                data = self.provider.chat(
+                    messages,
+                    tools=[TOOL_SCHEMA],
+                    tool_choice="auto",
+                    session=session,
+                    temperature=REQUIRED_TEMPERATURE,
+                    max_tokens=REQUIRED_MAX_TOKENS,
+                )
+            except ProviderError as exc:
+                round_meta = _round_diagnostics(exc.technical_metadata)
+                rounds_diagnostics.append(round_meta)
+                if round_meta.get("finish_reason") is not None:
+                    finish_reason = round_meta["finish_reason"]
+                attach_case_diagnostics(exc)
+                raise
+            round_meta = _round_diagnostics(data.get(TECHNICAL_RESPONSE_KEY))
+            rounds_diagnostics.append(round_meta)
+            observed_model = round_meta.get("observed_model", data.get("model"))
+            observed_models.append(observed_model)
             choices = data.get("choices") or []
             if not choices:
-                raise ProviderError("provider returned no choices")
+                exc = ProviderError("provider returned no choices", round_meta)
+                attach_case_diagnostics(exc)
+                raise exc
             msg = choices[0].get("message") or {}
             finish_reason = choices[0].get("finish_reason")
             tool_calls = msg.get("tool_calls") or []
@@ -238,6 +288,7 @@ class CaseRunner:
             "finish_reason": finish_reason,
             "final_content": final_content,
             "substantive": final_content.strip() != "",
+            "rounds_diagnostics": rounds_diagnostics,
             "requested_model": REQUIRED_MODEL,
             "observed_models": observed_models,
             "final_observed_model": final_observed,
