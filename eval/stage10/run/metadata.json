@@ -1,0 +1,144 @@
+{
+  "stage": 10,
+  "phase": "C",
+  "run_kind": "isolated_api_blinded_reference",
+  "run_id": "attempt2-20260923T061754Z-c78b8cdd",
+  "process_pid": 11044,
+  "sut_sha": "96d9ae333ffc5a8076d635b86634b5151ec0bbc5",
+  "suite_design_sha": "ff157eb1947860345a305fb29452b51e09dd3a2b",
+  "public_pack_sha": "23a49382c949702446325d30e18d3321d8550c36",
+  "harness_git_sha": "c78b8cdd0eb88647170d10256d5139bd6c6a502e",
+  "controller_sha256": "b8fe1aa9cd2fa37f33405f53fc1483237e3f16dcafceecd40292582df45e1847",
+  "runner_sha256": "8bce4ab63087e9bf66c2a17aa1cdd7054736638e18e26db79368d839c6aa57ee",
+  "provider_adapter_sha256": "01452efabf5a38fdc75b9e537bcf21e8d39cfc68539ebf589e2c25bc2f780201",
+  "provider": "OpenCode Zen",
+  "api_host": "https://opencode.ai/zen/go/v1",
+  "requested_model": "deepseek-v4-pro",
+  "generation_settings": {
+    "temperature": 0,
+    "max_tokens": 8000
+  },
+  "max_tool_rounds": 24,
+  "prompt_precedence_mapping": "SYSTEM1=agent/system-prompt-v0.1.md; SYSTEM2=agent/modes/<MODE>.md; USER=verbatim PUBLIC case",
+  "fresh_context_mechanism": "new messages list per case/attempt; no conversation/response IDs; per-case non-secret session routing header only",
+  "model_visible_tools": [
+    "read_sut_file"
+  ],
+  "sut_snapshot_mechanism": "git archive 96d9ae333ffc5a8076d635b86634b5151ec0bbc5 to temp read-only snapshot; required-file assertion",
+  "external_context_boundary": "no web/shell/list/write/git/env tools; sandbox rejects eval/, .git/, tasks/, traversal, absolute paths",
+  "started_at": "2026-09-23T06:18:02Z",
+  "completed_at": "2026-09-23T06:21:30Z",
+  "status": "PARTIAL_TECHNICAL_FAILURE",
+  "cases": [
+    {
+      "id": "E10-001",
+      "requested_mode": "AUTO",
+      "start_order": 1,
+      "attempt_count": 2,
+      "technical_retry_count": 1,
+      "rounds_used": [
+        4
+      ],
+      "observed_models": [
+        [
+          "deepseek-v4-pro",
+          "deepseek-v4-pro",
+          "deepseek-v4-pro",
+          "deepseek-v4-pro"
+        ]
+      ],
+      "final_observed_model": "deepseek-v4-pro",
+      "session_header": "stage10-ref-attempt2-20260923T061754Z-c78b8cdd-E10-001",
+      "tool_calls": [
+        {
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "path": "decision-playbooks/DP-002.md",
+          "bytes": 6470,
+          "result": "allow"
+        },
+        {
+          "path": "domains/lifecycle/index.md",
+          "bytes": 646,
+          "result": "allow"
+        },
+        {
+          "path": "domains/concurrency/index.md",
+          "bytes": 626,
+          "result": "allow"
+        },
+        {
+          "path": "domains/state-data/index.md",
+          "bytes": 493,
+          "result": "allow"
+        },
+        {
+          "path": "question-bank/index.md",
+          "bytes": 12968,
+          "result": "allow"
+        },
+        {
+          "path": "failure-patterns/FP-001.md",
+          "bytes": 2061,
+          "result": "allow"
+        },
+        {
+          "path": "failure-patterns/FP-012.md",
+          "bytes": 2155,
+          "result": "allow"
+        },
+        {
+          "path": "failure-patterns/FP-009.md",
+          "bytes": 1807,
+          "result": "allow"
+        },
+        {
+          "path": "tactics/T-001.md",
+          "bytes": 1317,
+          "result": "allow"
+        },
+        {
+          "path": "tactics/T-002.md",
+          "bytes": 1239,
+          "result": "allow"
+        },
+        {
+          "path": "tactics/T-013.md",
+          "bytes": 1143,
+          "result": "allow"
+        },
+        {
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        },
+        {
+          "path": "02_VOCABULARY.md",
+          "bytes": 43758,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": null,
+      "raw_output_sha256": null,
+      "runner_status": "TECHNICAL_ERROR",
+      "technical_errors": [
+        "empty final content",
+        "ProviderError: provider transport error: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1006)>"
+      ]
+    }
+  ],
+  "stop_reason": "double technical failure: E10-001"
+}
