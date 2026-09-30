@@ -323,3 +323,134 @@ tool-01 and tool-02 returned the successful tool-call rounds shown above before 
 ### Exact blocker / handoff
 
 **HOLD_HTTPX_TRANSPORT_UNSTABLE**: required tool-loop gate is 0/3 visible finals. tool-01 round 6 / tool-02 round 7 terminated after two retryable RemoteProtocolError failures followed by a non-retryable ConnectError; tool-03 round 1 failed immediately with a non-retryable ConnectError. No terminal HTTP/model response was available. The sanitized diagnostic is `provider transport failure: ConnectError (non-retryable transport failure)`; it does not establish a client/provider/network root cause. Do not advance to Attempt #4 from this preflight.
+
+## Final bounded runtime freeze gate (2026-09-30)
+
+This section supersedes the historical migration gate above for this task. The user authorizes exactly one full Phase C Attempt #4 immediately after both final sequential smokes pass.
+
+### Scope and fixed policy
+
+- Task source: `origin/main:tasks/stage10/CODEX_FINAL_RUNTIME_FREEZE_AND_ATTEMPT4.md`, read after fetch at `f6906ab`; task blob SHA-256 `043b505476047de733fabdbb750736a12a076130124d2ebf2e400a31a4e943bf`.
+- Dedicated clean worktree/branch: `eval/stage10-final-runtime-freeze-attempt4`; exact starting HEAD `ed70a80c034198f62a480bbf346a41fac11f84bc`; main was not merged.
+- Final patch: all generic httpx.ConnectError are retryable except explicit TLS certificate verification failure; certificate causes are checked before accepting generic connection errors. No other transport category was added.
+- Final fixed global settings: temperature **0**, max_tokens **32000** for synthetic and measured execution. No adaptive budget or other sampling override.
+- Persistent **httpx 0.28.1**, **DIRECT**, trust_env=false, proxy=None, follow_redirects=false; connect/read/write/pool timeouts **30/360/30/30 seconds**.
+- Maximum **3 total transport attempts per provider round**, fixed **1s/3s** backoff, byte-identical application body/settings/session/route across retries. Timeout/read/protocol and HTTP 502/503/504 retry categories are unchanged; other HTTP/identity/shape/capability failures remain fail-closed.
+- Frozen SUT/suite/PUBLIC SHAs remain `96d9ae333ffc5a8076d635b86634b5151ec0bbc5` / `ff157eb1947860345a305fb29452b51e09dd3a2b` / `23a49382c949702446325d30e18d3321d8550c36`.
+- Host/model remain OpenCode Zen `https://opencode.ai/zen/go/v1` / `deepseek-v4-pro`; max_tool_rounds=24, dual SYSTEM/exact PUBLIC USER, single read_sut_file, sandbox/budgets, one case-level retry maximum and duplicate-HOLD semantics are unchanged.
+
+### Deterministic and mechanical gate
+
+- PYTHONDONTWRITEBYTECODE=1 and python -B used throughout. Before provider calls: in-memory source compile **3/3 PASS**, selftest **36/36 PASS**, integration-selftest **9/9 PASS**, PUBLIC dry-run **32/32 PASS**.
+- Directly affected assertions cover generic ConnectError recovery/exhaustion, explicit/chained certificate failure without retry, 32000 acceptance/old-budget rejection, httpx/DIRECT/timeouts and generation metadata. Existing lock/atomic/reconciliation/duplicate/verbatim/empty-final diagnostics remain green.
+- AST comparison against the starting commit confirms measured orchestration, lock, atomic writes, reconciliation, parser and run-id functions unchanged. runner.py, PUBLIC and Agent files are unchanged; requirements still pins httpx==0.28.1.
+
+### Two sequential synthetic conversations
+
+- Exactly two new PRE10 conversations; one persistent ReferenceProvider/httpx.Client reused sequentially, with a fresh CaseRunner/messages/sandbox for each. No 10x readiness soak, matrix, parallel provider conversation, failed-smoke repeat or prompt tuning.
+- New scenario: inter-library transfer label dispatch/reprint/cancellation across 420 branches/two regions, 10-hour offline windows, 6-hour deduplication, DB/queue confirmation gaps, dispatcher lease/partition conflicts, burst backlog, bounded concurrency and staged minimum correction.
+- Smoke #1 exposes the tool without requiring a read. Smoke #2 adds a fixed requirement to read 00_ROUTER.md then a related allowed knowledge file before the visible final.
+- Exact frozen SYSTEM/AUTO strings are loaded with the same UTF-8 universal-newline text semantics as the controller and asserted equal to frozen Git blobs before calls. SYSTEM SHA-256 `e25cca7e108963a75ee6b64581460029f1ebe7977122cd314e43eee953129fd1`; AUTO `cf9d3d49c5d060891a356624b503be4e2e7d391df6321a5a88a31aeae615f198`.
+- Scenario SHA-256 `9505947427e0112c29281d935fbaa5924dc4300cd22448f5f9c2f58129c85742`; required-tool variant `2c94276e49850e88050cb38f5f3add7849a7523cac3eb63dd796c953709ba00b`.
+- Synthetic run/session namespace: `final-freeze-20260930T083302Z`; only public knowledge/Agent paths were materialized in an external temporary snapshot.
+- Synthetic model answers and hidden reasoning text were never persisted. Only sanitized technical fields, numeric usage, content/reasoning lengths and completed tool-read path/byte/result facts are retained. No output-quality assessment.
+
+| Smoke | Result | Elapsed seconds | Rounds | Final finish | Visible characters | Completed allowed reads | Transport retries |
+|---|---|---:|---:|---|---:|---:|---:|
+| PRE10-FINAL-SMOKE-01 | PASS | 284.114 | 7 | stop | 19767 | 27 | 0 |
+| PRE10-FINAL-SMOKE-02 | PASS | 207.047 | 6 | stop | 14673 | 26 | 0 |
+
+#### Provider-round technical facts
+
+| Smoke/round | HTTP | Model | Finish | Round seconds | Attempts/retries | Visible length | Reasoning length/count |
+|---|---:|---|---|---:|---|---:|---:|
+| PRE10-FINAL-SMOKE-01/1 | 200 | deepseek-v4-pro | tool_calls | 7.594 | 1/0 | 0 | 1623 |
+| PRE10-FINAL-SMOKE-01/2 | 200 | deepseek-v4-pro | tool_calls | 8.631 | 1/0 | 0 | 1434 |
+| PRE10-FINAL-SMOKE-01/3 | 200 | deepseek-v4-pro | tool_calls | 9.79 | 1/0 | 0 | 1782 |
+| PRE10-FINAL-SMOKE-01/4 | 200 | deepseek-v4-pro | tool_calls | 5.04 | 1/0 | 0 | 293 |
+| PRE10-FINAL-SMOKE-01/5 | 200 | deepseek-v4-pro | tool_calls | 2.538 | 1/0 | 0 | 78 |
+| PRE10-FINAL-SMOKE-01/6 | 200 | deepseek-v4-pro | tool_calls | 159.333 | 1/0 | 0 | 51169 |
+| PRE10-FINAL-SMOKE-01/7 | 200 | deepseek-v4-pro | stop | 91.144 | 1/0 | 19767 | 10144 |
+| PRE10-FINAL-SMOKE-02/1 | 200 | deepseek-v4-pro | tool_calls | 3.268 | 1/0 | 0 | 391 |
+| PRE10-FINAL-SMOKE-02/2 | 200 | deepseek-v4-pro | tool_calls | 9.305 | 1/0 | 0 | 2655 |
+| PRE10-FINAL-SMOKE-02/3 | 200 | deepseek-v4-pro | tool_calls | 17.353 | 1/0 | 0 | 5193 |
+| PRE10-FINAL-SMOKE-02/4 | 200 | deepseek-v4-pro | tool_calls | 17.742 | 1/0 | 0 | 5366 |
+| PRE10-FINAL-SMOKE-02/5 | 200 | deepseek-v4-pro | tool_calls | 8.002 | 1/0 | 0 | 1399 |
+| PRE10-FINAL-SMOKE-02/6 | 200 | deepseek-v4-pro | stop | 151.334 | 1/0 | 14673 | 36466 |
+
+#### Tool-read completion and terminal facts
+
+| Smoke | Path | Bytes | Result |
+|---|---|---:|---|
+| PRE10-FINAL-SMOKE-01 | 00_ROUTER.md | 2377 | allow |
+| PRE10-FINAL-SMOKE-01 | 01_CONSTITUTION.md | 16753 | allow |
+| PRE10-FINAL-SMOKE-01 | decision-playbooks/index.md | 17652 | allow |
+| PRE10-FINAL-SMOKE-01 | decision-playbooks/DP-003.md | 5609 | allow |
+| PRE10-FINAL-SMOKE-01 | question-bank/index.md | 12968 | allow |
+| PRE10-FINAL-SMOKE-01 | domains/state-data/index.md | 493 | allow |
+| PRE10-FINAL-SMOKE-01 | domains/concurrency/index.md | 626 | allow |
+| PRE10-FINAL-SMOKE-01 | domains/resources/index.md | 617 | allow |
+| PRE10-FINAL-SMOKE-01 | domains/overload/index.md | 611 | allow |
+| PRE10-FINAL-SMOKE-01 | domains/reliability/index.md | 634 | allow |
+| PRE10-FINAL-SMOKE-01 | failure-patterns/FP-009.md | 1807 | allow |
+| PRE10-FINAL-SMOKE-01 | failure-patterns/FP-012.md | 2155 | allow |
+| PRE10-FINAL-SMOKE-01 | failure-patterns/FP-011.md | 1790 | allow |
+| PRE10-FINAL-SMOKE-01 | failure-patterns/FP-010.md | 1756 | allow |
+| PRE10-FINAL-SMOKE-01 | failure-patterns/FP-003.md | 1806 | allow |
+| PRE10-FINAL-SMOKE-01 | failure-patterns/FP-001.md | 2061 | allow |
+| PRE10-FINAL-SMOKE-01 | tactics/T-013.md | 1143 | allow |
+| PRE10-FINAL-SMOKE-01 | tactics/T-015.md | 1346 | allow |
+| PRE10-FINAL-SMOKE-01 | tactics/T-005.md | 1337 | allow |
+| PRE10-FINAL-SMOKE-01 | tactics/T-003.md | 1119 | allow |
+| PRE10-FINAL-SMOKE-01 | cases/good-cases/GC-013.md | 0 | deny: not a file |
+| PRE10-FINAL-SMOKE-01 | cases/good-cases/GC-014.md | 0 | deny: not a file |
+| PRE10-FINAL-SMOKE-01 | cases/good-cases/GC-015.md | 0 | deny: not a file |
+| PRE10-FINAL-SMOKE-01 | cases/good-cases/GC-016.md | 0 | deny: not a file |
+| PRE10-FINAL-SMOKE-01 | tactics/T-004.md | 1154 | allow |
+| PRE10-FINAL-SMOKE-01 | tactics/T-006.md | 1039 | allow |
+| PRE10-FINAL-SMOKE-01 | cases/good-cases/index.md | 8597 | allow |
+| PRE10-FINAL-SMOKE-01 | tactics/T-002.md | 1239 | allow |
+| PRE10-FINAL-SMOKE-01 | tactics/T-010.md | 1307 | allow |
+| PRE10-FINAL-SMOKE-01 | tactics/T-007.md | 1237 | allow |
+| PRE10-FINAL-SMOKE-01 | tactics/T-008.md | 1228 | allow |
+| PRE10-FINAL-SMOKE-02 | 00_ROUTER.md | 2377 | allow |
+| PRE10-FINAL-SMOKE-02 | decision-playbooks/index.md | 17652 | allow |
+| PRE10-FINAL-SMOKE-02 | decision-playbooks/DP-003.md | 5609 | allow |
+| PRE10-FINAL-SMOKE-02 | 01_CONSTITUTION.md | 16753 | allow |
+| PRE10-FINAL-SMOKE-02 | domains/index.md | 1454 | allow |
+| PRE10-FINAL-SMOKE-02 | domains/state-data/index.md | 493 | allow |
+| PRE10-FINAL-SMOKE-02 | domains/reliability/index.md | 634 | allow |
+| PRE10-FINAL-SMOKE-02 | domains/concurrency/index.md | 626 | allow |
+| PRE10-FINAL-SMOKE-02 | domains/resources/index.md | 617 | allow |
+| PRE10-FINAL-SMOKE-02 | domains/overload/index.md | 611 | allow |
+| PRE10-FINAL-SMOKE-02 | domains/lifecycle/index.md | 646 | allow |
+| PRE10-FINAL-SMOKE-02 | principles/MP-008.md | 2089 | allow |
+| PRE10-FINAL-SMOKE-02 | principles/MP-010.md | 2378 | allow |
+| PRE10-FINAL-SMOKE-02 | failure-patterns/FP-009.md | 1807 | allow |
+| PRE10-FINAL-SMOKE-02 | failure-patterns/FP-012.md | 2155 | allow |
+| PRE10-FINAL-SMOKE-02 | tactics/T-015.md | 1346 | allow |
+| PRE10-FINAL-SMOKE-02 | tactics/T-013.md | 1143 | allow |
+| PRE10-FINAL-SMOKE-02 | principles/MP-003.md | 2259 | allow |
+| PRE10-FINAL-SMOKE-02 | principles/MP-009.md | 2635 | allow |
+| PRE10-FINAL-SMOKE-02 | principles/MP-001.md | 2122 | allow |
+| PRE10-FINAL-SMOKE-02 | principles/MP-004.md | 2267 | allow |
+| PRE10-FINAL-SMOKE-02 | failure-patterns/FP-003.md | 1806 | allow |
+| PRE10-FINAL-SMOKE-02 | failure-patterns/FP-010.md | 1756 | allow |
+| PRE10-FINAL-SMOKE-02 | failure-patterns/FP-011.md | 1790 | allow |
+| PRE10-FINAL-SMOKE-02 | failure-patterns/FP-001.md | 2061 | allow |
+| PRE10-FINAL-SMOKE-02 | failure-patterns/FP-005.md | 1847 | allow |
+
+### Freeze decision and pre-measured inventory
+
+**FINAL_RUNTIME_FREEZE: PASS**
+
+- `E10_EXECUTION_COUNT: 0` before measured execution; eval/stage10/run/ is absent.
+- Tested working-file SHA-256 values (the controller hashes the same bytes into measured metadata):
+- `controller.py`: `7558c12ddce28d92f41d9727c1a4329a2c090102f7ec2202efc59b0234336cc7`.
+- `runner.py`: `c9ac016a20093279f19fd2f2482f369982e608f00c44be682475861548c4e517`.
+- `provider_openai_compatible.py`: `35c249ee7928549d9570a7fea0f9ce8848e75c01ef1b90de4c8c47434a2bf48b`.
+- External technical metrics SHA-256: `9be7214f0f56134b6325723d0daa4d8159ecb14ee6522ab4d13dd7d265d20883`.
+- Both smoke finals are non-empty, finish_reason=stop, and all observed provider-round identities equal deepseek-v4-pro. Required router and related-knowledge reads completed in Smoke #2.
+- The exact runtime-freeze SHA is the commit containing this final gate. After commit it is recorded in the external freeze manifest, final handoff and measured metadata.harness_git_sha; no tracked code change is permitted after that commit.
+- Next authorized action: verify clean frozen HEAD and absent run directory, set STAGE10_MEASURED_AUTH_SHA to that HEAD, execute tracked controller.py run-suite exactly once, then preserve and commit only controller-produced canonical evidence.
+- Actual runtime credential bytes are scanned without printing them; hidden reasoning policy remains NEVER STORE TEXT. No private oracle/rubric/coverage/design-report read, no SUT/PUBLIC/Agent edits, and no provider/model/route fallback.

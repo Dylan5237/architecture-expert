@@ -27,7 +27,7 @@ PHASE = "C"
 PROVIDER_NAME = "OpenCode Zen"
 API_HOST = "https://opencode.ai/zen/go/v1"
 REQUESTED_MODEL = "deepseek-v4-pro"
-GENERATION_SETTINGS = {"temperature": 0, "max_tokens": 16000}
+GENERATION_SETTINGS = {"temperature": 0, "max_tokens": 32000}
 SUT_SHA = "96d9ae333ffc5a8076d635b86634b5151ec0bbc5"
 SUITE_SHA = "ff157eb1947860345a305fb29452b51e09dd3a2b"
 PUBLIC_PACK_SHA = "23a49382c949702446325d30e18d3321d8550c36"
@@ -257,8 +257,8 @@ def validate_provider(host: str, model: str) -> None:
 def validate_generation_settings(temperature, max_tokens) -> None:
     if temperature != 0:
         raise ControllerError(f"temperature must be 0, got {temperature}")
-    if max_tokens != 16000:
-        raise ControllerError(f"max_tokens must be 16000, got {max_tokens}")
+    if max_tokens != 32000:
+        raise ControllerError(f"max_tokens must be 32000, got {max_tokens}")
 
 
 # ---- measured orchestration (R2) ----
@@ -312,6 +312,7 @@ def new_metadata(run_id: str, harness_sha: str | None) -> dict:
             "follow_redirects": False,
             "max_attempts_per_round": MAX_TRANSPORT_ATTEMPTS,
             "backoff_seconds": list(TRANSPORT_BACKOFF_SECONDS),
+            "connect_error_policy": "retry all ConnectError except explicit TLS certificate verification failure",
         },
         "max_tool_rounds": MEASURED_MAX_TOOL_ROUNDS,
         "prompt_precedence_mapping": "SYSTEM1=agent/system-prompt-v0.1.md; SYSTEM2=agent/modes/<MODE>.md; USER=verbatim PUBLIC case",
@@ -902,7 +903,7 @@ def integration_selftest() -> int:
                     "content_length": None,
                     "reasoning_present": True,
                     "reasoning_length": 321,
-                    "usage_summary": {"completion_tokens": 16000},
+                    "usage_summary": {"completion_tokens": 32000},
                 },
             }
             provider = FakeProvider([empty_final, "ok", "ok"])
@@ -955,7 +956,7 @@ def cmd_readiness() -> int:
     print(f"  host: {API_HOST}")
     print(f"  requested_model: {REQUESTED_MODEL}")
     print(f"  observed_model: {res.get('observed_model')}")
-    print(f"  settings: temperature=0 max_tokens=16000")
+    print(f"  settings: temperature=0 max_tokens=32000")
     print(f"  content_length: {res.get('content_length')}")
     if usage:
         u = usage.get("usage", usage)
@@ -1077,19 +1078,21 @@ def selftest() -> int:
 
         def t14():
             try:
-                validate_generation_settings(0.7, 16000)
+                validate_generation_settings(0.7, 32000)
                 raise AssertionError("temp!=0 accepted")
             except ControllerError:
                 pass
         check("temperature!=0 rejected", t14)
 
         def t15():
-            try:
-                validate_generation_settings(0, 8000)
-                raise AssertionError("max_tokens!=16000 accepted")
-            except ControllerError:
-                pass
-        check("max_tokens!=16000 rejected", t15)
+            validate_generation_settings(0, 32000)
+            for budget in (8000, 16000):
+                try:
+                    validate_generation_settings(0, budget)
+                    raise AssertionError("max_tokens!=32000 accepted")
+                except ControllerError:
+                    pass
+        check("max_tokens!=32000 rejected", t15)
 
         def t16():
             from provider_openai_compatible import session_header
@@ -1158,7 +1161,7 @@ def selftest() -> int:
             first, second = requests
             assert first.content == second.content and first.headers == second.headers
             assert first.url == second.url == API_HOST + "/chat/completions"
-            assert json.loads(first.content)["max_tokens"] == 16000
+            assert json.loads(first.content)["max_tokens"] == 32000
             assert first.headers["x-opencode-session"] == second.headers["x-opencode-session"]
         check("ReadTimeout recovers; byte-identical body/headers/session; no fallback", t18)
 
@@ -1222,14 +1225,14 @@ def selftest() -> int:
             from provider_openai_compatible import ProviderError
             provider, requests, _, _ = provider_stubs([])
             with provider:
-                for settings in ({"max_tokens": 8000}, {"temperature": 0.7}):
+                for settings in ({"max_tokens": 8000}, {"max_tokens": 16000}, {"temperature": 0.7}):
                     try:
                         provider.chat([], **settings)
                         raise AssertionError("invalid settings accepted")
                     except ProviderError:
                         pass
             assert requests == []
-        check("provider enforces max_tokens=16000 and temperature=0", t23)
+        check("provider enforces max_tokens=32000 and temperature=0", t23)
 
         def t24():
             assert make_measured_run_id("12345678abcdef", "20260923T075100Z") == "phasec-20260923T075100Z-12345678"
@@ -1290,9 +1293,29 @@ def selftest() -> int:
                 with provider:
                     provider.chat([])
                 assert len(requests) == 2 and sleeps == [1]
-            for message in ("DNS lookup failed", "CERTIFICATE_VERIFY_FAILED", "generic connection failure"):
+            for message in ("DNS lookup failed", "generic connection failure"):
+                provider, requests, sleeps, _ = provider_stubs([httpx.ConnectError(message), synthetic_response()])
+                with provider:
+                    provider.chat([])
+                assert len(requests) == 2 and sleeps == [1]
+            for message in ("CERTIFICATE_VERIFY_FAILED",):
                 fails_once(httpx.ConnectError(message))
-        check("ConnectError restricted to refusal/reset/abort/TLS EOF", t32)
+            cert_error = httpx.ConnectError("connection refused")
+            wrapper = ConnectionRefusedError("synthetic wrapper")
+            wrapper.__cause__ = ssl.SSLCertVerificationError("synthetic certificate failure")
+            cert_error.__cause__ = wrapper
+            fails_once(cert_error)
+            from provider_openai_compatible import ProviderError
+            provider, requests, sleeps, _ = provider_stubs([httpx.ConnectError("generic") for _ in range(3)])
+            with provider:
+                try:
+                    provider.chat([])
+                    raise AssertionError("generic ConnectError exhaustion succeeded")
+                except ProviderError as exc:
+                    assert exc.technical_metadata["transport_attempt_count"] == 3
+                    assert exc.technical_metadata["transport_retry_count"] == 2
+            assert len(requests) == 3 and sleeps == [1, 3]
+        check("all ConnectError retry; explicit certificate failure fails once; bounded exhaustion", t32)
 
         def t33():
             from provider_openai_compatible import TECHNICAL_RESPONSE_KEY
@@ -1331,6 +1354,8 @@ def selftest() -> int:
             assert policy["trust_env"] is False and policy["follow_redirects"] is False
             assert policy["timeout_policy"] == {"connect": 30, "read": 360, "write": 30, "pool": 30}
             assert policy["max_attempts_per_round"] == 3 and policy["backoff_seconds"] == [1, 3]
+            assert policy["connect_error_policy"] == "retry all ConnectError except explicit TLS certificate verification failure"
+            assert new_metadata("synthetic-metadata", None)["generation_settings"] == {"temperature": 0, "max_tokens": 32000}
         check("exact dependency pin and controller transport policy", t35)
 
         def t36():

@@ -6,7 +6,6 @@ No fallback path exists. If the reference is unavailable the caller must fail cl
 from __future__ import annotations
 
 import copy
-import errno
 import json
 import os
 import re
@@ -18,7 +17,7 @@ import httpx
 REQUIRED_BASE_URL = "https://opencode.ai/zen/go/v1"
 REQUIRED_MODEL = "deepseek-v4-pro"
 REQUIRED_TEMPERATURE = 0
-REQUIRED_MAX_TOKENS = 16000
+REQUIRED_MAX_TOKENS = 32000
 REQUIRED_HTTPX_VERSION = "0.28.1"
 TRANSPORT_ROUTE = "DIRECT"
 TIMEOUT_POLICY = {"connect": 30, "read": 360, "write": 30, "pool": 30}
@@ -104,15 +103,8 @@ def _transport_error(exc: BaseException) -> tuple[bool, str, str]:
             text = str(inner).upper()
             if isinstance(inner, ssl.SSLCertVerificationError) or "CERTIFICATE_VERIFY_FAILED" in text:
                 return False, error_class, "non-retryable TLS certificate failure"
-            if isinstance(inner, ConnectionRefusedError) or getattr(inner, "errno", None) in (errno.ECONNREFUSED, 10061) or "CONNECTION REFUSED" in text:
-                return True, error_class, "connection refused"
-            if isinstance(inner, ConnectionResetError) or getattr(inner, "errno", None) in (errno.ECONNRESET, 10054) or "CONNECTION RESET" in text:
-                return True, error_class, "connection reset"
-            if isinstance(inner, ConnectionAbortedError) or getattr(inner, "errno", None) in (errno.ECONNABORTED, 10053) or "CONNECTION ABORTED" in text:
-                return True, error_class, "connection aborted"
-            if isinstance(inner, ssl.SSLEOFError) or "UNEXPECTED_EOF" in text or "EOF OCCURRED IN VIOLATION OF PROTOCOL" in text:
-                return True, error_class, "TLS EOF"
             inner = inner.__cause__ or inner.__context__
+        return True, error_class, "connection failure"
     return False, error_class, "non-retryable transport failure"
 
 
@@ -247,7 +239,7 @@ class ReferenceProvider:
         if temperature != REQUIRED_TEMPERATURE:
             raise ProviderError(f"generation settings validation: temperature must be 0, got {temperature}")
         if max_tokens != REQUIRED_MAX_TOKENS:
-            raise ProviderError(f"generation settings validation: max_tokens must be 16000, got {max_tokens}")
+            raise ProviderError(f"generation settings validation: max_tokens must be 32000, got {max_tokens}")
         body: dict = {
             "model": self.model,
             "temperature": temperature,
