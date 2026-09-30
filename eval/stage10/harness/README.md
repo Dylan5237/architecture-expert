@@ -11,14 +11,15 @@ Built by Phase C0-R preflight; no E10 case has been executed by this harness.
 - Provider: OpenCode Zen `https://opencode.ai/zen/go/v1`
 - Model: `deepseek-v4-pro` (identity checked on every round)
 - Settings: `temperature=0`, `max_tokens=16000`, no top_p/penalty
-- Transport: fixed LOCAL_PROXY `http://127.0.0.1:7897` (process `NO_PROXY` cannot bypass it); at most 3 attempts per chat round with 1s/3s backoff for the explicit transient-error allowlist
+- Transport: persistent `httpx==0.28.1` Client; fixed DIRECT route, `trust_env=False`, no proxy, no redirects; fixed connect/read/write/pool timeouts = 30/360/30/30 seconds; at most 3 attempts per chat round with 1s/3s backoff
 - Response diagnostics: per-round model, finish reason, attempt/retry counts, sanitized retry errors, HTTP status, visible-content presence/length, reasoning presence/length, and numeric usage summary
 - Hidden reasoning text: never returned to the runner or persisted
 - Kimi/Moonshot: prohibited; no fallback path exists (fail closed)
 
 ## Files
 
-- `provider_openai_compatible.py` — OpenAI chat-completions adapter; fixed host/model/settings and proxy; provider-round transient retry; runtime-only key loading (`STAGE10_API_KEY` or local OpenCode provider config); session-header policy.
+- `provider_openai_compatible.py` — httpx OpenAI chat-completions adapter; fixed host/model/settings, DIRECT route and timeout policy; provider-round transient retry; runtime-only key loading (`STAGE10_API_KEY` or local OpenCode provider config); session-header policy.
+- `requirements.txt` — exact `httpx==0.28.1` dependency; the adapter rejects another installed version.
 - `runner.py` — SUT snapshot via `git archive`, path sandbox, single `read_sut_file` tool, fresh per-case conversations, per-round technical diagnostics without reasoning text.
 - `controller.py` — single-process lock (O_EXCL + OS record lock), clean-run gate, per-case fresh state, one case-level retry, atomic raw/metadata writes, SHA reconciliation, duplicate-content HOLD, and provider-free deterministic selftests.
 
@@ -26,7 +27,9 @@ Built by Phase C0-R preflight; no E10 case has been executed by this harness.
 
 ```powershell
 cd eval/stage10/harness
-python controller.py selftest
+$env:PYTHONDONTWRITEBYTECODE = '1'
+python -B controller.py selftest
+python -B controller.py integration-selftest
 ```
 
 Future full-run integration will drive `CaseRunner` per E10 case through the controller's
@@ -50,7 +53,9 @@ metadata redacts secret-named fields by construction.
 
 ## Phase C runtime hardening
 
-Each provider chat round sends one byte-identical request body for up to three attempts. Only remote disconnect/reset/abort/refusal, socket or URL timeout, TLS EOF, and HTTP 502/503/504 are retryable; 429, other 4xx, model drift, malformed successful JSON, and semantic/provider errors fail closed. There is no provider or route fallback.
+Each provider chat round builds one UTF-8 request body and sends those identical bytes, URL, headers and session for up to three attempts. Retryable errors are httpx ConnectTimeout/ReadTimeout/WriteTimeout/PoolTimeout, ReadError, RemoteProtocolError, ConnectError caused by connection refusal/reset/abort/TLS EOF, and HTTP 502/503/504. HTTP 500, 429, all other 4xx, redirects, model drift, malformed successful JSON, response-shape errors and unlisted errors fail closed. Backoff remains 1s/3s. There is no provider or route fallback and no adaptive timeout.
 
-The controller records each case attempt and each provider round, including transport counts/errors, model, finish reason, visible-content shape/length, reasoning presence/length, and numeric token usage. Reasoning text is removed by the adapter and is never stored.
+The controller records each case attempt and each provider round, including httpx version, DIRECT route, timeout policy, transport counts/sanitized errors, model, finish reason, visible-content shape/length, reasoning presence/length, numeric token usage and elapsed time. Successful-response latency measures time from that transport attempt's start to HTTP response headers; a separate flag records arrival after 240 seconds. Round elapsed time includes retries and backoff. Reasoning text is removed by the adapter and is never stored.
+
+The request remains a non-streaming chat completion (no `stream=true`). The httpx response context is used to measure header arrival and then read the complete JSON response in memory. Synthetic preflight never persists full model answers and never creates repository run evidence. See the latest migration section in `PREFLIGHT.md` for the current gate; earlier sections are historical results.
 

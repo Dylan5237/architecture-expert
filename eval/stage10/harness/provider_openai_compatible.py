@@ -6,41 +6,26 @@ No fallback path exists. If the reference is unavailable the caller must fail cl
 from __future__ import annotations
 
 import copy
-import http.client
+import errno
 import json
 import os
 import re
-import socket
 import ssl
 import time
-import urllib.error
-import urllib.parse
-import urllib.request
+
+import httpx
 
 REQUIRED_BASE_URL = "https://opencode.ai/zen/go/v1"
 REQUIRED_MODEL = "deepseek-v4-pro"
 REQUIRED_TEMPERATURE = 0
 REQUIRED_MAX_TOKENS = 16000
-LOCAL_PROXY = "http://127.0.0.1:7897"
+REQUIRED_HTTPX_VERSION = "0.28.1"
+TRANSPORT_ROUTE = "DIRECT"
+TIMEOUT_POLICY = {"connect": 30, "read": 360, "write": 30, "pool": 30}
 MAX_TRANSPORT_ATTEMPTS = 3
 TRANSPORT_BACKOFF_SECONDS = (1, 3)
 REASONING_FIELDS = frozenset({"reasoning", "reasoning_content", "reasoning_details", "thinking", "analysis"})
 TECHNICAL_RESPONSE_KEY = "_stage10_technical"
-
-
-class _FixedLocalProxyHandler(urllib.request.ProxyHandler):
-    """Use the configured proxy even when process NO_PROXY settings match the host."""
-
-    def proxy_open(self, req, proxy, type):
-        parsed = urllib.parse.urlsplit(proxy)
-        if parsed.scheme not in ("http", "https") or not parsed.netloc or parsed.username or parsed.password:
-            raise urllib.error.URLError("invalid fixed proxy configuration")
-        original_type = req.type
-        proxy_type = parsed.scheme
-        req.set_proxy(parsed.netloc, proxy_type)
-        if original_type == proxy_type or original_type == "https":
-            return None
-        return self.parent.open(req, timeout=req.timeout)
 
 
 class ProviderError(RuntimeError):
@@ -100,23 +85,44 @@ def session_header(run_id: str, case_id: str) -> str:
 
 def _transport_error(exc: BaseException) -> tuple[bool, str, str]:
     """Classify only the explicitly permitted transient transport failures."""
-    inner = exc.reason if isinstance(exc, urllib.error.URLError) else exc
-    if isinstance(inner, http.client.RemoteDisconnected):
-        return True, inner.__class__.__name__, "remote disconnected"
-    if isinstance(inner, (socket.timeout, TimeoutError)):
-        return True, inner.__class__.__name__, "transport timeout"
-    if isinstance(inner, ssl.SSLEOFError) or (
-        isinstance(inner, ssl.SSLError)
-        and "EOF" in str(getattr(inner, "reason", inner)).upper()
-    ):
-        return True, inner.__class__.__name__, "TLS EOF"
-    if isinstance(inner, ConnectionRefusedError):
-        return True, inner.__class__.__name__, "connection refused"
-    if isinstance(inner, ConnectionResetError):
-        return True, inner.__class__.__name__, "connection reset"
-    if isinstance(inner, ConnectionAbortedError):
-        return True, inner.__class__.__name__, "connection aborted"
-    return False, inner.__class__.__name__, "non-retryable transport failure"
+    error_class = exc.__class__.__name__
+    if isinstance(exc, (httpx.ConnectTimeout, httpx.ReadTimeout, httpx.WriteTimeout, httpx.PoolTimeout)):
+        return True, error_class, "transport timeout"
+    if isinstance(exc, httpx.ReadError):
+        return True, error_class, "transport read failure"
+    if isinstance(exc, httpx.RemoteProtocolError):
+        return True, error_class, "remote protocol failure"
+    if isinstance(exc, httpx.ConnectError):
+        # httpcore wraps native connection errors; inspect the bounded cause chain.
+        # Never copy exception text (which may contain credentials) into metadata.
+        inner = exc
+        seen = set()
+        for _ in range(12):
+            if inner is None or id(inner) in seen:
+                break
+            seen.add(id(inner))
+            text = str(inner).upper()
+            if isinstance(inner, ssl.SSLCertVerificationError) or "CERTIFICATE_VERIFY_FAILED" in text:
+                return False, error_class, "non-retryable TLS certificate failure"
+            if isinstance(inner, ConnectionRefusedError) or getattr(inner, "errno", None) in (errno.ECONNREFUSED, 10061) or "CONNECTION REFUSED" in text:
+                return True, error_class, "connection refused"
+            if isinstance(inner, ConnectionResetError) or getattr(inner, "errno", None) in (errno.ECONNRESET, 10054) or "CONNECTION RESET" in text:
+                return True, error_class, "connection reset"
+            if isinstance(inner, ConnectionAbortedError) or getattr(inner, "errno", None) in (errno.ECONNABORTED, 10053) or "CONNECTION ABORTED" in text:
+                return True, error_class, "connection aborted"
+            if isinstance(inner, ssl.SSLEOFError) or "UNEXPECTED_EOF" in text or "EOF OCCURRED IN VIOLATION OF PROTOCOL" in text:
+                return True, error_class, "TLS EOF"
+            inner = inner.__cause__ or inner.__context__
+    return False, error_class, "non-retryable transport failure"
+
+
+def _transport_metadata() -> dict:
+    return {
+        "transport_client": "httpx",
+        "httpx_version": httpx.__version__,
+        "transport_route": TRANSPORT_ROUTE,
+        "timeout_policy": dict(TIMEOUT_POLICY),
+    }
 
 
 def _usage_summary(usage) -> dict | None:
@@ -153,6 +159,7 @@ def _response_diagnostics(data: dict, http_status: int | None,
         for value in reasoning_values
     )
     return {
+        **_transport_metadata(),
         "transport_attempt_count": attempts,
         "transport_retry_count": max(0, attempts - 1),
         "retry_errors": copy.deepcopy(retry_errors),
@@ -184,6 +191,7 @@ def _remove_reasoning_text(value):
 def _failure_metadata(attempts: int, retry_errors: list[dict],
                       http_status: int | None = None, observed_model: str | None = None) -> dict:
     return {
+        **_transport_metadata(),
         "transport_attempt_count": attempts,
         "transport_retry_count": max(0, attempts - 1),
         "retry_errors": copy.deepcopy(retry_errors),
@@ -203,19 +211,30 @@ class ReferenceProvider:
     """Minimal OpenAI chat-completions adapter for the frozen reference model."""
 
     def __init__(self, api_key: str | None = None, base_url: str = REQUIRED_BASE_URL,
-                 model: str = REQUIRED_MODEL, timeout_s: int = 240) -> None:
+                 model: str = REQUIRED_MODEL) -> None:
         if base_url.rstrip("/") != REQUIRED_BASE_URL:
             raise ProviderError(f"provider host validation failed: {base_url!r} != {REQUIRED_BASE_URL!r}")
         if model != REQUIRED_MODEL:
             raise ProviderError(f"provider model validation failed: {model!r} != {REQUIRED_MODEL!r}")
         self.base_url = base_url.rstrip("/")
         self.model = model
-        self.timeout_s = timeout_s
+        if httpx.__version__ != REQUIRED_HTTPX_VERSION:
+            raise ProviderError("httpx dependency must be exactly 0.28.1")
         self._key = api_key or load_api_key()
-        self._opener = urllib.request.build_opener(
-            _FixedLocalProxyHandler({"http": LOCAL_PROXY, "https": LOCAL_PROXY})
+        self._client = httpx.Client(
+            trust_env=False, proxy=None, follow_redirects=False,
+            timeout=httpx.Timeout(**TIMEOUT_POLICY),
         )
         self._sleep = time.sleep
+
+    def close(self) -> None:
+        self._client.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        self.close()
 
     def chat(self, messages: list[dict], *, tools: list[dict] | None = None,
              tool_choice: str | None = None, session: str | None = None,
@@ -248,27 +267,35 @@ class ReferenceProvider:
                 raise ProviderError("session header validation failed")
             headers["x-opencode-session"] = session
         body_bytes = json.dumps(body, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+        url = self.base_url + "/chat/completions"
+        round_started = time.perf_counter()
         retry_errors: list[dict] = []
         last_status = None
+
+        def failure_metadata(attempt, observed_model=None):
+            metadata = _failure_metadata(attempt, retry_errors, last_status, observed_model)
+            metadata["round_elapsed_s"] = round(time.perf_counter() - round_started, 3)
+            return metadata
+
         for attempt in range(1, MAX_TRANSPORT_ATTEMPTS + 1):
-            req = urllib.request.Request(
-                self.base_url + "/chat/completions",
-                data=body_bytes,
-                headers=headers,
-                method="POST",
-            )
+            attempt_started = time.perf_counter()
+            last_status = None
             try:
-                with self._opener.open(req, timeout=self.timeout_s) as resp:
-                    last_status = getattr(resp, "status", None)
-                    raw = resp.read().decode("utf-8")
-            except urllib.error.HTTPError as exc:
-                last_status = exc.code
-                retryable = exc.code in (502, 503, 504)
+                # Read a normal non-streaming completion without buffering it in logs.
+                # The context exposes header arrival time; no stream=true is sent.
+                with self._client.stream("POST", url, content=body_bytes, headers=headers) as resp:
+                    response_elapsed = time.perf_counter() - attempt_started
+                    last_status = resp.status_code
+                    resp.raise_for_status()
+                    raw = resp.read()
+            except httpx.HTTPStatusError as exc:
+                last_status = exc.response.status_code
+                retryable = last_status in (502, 503, 504)
                 error = {
                     "attempt": attempt,
                     "error_class": exc.__class__.__name__,
-                    "error_message": f"HTTP {exc.code}",
-                    "http_status": exc.code,
+                    "error_message": f"HTTP {last_status}",
+                    "http_status": last_status,
                 }
                 if retryable:
                     retry_errors.append(error)
@@ -276,8 +303,7 @@ class ReferenceProvider:
                         self._sleep(TRANSPORT_BACKOFF_SECONDS[attempt - 1])
                         continue
                 raise ProviderError(
-                    f"provider HTTP {exc.code}",
-                    _failure_metadata(attempt, retry_errors, last_status),
+                    f"provider HTTP {last_status}", failure_metadata(attempt),
                 ) from None
             except Exception as exc:  # noqa: BLE001 - classify the fixed transport allowlist
                 retryable, error_class, error_message = _transport_error(exc)
@@ -285,7 +311,7 @@ class ReferenceProvider:
                     "attempt": attempt,
                     "error_class": error_class,
                     "error_message": error_message,
-                    "http_status": None,
+                    "http_status": last_status,
                 }
                 if retryable:
                     retry_errors.append(error)
@@ -294,33 +320,43 @@ class ReferenceProvider:
                         continue
                     raise ProviderError(
                         f"provider transport failed after {attempt} attempts: {error_class} ({error_message})",
-                        _failure_metadata(attempt, retry_errors),
+                        failure_metadata(attempt),
                     ) from None
                 raise ProviderError(
                     f"provider transport failure: {error_class} ({error_message})",
-                    _failure_metadata(attempt, retry_errors),
+                    failure_metadata(attempt),
                 ) from None
 
             try:
                 data = json.loads(raw)
-            except ValueError:
+            except (ValueError, UnicodeError):
                 raise ProviderError(
                     "provider returned unparseable JSON",
-                    _failure_metadata(attempt, retry_errors, last_status),
+                    failure_metadata(attempt),
                 ) from None
             if not isinstance(data, dict):
                 raise ProviderError(
                     "provider returned an invalid response shape",
-                    _failure_metadata(attempt, retry_errors, last_status),
+                    failure_metadata(attempt),
                 )
             observed = data.get("model")
             if observed is not None and observed != REQUIRED_MODEL:
                 raise ProviderError(
                     f"provider model drift: requested {REQUIRED_MODEL!r}, observed {observed!r}",
-                    _failure_metadata(attempt, retry_errors, last_status, observed),
+                    failure_metadata(attempt, observed),
                 )
+            choices = data.get("choices")
+            if (not isinstance(choices, list) or not choices or not isinstance(choices[0], dict)
+                    or not isinstance(choices[0].get("message"), dict)):
+                raise ProviderError("provider returned an invalid response shape", failure_metadata(attempt, observed))
             safe_data = _remove_reasoning_text(data)
-            safe_data[TECHNICAL_RESPONSE_KEY] = _response_diagnostics(data, last_status, attempt, retry_errors)
+            metadata = _response_diagnostics(data, last_status, attempt, retry_errors)
+            metadata.update({
+                "round_elapsed_s": round(time.perf_counter() - round_started, 3),
+                "successful_response_elapsed_s": round(response_elapsed, 3),
+                "successful_response_after_240s": response_elapsed > 240,
+            })
+            safe_data[TECHNICAL_RESPONSE_KEY] = metadata
             return safe_data
 
         raise AssertionError("unreachable transport retry loop")
@@ -328,9 +364,9 @@ class ReferenceProvider:
     def fetch_usage(self) -> dict | None:
         """Non-secret usage summary if the endpoint supports it."""
         headers = {"Authorization": f"Bearer {self._key}", "User-Agent": "stage10-harness/1.0"}
-        req = urllib.request.Request(self.base_url + "/usage", headers=headers, method="GET")
         try:
-            with self._opener.open(req, timeout=30) as resp:
-                return json.loads(resp.read().decode("utf-8"))
-        except (urllib.error.URLError, ValueError, OSError):
+            resp = self._client.get(self.base_url + "/usage", headers=headers)
+            resp.raise_for_status()
+            return resp.json()
+        except (httpx.HTTPError, ValueError, OSError):
             return None

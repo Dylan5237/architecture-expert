@@ -284,7 +284,9 @@ def load_public_case(case_id: str) -> tuple[str, str]:
 
 
 def new_metadata(run_id: str, harness_sha: str | None) -> dict:
-    from provider_openai_compatible import LOCAL_PROXY, MAX_TRANSPORT_ATTEMPTS, TRANSPORT_BACKOFF_SECONDS
+    from provider_openai_compatible import (
+        MAX_TRANSPORT_ATTEMPTS, TRANSPORT_BACKOFF_SECONDS, _transport_metadata,
+    )
 
     return {
         "stage": STAGE,
@@ -304,7 +306,10 @@ def new_metadata(run_id: str, harness_sha: str | None) -> dict:
         "requested_model": REQUESTED_MODEL,
         "generation_settings": dict(GENERATION_SETTINGS),
         "transport_policy": {
-            "local_proxy": LOCAL_PROXY,
+            **_transport_metadata(),
+            "trust_env": False,
+            "proxy": None,
+            "follow_redirects": False,
             "max_attempts_per_round": MAX_TRANSPORT_ATTEMPTS,
             "backoff_seconds": list(TRANSPORT_BACKOFF_SECONDS),
         },
@@ -879,6 +884,13 @@ def integration_selftest() -> int:
                 "model": REQUESTED_MODEL,
                 "choices": [{"finish_reason": "length", "message": {"role": "assistant", "content": None}}],
                 "_stage10_technical": {
+                    "transport_client": "httpx",
+                    "httpx_version": "0.28.1",
+                    "transport_route": "DIRECT",
+                    "timeout_policy": {"connect": 30, "read": 360, "write": 30, "pool": 30},
+                    "round_elapsed_s": 270.0,
+                    "successful_response_elapsed_s": 269.0,
+                    "successful_response_after_240s": True,
                     "transport_attempt_count": 1,
                     "transport_retry_count": 0,
                     "retry_errors": [],
@@ -907,6 +919,9 @@ def integration_selftest() -> int:
             round_meta = first["rounds_metadata"][0]
             assert round_meta["content_field_present"] and not round_meta["content_present"]
             assert round_meta["reasoning_present"] and round_meta["reasoning_length"] == 321
+            assert round_meta["transport_client"] == "httpx" and round_meta["transport_route"] == "DIRECT"
+            assert round_meta["timeout_policy"] == {"connect": 30, "read": 360, "write": 30, "pool": 30}
+            assert round_meta["successful_response_after_240s"] is True
             assert "synthetic-hidden" not in json.dumps(meta)
             assert first_case["attempt_diagnostics"][1]["substantive"] is True
         check("G empty-final diagnostics preserved before case retry", scenario_empty_diagnostics)
@@ -1089,206 +1104,244 @@ def selftest() -> int:
             assert "SUPERSECRET" not in txt and "<redacted>" in txt
         check("no secret in metadata", t17)
 
-        def provider_stubs():
-            import io
-            import urllib.error
-            from provider_openai_compatible import (
-                LOCAL_PROXY, MAX_TRANSPORT_ATTEMPTS, REQUIRED_MAX_TOKENS,
-                TECHNICAL_RESPONSE_KEY, TRANSPORT_BACKOFF_SECONDS,
-                ProviderError, ReferenceProvider,
-            )
+        def provider_stubs(actions):
+            import httpx
+            import provider_openai_compatible as adapter
+            from unittest.mock import patch
+            requests, sleeps, options = [], [], {}
+            queue = list(actions)
+            def handle(request):
+                requests.append(request)
+                action = queue.pop(0)
+                if isinstance(action, BaseException):
+                    raise action
+                if isinstance(action, httpx.Response):
+                    return action
+                return httpx.Response(200, content=action) if isinstance(action, bytes) else httpx.Response(200, json=action)
+            real_client = httpx.Client
+            def client_factory(**kwargs):
+                options.update(kwargs)
+                return real_client(transport=httpx.MockTransport(handle), **kwargs)
+            with patch.object(adapter.httpx, "Client", side_effect=client_factory):
+                provider = adapter.ReferenceProvider(api_key="synthetic-key")
+            provider._sleep = sleeps.append
+            return provider, requests, sleeps, options
 
-            class Response:
-                status = 200
-                def __init__(self, payload):
-                    self.payload = payload if isinstance(payload, bytes) else json.dumps(payload).encode("utf-8")
-                def __enter__(self):
-                    return self
-                def __exit__(self, *exc):
-                    return False
-                def read(self):
-                    return self.payload
+        def synthetic_response():
+            return {"model": REQUESTED_MODEL, "choices": [
+                {"finish_reason": "stop", "message": {"role": "assistant", "content": "synthetic-ready"}}]}
 
-            class Opener:
-                def __init__(self, actions):
-                    self.actions = list(actions)
-                    self.requests = []
-                def open(self, request, timeout):
-                    self.requests.append((request, timeout))
-                    action = self.actions.pop(0)
-                    if isinstance(action, BaseException):
-                        raise action
-                    return Response(action)
-
-            class TestProvider(ReferenceProvider):
-                def __init__(self, api_key, opener, sleep_fn):
-                    super().__init__(api_key=api_key)
-                    self._opener = opener
-                    self._sleep = sleep_fn
-
-            return io, urllib.error, LOCAL_PROXY, MAX_TRANSPORT_ATTEMPTS, REQUIRED_MAX_TOKENS, TECHNICAL_RESPONSE_KEY, TRANSPORT_BACKOFF_SECONDS, ProviderError, TestProvider, Opener
+        def fails_once(action, status=None):
+            from provider_openai_compatible import ProviderError
+            provider, requests, sleeps, _ = provider_stubs([action])
+            with provider:
+                try:
+                    provider.chat([])
+                    raise AssertionError("invalid response accepted")
+                except ProviderError as exc:
+                    assert exc.technical_metadata["transport_attempt_count"] == 1
+                    if status is not None:
+                        assert exc.technical_metadata["http_status"] == status
+                    assert "SYNTHETIC-PRIVATE-BODY" not in str(exc)
+            assert len(requests) == 1 and sleeps == []
 
         def t18():
-            io, urlerror, _, max_attempts, max_tokens, technical_key, _, _, Provider, Opener = provider_stubs()
-            sleeps = []
-            ok = {"model": REQUESTED_MODEL, "choices": [{"finish_reason": "stop", "message": {"role": "assistant", "content": "synthetic-ready"}}]}
-            opener = Opener([urlerror.URLError(ConnectionResetError("synthetic reset")), ok])
-            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
-            data = provider.chat([{"role": "user", "content": "synthetic request"}], session="stage10-ref-selftest-PRE10")
-            meta = data[technical_key]
-            assert max_attempts == 3 and max_tokens == 16000
-            assert meta["transport_attempt_count"] == 2 and meta["transport_retry_count"] == 1, meta
-            assert meta["retry_errors"][0]["error_class"] == "ConnectionResetError", meta
-            assert sleeps == [1], sleeps
-            assert len(opener.requests) == 2
-            first, second = (item[0] for item in opener.requests)
-            assert first.data == second.data, "retry body bytes changed"
-            assert first.full_url == second.full_url == "https://opencode.ai/zen/go/v1/chat/completions"
-            assert json.loads(first.data)["max_tokens"] == 16000
-            assert first.get_header("X-opencode-session") == second.get_header("X-opencode-session")
-            assert all(item[0].full_url.startswith("https://opencode.ai/zen/") for item in opener.requests)
-        check("transport retry succeeds with identical body and no fallback", t18)
+            import httpx
+            from provider_openai_compatible import TECHNICAL_RESPONSE_KEY
+            provider, requests, sleeps, _ = provider_stubs([httpx.ReadTimeout("synthetic"), synthetic_response()])
+            with provider:
+                data = provider.chat([{"role": "user", "content": "synthetic request"}], session="stage10-ref-selftest-PRE10")
+            meta = data[TECHNICAL_RESPONSE_KEY]
+            assert meta["transport_attempt_count"] == 2 and meta["transport_retry_count"] == 1
+            assert meta["retry_errors"][0]["error_class"] == "ReadTimeout"
+            assert sleeps == [1] and len(requests) == 2
+            first, second = requests
+            assert first.content == second.content and first.headers == second.headers
+            assert first.url == second.url == API_HOST + "/chat/completions"
+            assert json.loads(first.content)["max_tokens"] == 16000
+            assert first.headers["x-opencode-session"] == second.headers["x-opencode-session"]
+        check("ReadTimeout recovers; byte-identical body/headers/session; no fallback", t18)
 
         def t19():
-            _, urlerror, _, _, _, technical_key, _, ProviderError, Provider, Opener = provider_stubs()
-            sleeps = []
-            opener = Opener([urlerror.URLError(TimeoutError("synthetic timeout")) for _ in range(3)])
-            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
-            try:
-                provider.chat([{"role": "user", "content": "synthetic request"}])
-                raise AssertionError("transport exhaustion unexpectedly succeeded")
-            except ProviderError as exc:
-                assert exc.technical_metadata["transport_attempt_count"] == 3
-                assert exc.technical_metadata["transport_retry_count"] == 2
-                assert exc.technical_metadata["retry_errors"][-1]["error_message"] == "transport timeout"
-            assert len(opener.requests) == 3 and sleeps == [1, 3], (len(opener.requests), sleeps)
-            assert technical_key == "_stage10_technical"
-        check("transport retry exhausts after three attempts", t19)
+            import httpx
+            from provider_openai_compatible import ProviderError
+            provider, requests, sleeps, _ = provider_stubs([httpx.ReadTimeout("synthetic") for _ in range(3)])
+            with provider:
+                try:
+                    provider.chat([])
+                    raise AssertionError("transport exhaustion succeeded")
+                except ProviderError as exc:
+                    assert exc.technical_metadata["transport_attempt_count"] == 3
+                    assert exc.technical_metadata["transport_retry_count"] == 2
+            assert len(requests) == 3 and sleeps == [1, 3]
+        check("transport exhaustion at three attempts and 1s/3s backoff", t19)
 
         def t20():
-            io, urlerror, _, _, _, _, _, ProviderError, Provider, Opener = provider_stubs()
-            opener = Opener([urlerror.HTTPError("https://opencode.ai/zen/go/v1/chat/completions", 403, "Forbidden", {}, io.BytesIO(b"SYNTHETIC-PRIVATE-BODY"))])
-            sleeps = []
-            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
-            try:
-                provider.chat([{"role": "user", "content": "synthetic request"}])
-                raise AssertionError("HTTP 403 unexpectedly succeeded")
-            except ProviderError as exc:
-                assert exc.technical_metadata["http_status"] == 403
-                assert "SYNTHETIC-PRIVATE-BODY" not in str(exc)
-            assert len(opener.requests) == 1 and sleeps == []
-        check("HTTP 403 fails immediately without response-body logging", t20)
+            import httpx
+            fails_once(httpx.Response(403, content=b"SYNTHETIC-PRIVATE-BODY"), 403)
+        check("HTTP 403 fails once without response-body logging", t20)
 
         def t21():
-            _, _, _, _, _, _, _, ProviderError, Provider, Opener = provider_stubs()
-            sleeps = []
-            opener = Opener([{"model": "synthetic-model-drift", "choices": [{"finish_reason": "stop", "message": {"content": "x"}}]}])
-            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
-            try:
-                provider.chat([{"role": "user", "content": "synthetic request"}])
-                raise AssertionError("model drift unexpectedly succeeded")
-            except ProviderError as exc:
-                assert exc.technical_metadata["observed_model"] == "synthetic-model-drift"
-            assert len(opener.requests) == 1 and sleeps == []
+            from provider_openai_compatible import ProviderError
+            payload = synthetic_response()
+            payload["model"] = "synthetic-model-drift"
+            provider, requests, sleeps, _ = provider_stubs([payload])
+            with provider:
+                try:
+                    provider.chat([])
+                    raise AssertionError("model drift accepted")
+                except ProviderError as exc:
+                    assert exc.technical_metadata["observed_model"] == "synthetic-model-drift"
+            assert len(requests) == 1 and not sleeps
         check("model drift fails immediately", t21)
 
         def t22():
-            io, _, _, _, _, technical_key, _, _, Provider, Opener = provider_stubs()
+            from provider_openai_compatible import TECHNICAL_RESPONSE_KEY
             hidden = "SYNTHETIC-HIDDEN-REASONING"
-            payload = {
-                "model": REQUESTED_MODEL,
-                "choices": [{"finish_reason": "stop", "message": {
-                    "role": "assistant", "content": "VISIBLE-SYNTHETIC-ANSWER", "reasoning_content": hidden,
-                }}],
-                "usage": {"prompt_tokens": 10, "completion_tokens": 7, "total_tokens": 17,
-                          "completion_tokens_details": {"reasoning_tokens": 4}},
-            }
-            provider = Provider(api_key="synthetic-key", opener=Opener([payload]), sleep_fn=lambda _: None)
-            data = provider.chat([{"role": "user", "content": "synthetic request"}])
-            serialized = json.dumps(data)
-            meta = data[technical_key]
-            assert hidden not in serialized and "reasoning_content" not in serialized
+            payload = synthetic_response()
+            payload["choices"][0]["message"].update({"reasoning_content": hidden, "nested": {"analysis": hidden}})
+            payload["usage"] = {"completion_tokens": 7, "completion_tokens_details": {"reasoning_tokens": 4}}
+            provider, _, _, _ = provider_stubs([payload])
+            with provider:
+                data = provider.chat([])
+            meta = data[TECHNICAL_RESPONSE_KEY]
+            assert hidden not in json.dumps(data) and "reasoning_content" not in json.dumps(data)
             assert meta["reasoning_present"] and meta["reasoning_length"] == len(hidden)
-            assert meta["content_present"] and meta["content_length"] == len("VISIBLE-SYNTHETIC-ANSWER")
             assert meta["usage_summary"]["completion_tokens_details"]["reasoning_tokens"] == 4
-            null_payload = {
-                "model": REQUESTED_MODEL,
-                "choices": [{"finish_reason": "stop", "message": {"content": "visible", "reasoning": None}}],
-            }
-            null_data = Provider(api_key="synthetic-key", opener=Opener([null_payload]), sleep_fn=lambda _: None).chat([])
-            null_meta = null_data[technical_key]
-            assert null_meta["reasoning_present"] and null_meta["reasoning_length"] is None
-            assert "reasoning" not in null_data["choices"][0]["message"]
-        check("reasoning text removed; presence and counts retained", t22)
+            payload = synthetic_response()
+            payload["choices"][0]["message"]["reasoning"] = None
+            provider, _, _, _ = provider_stubs([payload])
+            with provider:
+                data = provider.chat([])
+            assert data[TECHNICAL_RESPONSE_KEY]["reasoning_present"]
+            assert data[TECHNICAL_RESPONSE_KEY]["reasoning_length"] is None
+            assert "reasoning" not in data["choices"][0]["message"]
+        check("reasoning removed recursively; presence and counts retained", t22)
 
         def t23():
-            _, _, _, _, _, _, _, ProviderError, Provider, Opener = provider_stubs()
-            provider = Provider(api_key="synthetic-key", opener=Opener([]), sleep_fn=lambda _: None)
-            for settings in ({"max_tokens": 8000}, {"temperature": 0.7}):
-                try:
-                    provider.chat([{"role": "user", "content": "synthetic request"}], **settings)
-                    raise AssertionError(f"invalid settings accepted: {settings}")
-                except ProviderError:
-                    pass
-            assert provider._opener.requests == []
-        check("provider enforces fixed max_tokens and temperature", t23)
+            from provider_openai_compatible import ProviderError
+            provider, requests, _, _ = provider_stubs([])
+            with provider:
+                for settings in ({"max_tokens": 8000}, {"temperature": 0.7}):
+                    try:
+                        provider.chat([], **settings)
+                        raise AssertionError("invalid settings accepted")
+                    except ProviderError:
+                        pass
+            assert requests == []
+        check("provider enforces max_tokens=16000 and temperature=0", t23)
 
         def t24():
-            run_id = make_measured_run_id("12345678abcdef", "20260923T075100Z")
-            assert run_id == "phasec-20260923T075100Z-12345678", run_id
+            assert make_measured_run_id("12345678abcdef", "20260923T075100Z") == "phasec-20260923T075100Z-12345678"
         check("measured run_id uses phasec prefix", t24)
 
         def t25():
-            io, urlerror, _, _, _, technical_key, _, ProviderError, Provider, Opener = provider_stubs()
-            ok = {"model": REQUESTED_MODEL, "choices": [{"finish_reason": "stop", "message": {"content": "synthetic"}}]}
+            import httpx
+            from provider_openai_compatible import TECHNICAL_RESPONSE_KEY
             for status in (502, 503, 504):
-                sleeps = []
-                failure = urlerror.HTTPError("https://opencode.ai/zen/go/v1/chat/completions", status, "transient", {}, io.BytesIO(b"synthetic"))
-                opener = Opener([failure, ok])
-                provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
-                data = provider.chat([{"role": "user", "content": "synthetic request"}])
-                meta = data[technical_key]
-                assert meta["transport_attempt_count"] == 2 and meta["retry_errors"][0]["http_status"] == status
-                assert sleeps == [1]
-            sleeps = []
-            rate_limit = urlerror.HTTPError("https://opencode.ai/zen/go/v1/chat/completions", 429, "rate limit", {}, io.BytesIO(b"synthetic"))
-            opener = Opener([rate_limit])
-            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
-            try:
-                provider.chat([{"role": "user", "content": "synthetic request"}])
-                raise AssertionError("429 unexpectedly succeeded")
-            except ProviderError as exc:
-                assert exc.technical_metadata["http_status"] == 429
-            assert len(opener.requests) == 1 and sleeps == []
-        check("HTTP 502/503/504 retry; 429 fails closed", t25)
+                provider, requests, sleeps, _ = provider_stubs([httpx.Response(status), synthetic_response()])
+                with provider:
+                    data = provider.chat([])
+                assert data[TECHNICAL_RESPONSE_KEY]["transport_attempt_count"] == 2
+                assert data[TECHNICAL_RESPONSE_KEY]["retry_errors"][0]["http_status"] == status
+                assert len(requests) == 2 and sleeps == [1]
+        check("HTTP 502/503/504 retry", t25)
 
-        def t26():
-            _, _, _, _, _, _, _, ProviderError, Provider, Opener = provider_stubs()
-            sleeps = []
-            opener = Opener([b"not-json"])
-            provider = Provider(api_key="synthetic-key", opener=opener, sleep_fn=sleeps.append)
-            try:
-                provider.chat([{"role": "user", "content": "synthetic request"}])
-                raise AssertionError("malformed successful JSON unexpectedly succeeded")
-            except ProviderError as exc:
-                assert exc.technical_metadata["transport_attempt_count"] == 1
-            assert len(opener.requests) == 1 and sleeps == []
-        check("malformed successful JSON fails without retry", t26)
+        check("malformed successful JSON fails once", lambda: fails_once(b"not-json"))
 
         def t27():
-            import urllib.request
-            from provider_openai_compatible import LOCAL_PROXY, _FixedLocalProxyHandler
-            handler = _FixedLocalProxyHandler({"http": LOCAL_PROXY, "https": LOCAL_PROXY})
-            request = urllib.request.Request("https://opencode.ai/zen/go/v1/chat/completions")
-            original_bypass = urllib.request.proxy_bypass
-            urllib.request.proxy_bypass = lambda host: (_ for _ in ()).throw(AssertionError("proxy bypass consulted"))
-            try:
-                result = handler.proxy_open(request, LOCAL_PROXY, "https")
-            finally:
-                urllib.request.proxy_bypass = original_bypass
-            assert result is None and request.host == "127.0.0.1:7897"
-            assert request._tunnel_host == "opencode.ai"
-        check("fixed LOCAL_PROXY cannot be bypassed by NO_PROXY", t27)
+            import httpx
+            provider, requests, _, options = provider_stubs([synthetic_response()])
+            with provider:
+                provider.chat([])
+                assert isinstance(provider._client, httpx.Client)
+                assert options["trust_env"] is False and options["proxy"] is None
+                assert options["follow_redirects"] is False and provider._client._mounts == {}
+                assert provider._client.timeout.as_dict() == {"connect": 30, "read": 360, "write": 30, "pool": 30}
+                assert requests[0].extensions["timeout"] == provider._client.timeout.as_dict()
+        check("production httpx DIRECT/trust_env=False/no redirects/30-360-30-30", t27)
+
+        def t28():
+            import httpx
+            for cls in (httpx.RemoteProtocolError, httpx.ConnectTimeout, httpx.WriteTimeout, httpx.PoolTimeout, httpx.ReadError):
+                provider, requests, sleeps, _ = provider_stubs([cls("synthetic"), synthetic_response()])
+                with provider:
+                    provider.chat([])
+                assert len(requests) == 2 and sleeps == [1]
+        check("RemoteProtocolError and remaining timeout/read errors recover", t28)
+
+        def http_status_once(status):
+            import httpx
+            fails_once(httpx.Response(status, headers={"Location": "https://invalid.example/"}), status)
+        check("HTTP 500 fails once", lambda: http_status_once(500))
+        check("HTTP 429 fails once", lambda: http_status_once(429))
+        check("other 4xx and redirects fail closed", lambda: [http_status_once(s) for s in (400, 401, 404, 422, 301, 307)])
+
+        def t32():
+            import errno
+            import ssl
+            import httpx
+            for cause in (ConnectionRefusedError(errno.ECONNREFUSED, "synthetic"),
+                          ConnectionResetError(errno.ECONNRESET, "synthetic"),
+                          ConnectionAbortedError(errno.ECONNABORTED, "synthetic"), ssl.SSLEOFError("synthetic")):
+                error = httpx.ConnectError("synthetic")
+                error.__cause__ = cause
+                provider, requests, sleeps, _ = provider_stubs([error, synthetic_response()])
+                with provider:
+                    provider.chat([])
+                assert len(requests) == 2 and sleeps == [1]
+            for message in ("DNS lookup failed", "CERTIFICATE_VERIFY_FAILED", "generic connection failure"):
+                fails_once(httpx.ConnectError(message))
+        check("ConnectError restricted to refusal/reset/abort/TLS EOF", t32)
+
+        def t33():
+            from provider_openai_compatible import TECHNICAL_RESPONSE_KEY
+            from runner import _round_diagnostics
+            provider, _, _, _ = provider_stubs([synthetic_response()])
+            with provider:
+                meta = provider.chat([])[TECHNICAL_RESPONSE_KEY]
+            assert meta["transport_client"] == "httpx" and meta["httpx_version"] == "0.28.1"
+            assert meta["transport_route"] == "DIRECT"
+            assert meta["timeout_policy"] == {"connect": 30, "read": 360, "write": 30, "pool": 30}
+            assert meta["round_elapsed_s"] >= 0 and meta["successful_response_elapsed_s"] >= 0
+            copied = _round_diagnostics(meta)
+            for key in ("transport_client", "httpx_version", "transport_route", "timeout_policy",
+                        "round_elapsed_s", "successful_response_elapsed_s", "successful_response_after_240s"):
+                assert copied[key] == meta[key]
+        check("httpx route/version/timeouts/latency retained in runner metadata", t33)
+
+        def t34():
+            for payload in ([], {"model": REQUESTED_MODEL, "choices": "wrong"},
+                            {"model": REQUESTED_MODEL, "choices": [{"message": "wrong"}]}):
+                fails_once(payload)
+        check("response-shape errors fail once", t34)
+
+        def t35():
+            import provider_openai_compatible as adapter
+            from unittest.mock import patch
+            with patch.object(adapter.httpx, "__version__", "0.0.0"):
+                try:
+                    adapter.ReferenceProvider(api_key="synthetic-key")
+                    raise AssertionError("unpinned dependency accepted")
+                except adapter.ProviderError:
+                    pass
+            policy = new_metadata("synthetic-metadata", None)["transport_policy"]
+            assert policy["transport_client"] == "httpx" and policy["httpx_version"] == "0.28.1"
+            assert policy["transport_route"] == "DIRECT" and policy["proxy"] is None
+            assert policy["trust_env"] is False and policy["follow_redirects"] is False
+            assert policy["timeout_policy"] == {"connect": 30, "read": 360, "write": 30, "pool": 30}
+            assert policy["max_attempts_per_round"] == 3 and policy["backoff_seconds"] == [1, 3]
+        check("exact dependency pin and controller transport policy", t35)
+
+        def t36():
+            provider, requests, _, _ = provider_stubs([synthetic_response(), synthetic_response()])
+            with provider:
+                client = provider._client
+                provider.chat([])
+                provider.chat([])
+                assert provider._client is client and not client.is_closed
+            assert client.is_closed and len(requests) == 2
+        check("persistent httpx Client reused across rounds and closed explicitly", t36)
 
         for name, ok, err in checks:
             print(f"  {'PASS' if ok else 'FAIL'}  {name}" + (f"  ({err})" if err else ""))

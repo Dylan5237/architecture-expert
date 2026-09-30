@@ -172,3 +172,154 @@ R2 file hashes (SHA-256, first 16 hex): controller `6F931D8BA0751803`, runner `C
 
 The simple readiness soak was stable, but all 3 required complex synthetic probes exhausted transport retries before receiving responses. Keep the gate at **HOLD_TRANSPORT_UNSTABLE**; do not authorize an E10 run from this preflight.
 
+## HTTPX transport migration — current synthetic re-preflight (2026-09-30)
+
+This section supersedes the historical urllib readiness gate above. This task authorizes transport migration and synthetic preflight only; it does not authorize Attempt #4.
+
+### Scope, dependency and fixed policy
+
+- Task source: refreshed `origin/main:tasks/stage10/CODEX_HTTPX_TRANSPORT_MIGRATION.md` (`origin/main` at `e22be15` when read).
+- Dedicated branch: `eval/stage10-httpx-transport`.
+- Verified starting HEAD: `d6f1716f34623aecf97eb80c225c282e78748cf7`; main was not merged.
+- Characterization source: `e7d57cc085c6dcfb3a21252742ae32a0a0866ffe`; recommendation `CHANGE_HTTP_CLIENT`.
+- Production chat transport: persistent `httpx.Client`, version **0.28.1**, pinned exactly in `requirements.txt`; no urllib chat path.
+- Route: **DIRECT**; `trust_env=False`, `proxy=None`, `follow_redirects=False`; no implicit environment proxy, redirect or route/provider fallback.
+- Fixed timeout policy in seconds: **connect 30 / read 360 / write 30 / pool 30**. No adaptive timeout or probe-time increase.
+- Per provider round: **3 total transport attempts**; backoff before attempts 2/3 is **1s/3s**; request body is built once as UTF-8 bytes, with fixed URL/settings/messages/session/application headers across retries.
+- Retry allowlist: httpx ConnectTimeout/ReadTimeout/WriteTimeout/PoolTimeout, ReadError, RemoteProtocolError, ConnectError caused by connection refusal/reset/abort/TLS EOF, HTTP 502/503/504.
+- Fail closed without retry: HTTP 500, all 4xx including 403/429, redirects, malformed successful JSON, response-shape errors, model drift, semantic/capability errors and unlisted failures. No retry based on answer quality.
+- Frozen SUT / suite / PUBLIC SHAs: `96d9ae333ffc5a8076d635b86634b5151ec0bbc5` / `ff157eb1947860345a305fb29452b51e09dd3a2b` / `23a49382c949702446325d30e18d3321d8550c36`.
+- Host/model/settings: OpenCode Zen `https://opencode.ai/zen/go/v1`, `deepseek-v4-pro`, temperature **0**, max_tokens **16000**. Tool ceiling **24**, read budgets/path sandbox, dual SYSTEM mapping, exact PUBLIC payload rules, case-level retry maximum and duplicate-HOLD semantics remain fixed.
+
+### Deterministic verification
+
+- `PYTHONDONTWRITEBYTECODE=1; python -B controller.py selftest`: **36/36 PASS**, no provider/network calls.
+- `PYTHONDONTWRITEBYTECODE=1; python -B controller.py integration-selftest`: **9/9 PASS**, fake provider and synthetic PRE10 cases only.
+- Coverage includes actual httpx Client/MockTransport path, environment/proxy/redirect settings, exact timeouts, persistent client reuse/close, retry recovery/exhaustion, body/header/session identity, narrow ConnectError classification, HTTP 500/403/429 immediate failure, 502/503/504 retry, malformed JSON/shape/model failures, version pin, fixed settings, recursive reasoning stripping and transport diagnostics propagation.
+- Existing lock/atomic/reconciliation/duplicate/verbatim tests remain green. Empty-final attempt 1 retains httpx/DIRECT/timeout/latency/reasoning-count diagnostics before its case-level retry succeeds. Measured run IDs retain `phasec-...`.
+- After deterministic tests: no repository run directory or bytecode; diff confined to authorized harness files.
+
+### Synthetic method and privacy
+
+- Readiness uses the fixed short dual-SYSTEM PRE10 readiness payload, independently repeated 10 times.
+- Complex probes use the exact frozen Agent system prompt plus exact AUTO contract, and one newly invented cold-chain calibration scheduling scenario: three regions, offline return/duplicate windows, ambiguous DB/queue confirmation, cancellation vs correction, bounded consumers/fan-out/connection pools, overload, alternative state-write designs, partition-policy uncertainty and staged minimum correction/repair.
+- The same scenario is repeated unchanged in 5 independent fresh conversations, with `read_sut_file` exposed but no read required. The tool variant is repeated unchanged in 3 fresh conversations and explicitly requires `00_ROUTER.md` plus a related knowledge file before final visible analysis.
+- Each conversation has a fresh provider/CaseRunner/messages list and unique session header. Readiness is sequential; complex and tool groups each use fixed concurrency of at most **2** independent conversations. Each formal probe is fresh and uses only the specified per-round transport retries. The technical loader correction below is separate from answer-quality retry.
+- Only frozen public knowledge/Agent paths are materialized in an external temporary snapshot; no tasks/reports/evaluation paths are included. The production PathSandbox and budgets handle actual tool reads.
+- Payload SHA-256: complex `0ba0870d50ba42c6e64285fbd73e7a975130fb0d3aa2190f29675c776ac6f37a`; required-tool variant `35cab72a421a5802e92bb6ebccd32cf37b2d29eebce6359864b811afec493b12`.
+- Frozen system/AUTO content SHA-256: `e25cca7e108963a75ee6b64581460029f1ebe7977122cd314e43eee953129fd1` / `cf9d3d49c5d060891a356624b503be4e2e7d391df6321a5a88a31aeae615f198`.
+- Non-streaming request semantics remain unchanged (no `stream=true`). Successful-response latency is measured from that attempt's start to response headers; conversation and provider-round elapsed times include retries/backoff. The prior-boundary counter counts successful provider rounds whose headers arrive **after 240s**.
+- **Hidden reasoning text is never persisted**: recursive stripping occurs before responses reach CaseRunner. Technical metrics retain only reasoning presence and length/count, numeric usage, status/model/finish/content lengths, timeouts and sanitized errors. Full synthetic model answers, prompts in provider logs, API keys and Authorization values are not stored. No scoring is performed.
+- `E10_EXECUTION_COUNT: 0`; `run-suite` is not invoked.
+
+### Frozen-prompt loader correction before the formal gate
+
+- Mechanical review of the initial eight full-Agent pilot conversations found a representation mismatch: Windows git archive produced CRLF files; the external synthetic loader decoded raw bytes, while the production controller reads text with universal-newline normalization.
+- Those eight pilot conversations are excluded from the formal 5+3 gate, despite returning visible finals. Their technical-only external metrics are preserved (SHA-256 aa93f598ab3c5c3588cd828038461a53857ff394452560583fd476b0173127af); no answer text was persisted.
+- The corrected synthetic loader uses the same UTF-8 read_text behavior as the production controller and asserts SYSTEM/AUTO strings equal the exact frozen Git blobs before any full-Agent provider call. No Agent/SUT file, synthetic scenario wording, output budget, transport code/route/timeout/retry policy was changed.
+- The original 10 independent short readiness calls are unaffected and remain valid. The final formal gate combines those ten records with eight newly identified fresh canonical-loader conversations; pilot full-Agent outcomes do not contribute to the final gate counters.
+- Tool reads already used the production PathSandbox text loader. CRLF/LF disk-byte differences are archive conversion; the model-visible text is checked against frozen Git content, and all denied pilot paths were also absent from the frozen SUT.
+
+### Real synthetic results and current decision
+
+**Recommendation: HOLD_HTTPX_TRANSPORT_UNSTABLE**
+
+- Readiness: **10/10 usable**; recovered retries **0**.
+- Complex full-Agent: **5/5 non-empty visible finals**.
+- Required actual tool-loop: **0/3 completed reads plus non-empty visible finals**.
+- Empty-final count: **0**. Terminal transport-failure count: **3**.
+- Recovered transport retries across all successful rounds: **0**; successful-response arrivals after 240s: **0**.
+- Model identity: **PASS**; all 38 accepted provider rounds reported `deepseek-v4-pro`.
+- max_tokens **16000** / temperature **0**: adapter enforcement and successful live responses confirm acceptance; no per-probe budget change.
+- Reasoning metadata policy: **PASS**, presence/length/count plus numeric token accounting only; no hidden reasoning text or full synthetic model answers persisted.
+- `E10_EXECUTION_COUNT: 0`; no Attempt #4 or `run-suite` invocation.
+- Technical metrics SHA-256 (18 completed unique conversations, external temporary JSONL): `deceece1e5e754e85d43fb27fe3a83db17925de03b171e7272d3ec4b16ce34d4`.
+
+#### Conversation observations
+
+Times are seconds; visible lengths are characters. Intermediate tool-call rounds with zero visible content are not empty finals.
+
+| Probe | Usable | Total elapsed | Rounds | Final finish | Visible final length | Attempts/retries | Successful rounds >240s |
+|---|---|---:|---:|---|---:|---|---:|
+| ready-01 | PASS | 5.617 | 1 | stop | 27 | 1/0 | 0 |
+| ready-02 | PASS | 6.734 | 1 | stop | 27 | 1/0 | 0 |
+| ready-03 | PASS | 7.598 | 1 | stop | 27 | 1/0 | 0 |
+| ready-04 | PASS | 4.425 | 1 | stop | 27 | 1/0 | 0 |
+| ready-05 | PASS | 7.796 | 1 | stop | 27 | 1/0 | 0 |
+| ready-06 | PASS | 4.870 | 1 | stop | 27 | 1/0 | 0 |
+| ready-07 | PASS | 4.465 | 1 | stop | 27 | 1/0 | 0 |
+| ready-08 | PASS | 13.152 | 1 | stop | 27 | 1/0 | 0 |
+| ready-09 | PASS | 7.505 | 1 | stop | 27 | 1/0 | 0 |
+| ready-10 | PASS | 11.893 | 1 | stop | 27 | 1/0 | 0 |
+| complex-01 | PASS | 387.924 | 2 | length | 8340 | 2/0 | 0 |
+| complex-02 | PASS | 231.041 | 1 | length | 4222 | 1/0 | 0 |
+| complex-03 | PASS | 324.877 | 2 | stop | 10723 | 2/0 | 0 |
+| complex-04 | PASS | 356.557 | 5 | stop | 11660 | 5/0 | 0 |
+| complex-05 | PASS | 255.782 | 7 | length | 9796 | 7/0 | 0 |
+| tool-01 | FAIL | 173.129 | 6 | — | — | 8/2 | 0 |
+| tool-02 | FAIL | 173.128 | 7 | — | — | 9/2 | 0 |
+| tool-03 | FAIL | 0.721 | 1 | — | — | 1/0 | 0 |
+
+#### Full-Agent provider-round observations
+
+Content = field-present / value-present / character length; reasoning = field-present / length or count. Usage = prompt / completion / total / reasoning tokens. Missing values use `—`. Every accepted round below returned HTTP 200 and `deepseek-v4-pro`; the route, version and timeout policy are identical throughout.
+
+| Probe/round | Round elapsed | Successful-attempt header arrival | Finish | Content | Reasoning | Numeric usage | Attempts/retries | >240s |
+|---|---:|---:|---|---|---|---|---|---|
+| complex-01/1 | 169.509 | 169.276 | tool_calls | true/true/34 | true/48798 | 3947/11290/15237/11109 | 1/0 | false |
+| complex-01/2 | 217.58 | 217.559 | length | true/true/8340 | true/38151 | 35659/16000/51659/11250 | 1/0 | false |
+| complex-02/1 | 230.218 | 229.785 | length | true/true/4222 | true/48827 | 3947/16000/19947/13500 | 1/0 | false |
+| complex-03/1 | 136.943 | 136.411 | tool_calls | true/true/0 | true/37650 | 3947/8712/12659/8550 | 1/0 | false |
+| complex-03/2 | 187.503 | 186.531 | stop | true/true/10723 | true/30089 | 33081/14191/47272/8447 | 1/0 | false |
+| complex-04/1 | 18.795 | 18.795 | tool_calls | true/true/0 | true/4878 | 3947/1283/5230/1121 | 1/0 | false |
+| complex-04/2 | 22.747 | 22.746 | tool_calls | true/true/0 | true/5724 | 25652/1617/27269/1340 | 1/0 | false |
+| complex-04/3 | 9.021 | 9.02 | tool_calls | true/true/0 | true/1713 | 32071/822/32893/494 | 1/0 | false |
+| complex-04/4 | 206.488 | 206.466 | tool_calls | true/true/0 | true/57686 | 36720/14809/51529/14635 | 1/0 | false |
+| complex-04/5 | 99.103 | 99.092 | stop | true/true/11660 | true/5508 | 52447/8543/60990/2240 | 1/0 | false |
+| complex-05/1 | 9.15 | 9.15 | tool_calls | true/true/0 | true/2117 | 3947/626/4573/425 | 1/0 | false |
+| complex-05/2 | 9.717 | 9.717 | tool_calls | true/true/0 | true/1749 | 26521/597/27118/396 | 1/0 | false |
+| complex-05/3 | 5.879 | 5.879 | tool_calls | true/true/0 | true/549 | 31552/433/31985/179 | 1/0 | false |
+| complex-05/4 | 5.889 | 5.889 | tool_calls | true/true/0 | true/180 | 35191/388/35579/56 | 1/0 | false |
+| complex-05/5 | 3.664 | 3.663 | tool_calls | true/true/0 | true/148 | 37285/92/37377/40 | 1/0 | false |
+| complex-05/6 | 5.257 | 5.257 | tool_calls | true/true/0 | true/715 | 39950/309/40259/145 | 1/0 | false |
+| complex-05/7 | 215.837 | 215.602 | length | true/true/9796 | true/39991 | 41200/15999/57199/10314 | 1/0 | false |
+| tool-01/1 | 3.81 | 3.81 | tool_calls | true/true/0 | true/367 | 4012/176/4188/89 | 1/0 | false |
+| tool-01/2 | 8.274 | 8.274 | tool_calls | true/true/0 | true/1599 | 18092/509/18601/384 | 1/0 | false |
+| tool-01/3 | 3.52 | 3.519 | tool_calls | true/true/0 | true/200 | 19440/279/19719/40 | 1/0 | false |
+| tool-01/4 | 11.409 | 11.409 | tool_calls | true/true/0 | true/2902 | 20924/995/21919/745 | 1/0 | false |
+| tool-01/5 | 10.126 | 9.674 | tool_calls | true/true/0 | true/1973 | 24883/746/25629/576 | 1/0 | false |
+| tool-01/6 | 135.083 | — | — | false/false/— | false/— | —/—/—/— | 3/2 | false |
+| tool-02/1 | 22.952 | 19.639 | tool_calls | true/true/0 | true/5678 | 4012/1307/5319/1257 | 1/0 | false |
+| tool-02/2 | 3.239 | 3.238 | tool_calls | true/true/0 | true/448 | 6021/191/6212/105 | 1/0 | false |
+| tool-02/3 | 3.715 | 3.712 | tool_calls | true/true/0 | true/605 | 19852/234/20086/145 | 1/0 | false |
+| tool-02/4 | 17.439 | 14.869 | tool_calls | true/true/0 | true/4307 | 26608/1135/27743/970 | 1/0 | false |
+| tool-02/5 | 12.467 | 12.466 | tool_calls | true/true/0 | true/520 | 28568/265/28833/102 | 1/0 | false |
+| tool-02/6 | 11.3 | 11.3 | tool_calls | true/true/0 | true/2637 | 29638/826/30464/652 | 1/0 | false |
+| tool-02/7 | 101.102 | — | — | false/false/— | false/— | —/—/—/— | 3/2 | false |
+| tool-03/1 | 0.001 | — | — | false/false/— | false/— | —/—/—/— | 1/0 | false |
+
+#### Transport retry errors and tool-loop outcome
+
+- tool-01, round 6, attempt 1: `RemoteProtocolError` / `remote protocol failure`, status —.
+- tool-01, round 6, attempt 2: `RemoteProtocolError` / `remote protocol failure`, status —.
+- tool-02, round 7, attempt 1: `RemoteProtocolError` / `remote protocol failure`, status —.
+- tool-02, round 7, attempt 2: `RemoteProtocolError` / `remote protocol failure`, status —.
+
+The four retries above all belong to terminally failed rounds; **none recovered**. tool-01 round 6 and tool-02 round 7 each made three attempts (two retryable RemoteProtocolError failures, then an unlisted ConnectError). tool-03 failed immediately on its first provider round/attempt with the same unlisted ConnectError. All three terminal rounds returned no HTTP status, observed model or visible final.
+
+tool-01 and tool-02 returned the successful tool-call rounds shown above before failure. Their partial tool-read logs were not retained by the external synthetic driver on the failed CaseRunner path, so completed-read counts are unavailable. tool-03 failed before any tool call. No successful required-tool completion is claimed; the formal gate is 0/3.
+
+### Final mechanical validation
+
+- Starting HEAD was exactly the required d6f1716 commit; the final migration commit has that parent. Dedicated branch/worktree used throughout; no main merge/history rewrite.
+- Only the six authorized harness files are changed: provider adapter, runner diagnostics allowlist, controller metadata/selftests, PREFLIGHT, README and exactly pinned requirements.
+- AST comparison against the starting commit confirms CaseRunner, PathSandbox, tool schema, read budgets, frozen SHAs, generation settings, measured orchestration/reconciliation and run-id function are unchanged. Controller function changes are confined to metadata and deterministic tests.
+- Production chat uses httpx only; DIRECT, fixed 30/360/30/30 timeouts, three transport attempts and 1s/3s backoff. No route/provider fallback exists.
+- Deterministic gates: 36/36 selftest, 9/9 integration-selftest. Live gate results and any failures are recorded above.
+- No repository run evidence directory/bytecode; no PUBLIC/SUT/Agent edits or private evaluation reads. E10 provider execution count remains zero.
+- Runtime key is loaded only in memory; final diff is checked for the actual known runtime secret before commit. Technical evidence contains no hidden reasoning or model-answer text.
+- Ordinary branch push and remote SHA readback are the final publication check; the exact matching SHA is returned in the task handoff.
+
+### Exact blocker / handoff
+
+**HOLD_HTTPX_TRANSPORT_UNSTABLE**: required tool-loop gate is 0/3 visible finals. tool-01 round 6 / tool-02 round 7 terminated after two retryable RemoteProtocolError failures followed by a non-retryable ConnectError; tool-03 round 1 failed immediately with a non-retryable ConnectError. No terminal HTTP/model response was available. The sanitized diagnostic is `provider transport failure: ConnectError (non-retryable transport failure)`; it does not establish a client/provider/network root cause. Do not advance to Attempt #4 from this preflight.
