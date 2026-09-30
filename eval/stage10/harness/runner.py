@@ -56,9 +56,10 @@ TOOL_SCHEMA = {
 }
 
 ROUND_DIAGNOSTIC_FIELDS = (
-    "transport_client", "httpx_version", "transport_route", "timeout_policy",
+    "transport_client", "transport_protocol", "httpx_version", "transport_route", "timeout_policy",
     "round_elapsed_s", "successful_response_elapsed_s", "successful_response_after_240s",
     "transport_attempt_count", "transport_retry_count", "retry_errors", "http_status",
+    "provider_attempt_count", "provider_retry_count", "rate_limit_events", "output_budget_rejected",
     "observed_model", "finish_reason", "content_field_present", "content_present",
     "content_length", "reasoning_present", "reasoning_length", "usage_summary",
 )

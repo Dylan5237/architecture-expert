@@ -24,10 +24,11 @@ MEASURED_MAX_TOOL_ROUNDS = 24
 RUN_KIND = "isolated_api_blinded_reference"
 STAGE = 10
 PHASE = "C"
-PROVIDER_NAME = "OpenCode Zen"
-API_HOST = "https://opencode.ai/zen/go/v1"
-REQUESTED_MODEL = "deepseek-v4-pro"
-GENERATION_SETTINGS = {"temperature": 0, "max_tokens": 32000}
+from provider_openai_compatible import (
+    PROVIDER_NAME, AUTH_SOURCE, REQUIRED_BASE_URL as API_HOST,
+    REQUIRED_MODEL as REQUESTED_MODEL, REQUIRED_MAX_TOKENS, model_identity_matches,
+)
+GENERATION_SETTINGS = {"temperature": 0, "max_tokens": REQUIRED_MAX_TOKENS}
 SUT_SHA = "96d9ae333ffc5a8076d635b86634b5151ec0bbc5"
 SUITE_SHA = "ff157eb1947860345a305fb29452b51e09dd3a2b"
 PUBLIC_PACK_SHA = "23a49382c949702446325d30e18d3321d8550c36"
@@ -257,8 +258,8 @@ def validate_provider(host: str, model: str) -> None:
 def validate_generation_settings(temperature, max_tokens) -> None:
     if temperature != 0:
         raise ControllerError(f"temperature must be 0, got {temperature}")
-    if max_tokens != 32000:
-        raise ControllerError(f"max_tokens must be 32000, got {max_tokens}")
+    if max_tokens != REQUIRED_MAX_TOKENS:
+        raise ControllerError(f"max_tokens must be {REQUIRED_MAX_TOKENS}, got {max_tokens}")
 
 
 # ---- measured orchestration (R2) ----
@@ -303,6 +304,7 @@ def new_metadata(run_id: str, harness_sha: str | None) -> dict:
         "provider_adapter_sha256": sha256_file(harness_dir() / "provider_openai_compatible.py"),
         "provider": PROVIDER_NAME,
         "api_host": API_HOST,
+        "authentication_source": AUTH_SOURCE,
         "requested_model": REQUESTED_MODEL,
         "generation_settings": dict(GENERATION_SETTINGS),
         "transport_policy": {
@@ -313,6 +315,7 @@ def new_metadata(run_id: str, harness_sha: str | None) -> dict:
             "max_attempts_per_round": MAX_TRANSPORT_ATTEMPTS,
             "backoff_seconds": list(TRANSPORT_BACKOFF_SECONDS),
             "connect_error_policy": "retry all ConnectError except explicit TLS certificate verification failure",
+            "http_429_policy": "valid Retry-After once; capped at 120 seconds; otherwise fail closed; within 3 total attempts",
         },
         "max_tool_rounds": MEASURED_MAX_TOOL_ROUNDS,
         "prompt_precedence_mapping": "SYSTEM1=agent/system-prompt-v0.1.md; SYSTEM2=agent/modes/<MODE>.md; USER=verbatim PUBLIC case",
@@ -368,7 +371,7 @@ def provider_readiness(provider, session: str = "stage10-ref-readiness-PRE10") -
     )
     content = (data.get("choices") or [{}])[0].get("message", {}).get("content") or ""
     observed = data.get("model")
-    ok = observed == REQUESTED_MODEL and content.strip().startswith("READY1-ACK") and content.strip().endswith("READY2-END")
+    ok = model_identity_matches(REQUESTED_MODEL, observed) and content.strip().startswith("READY1-ACK") and content.strip().endswith("READY2-END")
     usage = provider.fetch_usage() if hasattr(provider, "fetch_usage") else None
     return {
         "ok": ok,
@@ -584,7 +587,7 @@ def reconcile_run(run_root: Path, case_ids: list[str], expected_count: int | Non
             problems.append(f"retry count inconsistent for {cid}")
         if c.get("attempt_count", 0) == 2 and c.get("technical_retry_count", 0) != 1:
             problems.append(f"retry count inconsistent for {cid}")
-        if c.get("final_observed_model") not in (None, REQUESTED_MODEL):
+        if not model_identity_matches(REQUESTED_MODEL, c.get("final_observed_model")):
             problems.append(f"model drift for {cid}: {c.get('final_observed_model')}")
         if c.get("session_header") is not None and not str(c.get("session_header")).startswith("stage10-ref-"):
             problems.append(f"session header invalid for {cid}")
@@ -1066,15 +1069,15 @@ def selftest() -> int:
                 raise AssertionError("kimi host accepted")
             except ControllerError:
                 pass
-        check("host rejects non-Zen", t12)
+        check("host rejects non-company gateway", t12)
 
         def t13():
             try:
-                validate_provider(API_HOST, "glm-5.3")
+                validate_provider(API_HOST, "synthetic-other-model")
                 raise AssertionError("wrong model accepted")
             except ControllerError:
                 pass
-        check("model rejects non-deepseek", t13)
+        check("model rejects non-frozen model", t13)
 
         def t14():
             try:
@@ -1162,7 +1165,7 @@ def selftest() -> int:
             assert first.content == second.content and first.headers == second.headers
             assert first.url == second.url == API_HOST + "/chat/completions"
             assert json.loads(first.content)["max_tokens"] == 32000
-            assert first.headers["x-opencode-session"] == second.headers["x-opencode-session"]
+            assert first.headers["x-stage10-session"] == second.headers["x-stage10-session"]
         check("ReadTimeout recovers; byte-identical body/headers/session; no fallback", t18)
 
         def t19():
@@ -1367,6 +1370,62 @@ def selftest() -> int:
                 assert provider._client is client and not client.is_closed
             assert client.is_closed and len(requests) == 2
         check("persistent httpx Client reused across rounds and closed explicitly", t36)
+
+        def t37():
+            import httpx
+            from provider_openai_compatible import TECHNICAL_RESPONSE_KEY, ProviderError, _retry_after_seconds
+            from runner import _round_diagnostics
+            assert _retry_after_seconds("5") == 5 and _retry_after_seconds("999") == 120
+            assert _retry_after_seconds("Thu, 01 Jan 1970 00:00:10 GMT", now_s=0) == 10
+            assert all(_retry_after_seconds(value) is None for value in (None, "", "-1", "nan", "1.5", "invalid"))
+            provider, requests, sleeps, _ = provider_stubs([
+                httpx.Response(429, headers={"Retry-After": "999"}), synthetic_response(),
+            ])
+            with provider:
+                data = provider.chat([], session="stage10-ref-company-PRE10")
+            meta = data[TECHNICAL_RESPONSE_KEY]
+            assert len(requests) == 2 and requests[0].content == requests[1].content and requests[0].headers == requests[1].headers
+            assert sleeps == [30, 30, 30, 30]
+            assert meta["provider_attempt_count"] == 2 and meta["provider_retry_count"] == 1
+            assert meta["transport_attempt_count"] == 1 and meta["transport_retry_count"] == 0
+            assert meta["rate_limit_events"][0]["retry_after_seconds"] == 120
+            assert _round_diagnostics(meta)["rate_limit_events"] == meta["rate_limit_events"]
+            provider, requests, sleeps, _ = provider_stubs([
+                httpx.Response(429, headers={"Retry-After": "1"}),
+                httpx.Response(429, headers={"Retry-After": "1"}),
+            ])
+            with provider:
+                try:
+                    provider.chat([])
+                    raise AssertionError("second 429 accepted")
+                except ProviderError as exc:
+                    assert len(exc.technical_metadata["rate_limit_events"]) == 2
+                    assert exc.technical_metadata["provider_retry_count"] == 1
+            assert len(requests) == 2 and sleeps == [1]
+        check("company 429 honors valid Retry-After once/caps 120; separate provider diagnostics", t37)
+
+        def t38():
+            import httpx
+            import provider_openai_compatible as adapter
+            from unittest.mock import patch
+            for value in ("invalid", "-1", "nan"):
+                fails_once(httpx.Response(429, headers={"Retry-After": value}), 429)
+            fails_once(httpx.Response(400, json={"error": {"message": "max_tokens exceeds maximum output tokens"}}), 400)
+            assert adapter._output_budget_rejected(httpx.Response(400, json={"error": {"message": "max_tokens exceeds maximum output tokens"}}))
+            assert not adapter._output_budget_rejected(httpx.Response(400, json={"error": {"message": "unrelated invalid input"}}))
+            cfg = [{"id": REQUESTED_MODEL, "name": "zoesoft/" + REQUESTED_MODEL,
+                    "url": API_HOST, "useCustomProtocol": False, "apiKey": "synthetic-company-key"}]
+            from unittest.mock import mock_open
+            with patch("builtins.open", mock_open(read_data=json.dumps(cfg))), patch.dict(os.environ, {"STAGE10_API_KEY": "synthetic-old-provider-key"}):
+                assert adapter.load_api_key() == "synthetic-company-key"
+            cfg[0]["url"] = "https://unrelated.invalid/v1"
+            with patch("builtins.open", mock_open(read_data=json.dumps(cfg))):
+                assert adapter._load_key_from_local_config() is None
+            assert new_metadata("synthetic-company", None)["provider"] == "company compute gateway"
+            assert new_metadata("synthetic-company", None)["transport_policy"]["transport_protocol"] == "OpenAI-compatible chat-completions"
+            assert adapter.model_identity_matches("deepseek-flash", "deepseek-v4.1-flash")
+            assert not adapter.model_identity_matches(REQUESTED_MODEL, "deepseek-flash")
+        check("company config binding/old credential ignored/budget-limit diagnostic/invalid 429", t38)
 
         for name, ok, err in checks:
             print(f"  {'PASS' if ok else 'FAIL'}  {name}" + (f"  ({err})" if err else ""))

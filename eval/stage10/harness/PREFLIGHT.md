@@ -454,3 +454,65 @@ This section supersedes the historical migration gate above for this task. The u
 - The exact runtime-freeze SHA is the commit containing this final gate. After commit it is recorded in the external freeze manifest, final handoff and measured metadata.harness_git_sha; no tracked code change is permitted after that commit.
 - Next authorized action: verify clean frozen HEAD and absent run directory, set STAGE10_MEASURED_AUTH_SHA to that HEAD, execute tracked controller.py run-suite exactly once, then preserve and commit only controller-produced canonical evidence.
 - Actual runtime credential bytes are scanned without printing them; hidden reasoning policy remains NEVER STORE TEXT. No private oracle/rubric/coverage/design-report read, no SUT/PUBLIC/Agent edits, and no provider/model/route fallback.
+
+## Company compute gateway — Attempt #5 freeze gate (2026-09-30)
+
+This section supersedes the historical OpenCode runtime sections above. The owner authorizes company-gateway selection, one runtime freeze and one fresh full Attempt #5; historical Attempt #4 evidence is preserved separately.
+
+### Discovery and exact model binding
+
+- Task source: origin/main at `0f8104b`, `tasks/stage10/CODEX_COMPANY_GATEWAY_ATTEMPT5.md`; task blob SHA-256 `3f712476f003ad93b352fce9692f2e6fb42ab61c138b77bf0eff3912f6d0b33a`.
+- Dedicated branch/worktree: `eval/stage10-company-gateway-attempt5`; exact starting HEAD `9f361246c4a877b22ca338721b1dffe5130c0813`; main was not merged and no Attempt #4 raw output was copied.
+- Non-secret company base URL: **http://192.168.3.77:13000/v1**; protocol **OpenAI-compatible chat-completions**; endpoint `/chat/completions`; authentication is Bearer from the owner's existing `~/.workbuddy/models.json` zoesoft records bound to this gateway.
+- Authenticated GET `/models` returned HTTP 200 and ids `glm-5.3`, `glm-5.3-flash`, `deepseek-flash`. All three configured zoesoft entries use the same gateway credential; no credential value or digest is persisted.
+- The owner explicitly confirmed `deepseek-flash` = `deepseek-v4.1-flash`; the third candidate uses exact gateway request id deepseek-flash and retains that confirmed canonical mapping. No other identity alias is accepted.
+- Old OpenCode key/environment/config/usage endpoint and quota assumptions are not used by this runtime. There is no Kimi/Moonshot, provider fallback or measured model switch.
+
+### Minimal capability selection
+
+- Exactly one full-Agent required-tool PRE10 probe per candidate, sequentially in the specified order. All use identical SYSTEM/AUTO/scenario/tool/sandbox settings, temperature 0, max_tokens 32000 and max_tool_rounds 24. No failed probe was repeated and no answer quality was inspected.
+- New scenario: museum audio-tour playlist rollout across 180 halls/two regions, 18-hour offline windows, DB/event/activation acknowledgement gaps, withdrawal/correction ordering, lease/partition conflict policy, bounded resources/overload and mixed-version minimum correction.
+- SYSTEM/AUTO model-visible strings use controller-equivalent UTF-8 text loading and are asserted equal to frozen Git blobs. SYSTEM SHA-256 `e25cca7e108963a75ee6b64581460029f1ebe7977122cd314e43eee953129fd1`; AUTO `cf9d3d49c5d060891a356624b503be4e2e7d391df6321a5a88a31aeae615f198`.
+- Scenario SHA-256 `822016bdb865d36ad216ce743c19c2848027254cb8e3c267fe1a036b2ab20f85`; required-tool variant `6389b9a98c2561f613c7c57f3b8269fdc0c63c2798a480415b824a973842e8ef`. Public knowledge/Agent-only external snapshots are used; no private oracle/rubric/coverage/design-report read.
+- Capability facts below contain no synthetic answer or hidden reasoning text. Missing identity is reported as unavailable; a returned identity must match the request or the single owner-confirmed alias.
+
+| Candidate | Gateway request id | Capability | Observed identity | Required reads | Non-empty final | Finish | Terminal error | Seconds |
+|---|---|---|---|---|---|---|---|---:|
+| glm-5.3 | glm-5.3 | PASS | glm-5.3 | True | True | stop | NONE | 247.965 |
+| glm-5.3-flash | glm-5.3-flash | PASS | glm-5.3-flash | True | True | stop | NONE | 552.032 |
+| deepseek-v4.1-flash | deepseek-flash | PASS | deepseek-flash | True | True | stop | NONE | 111.027 |
+
+- Deterministic selection: **glm-5.3**, because the first candidate passes all hard capability checks. This is the owner's fixed preference policy, not a performance/quality ranking.
+- Selected global generation settings: **temperature 0 / max_tokens 32000**; accepted live. The 16000 capability fallback was not needed. No per-case/adaptive budget exists.
+
+### Runtime policy and deterministic gate
+
+- Persistent httpx==0.28.1; DIRECT, trust_env=False, proxy=None, follow_redirects=False; fixed connect/read/write/pool timeouts **30/360/30/30 seconds**.
+- At most **3 total application attempts per provider round**, identical request body/settings/session/route, transport backoff **1s/3s**. Generic ConnectError/timeout/read/protocol/TLS EOF and HTTP 502/503/504 remain retryable; explicit certificate verification failure remains fail-closed.
+- Generic HTTP 429: valid delta-seconds/HTTP-date Retry-After is honored **once**, capped at **120 seconds** and within the same three-attempt bound. Missing/invalid Retry-After or another 429 fails closed. No model fallback or invented quota wait. Waits are split into intervals of at most 30 seconds without changing the total required delay.
+- Metadata records company provider/base URL/authentication source, frozen model/settings, protocol/client/route/timeouts, distinct provider/transport retry counters and sanitized 429 events. Only capped wait numbers/validity/retry facts are retained; no Retry-After header text or error body is persisted.
+- PYTHONDONTWRITEBYTECODE=1 and python -B throughout. Selected glm-5.3 gate: in-memory compile **3/3 PASS**, selftest **38/38 PASS**, integration-selftest **9/9 PASS**, PUBLIC dry-run **32/32 PASS**.
+- Directly required tests cover company credential binding/old key ignored, exact model/alias validation, missing/invalid 429 header, one valid Retry-After retry/cap, output-budget rejection metadata, and existing transport/lock/atomic/reconciliation/duplicate/verbatim/empty-final checks.
+- AST comparison confirms CaseRunner/PathSandbox/tool schema/budgets and measured suite orchestration unchanged; controller changes are settings/provider metadata/identity compatibility/tests. Runner changes are limited to technical metadata allowlisting.
+- SUT/suite/PUBLIC remain `96d9ae333ffc5a8076d635b86634b5151ec0bbc5` / `ff157eb1947860345a305fb29452b51e09dd3a2b` / `23a49382c949702446325d30e18d3321d8550c36`; dual SYSTEM/exact USER, one model-visible tool, max_tool_rounds=24, case-level maximum one retry, atomic evidence and duplicate-HOLD remain fixed.
+
+### Final selected-model sequential smokes
+
+- Exactly two fresh conversations with one persistent selected-model provider/client, sequentially: tool-exposed architecture analysis, then router plus related-knowledge required tool-loop. No failed smoke repeat or tuning.
+| Smoke | Result | Non-empty final | Finish | Model | Required reads | Seconds |
+|---|---|---|---|---|---|---:|
+| 1 | PASS | True | stop | glm-5.3 | True | 350.137 |
+| 2 | PASS | True | stop | glm-5.3 | True | 284.397 |
+
+**FINAL_COMPANY_GATEWAY_FREEZE: PASS**
+
+- Selected model **glm-5.3** and output budget **32000** are frozen globally. No tracked code change is permitted after the runtime-freeze commit.
+- `E10_EXECUTION_COUNT: 0` before measured execution; `eval/stage10/run/` is absent.
+- The runtime-freeze SHA is the commit containing this final gate; its exact SHA is recorded after commit in the external freeze manifest, measured metadata.harness_git_sha and final handoff.
+- Tested working-file SHA-256 (same byte hashes recorded by the controller):
+- `controller.py`: `206f9f136eed6b2b83f612c3705dfd1850e244e78a44772d9ac49723d7d6e35a`.
+- `runner.py`: `17bc6afc9cda16570d29c91ae7ea43e33e9f67443196759b16357ca52c6c2654`.
+- `provider_openai_compatible.py`: `8013d03289e34cb784eccb003cde04a7f92564731399953743451d52d919253f`.
+- Selection event metrics SHA-256 `a5a3251e928edc8213b5d23454a16a18774324377b01733e7113816f4e769219`; final smoke event metrics SHA-256 `661e572f03f5860031d686b6f6b0c3e9f606b519dcabd918d9f73781a0504e78`.
+- Actual company credential bytes are scanned without printing them; hidden reasoning is recursively removed before the runner and is never persisted.
+- Next action: verify exact clean freeze HEAD and absent run directory, set STAGE10_MEASURED_AUTH_SHA to that SHA and invoke tracked controller.py run-suite exactly once. Preserve terminal controller output, commit only canonical run evidence, push the branch and stop.

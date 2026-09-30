@@ -1,11 +1,12 @@
 """OpenAI-compatible provider adapter for the Stage 10 reference model.
 
-Frozen reference: OpenCode Zen / deepseek-v4-pro.
+Frozen reference: company compute gateway / glm-5.3.
 No fallback path exists. If the reference is unavailable the caller must fail closed.
 """
 from __future__ import annotations
 
 import copy
+from email.utils import parsedate_to_datetime
 import json
 import os
 import re
@@ -14,8 +15,12 @@ import time
 
 import httpx
 
-REQUIRED_BASE_URL = "https://opencode.ai/zen/go/v1"
-REQUIRED_MODEL = "deepseek-v4-pro"
+PROVIDER_NAME = "company compute gateway"
+API_PROTOCOL = "OpenAI-compatible chat-completions"
+AUTH_SOURCE = "WorkBuddy models.json zoesoft entries"
+REQUIRED_BASE_URL = "http://192.168.3.77:13000/v1"
+REQUIRED_MODEL = "glm-5.3"
+MODEL_IDENTITY_ALIASES = {"deepseek-flash": "deepseek-v4.1-flash"}
 REQUIRED_TEMPERATURE = 0
 REQUIRED_MAX_TOKENS = 32000
 REQUIRED_HTTPX_VERSION = "0.28.1"
@@ -23,6 +28,7 @@ TRANSPORT_ROUTE = "DIRECT"
 TIMEOUT_POLICY = {"connect": 30, "read": 360, "write": 30, "pool": 30}
 MAX_TRANSPORT_ATTEMPTS = 3
 TRANSPORT_BACKOFF_SECONDS = (1, 3)
+MAX_RETRY_AFTER_SECONDS = 120
 REASONING_FIELDS = frozenset({"reasoning", "reasoning_content", "reasoning_details", "thinking", "analysis"})
 TECHNICAL_RESPONSE_KEY = "_stage10_technical"
 
@@ -35,42 +41,72 @@ class ProviderError(RuntimeError):
         self.technical_metadata = technical_metadata or {}
 
 
-def _load_key_from_local_config() -> str | None:
-    """Best-effort read of the OpenCode/OpenCode-Zen key from the local provider config.
+def model_identity_matches(requested: str, observed: str | None) -> bool:
+    """Accept only the exact request or the owner's confirmed gateway alias."""
+    return observed is None or observed in (requested, MODEL_IDENTITY_ALIASES.get(requested, requested))
 
-    Returns the key or None; never logs the key value.
-    """
-    home = os.path.expanduser("~")
-    for candidate in (
-        os.path.join(home, ".opencodex", "config.json"),
-    ):
-        try:
-            with open(candidate, "r", encoding="utf-8") as fh:
-                cfg = json.load(fh)
-        except (OSError, ValueError):
-            continue
-        provider = (cfg.get("providers") or {}).get("opencode-go") or {}
-        key = provider.get("apiKey")
-        if isinstance(key, str) and key:
-            return key
-        pool = provider.get("apiKeyPool")
-        if isinstance(pool, list) and pool:
-            first = pool[0] or {}
-            k = first.get("key")
-            if isinstance(k, str) and k:
-                return k
+
+def _load_key_from_local_config() -> str | None:
+    """Read only company credentials bound to the frozen gateway; never log them."""
+    path = os.path.join(os.path.expanduser("~"), ".workbuddy", "models.json")
+    try:
+        with open(path, "r", encoding="utf-8-sig") as fh:
+            cfg = json.load(fh)
+    except (OSError, ValueError):
+        return None
+    if not isinstance(cfg, list):
+        return None
+    records = [r for r in cfg if isinstance(r, dict)
+               and str(r.get("name", "")).startswith("zoesoft/")
+               and str(r.get("url", "")).rstrip("/") == REQUIRED_BASE_URL
+               and r.get("useCustomProtocol") is False
+               and isinstance(r.get("apiKey"), str) and r["apiKey"].strip()]
+    exact = [r for r in records if r.get("id") == REQUIRED_MODEL]
+    keys = {r["apiKey"].strip() for r in (exact or records)}
+    # A directory-only candidate may use the common credential of this same gateway.
+    if len(keys) == 1:
+        return keys.pop()
     return None
 
 
 def load_api_key() -> str:
-    """Load the reference API key at runtime. Env var first, local config second."""
-    key = os.environ.get("STAGE10_API_KEY")
-    if key and key.strip():
-        return key.strip()
+    """Load the company key from the owner's WorkBuddy configuration at runtime."""
     key = _load_key_from_local_config()
     if key and key.strip():
         return key.strip()
-    raise ProviderError("STAGE10_API_KEY not set and no local opencode-go key found")
+    raise ProviderError("BLOCKED_COMPANY_GATEWAY_CONFIGURATION: matching WorkBuddy company credential unavailable")
+
+
+def _retry_after_seconds(value: str | None, now_s: float | None = None) -> float | None:
+    """Parse a standard delta-seconds/HTTP-date header; retain only a capped wait."""
+    if not isinstance(value, str) or not value.strip() or len(value) > 200:
+        return None
+    value = value.strip()
+    if re.fullmatch(r"[0-9]+", value):
+        return min(int(value), MAX_RETRY_AFTER_SECONDS)
+    try:
+        date = parsedate_to_datetime(value)
+        if date.tzinfo is None:
+            return None
+        delay = date.timestamp() - (time.time() if now_s is None else now_s)
+    except (TypeError, ValueError, OverflowError):
+        return None
+    return min(max(0, delay), MAX_RETRY_AFTER_SECONDS)
+
+
+def _output_budget_rejected(response) -> bool:
+    """Recognize an explicit output-token limit in RAM, without retaining error text."""
+    if response.status_code not in (400, 422):
+        return False
+    try:
+        response.read()
+        data = response.json()
+        error = data.get("error", {}) if isinstance(data, dict) else {}
+        text = str(error.get("message", "") if isinstance(error, dict) else error).lower()
+    except (ValueError, httpx.HTTPError, httpx.StreamError):
+        return False
+    return (any(word in text for word in ("max_tokens", "max_completion_tokens", "output tokens", "completion tokens"))
+            and any(word in text for word in ("exceed", "maximum", "at most", "between", "too large", "unsupported", "limit")))
 
 
 def session_header(run_id: str, case_id: str) -> str:
@@ -111,6 +147,7 @@ def _transport_error(exc: BaseException) -> tuple[bool, str, str]:
 def _transport_metadata() -> dict:
     return {
         "transport_client": "httpx",
+        "transport_protocol": API_PROTOCOL,
         "httpx_version": httpx.__version__,
         "transport_route": TRANSPORT_ROUTE,
         "timeout_policy": dict(TIMEOUT_POLICY),
@@ -257,17 +294,29 @@ class ReferenceProvider:
         if session is not None:
             if "stage10-ref-" not in session or len(session) > 200:
                 raise ProviderError("session header validation failed")
-            headers["x-opencode-session"] = session
+            headers["x-stage10-session"] = session
         body_bytes = json.dumps(body, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
         url = self.base_url + "/chat/completions"
         round_started = time.perf_counter()
         retry_errors: list[dict] = []
+        rate_limit_events: list[dict] = []
+        provider_retry_count = 0
         last_status = None
+
+        def retry_metadata(metadata, attempt):
+            metadata.update({
+                "provider_attempt_count": attempt,
+                "provider_retry_count": provider_retry_count,
+                "rate_limit_events": copy.deepcopy(rate_limit_events),
+                "transport_attempt_count": attempt - provider_retry_count,
+                "transport_retry_count": max(0, attempt - provider_retry_count - 1),
+            })
+            return metadata
 
         def failure_metadata(attempt, observed_model=None):
             metadata = _failure_metadata(attempt, retry_errors, last_status, observed_model)
             metadata["round_elapsed_s"] = round(time.perf_counter() - round_started, 3)
-            return metadata
+            return retry_metadata(metadata, attempt)
 
         for attempt in range(1, MAX_TRANSPORT_ATTEMPTS + 1):
             attempt_started = time.perf_counter()
@@ -278,6 +327,9 @@ class ReferenceProvider:
                 with self._client.stream("POST", url, content=body_bytes, headers=headers) as resp:
                     response_elapsed = time.perf_counter() - attempt_started
                     last_status = resp.status_code
+                    if last_status in (400, 422):
+                        # Inspect only explicit capability errors in RAM before stream close.
+                        resp.read()
                     resp.raise_for_status()
                     raw = resp.read()
             except httpx.HTTPStatusError as exc:
@@ -289,14 +341,30 @@ class ReferenceProvider:
                     "error_message": f"HTTP {last_status}",
                     "http_status": last_status,
                 }
+                if last_status == 429:
+                    wait = _retry_after_seconds(exc.response.headers.get("Retry-After"))
+                    retry = wait is not None and provider_retry_count == 0 and attempt < MAX_TRANSPORT_ATTEMPTS
+                    rate_limit_events.append({
+                        "attempt": attempt, "http_status": 429,
+                        "retry_after_valid": wait is not None,
+                        "retry_after_seconds": wait, "retry_performed": retry,
+                    })
+                    if retry:
+                        provider_retry_count += 1
+                        remaining = wait
+                        while remaining > 0:
+                            pause = min(30, remaining)
+                            self._sleep(pause)
+                            remaining -= pause
+                        continue
                 if retryable:
                     retry_errors.append(error)
                     if attempt < MAX_TRANSPORT_ATTEMPTS:
                         self._sleep(TRANSPORT_BACKOFF_SECONDS[attempt - 1])
                         continue
-                raise ProviderError(
-                    f"provider HTTP {last_status}", failure_metadata(attempt),
-                ) from None
+                metadata = failure_metadata(attempt)
+                metadata["output_budget_rejected"] = _output_budget_rejected(exc.response)
+                raise ProviderError(f"provider HTTP {last_status}", metadata) from None
             except Exception as exc:  # noqa: BLE001 - classify the fixed transport allowlist
                 retryable, error_class, error_message = _transport_error(exc)
                 error = {
@@ -332,9 +400,9 @@ class ReferenceProvider:
                     failure_metadata(attempt),
                 )
             observed = data.get("model")
-            if observed is not None and observed != REQUIRED_MODEL:
+            if not model_identity_matches(self.model, observed):
                 raise ProviderError(
-                    f"provider model drift: requested {REQUIRED_MODEL!r}, observed {observed!r}",
+                    f"provider model drift: requested {self.model!r}, observed {observed!r}",
                     failure_metadata(attempt, observed),
                 )
             choices = data.get("choices")
@@ -348,17 +416,7 @@ class ReferenceProvider:
                 "successful_response_elapsed_s": round(response_elapsed, 3),
                 "successful_response_after_240s": response_elapsed > 240,
             })
-            safe_data[TECHNICAL_RESPONSE_KEY] = metadata
+            safe_data[TECHNICAL_RESPONSE_KEY] = retry_metadata(metadata, attempt)
             return safe_data
 
         raise AssertionError("unreachable transport retry loop")
-
-    def fetch_usage(self) -> dict | None:
-        """Non-secret usage summary if the endpoint supports it."""
-        headers = {"Authorization": f"Bearer {self._key}", "User-Agent": "stage10-harness/1.0"}
-        try:
-            resp = self._client.get(self.base_url + "/usage", headers=headers)
-            resp.raise_for_status()
-            return resp.json()
-        except (httpx.HTTPError, ValueError, OSError):
-            return None
