@@ -1,0 +1,3525 @@
+id: STAGE10-PHASE-D-CASE-SCORES
+version: 1
+date: '2026-10-04'
+status: SCORED_PENDING_ADJUDICATION
+source_manifest:
+  evidence_sha: d6ac48c16f7285f53fbc7af6e5aae4f64f83123b
+  runtime_freeze_sha: 7db2639044d3a8f0b8706d70161513238ed29670
+  suite_design_sha: ff157eb1947860345a305fb29452b51e09dd3a2b
+  sut_sha: 96d9ae333ffc5a8076d635b86634b5151ec0bbc5
+  run_id: phasec-20260930T101227Z-7db26390
+  provider: company compute gateway
+  model: glm-5.3
+  scoring_task_main_sha: a96ea6a7bcb677df3b234889f7cbc9719f26dbcf
+  rubric_sha256: c9929d7ab388547997cda66e5e50bd5be53009cdd2ea77d30aef44eee0a22a35
+  oracle_sha256: 2f35bfd788b08b7cf3238d1d693794bd5bfe84f9e09bf6abf1a476fe484d12e1
+  coverage_sha256: eb5595ea206c5a4413365bad39d9c8e07fa6d559099e3e4d413e15bcc8768541
+  manifest_sha256: 8b38a3f15c3098b1f265fc2217b653c44cf098cb573a14a9d7b004a6b122a33f
+scoring_method:
+  scorer: Codex main review; four bounded scoring subagents requested with gpt-6-astra/high
+  scale: 0/1/2; N/A only where the frozen rubric permits
+  aggregation: sum earned / sum applicable max; no extra whole-case zeroing for HF
+  D4_applicability: All 32 cases demand mechanism or decision-mechanism reasoning
+  D5_applicability: A compliant/non-alarm component must actually be at issue; a generic GC check alone does not
+    make D5 applicable
+  D6_na_cases:
+  - E10-010
+  - E10-018
+  - E10-024
+  D7_D8_applicability: case-specific authority surface / material evidence gap, with per-case rationale
+  evidence_limit: raw visible content only; routing/tool metadata used solely for integrity
+  route_accuracy_definition: correct primary DP/mode incl. allowed alternate with basis; overlay quality is separately
+    scored in D1
+  terminal_accuracy_definition: actual global terminal belongs to oracle allowed set; no repair by interpreting
+    another field as the terminal
+  human_adjudication: Any HF or material/interpretive ambiguity is flagged; this is not human sign-off
+integrity:
+  cases_complete: 32
+  canonical_file_count: 34
+  raw_nonempty: 32
+  scoring_time_rerun_count: 0
+  external_research_count: 0
+  measured_evidence_unchanged: true
+parent_review_changes:
+- id: E10-004
+  dimension: D5
+  old_score: 2
+  new_score: N/A
+  reason: 冻结 D5 针对实际非报警合规组件；该案是已不合规机制/变更或容量调整，GC检查或合法方案比较不单独构成D5组件，分别计入D4/D6/D7/D9
+- id: E10-005
+  dimension: D5
+  old_score: 2
+  new_score: N/A
+  reason: 冻结 D5 针对实际非报警合规组件；该案是已不合规机制/变更或容量调整，GC检查或合法方案比较不单独构成D5组件，分别计入D4/D6/D7/D9
+- id: E10-027
+  removed_hf: HF-03
+  dimension: D3
+  old_score: 0
+  new_score: 1
+  reason: raw16-19、44、51在局部路径修正/模板迁移的对照中使用 the migration ticket；不等于断言所有审批均可豁免，尚不足以明确触发既成项目事实HF03，但执行依赖表述不清仍扣D3并保留裁定
+- id: E10-031
+  dimension: D5
+  old_score: 2
+  new_score: N/A
+  reason: 冻结 D5 针对实际非报警合规组件；该案是已不合规机制/变更或容量调整，GC检查或合法方案比较不单独构成D5组件，分别计入D4/D6/D7/D9
+aggregate:
+  overall:
+    earned: 434
+    max: 538
+    percentage: 80.6691
+  dimensions:
+    D1:
+      earned: 53
+      max: 64
+      percentage: 82.8125
+      na_cases: []
+      zero_cases: []
+      one_cases:
+      - E10-002
+      - E10-006
+      - E10-008
+      - E10-010
+      - E10-011
+      - E10-015
+      - E10-016
+      - E10-022
+      - E10-028
+      - E10-031
+      - E10-032
+    D2:
+      earned: 61
+      max: 64
+      percentage: 95.3125
+      na_cases: []
+      zero_cases: []
+      one_cases:
+      - E10-008
+      - E10-022
+      - E10-024
+    D3:
+      earned: 27
+      max: 64
+      percentage: 42.1875
+      na_cases: []
+      zero_cases:
+      - E10-005
+      - E10-006
+      - E10-007
+      - E10-009
+      - E10-011
+      - E10-012
+      - E10-019
+      - E10-022
+      - E10-028
+      - E10-029
+      - E10-030
+      - E10-031
+      one_cases:
+      - E10-004
+      - E10-008
+      - E10-010
+      - E10-014
+      - E10-015
+      - E10-016
+      - E10-017
+      - E10-018
+      - E10-020
+      - E10-021
+      - E10-024
+      - E10-027
+      - E10-032
+    D4:
+      earned: 51
+      max: 64
+      percentage: 79.6875
+      na_cases: []
+      zero_cases:
+      - E10-018
+      - E10-021
+      one_cases:
+      - E10-006
+      - E10-007
+      - E10-008
+      - E10-011
+      - E10-020
+      - E10-022
+      - E10-024
+      - E10-031
+      - E10-032
+    D5:
+      earned: 27
+      max: 28
+      percentage: 96.4286
+      na_cases:
+      - E10-003
+      - E10-004
+      - E10-005
+      - E10-007
+      - E10-009
+      - E10-011
+      - E10-014
+      - E10-016
+      - E10-017
+      - E10-018
+      - E10-019
+      - E10-020
+      - E10-021
+      - E10-023
+      - E10-024
+      - E10-027
+      - E10-030
+      - E10-031
+      zero_cases: []
+      one_cases:
+      - E10-028
+    D6:
+      earned: 48
+      max: 58
+      percentage: 82.7586
+      na_cases:
+      - E10-010
+      - E10-018
+      - E10-024
+      zero_cases: []
+      one_cases:
+      - E10-001
+      - E10-007
+      - E10-011
+      - E10-015
+      - E10-016
+      - E10-019
+      - E10-027
+      - E10-028
+      - E10-031
+      - E10-032
+    D7:
+      earned: 47
+      max: 52
+      percentage: 90.3846
+      na_cases:
+      - E10-003
+      - E10-012
+      - E10-021
+      - E10-025
+      - E10-027
+      - E10-030
+      zero_cases:
+      - E10-001
+      one_cases:
+      - E10-015
+      - E10-022
+      - E10-024
+    D8:
+      earned: 11
+      max: 16
+      percentage: 68.75
+      na_cases:
+      - E10-001
+      - E10-002
+      - E10-003
+      - E10-005
+      - E10-006
+      - E10-007
+      - E10-009
+      - E10-011
+      - E10-013
+      - E10-014
+      - E10-015
+      - E10-016
+      - E10-017
+      - E10-019
+      - E10-020
+      - E10-022
+      - E10-023
+      - E10-025
+      - E10-026
+      - E10-027
+      - E10-028
+      - E10-029
+      - E10-030
+      - E10-032
+      zero_cases:
+      - E10-018
+      - E10-021
+      one_cases:
+      - E10-024
+    D9:
+      earned: 51
+      max: 64
+      percentage: 79.6875
+      na_cases: []
+      zero_cases:
+      - E10-004
+      - E10-010
+      - E10-013
+      - E10-018
+      one_cases:
+      - E10-012
+      - E10-021
+      - E10-022
+      - E10-024
+      - E10-028
+    D10:
+      earned: 58
+      max: 64
+      percentage: 90.625
+      na_cases: []
+      zero_cases:
+      - E10-013
+      one_cases:
+      - E10-002
+      - E10-005
+      - E10-012
+      - E10-015
+  route_counts:
+    EXACT: 31
+    ALLOWED_ALTERNATE: 1
+  terminal_counts:
+    PASS: 29
+    FAIL: 3
+  hard_failure_codes:
+    HF-05: 1
+    HF-01: 1
+    HF-03: 12
+    HF-10: 2
+  hard_failure_cases:
+  - E10-001
+  - E10-004
+  - E10-005
+  - E10-006
+  - E10-007
+  - E10-009
+  - E10-011
+  - E10-012
+  - E10-018
+  - E10-019
+  - E10-021
+  - E10-022
+  - E10-028
+  - E10-029
+  - E10-030
+  - E10-031
+  adjudication_case_ids:
+  - E10-001
+  - E10-004
+  - E10-005
+  - E10-006
+  - E10-007
+  - E10-009
+  - E10-010
+  - E10-011
+  - E10-012
+  - E10-015
+  - E10-018
+  - E10-019
+  - E10-020
+  - E10-021
+  - E10-022
+  - E10-024
+  - E10-027
+  - E10-028
+  - E10-029
+  - E10-030
+  - E10-031
+  - E10-032
+  groups:
+    strict_route_challenge_cases:
+      case_ids:
+      - E10-002
+      - E10-003
+      - E10-006
+      - E10-013
+      - E10-024
+      - E10-031
+      earned: 81
+      max: 102
+      percentage: 79.4118
+      route_pass: 6
+      terminal_pass: 5
+      hard_failure_cases:
+      - E10-006
+      - E10-031
+    strict_goodcase_nonalarmist_cases:
+      case_ids:
+      - E10-006
+      - E10-008
+      - E10-010
+      - E10-012
+      - E10-013
+      - E10-022
+      - E10-025
+      - E10-026
+      earned: 117
+      max: 144
+      percentage: 81.25
+      route_pass: 8
+      terminal_pass: 6
+      hard_failure_cases:
+      - E10-006
+      - E10-012
+      - E10-022
+    strict_ambiguity_cases:
+      case_ids:
+      - E10-010
+      - E10-012
+      - E10-018
+      - E10-021
+      - E10-024
+      - E10-031
+      earned: 70
+      max: 102
+      percentage: 68.6275
+      route_pass: 6
+      terminal_pass: 4
+      hard_failure_cases:
+      - E10-012
+      - E10-018
+      - E10-021
+      - E10-031
+    strict_cross_domain_cases:
+      case_ids:
+      - E10-002
+      - E10-007
+      - E10-009
+      - E10-016
+      - E10-019
+      - E10-023
+      - E10-026
+      - E10-029
+      earned: 118
+      max: 134
+      percentage: 88.0597
+      route_pass: 8
+      terminal_pass: 8
+      hard_failure_cases:
+      - E10-007
+      - E10-009
+      - E10-019
+      - E10-029
+    route_ambiguous_cases:
+      case_ids:
+      - E10-024
+      - E10-031
+      earned: 23
+      max: 34
+      percentage: 67.6471
+      route_pass: 2
+      terminal_pass: 2
+      hard_failure_cases:
+      - E10-031
+    product_contract_surface:
+      case_ids:
+      - E10-004
+      - E10-005
+      - E10-011
+      - E10-015
+      - E10-016
+      - E10-017
+      - E10-024
+      - E10-028
+      earned: 102
+      max: 134
+      percentage: 76.1194
+      route_pass: 8
+      terminal_pass: 8
+      hard_failure_cases:
+      - E10-004
+      - E10-005
+      - E10-011
+      - E10-028
+  modes:
+    ADR_REVIEW:
+      case_ids:
+      - E10-010
+      - E10-018
+      earned: 23
+      max: 34
+      percentage: 67.6471
+      route_pass: 2
+      terminal_pass: 0
+      hard_failure_cases:
+      - E10-018
+    ARCH_DESIGN:
+      case_ids:
+      - E10-008
+      - E10-022
+      - E10-029
+      earned: 43
+      max: 56
+      percentage: 76.7857
+      route_pass: 3
+      terminal_pass: 3
+      hard_failure_cases:
+      - E10-022
+      - E10-029
+    ARCH_REVIEW:
+      case_ids:
+      - E10-001
+      - E10-002
+      - E10-004
+      - E10-006
+      - E10-013
+      - E10-020
+      - E10-023
+      - E10-024
+      - E10-025
+      - E10-026
+      - E10-027
+      earned: 160
+      max: 186
+      percentage: 86.0215
+      route_pass: 11
+      terminal_pass: 10
+      hard_failure_cases:
+      - E10-001
+      - E10-004
+      - E10-006
+    CHANGE_REVIEW:
+      case_ids:
+      - E10-005
+      - E10-011
+      - E10-014
+      - E10-016
+      - E10-017
+      - E10-028
+      - E10-030
+      - E10-031
+      - E10-032
+      earned: 118
+      max: 148
+      percentage: 79.7297
+      route_pass: 9
+      terminal_pass: 9
+      hard_failure_cases:
+      - E10-005
+      - E10-011
+      - E10-028
+      - E10-030
+      - E10-031
+    INCIDENT_ANALYSIS:
+      case_ids:
+      - E10-003
+      - E10-007
+      - E10-009
+      - E10-012
+      - E10-015
+      - E10-019
+      - E10-021
+      earned: 90
+      max: 114
+      percentage: 78.9474
+      route_pass: 7
+      terminal_pass: 7
+      hard_failure_cases:
+      - E10-007
+      - E10-009
+      - E10-012
+      - E10-019
+      - E10-021
+  case_totals:
+    E10-001:
+      earned: 15
+      max: 18
+      percentage: 83.3333
+    E10-002:
+      earned: 16
+      max: 18
+      percentage: 88.8889
+    E10-003:
+      earned: 14
+      max: 14
+      percentage: 100.0
+    E10-004:
+      earned: 15
+      max: 18
+      percentage: 83.3333
+    E10-005:
+      earned: 13
+      max: 16
+      percentage: 81.25
+    E10-006:
+      earned: 14
+      max: 18
+      percentage: 77.7778
+    E10-007:
+      earned: 12
+      max: 16
+      percentage: 75.0
+    E10-008:
+      earned: 16
+      max: 20
+      percentage: 80.0
+    E10-009:
+      earned: 14
+      max: 16
+      percentage: 87.5
+    E10-010:
+      earned: 14
+      max: 18
+      percentage: 77.7778
+    E10-011:
+      earned: 11
+      max: 16
+      percentage: 68.75
+    E10-012:
+      earned: 14
+      max: 18
+      percentage: 77.7778
+    E10-013:
+      earned: 14
+      max: 18
+      percentage: 77.7778
+    E10-014:
+      earned: 15
+      max: 16
+      percentage: 93.75
+    E10-015:
+      earned: 13
+      max: 18
+      percentage: 72.2222
+    E10-016:
+      earned: 13
+      max: 16
+      percentage: 81.25
+    E10-017:
+      earned: 15
+      max: 16
+      percentage: 93.75
+    E10-018:
+      earned: 9
+      max: 16
+      percentage: 56.25
+    E10-019:
+      earned: 13
+      max: 16
+      percentage: 81.25
+    E10-020:
+      earned: 14
+      max: 16
+      percentage: 87.5
+    E10-021:
+      earned: 10
+      max: 16
+      percentage: 62.5
+    E10-022:
+      earned: 11
+      max: 18
+      percentage: 61.1111
+    E10-023:
+      earned: 16
+      max: 16
+      percentage: 100.0
+    E10-024:
+      earned: 10
+      max: 16
+      percentage: 62.5
+    E10-025:
+      earned: 16
+      max: 16
+      percentage: 100.0
+    E10-026:
+      earned: 18
+      max: 18
+      percentage: 100.0
+    E10-027:
+      earned: 12
+      max: 14
+      percentage: 85.7143
+    E10-028:
+      earned: 12
+      max: 18
+      percentage: 66.6667
+    E10-029:
+      earned: 16
+      max: 18
+      percentage: 88.8889
+    E10-030:
+      earned: 12
+      max: 14
+      percentage: 85.7143
+    E10-031:
+      earned: 13
+      max: 18
+      percentage: 72.2222
+    E10-032:
+      earned: 14
+      max: 18
+      percentage: 77.7778
+  outcome_results:
+    goodcase_result:
+      PASS: 13
+      NOT_APPLICABLE: 18
+      AMBIGUOUS: 1
+    uncertainty_result:
+      NOT_APPLICABLE: 24
+      PASS: 5
+      FAIL: 2
+      AMBIGUOUS: 1
+    product_contract_result:
+      FAIL: 1
+      PASS: 22
+      NOT_APPLICABLE: 6
+      AMBIGUOUS: 3
+cases:
+- id: E10-001
+  primary_route_observed:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    overlays:
+    - runtime/concurrency
+    - resources
+    basis: existing export path judged as-is against accepted product properties; freeze mechanism already attributed
+      by field traces.
+    evidence_pointer: eval/stage10/run/raw/E10-001.md:L89
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 2
+    D4: 2
+    D5: 2
+    D6: 1
+    D7: 0
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 明确选择既有导出路径的 ARCH_REVIEW/DP-002；resources 与并发调度说明共同覆盖 UI 阻塞，额外 overlay 有机制依据。
+      evidence_pointer: eval/stage10/run/raw/E10-001.md:L41-L47
+    D2:
+      rationale: 分别识别 UI 响应性和强杀不丢编辑两项已接受性质，并核对不能部署后台服务的约束。
+      evidence_pointer: eval/stage10/run/raw/E10-001.md:L11-L30
+    D3:
+      rationale: 关键现状以 PRODUCT_INTENT/CODE/RUNTIME/TEST 标明来源和状态；内存增长的额外机制明确为 HYPOTHESIS，未据此制造独立阻断。
+      evidence_pointer: eval/stage10/run/raw/E10-001.md:L48-L81
+    D4:
+      rationale: 以同步查询、编码和文件写入占用 UI 消息泵解释冻结，并将编辑持久化缺口与冻结暴露窗口分开。
+      evidence_pointer: eval/stage10/run/raw/E10-001.md:L19-L30
+    D5:
+      rationale: 本案存在实质非报警组件：单进程 SQLite。明确按部署成本与进程边界资格保留它，拒绝把单进程本身报为缺陷。
+      evidence_pointer: eval/stage10/run/raw/E10-001.md:L23-L30
+    D6:
+      rationale: 进程内后台工作、取消、进度和分页均为局部修正，并比较服务拆分；但允许有界时间间隔写入仍留下强杀丢编辑窗口。
+      evidence_pointer: eval/stage10/run/raw/E10-001.md:L32-L36
+    D7:
+      rationale: HF-05：在明确的永不丢编辑要求下接受间隔落盘，又宣称 never edits，未取得产品取舍或升级给 owner。
+      evidence_pointer: eval/stage10/run/raw/E10-001.md:L35
+    D8:
+      rationale: N/A：PUBLIC 的代码和运行轨迹直接确认 UI 同步工作及用户强杀丢编辑；冻结 oracle 明确 code evidence decisive，无待定根因。
+      evidence_pointer: eval/stage10/public/E10-001.md:L5-L10
+    D9:
+      rationale: 两项 BLOCKER 各具事实、机制、失败方式、实质影响、前置 GC 排除和反证条件；全局 terminal 为 oracle 允许的 MIN_SAFE_FIX_IDENTIFIED。修正缺口单独计入
+        D6/D7。
+      evidence_pointer: eval/stage10/run/raw/E10-001.md:L60-L84
+    D10:
+      rationale: 限定导出、编辑持久化和相应验证，说明进一步分配热点及调度器选型不会改变决定。
+      evidence_pointer: eval/stage10/run/raw/E10-001.md:L89
+  hard_failures:
+  - code: HF-05
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-001.md
+      line_start: 35
+      line_end: 35
+      quote: Durable write-through of edits to SQLite on the edit path** (bounded interval acceptable).
+    basis: 冻结 rubric HF-05/D7；本案 PUBLIC 第7行要求 user edits are never lost on force-kill；oracle 要求保护 edit durability。
+    affected_dimensions:
+    - D7
+    trigger_explanation: bounded interval acceptable 明确接受先保留内存、稍后落盘的时间窗口；强杀可发生在该窗口。raw 未限定编辑须待持久化才确认，也未将这项能力削弱交由
+      owner；同一行反而保证 never edits。该触发是修正方案接受降低已确认能力，不是缺少某个术语。
+  key_strengths:
+  - 区分 UI 线程阻塞与编辑持久化两项机制
+  - 保留单进程 SQLite，提出取消、进度和有界导出
+  key_defects:
+  - summary: 允许间隔落盘与强杀永不丢编辑不相容，且把修正效果表述为绝对保证。
+    evidence_pointer: eval/stage10/run/raw/E10-001.md:L35
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - HF-05：bounded interval acceptable 明确接受先保留内存、稍后落盘的时间窗口；强杀可发生在该窗口。raw 未限定编辑须待持久化才确认，也未将这项能力削弱交由 owner；同一行反而保证
+    never edits。该触发是修正方案接受降低已确认能力，不是缺少某个术语。
+  goodcase_result: PASS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: FAIL
+  raw_output_path: eval/stage10/run/raw/E10-001.md
+  raw_output_sha256: e5b128f3a6845f794367c6d7f9a51d904d4b0054e3799aa5289df5b260be3ef6
+  public_case_path: eval/stage10/public/E10-001.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-001
+- id: E10-002
+  primary_route_observed:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    overlays:
+    - overload
+    basis: object is the existing checkout path judged as-is; symptoms are retry amplification and unbounded backlog,
+      not a delta or a live-unattributed failure
+    evidence_pointer: eval/stage10/run/raw/E10-002.md:L29-L36
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 2
+    D3: 2
+    D4: 2
+    D5: 2
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 1
+  dimension_rationales:
+    D1:
+      rationale: 主模式、DP 和对象依据正确；route/overlay 只声明 overload，遗漏 oracle 的 resources，尽管正文及 activated_dimensions 已做 per-work
+        retry bound 区分。
+      evidence_pointer: eval/stage10/run/raw/E10-002.md:L29-L36
+    D2:
+      rationale: 将超容量需求下的可用性、恢复时间与营销约束对应；把微服务建议作为待检假设，遵守 ADR 的接受状态。
+      evidence_pointer: eval/stage10/run/raw/E10-002.md:L20-L24
+    D3:
+      rationale: 代码、配置、运行指标、ADR 与迁移主张分别标明来源/状态；无幂等性的猜测标为 NEEDS_EVIDENCE，未当成既成重复扣款。
+      evidence_pointer: eval/stage10/run/raw/E10-002.md:L37-L48
+    D4:
+      rationale: 同时识别重试放大与无界入口队列，明确三次计数已有限但时序同步、零间隔仍放大；队列上界与接入/拒绝政策分开，实质完成 D-04。
+      evidence_pointer: eval/stage10/run/raw/E10-002.md:L9-L22
+    D5:
+      rationale: 实质非报警组件为现有模块化单体及允许的网关治理位置；解释无服务内接入代码并非天然缺陷，同时核实本案网关治理确实缺失。
+      evidence_pointer: eval/stage10/run/raw/E10-002.md:L12-L16
+    D6:
+      rationale: 网关队列上界、接入拒绝政策以及 SDK 退避抖动直接打断两个机制；给出何种新增证据才值得扩大到服务拆分。
+      evidence_pointer: eval/stage10/run/raw/E10-002.md:L18-L24
+    D7:
+      rationale: ADR-0031 的单体及网关治理决定被保留；实现缺口记录 drift，改写 ADR 明确需要架构委员会签字。
+      evidence_pointer: eval/stage10/run/raw/E10-002.md:L44-L74
+    D8:
+      rationale: N/A：冻结 oracle 无不确定性要求；PUBLIC 的 CODE/CONFIG/RUNTIME 同时确认即时重试、55% 重试占比和无界队列，归因及最小修正证据充分。
+      evidence_pointer: eval/stage10/public/E10-002.md:L7-L14
+    D9:
+      rationale: 两项阻断均有具体事实、放大/队列机制、失效影响、GC 检查与反证条件；单项幂等性 NEEDS_EVIDENCE 没有替换全局正确 terminal。
+      evidence_pointer: eval/stage10/run/raw/E10-002.md:L49-L73
+    D10:
+      rationale: 增加独立的 checkout correctness/幂等性 finding，并要求改重试前 verify/add，轻微扩大了原来的容量与恢复问题范围。
+      evidence_pointer: eval/stage10/run/raw/E10-002.md:L65-L77
+  hard_failures: []
+  key_strengths:
+  - 区分有界重试次数与放大时序，以及队列上界与治理政策
+  - 修正遵循已接受 ADR，反证条件具体
+  key_defects:
+  - summary: 路由行未声明 resources 次级 overlay。
+    evidence_pointer: eval/stage10/run/raw/E10-002.md:L29-L36
+    likely_layer: AGENT_PROMPT / MODE_ROUTING
+  - summary: 幂等性调查被加入本次最小修正的前置动作，超出已确认的容量机制。
+    evidence_pointer: eval/stage10/run/raw/E10-002.md:L65-L77
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: false
+  adjudication_reason: []
+  goodcase_result: PASS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-002.md
+  raw_output_sha256: b6ddd72dd01ecfc8c46ace63bbdbe7fee75e4aa0f1023797517e090d08f39d01
+  public_case_path: eval/stage10/public/E10-002.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-002
+- id: E10-003
+  primary_route_observed:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    overlays:
+    - runtime/concurrency (stale async)
+    basis: object is an observed production failure (orphaned workers after coordinator crash), not a delta or a
+      design proposal; symptom family "orphan/no-cancel" justifies the lifecycle/concurrency overlay
+    evidence_pointer: eval/stage10/run/raw/E10-003.md:L3
+  oracle_primary_route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 2
+    D4: 2
+    D5: N/A
+    D6: 2
+    D7: N/A
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 主路由为 INCIDENT_ANALYSIS/DP-005，依据已发生事故；虽然 overlay 名称较宽，依据及实际声明的 knowledge_route 明确以 lifecycle/所有权为主，属于机制等价表达。
+      evidence_pointer: eval/stage10/run/raw/E10-003.md:L3-L47
+    D2:
+      rationale: 清楚识别 worker 不得超出 run 生存以及协调器重启是正常条件，未把 schema 重设计当首要性质。
+      evidence_pointer: eval/stage10/run/raw/E10-003.md:L9-L19
+    D3:
+      rationale: 运行时间线、无取消/监督代码及三月历史分别有来源/状态；执行模型保证的替代解释明确要求 ADR/comment 等证据。
+      evidence_pointer: eval/stage10/run/raw/E10-003.md:L48-L54
+    D4:
+      rationale: 准确归因为协调器死亡后无人拥有停止/清理职责与取消传播缺失；区分初始事件、schema 爆炸半径及 FP-012 竞争解释，并识别三月误归因。
+      evidence_pointer: eval/stage10/run/raw/E10-003.md:L11-L23
+    D5:
+      rationale: N/A：本案实际 worker 缺监督、取消与存活检测，没有实质合规非报警组件；排除不匹配 GC 本身不使 D5 适用。
+      evidence_pointer: eval/stage10/public/E10-003.md:L7-L12
+    D6:
+      rationale: worker 存活检测、自停、进程组清理与 run-ID 重启对账共同覆盖正常退出和 OOM 后孤儿；与工作流平台改造比较，保持局部修正。
+      evidence_pointer: eval/stage10/run/raw/E10-003.md:L25-L35
+    D7:
+      rationale: N/A：本案只有运行范围/生命周期约束，无产品能力取舍、相冲突的已接受架构决定或其他实质 authority surface；该约束已在 D2/D4 评价。
+      evidence_pointer: eval/stage10/public/E10-003.md:L7-L12
+    D8:
+      rationale: N/A：冻结 oracle 明确 timeline decisive；代码与时间线充分确定无所有权/取消传播，数据修复范围是后续任务，不阻止本案归因。
+      evidence_pointer: eval/stage10/public/E10-003.md:L7-L12
+    D9:
+      rationale: 阻断针对已证实的越界 worker 写入而非虚构的数据损坏数量；六柱完整，正确 terminal，未将后续数据对账升级为无依据损坏阻断。
+      evidence_pointer: eval/stage10/run/raw/E10-003.md:L55-L72
+    D10:
+      rationale: schema 后果、数据对账及历史记录修订均明确为后续范围；解释到所有权和最小修正后停止。
+      evidence_pointer: eval/stage10/run/raw/E10-003.md:L35-L37
+  hard_failures: []
+  key_strengths:
+  - 明确区分 coordinator 崩溃、失去所有权及 schema 后果
+  - 覆盖 OOM 无法执行退出钩子时的存活检测和重启对账
+  key_defects: []
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: false
+  adjudication_reason: []
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: NOT_APPLICABLE
+  raw_output_path: eval/stage10/run/raw/E10-003.md
+  raw_output_sha256: 0afb5bcb06b383a1426f3a01296b8250efc22986516954d522311326e0c5ad04
+  public_case_path: eval/stage10/public/E10-003.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-003
+- id: E10-004
+  primary_route_observed:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    overlays:
+    - state-data
+    basis: Object is an existing search subsystem judged as-is; the deciding mechanism family is undeclared consistency
+      semantics between the catalog write authority and a cached derived view — not overload, failure propagation,
+      or a proposed change.
+    evidence_pointer: eval/stage10/run/raw/E10-004.md:L3
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 1
+    D4: 2
+    D5: N/A
+    D6: 2
+    D7: 2
+    D8: 2
+    D9: 0
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 既有 search 子系统对应 ARCH_REVIEW/DP-002/state-data，对象与主机制依据明确。
+      evidence_pointer: eval/stage10/run/raw/E10-004.md:L3
+    D2:
+      rationale: PRD 不可购买无库存商品是接受性质，搜索展示延迟与购买边界校验分开；一致性声明要求标为 derived。
+      evidence_pointer: eval/stage10/run/raw/E10-004.md:L28-L32
+    D3:
+      rationale: 来源/状态大体完整并保留购买报告为 USER_ASSERTION；但把 p50/p99 观测称为 effective bound，混淆测得分布与已证明上界。
+      evidence_pointer: eval/stage10/run/raw/E10-004.md:L9-L19
+    D4:
+      rationale: 区分缓存相对 index 的 TTL 与 catalog 到搜索的累积延迟，识别隐式语义及 30s→600s 变更；额外延迟保留为假设并列举阶段观测。
+      evidence_pointer: eval/stage10/run/raw/E10-004.md:L83-L109
+    D5:
+      rationale: N/A：本案无 oracle 要求确认的已合规非报警组件；GC 排除、局部修正比较及产品约束分别在 D4/D6/D7/D9 评分，不因额外列 GC 获分。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-004;
+        frozen rubric D5 na_when
+    D6:
+      rationale: 比较声明和验证 bound、回退 poller、订单边界权威校验及 CDC；对购买安全优先局部下单校验，并说明更快 polling 仅为部分缓解。
+      evidence_pointer: eval/stage10/run/raw/E10-004.md:L131-L140
+    D7:
+      rationale: 保留 PRD 权威，不让行业惯例断言覆盖它；界定搜索 UX/cost 取舍由产品和服务 owner 决策，未因实现不便制造 ARCH_CONFLICT。
+      evidence_pointer: eval/stage10/run/raw/E10-004.md:L113-L127
+    D8:
+      rationale: 本案购买行为证据缺失且 PRD 与团队断言存在冲突，适用 D8；明确命名 checkout 权威库存校验、订单失败记录、逐阶段 lag 观测，并保持影响未验证。
+      evidence_pointer: eval/stage10/run/raw/E10-004.md:L142-L147
+    D9:
+      rationale: HF-01：F1 文档/声明缺失被设为 BLOCKER，但其声称的实质 P1 影响在本回答中仍取决于未知 checkout；F2 风险与全局 MIN_SAFE_FIX_IDENTIFIED
+        可接受，不能据此免除 F1 的阻断证据要求。
+      evidence_pointer: eval/stage10/run/raw/E10-004.md:L64-L99
+    D10:
+      rationale: 限定 state-data、搜索传播与真正保护购买性质的边界，没有扩展全系统重构。
+      evidence_pointer: eval/stage10/run/raw/E10-004.md:L131-L140
+  hard_failures:
+  - code: HF-01
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-004.md
+      line_start: 72
+      line_end: 73
+      quote: "    impact: P1 cannot be protected or even verified on this path while its supporting consistency\n\
+        \      contract is undefined; a material weakening already shipped unnoticed."
+    basis: 冻结 rubric HF-01/D9 的 BLOCKER 六柱要求；oracle 允许针对产品性质违反的 BLOCKER/HIGH_CONFIDENCE_RISK，并要求检查 PRD 边界。
+    affected_dimensions:
+    - D9
+    trigger_explanation: 逐柱核对 F1：evidence=41-45 的代码/配置/lag；mechanism=66-68 的未声明语义；failure-mode=69-71；GC-checked=58-61；refutation=78-80
+      均存在。缺的是支持 MUST_FIX 的实质 material-impact 连接：72-73 声称 P1 无法保护及实质削弱已发生，但14-19、89-99 明确保留 checkout 已权威校验、购买影响未验证的可能，此时文档缺失本身不能推出该
+      P1 影响。该判定针对缺乏支持的影响柱，不针对缺少 impact 字样，也不否定 F2 的有保留风险判断。
+  key_strengths:
+  - 正确区分搜索陈旧与实际购买安全的证据层级
+  - 明确订单路径与逐阶段延迟的判别观测，比较局部修正
+  key_defects:
+  - summary: 将未声明一致性契约单独升级为阻断，却未建立它在 checkout 已保护购买性质时仍有实质影响；与自己保留的条件判断相冲突。
+    evidence_pointer: eval/stage10/run/raw/E10-004.md:L64-L80
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 把运行 p50/p99 表述为有效上界，容易夸大已知延迟保证。
+    evidence_pointer: eval/stage10/run/raw/E10-004.md:L10
+    likely_layer: EVIDENCE_DISCIPLINE
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - F1 的 material-impact 柱是否可由已观测陈旧加未验证购买报告共同支撑，是本案真实评分边界；须统一复核，不能将 oracle 允许 BLOCKER 理解成任意子 finding 均可阻断。
+  - HF-01：逐柱核对 F1：evidence=41-45 的代码/配置/lag；mechanism=66-68 的未声明语义；failure-mode=69-71；GC-checked=58-61；refutation=78-80
+    均存在。缺的是支持 MUST_FIX 的实质 material-impact 连接：72-73 声称 P1 无法保护及实质削弱已发生，但14-19、89-99 明确保留 checkout 已权威校验、购买影响未验证的可能，此时文档缺失本身不能推出该
+    P1 影响。该判定针对缺乏支持的影响柱，不针对缺少 impact 字样，也不否定 F2 的有保留风险判断。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: PASS
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-004.md
+  raw_output_sha256: 39305aa659d8bc336f70b834bb332570ab1a6780c8a648f0ba850f791c531203
+  public_case_path: eval/stage10/public/E10-004.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-004
+- id: E10-005
+  primary_route_observed:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    overlays:
+    - integration/contract
+    basis: the delta publishes/breaks a contract with consumers (no AUTO basis required; explicit invocation).
+    evidence_pointer: eval/stage10/run/raw/E10-005.md:L1
+  oracle_primary_route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 0
+    D4: 2
+    D5: N/A
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 1
+  dimension_rationales:
+    D1:
+      rationale: 显式 CHANGE_REVIEW 请求得到 DP-003；integration/contract 与公共 payload delta 对应。
+      evidence_pointer: eval/stage10/run/raw/E10-005.md:L1
+    D2:
+      rationale: 准确区分外部 API 稳定性/ToS 六个月通知义务与内部风格偏好，识别约1400独立使用方。
+      evidence_pointer: eval/stage10/run/raw/E10-005.md:L22-L25
+    D3:
+      rationale: HF-03：never used deprecation 被扩张为 no payload version/compatibility declaration exists；PUBLIC 未提供版本声明是否存在的事实。主体
+        evidence 表的类型标注不能补足该事实。
+      evidence_pointer: eval/stage10/run/raw/E10-005.md:L53-L57
+    D4:
+      rationale: 将字段改名解释为独立外部消费者无法同步升级的合同破坏，内部消费者更新和绿色 CI 不能证明兼容。
+      evidence_pointer: eval/stage10/run/raw/E10-005.md:L42-L51
+    D5:
+      rationale: N/A：本案无 oracle 要求确认的已合规非报警组件；GC 排除、局部修正比较及产品约束分别在 D4/D6/D7/D9 评分，不因额外列 GC 获分。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-005;
+        frozen rubric D5 na_when
+    D6:
+      rationale: 优先撤销公共改名并保留内部 camelCase，限定 lint；备选为六个月通知和双字段兼容窗口，符合最小修正。
+      evidence_pointer: eval/stage10/run/raw/E10-005.md:L47-L51
+    D7:
+      rationale: ToS 作为已接受合同，不被 style guide 覆盖；公共改名若有真实产品需求交 API owner/DevRel 选择治理迁移。
+      evidence_pointer: eval/stage10/run/raw/E10-005.md:L58-L63
+    D8:
+      rationale: N/A：冻结 oracle 明确 ToS 与 consumer count decisive；现有公共字段破坏足以决定拒绝原 PR，未披露版本机制仅列为反证条件。
+      evidence_pointer: eval/stage10/public/E10-005.md:L7-L12
+    D9:
+      rationale: 主 BLOCKER 有独立消费者事实、字段破坏机制、具体失败及实质影响、GC 和反证；全局 terminal 正确。附加版本声明的虚构在 D3 单独触发。
+      evidence_pointer: eval/stage10/run/raw/E10-005.md:L39-L60
+    D10:
+      rationale: 新增后续 schema-version 字段 PR 建议，依赖未证实的不存在断言，超出处理当前公共改名的必要范围。
+      evidence_pointer: eval/stage10/run/raw/E10-005.md:L52-L57
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-005.md
+      line_start: 55
+      line_end: 55
+      quote: 'mechanism: no payload version/compatibility declaration exists (history: never used)'
+    basis: 冻结 rubric HF-03/D3；PUBLIC 第8行只陈述 deprecation mechanism 从未被使用，没有给出 payload version/compatibility declaration
+      不存在。
+    affected_dimensions:
+    - D3
+    trigger_explanation: raw 把不存在版本/兼容声明写成当前机制事实，并据此提出新增 schema-version 字段；这不是建议语气中的假设。历史 never used 不能证明不存在，且 raw66
+      自己承认可能有未披露的版本机制。
+  key_strengths:
+  - ToS 优先级与外部消费者兼容机制判断准确
+  - 同时给出撤销改名与治理迁移两条具体修正路线
+  key_defects:
+  - summary: 从没有使用过 deprecation 机制推断没有 payload 版本/兼容性声明，属于无证据项目事实。
+    evidence_pointer: eval/stage10/run/raw/E10-005.md:L55
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 断言 lint 将必然再次禁止 snake_case，未保留对其实际作用域的核对条件。
+    evidence_pointer: eval/stage10/run/raw/E10-005.md:L14
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 外部消费者 by definition 不在 CI 中的表述过强；已知仅是当前 CI 绿色，不能证明没有外部契约测试。
+    evidence_pointer: eval/stage10/run/raw/E10-005.md:L5
+    likely_layer: EVIDENCE_DISCIPLINE
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：raw 把不存在版本/兼容声明写成当前机制事实，并据此提出新增 schema-version 字段；这不是建议语气中的假设。历史 never used 不能证明不存在，且 raw66 自己承认可能有未披露的版本机制。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-005.md
+  raw_output_sha256: 5f4f35857e04d927ec34964ea43e6786415ebabdfef75ebaf522147ffbe8a532
+  public_case_path: eval/stage10/public/E10-005.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-005
+- id: E10-006
+  primary_route_observed:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    overlays:
+    - resources (per-work bounds)
+    basis: object is an existing supervised OTP order router judged as-is (second opinion on a defect claim, no
+      observed failure, no landed delta); the claim names a lifetime/resource-bound mechanism family.
+    evidence_pointer: eval/stage10/run/raw/E10-006.md:L1
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 2
+    D3: 0
+    D4: 1
+    D5: 2
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 主模式/DP 与既有系统第二意见相符；route 的 resources 主 overlay 与 oracle lifecycle 不同，虽然正文确实检查 lifecycle 资格，此处只扣
+        overlay 声明完整性，不判 wrong DP。
+      evidence_pointer: eval/stage10/run/raw/E10-006.md:L1-L30
+    D2:
+      rationale: 分开无限服务寿命、每订单时限、监督重启和稳定资源性质，识别架构师 memo 是需要证实的断言。
+      evidence_pointer: eval/stage10/run/raw/E10-006.md:L5-L16
+    D3:
+      rationale: HF-03：反对重写的因果论证使用 per-stream gen_server holds session state 这一未在项目证据中出现的项目事实。其余 evidence 的来源/状态清楚。
+      evidence_pointer: eval/stage10/run/raw/E10-006.md:L18
+    D4:
+      rationale: 监督即所有权及5秒 per-work bound 判断正确；但将稳定内存/选择性接收进一步总结为 each candidate dimension already has a bound，未证明邮箱和动态进程数量上界。
+      evidence_pointer: eval/stage10/run/raw/E10-006.md:L9-L20
+    D5:
+      rationale: 准确匹配 GC-001/GC-004 的监督和每项工作约束，拒绝 indefinite lifetime 的误报警；没有把合规 daemon 本身列为缺陷。
+      evidence_pointer: eval/stage10/run/raw/E10-006.md:L39-L44
+    D6:
+      rationale: 本案正确 NO_DEFECT 应不改架构：明确拒绝无机制收益的 expiry/rewrite，只在未来出现 mailbox/spawn 证据时局部治理该维度。不能因没有修复动作扣分。
+      evidence_pointer: eval/stage10/run/raw/E10-006.md:L18-L20
+    D7:
+      rationale: 本案有已接受 design doc 与架构师 memo 的权威区别：保留长寿命/监督决定，memo 被判 HYPOTHESIS，未将其升级为新的架构意图。
+      evidence_pointer: eval/stage10/run/raw/E10-006.md:L32-L38
+    D8:
+      rationale: N/A：冻结 oracle 明确 runtime evidence decisive；PUBLIC 含监督代码、每订单限制、重启配置和7个月稳定运行。未来 burst 反证建议不把本案转成证据不足。
+      evidence_pointer: eval/stage10/public/E10-006.md:L7-L13
+    D9:
+      rationale: 全局 NO_DEFECT 正确，与可选 NON_BLOCKING_IMPROVEMENT 共存；没有生命周期 BLOCKER 或错误的 NEEDS_EVIDENCE terminal。
+      evidence_pointer: eval/stage10/run/raw/E10-006.md:L40-L45
+    D10:
+      rationale: 范围保持在 memo 所称寿命/资源/所有权和直接观测指标，无重写或全系统巡检。
+      evidence_pointer: eval/stage10/run/raw/E10-006.md:L20-L30
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-006.md
+      line_start: 18
+      line_end: 18
+      quote: For a 24/7 order router whose per-stream `gen_server` holds session state
+    basis: 冻结 rubric HF-03/D3；PUBLIC 只说明 gen_server、监督、5s超时、selective receive 和运行指标，没有说明 session state 或重新订阅行为。
+    affected_dimensions:
+    - D3
+    trigger_explanation: whose ... holds session state 被作为本项目既成事实，用于解释 expiry 必须带来状态交接/重新订阅；没有 if 或 HYPOTHESIS 限定。gen_server
+      通常可保存状态的通用知识不能单独建立该项目具有 session state 的事实。该标记不否定主体 NO_DEFECT，也不是对假设性修正建议的惩罚。
+  key_strengths:
+  - 对监督 ownership 与每订单 bound 的 GOOD CASE 判断正确
+  - 保留已接受设计，停止无依据的生命周期重写
+  key_defects:
+  - summary: 未经项目证据确认就断言每个 stream 的 gen_server 持有 session state，据此推导状态交接成本。
+    evidence_pointer: eval/stage10/run/raw/E10-006.md:L18
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 稳定内存和缺少故障签名被扩大为所有候选维度已有边界；后文自己仍提出 mailbox/spawn 的反证观测。
+    evidence_pointer: eval/stage10/run/raw/E10-006.md:L13-L20
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - NO_DEFECT
+  terminal_outcome_expected:
+  - NO_DEFECT
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：whose ... holds session state 被作为本项目既成事实，用于解释 expiry 必须带来状态交接/重新订阅；没有 if 或 HYPOTHESIS 限定。gen_server 通常可保存状态的通用知识不能单独建立该项目具有
+    session state 的事实。该标记不否定主体 NO_DEFECT，也不是对假设性修正建议的惩罚。
+  goodcase_result: PASS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-006.md
+  raw_output_sha256: b7c0761642531e235892a0c1cbe5caf5bede7e61fcab4eb59d51b6e5d58883a8
+  public_case_path: eval/stage10/public/E10-006.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-006
+- id: E10-007
+  primary_route_observed:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    overlays:
+    - Resource / per-work bounds
+    basis: Object is an observed deadline-miss failure attributed to a recently added block; symptom family is unbounded
+      blocking on shared resources, not a design or PR review.
+    evidence_pointer: eval/stage10/run/raw/E10-007.md:L1
+  oracle_primary_route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 0
+    D4: 1
+    D5: N/A
+    D6: 1
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 观察到的 deadline miss 对应 INCIDENT_ANALYSIS/DP-005/resource bounds；后续 reliability 仅用于共享资源传播，有对象依据。
+      evidence_pointer: eval/stage10/run/raw/E10-007.md:L1
+    D2:
+      rationale: 明确10ms safety-rated 硬期限不可放宽，并保留128KB和不可更换CAN硬件约束。
+      evidence_pointer: eval/stage10/run/raw/E10-007.md:L7
+    D3:
+      rationale: HF-03：在没有 packet 尺寸、数量或 RAM 预算的情况下断言静态池 fits 128KB (packet structs are small)；另有未经提供证据的观测设施不存在断言。
+      evidence_pointer: eval/stage10/run/raw/E10-007.md:L24
+    D4:
+      rationale: 识别 malloc 共享堆与 UART 锁两条正确主机制，并保留两者贡献比例为假设；但 fixed priority 被直接当作全条件 preemption 保证，can only come
+        from blocking 过度排除了其他来源。
+      evidence_pointer: eval/stage10/run/raw/E10-007.md:L9-L17
+    D5:
+      rationale: N/A：PUBLIC 给出的是共享堆/锁导致硬期限破坏的缺陷场景，无独立合规非报警组件。CPU升级不适配及不需进程拆分属于修正比较，不单独构成 GOOD CASE。
+      evidence_pointer: eval/stage10/public/E10-007.md:L7-L13
+    D6:
+      rationale: 控制路径预分配、堆隔离、bounded telemetry ring 和有界锁均局部且与 oracle 同向；但静态池内存可行性未经预算论证即被保证，最小安全修正的资源验证不足。
+      evidence_pointer: eval/stage10/run/raw/E10-007.md:L19-L28
+    D7:
+      rationale: 10ms 安全硬约束构成实质权威面，即使 coverage surface=false 仍适用；明确任何修正不得放宽期限，没有用升级硬件或取消 telemetry 替代该要求。
+      evidence_pointer: eval/stage10/run/raw/E10-007.md:L7-L28
+    D8:
+      rationale: N/A：冻结 oracle 明确 correlation decisive。heap 与 lock 的贡献分摊不影响两者均须有界的修正，PUBLIC 已提供相关运行、代码与配置证据。
+      evidence_pointer: eval/stage10/public/E10-007.md:L7-L12
+    D9:
+      rationale: BLOCKER 对应安全期限及物理振荡，六柱齐全；refutation 第二分支明确可重定向根因，terminal 正确。未因推论措辞过强自动追加 HF-10。
+      evidence_pointer: eval/stage10/run/raw/E10-007.md:L49-L67
+    D10:
+      rationale: 修正局限于 embedded 内存/锁和相关验证；长期碎片、日志指标及认证预算明确列为范围外而未展开。
+      evidence_pointer: eval/stage10/run/raw/E10-007.md:L28-L30
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-007.md
+      line_start: 24
+      line_end: 24
+      quote: fits 128KB (packet structs are small)
+    basis: 冻结 rubric HF-03/D3；PUBLIC 第11行只提供总 RAM=128KB，无 packet struct 大小、池容量、其它内存占用数据。
+    affected_dimensions:
+    - D3
+    trigger_explanation: fits 128KB 及 packet structs are small 是对本项目尺寸/可行性的肯定陈述，直接支撑所提配置修正。建议使用静态池本身不是 HF；触发的是没有项目证据却保证该池方案装得下。
+  key_strengths:
+  - 同时找到控制环 malloc 和低优先级 telemetry 共享锁风险
+  - 提出适合嵌入式约束的静态分配与有界日志缓冲
+  key_defects:
+  - summary: 无 packet 大小和 RAM 分配证据即保证分池 fits 128KB。
+    evidence_pointer: eval/stage10/run/raw/E10-007.md:L24
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 将最高固定优先级推成已证实的抢占保证，并声称延迟只能来自共享资源阻塞。
+    evidence_pointer: eval/stage10/run/raw/E10-007.md:L9
+    likely_layer: REASONING_PLAYBOOK
+  - summary: 额外 NON_BLOCKING_IMPROVEMENT 断言缺少 drop accounting / block-time instrumentation；输入仅未提供这类信息。
+    evidence_pointer: eval/stage10/run/raw/E10-007.md:L59-L64
+    likely_layer: EVIDENCE_DISCIPLINE
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：fits 128KB 及 packet structs are small 是对本项目尺寸/可行性的肯定陈述，直接支撑所提配置修正。建议使用静态池本身不是 HF；触发的是没有项目证据却保证该池方案装得下。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-007.md
+  raw_output_sha256: 8f93b8c86a1fc3f2db77e78cdea89d9712c445803057db66bfdd322c46f17bf6
+  public_case_path: eval/stage10/public/E10-007.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-007
+- id: E10-008
+  primary_route_observed:
+    mode: ARCH_DESIGN
+    dp: DP-001
+    overlays:
+    - none
+    basis: object is a not-yet-built capability (collaborative notes sync) → forward synthesis; shape implies the
+      state-authority/conflict dimension (Q-STA, `state-data/`)
+    evidence_pointer: eval/stage10/run/raw/E10-008.md:L1
+  oracle_primary_route:
+    mode: ARCH_DESIGN
+    dp: DP-001
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 1
+    D3: 1
+    D4: 1
+    D5: 2
+    D6: 2
+    D7: 2
+    D8: 2
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: ARCH_DESIGN/DP-001 正确，正文实际使用 state-data；但两次声明 overlay none，与本案明确 state-data overlay 不符。
+      evidence_pointer: eval/stage10/run/raw/E10-008.md:L61-L66
+    D2:
+      rationale: 离线、peer、无丢失和收敛四性质均识别；但把已给定 JSON-ish document model 约束降为 HYPOTHESIS，并把 wiki never conflicts 期待升级为
+        no user-visible conflict flow，性质/偏好边界不完整。
+      evidence_pointer: eval/stage10/run/raw/E10-008.md:L63-L69
+    D3:
+      rationale: 未来设计未冒充现状，主要 PRODUCT_INTENT/GENERIC_KNOWLEDGE 分开；JSON-ish 约束被误标为 USER_ASSERTION/HYPOTHESIS，属于一次来源/状态混淆。
+      evidence_pointer: eval/stage10/run/raw/E10-008.md:L67-L72
+    D4:
+      rationale: 同时声明逐文档/状态类 authority 和逐类型 merge，覆盖机制主体；但把 wall-clock ordering 泛化为不可重现，混淆决定性合并与语义无丢失：时钟偏差本身不使相同操作集的确定性排序不可重现。
+      evidence_pointer: eval/stage10/run/raw/E10-008.md:L24-L37
+    D5:
+      rationale: 明确允许并采用多写者加声明 merge 的合规形态；未要求中央 authority 或 single-writer，也未对其设 BLOCKER。
+      evidence_pointer: eval/stage10/run/raw/E10-008.md:L20
+    D6:
+      rationale: 按性质选择文本 CRDT、元数据保留历史和 tombstones；与 LWW/OT/单写者比较，考虑带 replica ack 的压缩且未盲目引入新基础设施。
+      evidence_pointer: eval/stage10/run/raw/E10-008.md:L47-L77
+    D7:
+      rationale: 保持离线独立编辑、云 dumb relay 和内容不丢失，拒绝中央锁，没有虚构 ARCH_CONFLICT 或默默丢弃用户内容。
+      evidence_pointer: eval/stage10/run/raw/E10-008.md:L9-L14
+    D8:
+      rationale: 本案字段类型清单缺失，不能完整断定所有字段 merge 已覆盖；明确要求 schema inventory 并为每类分配 merge rule，作为单项 NEEDS_EVIDENCE 而非否认已可做的架构选择。
+      evidence_pointer: eval/stage10/run/raw/E10-008.md:L75
+    D9:
+      rationale: 全局 NO_DECISION_CHANGING_WORK 符合 oracle；单项字段声明证据、实现偏好及 tombstone 治理没有错误提升为全局阻断，terminal 与 disposition
+        分离。
+      evidence_pointer: eval/stage10/run/raw/E10-008.md:L74-L80
+    D10:
+      rationale: 围绕文档状态权威、同步合并、持久化和相关验证展开，压缩实现及库选择延后，没有扩展成平台/部署重构。
+      evidence_pointer: eval/stage10/run/raw/E10-008.md:L39-L56
+  hard_failures: []
+  key_strengths:
+  - authority 与 merge 两个独立维度均有具体设计
+  - 保留离线多写者，命名字段规则与安全 tombstone 压缩前提
+  key_defects:
+  - summary: 实际使用 state-data 却输出 overlay none。
+    evidence_pointer: eval/stage10/run/raw/E10-008.md:L61-L66
+    likely_layer: AGENT_PROMPT / MODE_ROUTING
+  - summary: 把既定 JSON-ish 约束标为假设，同时将无冲突 UI 当成已接受性质。
+    evidence_pointer: eval/stage10/run/raw/E10-008.md:L63-L69
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 将 wall-clock 时钟偏差等同于确定性合并不可重现，机制边界过强；云执行纯派生 merge 也不必然获得裁决权。
+    evidence_pointer: eval/stage10/run/raw/E10-008.md:L26-L36
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - NO_DECISION_CHANGING_WORK
+  terminal_outcome_expected:
+  - NO_DECISION_CHANGING_WORK
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: false
+  adjudication_reason: []
+  goodcase_result: PASS
+  uncertainty_result: PASS
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-008.md
+  raw_output_sha256: d191be132a7251b9663223ed8eef766afa596cc4014778907a9658106599e37e
+  public_case_path: eval/stage10/public/E10-008.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-008
+- id: E10-009
+  primary_route_observed:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    overlays:
+    - overload
+    - reliability
+    basis: Observed production failure with saturation and cross-partition blast radius
+    evidence_pointer: eval/stage10/run/raw/E10-009.md:L1
+  oracle_primary_route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 0
+    D4: 2
+    D5: N/A
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: AUTO 以已发生事故为对象，唯一 DP-005 与两项 overlay 均匹配。
+      evidence_pointer: eval/stage10/run/raw/E10-009.md:L1
+    D2:
+      rationale: 明确全站文章可用性及热键故障的传播边界；保留新闻峰值作为正常产品需求。
+      evidence_pointer: eval/stage10/run/raw/E10-009.md:L44-L53
+    D3:
+      rationale: 大部分证据有 origin/state，但把故障持续四分钟扩写成热条目四分钟后才重载恢复这一确定项目事件；PUBLIC 仅提供故障时长，没有重载/恢复触发时间。HF-03 令本维为 0。
+      evidence_pointer: eval/stage10/run/raw/E10-009.md:L15
+    D4:
+      rationale: 同步过期、无请求合并与共享池传播三段因果均识别，未把全站影响归为单纯热点缓存问题。
+      evidence_pointer: eval/stage10/run/raw/E10-009.md:L9-L13
+    D5:
+      rationale: N/A：本案给定缓存实现无抖动、无合并、无隔离，oracle 不含实质合规组件的非报警判断。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml:L296-L333
+    D6:
+      rationale: 先局部 single-flight+TTL jitter，再切共享池传播；对比扩容/重写并将 serve-stale 限于条件性措施。
+      evidence_pointer: eval/stage10/run/raw/E10-009.md:L21-L31
+    D7:
+      rationale: 新闻峰值被作为必须服务的需求；serve-stale 若采用须由 owner 明确新鲜度边界，没有静默降低产品能力。
+      evidence_pointer: eval/stage10/run/raw/E10-009.md:L29
+    D8:
+      rationale: N/A：oracle 对本案 stampede+共享池传播及首要修复已给决定性证据；额外 retry/部署形状未知不改变核心裁决。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml:L296-L333
+    D9:
+      rationale: BLOCKER 的 evidence 在49-53、mechanism60、failure61、impact62、GC56、refutation64均存在；传播风险另列65-71，因此不触发单因忽略传播型
+        HF-01。全局 MIN_SAFE_FIX_IDENTIFIED 正确。
+      evidence_pointer: eval/stage10/run/raw/E10-009.md:L48-L89
+    D10:
+      rationale: 后续重试与多键峰值仅列为有条件的下一观察，停止于首要修复，没有扩大为系统改造。
+      evidence_pointer: eval/stage10/run/raw/E10-009.md:L33-L37
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-009.md
+      line_start: 15
+      line_end: 15
+      quote: recovery only after the hot entry finally reloads (~4 min)
+    basis: 冻结 rubric HF-03：Project fact asserted with no project-evidence basis；PUBLIC E10-009 L7 只给四分钟的全站延迟，未给热条目重载事件。
+    affected_dimensions:
+    - D3
+    trigger_explanation: 这是未加条件的特定事故时序陈述，不是修复建议或标成 HYPOTHESIS 的可选机制；raw L17 对另一个推测明确标为 unconfirmed，更不能补足此句缺失的项目依据。
+  key_strengths:
+  - 同时定位缓存击穿与共享连接池的全站传播
+  - 局部合并/抖动优先，隔离紧随其后
+  - 潜在陈旧读取需要产品 owner 定界
+  key_defects:
+  - summary: 将热条目最终重载和恢复时点写成既成事实，超出提供的时间线。
+    evidence_pointer: eval/stage10/run/raw/E10-009.md:L15
+    likely_layer: EVIDENCE_DISCIPLINE
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：须裁定 line 15 的特定恢复事件；可接受一般机制推演，但不能把未观测重载时间当既定事故事实。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-009.md
+  raw_output_sha256: da7012a4d0e8b5a9ac525b8a3189f8bd5dbeb903c1a54708126d3874664d8926
+  public_case_path: eval/stage10/public/E10-009.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-009
+- id: E10-010
+  primary_route_observed:
+    mode: ADR_REVIEW
+    dp: DP-004
+    overlays:
+    - state/data
+    - integration
+    basis: Explicit ADR review; overlays based on state authority and 14-service contract surface
+    evidence_pointer: eval/stage10/run/raw/E10-010.md:L1
+  oracle_primary_route:
+    mode: ADR_REVIEW
+    dp: DP-004
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 2
+    D3: 1
+    D4: 2
+    D5: 2
+    D6: N/A
+    D7: 2
+    D8: 2
+    D9: 0
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 唯一主路由 ADR_REVIEW/DP-004 正确，但 route 的 state/data 替代了 oracle evolution；正文涉及 reversibility 不能补成正确
+        route overlay。
+      evidence_pointer: eval/stage10/run/raw/E10-010.md:L1
+    D2:
+      rationale: 七年可归属/可重建为监管硬约束，事件溯源是待证明的手段；当前审计通过的事实未被否认。
+      evidence_pointer: eval/stage10/run/raw/E10-010.md:L5-L7
+    D3:
+      rationale: origin/state 基本齐全并区分拟议 ADR 与现状；但“effectively irreversible”比“没有可逆性分析”的证据更强，将未知可逆性写成定性结论。
+      evidence_pointer: eval/stage10/run/raw/E10-010.md:L14
+    D4:
+      rationale: 准确指出 straw-man alternative、当前已满足审计属性、成本及可逆性缺失，属于决策质量机制而非模式名称裁判。
+      evidence_pointer: eval/stage10/run/raw/E10-010.md:L14-L18
+    D5:
+      rationale: 明确当前机制满足要求，认可 append+derive 及广域协调变更的合法形式，未对当前审计机制误报 BLOCKER。
+      evidence_pointer: eval/stage10/run/raw/E10-010.md:L7-L12
+    D6:
+      rationale: N/A：本案纠正对象是拟议 ADR 的选项/成本/可逆性重审，按冻结 D6 pure ADR/authority 例外由 D7 评价。
+      evidence_pointer: eval/stage10/public/E10-010.md:L3-L10
+    D7:
+      rationale: 保留合规约束，把未批准的方案选择及成本承诺交 architecture board/compliance owner，未凭便利发 ARCH_CONFLICT。
+      evidence_pointer: eval/stage10/run/raw/E10-010.md:L60-L63
+    D8:
+      rationale: 明确真正属性缺口 UNKNOWN，并指定所需新监管/审计证据及试点；实质架构选择仍待 owner 和证据，没有宣告 event sourcing 已被最终判死。错误全局 terminal 单独计
+        D9。
+      evidence_pointer: eval/stage10/run/raw/E10-010.md:L18-L20
+    D9:
+      rationale: 原始全局 MIN_SAFE_FIX_IDENTIFIED 不在允许 OWNER_TRADE_OFF/NEEDS_EVIDENCE 内；F1 BLOCKER/F2 HIGH_CONFIDENCE_RISK
+        也超出本案 oracle 的 NEEDS_EVIDENCE disposition。F1证据7/31-36、机制42、失败43、影响44、GC9-12/38、反证46齐全，故不因 disposition 不符自动触发
+        HF-01。
+      evidence_pointer: eval/stage10/run/raw/E10-010.md:L39-L63
+    D10:
+      rationale: 评审围绕 ADR 的选项、迁移承诺和补证，未越界实施代码重构或平台改造。
+      evidence_pointer: eval/stage10/run/raw/E10-010.md:L18
+  hard_failures: []
+  key_strengths:
+  - 识别“boring but works”式稻草人备选项
+  - 认可现有审计机制满足监管要求
+  - 把合规约束与技术手段分开
+  key_defects:
+  - summary: 将 ADR 证据不足转成 BLOCKER/MIN_SAFE_FIX_IDENTIFIED，未按 oracle 保持 owner/evidence 类最终结果。
+    evidence_pointer: eval/stage10/run/raw/E10-010.md:L40-L63
+    likely_layer: OUTPUT_CONTRACT
+  - summary: route overlay 遗漏 evolution，用 state/data 替代。
+    evidence_pointer: eval/stage10/run/raw/E10-010.md:L1
+    likely_layer: AGENT_PROMPT / MODE_ROUTING
+  - summary: 没有可逆性分析被加强为“effectively irreversible”。
+    evidence_pointer: eval/stage10/run/raw/E10-010.md:L14
+    likely_layer: EVIDENCE_DISCIPLINE
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - OWNER_TRADE_OFF
+  - NEEDS_EVIDENCE
+  terminal_verdict: FAIL
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - 需裁定“拒绝按现稿批准”与“最终架构选择仍待证据”的边界：本次将明确的全局 terminal 错误计 D9=0，未额外将其当 HF-08，因 L18/L20/L63 保留了实质选择的不确定性和 owner 决策。
+  goodcase_result: PASS
+  uncertainty_result: PASS
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-010.md
+  raw_output_sha256: a6b018bc3cf30acf226eb607d1d5f0dc9d1b383a7cf0e510800ee683ff45b35e
+  public_case_path: eval/stage10/public/E10-010.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-010
+- id: E10-011
+  primary_route_observed:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    overlays:
+    - overload (retry family)
+    - integration (contract/rollout)
+    basis: Explicit review of concrete library delta to a running system
+    evidence_pointer: eval/stage10/run/raw/E10-011.md:L3
+  oracle_primary_route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 2
+    D3: 0
+    D4: 1
+    D5: N/A
+    D6: 1
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 主路由 CHANGE_REVIEW/DP-003 正确；route 使用 integration 替代 oracle trust，跨团队责任虽在正文覆盖但 route overlay 不匹配。
+      evidence_pointer: eval/stage10/run/raw/E10-011.md:L3
+    D2:
+      rationale: 覆盖可用性、非幂等 POST 的计数器副作用、跨团队容量及消费方时序契约。
+      evidence_pointer: eval/stage10/run/raw/E10-011.md:L7-L16
+    D3:
+      rationale: 把明确的 3 attempts 写为 up to 4 requests / ×4 amplification，与 PUBLIC L5/L7 不一致；作为具体请求数与配额影响使用，HF-03
+        令 D3=0。
+      evidence_pointer: eval/stage10/run/raw/E10-011.md:L9-L12
+    D4:
+      rationale: 重试429、同步波峰、无预算及非幂等副作用均识别；但放大量按4计算而非3，并将429直接等同整体饱和，机制量化不精确。
+      evidence_pointer: eval/stage10/run/raw/E10-011.md:L7-L12
+    D5:
+      rationale: N/A：oracle 中当前重试缺 jitter/budget/幂等且跨团队静默发布，无满足合规 retry qualifiers 的实质 GOOD CASE；单独次数有限不使整项策略合规。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml:L371-L409
+    D6:
+      rationale: 局部 default-off/协调发布、jitter、budget 合理；但仅推荐5xx/timeouts可重试及 token caching/reuse，未明确在首次结果未知时如何用幂等键防止重复
+        POST 副作用。
+      evidence_pointer: eval/stage10/run/raw/E10-011.md:L43-L51
+    D7:
+      rationale: 拒绝40服务静默 minor 发布，明确 auth team+library/platform owner 批准策略及启用机制。
+      evidence_pointer: eval/stage10/run/raw/E10-011.md:L51-L56
+    D8:
+      rationale: N/A：oracle 对3次非幂等重试、429和静默跨团队发布有决定性证据，未知 mesh/消费方超时只影响修复细化。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml:L371-L409
+    D9:
+      rationale: 全局 MIN_SAFE_FIX_IDENTIFIED 与严重发现类型正确。F1 evidence29-33、mechanism40、failure41、impact42、GC35、refutation44各柱均存在；错误量化单独按HF-03处理，不等于缺少HF-01实质柱。
+      evidence_pointer: eval/stage10/run/raw/E10-011.md:L28-L55
+    D10:
+      rationale: 保持在PR retry策略与相关发布治理，未知条件作为启用前检查，没有扩展至整个认证系统。
+      evidence_pointer: eval/stage10/run/raw/E10-011.md:L59-L61
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-011.md
+      line_start: 12
+      line_end: 12
+      quote: up to 4 token requests per logical auth
+    basis: 冻结 rubric HF-03；PUBLIC E10-011 L5 明确 3 attempts，L7 为 retry loop (3x)，没有原请求之外再重试3次的项目证据。
+    affected_dimensions:
+    - D3
+    trigger_explanation: raw 未作可能性或次数歧义声明，反复把四次请求/四倍放大用作已给定PR行为；这不是泛化建议或待检验假设。
+  key_strengths:
+  - 区分单调用次数有界与聚合重试放大
+  - 抓住429边界绕过和非幂等副作用
+  - 明确跨团队批准和默认关闭的发布方案
+  key_defects:
+  - summary: 3 attempts 被计为4次请求，重复用于流量及配额论证。
+    evidence_pointer: eval/stage10/run/raw/E10-011.md:L9-L12
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 建议 transient retries 时没有给出结果未知场景下的明确幂等键方案。
+    evidence_pointer: eval/stage10/run/raw/E10-011.md:L43
+    likely_layer: REASONING_PLAYBOOK
+  - summary: route overlay 未包含 oracle trust。
+    evidence_pointer: eval/stage10/run/raw/E10-011.md:L3
+    likely_layer: AGENT_PROMPT / MODE_ROUTING
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：3 attempts 与 raw ×4 的矛盾需统一裁定，不能把 3 attempts 偷换为 3 retries。其核心危险方向仍成立，故D4给1而非把整个机制判错。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-011.md
+  raw_output_sha256: 2cf0db4ec07058d01756f543f017e17e8e4e786e90095d1a296c84238c0149c0
+  public_case_path: eval/stage10/public/E10-011.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-011
+- id: E10-012
+  primary_route_observed:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    overlays:
+    - observability
+    basis: Observed incident with unattributed cause; OTel judged only as incident correction
+    evidence_pointer: eval/stage10/run/raw/E10-012.md:L1
+  oracle_primary_route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 0
+    D4: 2
+    D5: 2
+    D6: 2
+    D7: N/A
+    D8: 2
+    D9: 1
+    D10: 1
+  dimension_rationales:
+    D1:
+      rationale: AUTO 以已观测未归因事故为对象，唯一 DP-005 和 observability 与 oracle 匹配。
+      evidence_pointer: eval/stage10/run/raw/E10-012.md:L1
+    D2:
+      rationale: 将缺失证据定义为子流程、上游选择与错误原因三个具体问题，正确区分归因能力和部署某套telemetry。
+      evidence_pointer: eval/stage10/run/raw/E10-012.md:L7-L18
+    D3:
+      rationale: PUBLIC 仅给两周前的一次14:00–16:00事故窗口，却反复断言每日复发、每日两小时收入损失；HF-03。另称无人检查上游和199服务不在路径上也超出提供证据。
+      evidence_pointer: eval/stage10/run/raw/E10-012.md:L73-L77
+    D4:
+      rationale: 识别日志保留不足、分支不可区分和flag历史记录缺口，并保留四类502候选机制；没有声称已经知道502根因。
+      evidence_pointer: eval/stage10/run/raw/E10-012.md:L31-L44
+    D5:
+      rationale: 不将缺少OTel本身当缺陷；允许全量OTel作为另一个有独立属性需求的投资，针对本事故拒绝不成比例的全域处方。
+      evidence_pointer: eval/stage10/run/raw/E10-012.md:L9-L18
+    D6:
+      rationale: 先读取flag/寻找上游证据，再仅给路由边界增加分支、上游、状态、时延记录并延长保留；比200服务部署范围小且针对机制。
+      evidence_pointer: eval/stage10/run/raw/E10-012.md:L40-L51
+    D7:
+      rationale: N/A：本案没有被接受的产品契约或ADR能力冲突；预算提案尚待评估，flag记录缺失属于归因/记录问题而非产品契约裁决。
+      evidence_pointer: eval/stage10/public/E10-012.md:L5-L13
+    D8:
+      rationale: 502根因维持 NEEDS_EVIDENCE，列明区分M1–M4的具体观察，并在末尾保留是否复发/上游保留时长未知；没有将这些假设定成根因。每日复发的事实越界单计HF-03。
+      evidence_pointer: eval/stage10/run/raw/E10-012.md:L80-L99
+    D9:
+      rationale: 全局 NEEDS_EVIDENCE 正确；但对诊断缺口额外给BLOCKER超出 oracle仅NEEDS_EVIDENCE的disposition。F1证据26-29、机制75、失败76、影响77、GC71、反证79齐全，不能只因不是根因发现或disposition偏重就加HF-01。
+      evidence_pointer: eval/stage10/run/raw/E10-012.md:L71-L90
+    D10:
+      rationale: 主体保持定点归因；末尾另列 handler variation-axis 的架构改进为 out-of-scope，属于小幅越界。
+      evidence_pointer: eval/stage10/run/raw/E10-012.md:L94-L97
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-012.md
+      line_start: 77
+      line_end: 77
+      quote: daily 2h failure window on a payments category
+    basis: 冻结 rubric HF-03；PUBLIC E10-012 L5/L7/L12仅给两周前事故和唯一14:00–16:00窗口，未声明每天重复。
+    affected_dimensions:
+    - D3
+    trigger_explanation: 该句是BLOCKER的确定impact，不是M1–M4中有标注的候选假设；raw L99后续承认是否复发未知也无法为每日历史发生频次补证。
+  key_strengths:
+  - 给出可区分子流程和上游的下一观察
+  - 拒绝把全量OTel当作本事故的最小修复
+  - 保留根因NEEDS_EVIDENCE全局结果
+  key_defects:
+  - summary: 从唯一已观测事故窗口扩写为每天复发，甚至将其写入BLOCKER影响。
+    evidence_pointer: eval/stage10/run/raw/E10-012.md:L75-L77
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 断言没有人查过上游及199服务不在路径上，PUBLIC没有调查记录或完整拓扑支持。
+    evidence_pointer: eval/stage10/run/raw/E10-012.md:L10
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 将证据缺口升为BLOCKER而oracle只允许NEEDS_EVIDENCE，虽然502根因本身仍保留未知。
+    evidence_pointer: eval/stage10/run/raw/E10-012.md:L73-L89
+    likely_layer: OUTPUT_CONTRACT
+  - summary: 追加共享handler变异轴的非阻断架构改进，超出此次事故归因。
+    evidence_pointer: eval/stage10/run/raw/E10-012.md:L94-L97
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - NEEDS_EVIDENCE
+  terminal_outcome_expected:
+  - NEEDS_EVIDENCE
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：每日复发与每日两小时损失没有PUBLIC证据。
+  - F1诊断能力BLOCKER与根因NEEDS_EVIDENCE并存须统一裁定；不将前者偷换成“已知502根因”，因此未触发HF-10。
+  goodcase_result: PASS
+  uncertainty_result: PASS
+  product_contract_result: NOT_APPLICABLE
+  raw_output_path: eval/stage10/run/raw/E10-012.md
+  raw_output_sha256: 0a7fb2f3c067332558869f35b95bbdee413d33342f3978b680cb7bac20f0147d
+  public_case_path: eval/stage10/public/E10-012.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-012
+- id: E10-013
+  primary_route_observed:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    overlays:
+    - observability
+    basis: Existing verified controller as-is; disputed observability/proof-scope finding
+    evidence_pointer: eval/stage10/run/raw/E10-013.md:L4
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 2
+    D4: 2
+    D5: 2
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 0
+    D10: 0
+  dimension_rationales:
+    D1:
+      rationale: AUTO 明确已有系统as-is评审，唯一 ARCH_REVIEW/DP-002 与observability正确。
+      evidence_pointer: eval/stage10/run/raw/E10-013.md:L4
+    D2:
+      rationale: 区分证明内调度/IPC正确性与假设集外硬件/集成可归因性，没有以航空领域名词凭空要求通用遥测。
+      evidence_pointer: eval/stage10/run/raw/E10-013.md:L11-L14
+    D3:
+      rationale: ARCHITECTURE_INTENT/CODE/RUNTIME与consultant USER_ASSERTION分开，附origin和claim-state，没有把顾问偏好提升为 accepted
+        requirement。
+      evidence_pointer: eval/stage10/run/raw/E10-013.md:L32-L38
+    D4:
+      rationale: 按问题和假设集边界应用GC-008/D-11：证明仅解除已证明问题，外部故障由已有定点健康通道负责。
+      evidence_pointer: eval/stage10/run/raw/E10-013.md:L12-L21
+    D5:
+      rationale: 明确拒绝consultant的blanket BLOCKER及全量telemetry要求，给出proof-scope及已有channels的实质qualifier。
+      evidence_pointer: eval/stage10/run/raw/E10-013.md:L9-L14
+    D6:
+      rationale: 正确方向是不增加缺乏属性需求的instrumentation，只要求需求方说明具体问题；NO_DEFECT类案件不因不修复扣分。
+      evidence_pointer: eval/stage10/run/raw/E10-013.md:L16-L21
+    D7:
+      rationale: accepted verification scope得到尊重；泛化的consultant断言被拒绝，预算便利也未被升级为ARCH_CONFLICT。
+      evidence_pointer: eval/stage10/run/raw/E10-013.md:L33-L49
+    D8:
+      rationale: N/A：冻结oracle把proof内保证及proof外targeted channels作为决定性证据；凭空设想尚未引用的法规不创造本案D8适用性。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml:L445-L477
+    D9:
+      rationale: 原始全局terminal为NEEDS_EVIDENCE，不能用开头“BLOCKER无效”替代；oracle要求NO_DEFECT，虚设合规finding阻止结案，故D9=0。
+      evidence_pointer: eval/stage10/run/raw/E10-013.md:L40-L51
+    D10:
+      rationale: 已确认现有证据驳倒顾问后，继续追索案例未提出的认证要求并以此拒绝NO_DEFECT结案，符合continued past decision point。
+      evidence_pointer: eval/stage10/run/raw/E10-013.md:L41-L51
+  hard_failures: []
+  key_strengths:
+  - 正确运用证明假设集边界
+  - 识别外部健康通道覆盖以及顾问断言的低权威性
+  - 没有误确认顾问的observability BLOCKER
+  key_defects:
+  - summary: 已确认非缺陷却把全局结果置为NEEDS_EVIDENCE，增加没有case依据的认证要求调查门槛。
+    evidence_pointer: eval/stage10/run/raw/E10-013.md:L40-L51
+    likely_layer: OUTPUT_CONTRACT
+  - summary: 在应NO_DEFECT停止点继续条件性合规调查。
+    evidence_pointer: eval/stage10/run/raw/E10-013.md:L16-L19
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - NEEDS_EVIDENCE
+  terminal_outcome_expected:
+  - NO_DEFECT
+  terminal_verdict: FAIL
+  scoring_confidence: HIGH
+  adjudication_required: false
+  adjudication_reason: []
+  goodcase_result: PASS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-013.md
+  raw_output_sha256: c874c6534c3fbe50c5edd89d8f43959de67102616bcbef60c5ddc851c9c3bf0f
+  public_case_path: eval/stage10/public/E10-013.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-013
+- id: E10-014
+  primary_route_observed:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    overlays:
+    - resource/per-work-bounds
+    basis: Concrete PR delta introduces input-scaling memory dimension
+    evidence_pointer: eval/stage10/run/raw/E10-014.md:L1
+  oracle_primary_route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 1
+    D4: 2
+    D5: N/A
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 唯一CHANGE_REVIEW/DP-003正确，resource/per-work-bounds为resources的机制等价表述。
+      evidence_pointer: eval/stage10/run/raw/E10-014.md:L1
+    D2:
+      rationale: 读取README已接受100k目标并识别单进程无服务基础设施约束；没有把全图视图误等同必须驻留内存。
+      evidence_pointer: eval/stage10/run/raw/E10-014.md:L5-L9
+    D3:
+      rationale: 负载、runtime、test、intent及线性推算均有类型，推算明确HYPOTHESIS；但“ordinary CI memory”和“just works README”是额外解释，并非给定README原文。
+      evidence_pointer: eval/stage10/run/raw/E10-014.md:L21-L42
+    D4:
+      rationale: 定位构图阶段全量物化，流式输出及加大heap只移动崩溃阈值；正确区分单任务内存界限与到达率过载。
+      evidence_pointer: eval/stage10/run/raw/E10-014.md:L5-L10
+    D5:
+      rationale: N/A：oracle全部围绕有缺陷的内存增长及不充分flag修复；不存在需评为合规的实质组件，flag作为escape hatch不等于满足目标。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml:L478-L510
+    D6:
+      rationale: 提出按模块解析、外存边集及有界多轮分析，并在100k规模验证内存上限，局限单进程无需新增服务。
+      evidence_pointer: eval/stage10/run/raw/E10-014.md:L12-L16
+    D7:
+      rationale: 保留100k要求；若改为提高硬件门槛须owner接受，而不是静默改README或把flag当履约。
+      evidence_pointer: eval/stage10/run/raw/E10-014.md:L14-L16
+    D8:
+      rationale: N/A：oracle视40k实测OOM、全部图驻留及100k接受目标为决定性证据；具体算法/100k推算未知不改变既定缺陷。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml:L478-L510
+    D9:
+      rationale: 全局MIN_SAFE_FIX_IDENTIFIED匹配；BLOCKER证据26-30、机制38、失败39、影响40、GC33、反证42完整，没有仅凭模式名称定罪。
+      evidence_pointer: eval/stage10/run/raw/E10-014.md:L25-L58
+    D10:
+      rationale: 评审停留本PR图构建和规模验证，未对没有时间预算的11分钟运行另下延迟判决。
+      evidence_pointer: eval/stage10/run/raw/E10-014.md:L62
+  hard_failures: []
+  key_strengths:
+  - 区分输出流式与构图工作集
+  - 保持100k产品目标并提出单进程局部修复
+  - 100k内存推算明确标为假设
+  key_defects:
+  - summary: 将普通CI内存及“just works”解释写入契约论证，给定README仅明确100k规模。
+    evidence_pointer: eval/stage10/run/raw/E10-014.md:L21-L42
+    likely_layer: EVIDENCE_DISCIPLINE
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: false
+  adjudication_reason: []
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-014.md
+  raw_output_sha256: afd2cc1daad6f953922836bd5d201f787133178661e0743950b3feb6ac89f7de
+  public_case_path: eval/stage10/public/E10-014.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-014
+- id: E10-015
+  primary_route_observed:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    overlays:
+    - overload
+    basis: Observed duplicate-charge incident, retry family triggers overlay
+    evidence_pointer: eval/stage10/run/raw/E10-015.md:L1
+  oracle_primary_route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 2
+    D3: 1
+    D4: 2
+    D5: 2
+    D6: 1
+    D7: 1
+    D8: N/A
+    D9: 2
+    D10: 1
+  dimension_rationales:
+    D1:
+      rationale: 唯一INCIDENT_ANALYSIS/DP-005正确；AUTO route只列overload，integration在正文作为第二domain加载，未满足oracle两overlay完整route。
+      evidence_pointer: eval/stage10/run/raw/E10-015.md:L1
+    D2:
+      rationale: 正确读取每订单不得重复收费的PRD及移动网络重试需求，区分超时不等于未执行。
+      evidence_pointer: eval/stage10/run/raw/E10-015.md:L5-L13
+    D3:
+      rationale: 证据表origin/state清楚且将timeout归属推断标HYPOTHESIS；但前文Attribution(CONFIRMED)将“client treats timeout as not
+        processed”一起写成已确认，局部证据状态混用。保留后文限定，不触发HF-10。
+      evidence_pointer: eval/stage10/run/raw/E10-015.md:L7-L35
+    D4:
+      rationale: 准确定位重复投递+无effect identity/dedup契约；没有把仅有一次重试误判成过载风暴。
+      evidence_pointer: eval/stage10/run/raw/E10-015.md:L7-L13
+    D5:
+      rationale: 承认超时重试的合法性，明确排除无风暴证据的FP-011；不接受删除所有retry作为合规修复。
+      evidence_pointer: eval/stage10/run/raw/E10-015.md:L9-L13
+    D6:
+      rationale: 端到端同key、provider去重及有界retry总体正确；但key按payment intent UUID生成，backend唯一项(order,payment_intent)未说明不同intent如何仍守住同order最多一次，修复覆盖略不足。
+      evidence_pointer: eval/stage10/run/raw/E10-015.md:L17-L20
+    D7:
+      rationale: 明确保留PRD并说明删retry需owner；然而实现建议将保证转成“at most one charge per intent”，与每order要求的等价性未证实，存在契约边界歧义，不直接判HF-05。
+      evidence_pointer: eval/stage10/run/raw/E10-015.md:L17-L19
+    D8:
+      rationale: N/A：oracle将无key+重复收费的因果视为clear；客户端/网关时序内部差异不影响核心修复，raw也把归属推断保留为HYPOTHESIS。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml:L511-L544
+    D9:
+      rationale: BLOCKER evidence32-34、mechanism43、failure44、impact45、GC38/39、refutation47齐全；全局MIN_SAFE_FIX_IDENTIFIED匹配。
+      evidence_pointer: eval/stage10/run/raw/E10-015.md:L31-L57
+    D10:
+      rationale: 主分析集中支付提交边界；额外提供退款ops动作并明确不属本pass，按minor scope drift扣1。
+      evidence_pointer: eval/stage10/run/raw/E10-015.md:L60
+  hard_failures: []
+  key_strengths:
+  - 把重试触发与幂等缺失机制分开
+  - 保留合法超时重试并拒绝直接砍能力
+  - 覆盖client/backend/provider全路径key复用
+  key_defects:
+  - summary: per-payment-intent键和(order,intent)唯一性未显式封住同订单新intent重复收费，是否满足PRD需裁定。
+    evidence_pointer: eval/stage10/run/raw/E10-015.md:L17-L19
+    likely_layer: REASONING_PLAYBOOK
+  - summary: AUTO route遗漏integration overlay，正文第二domain不补route。
+    evidence_pointer: eval/stage10/run/raw/E10-015.md:L1
+    likely_layer: AGENT_PROMPT / MODE_ROUTING
+  - summary: 前文CONFIRMED归因与后文timeout HYPOTHESIS的状态边界不一致。
+    evidence_pointer: eval/stage10/run/raw/E10-015.md:L7-L35
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 追加退款操作提示，虽明确out-of-scope仍超出架构pass。
+    evidence_pointer: eval/stage10/run/raw/E10-015.md:L60
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - 需裁定payment intent与order是否一一对应：raw未建立这一约束，因此D6/D7=1；不据此断言实际系统允许多intent，也不将有歧义的建议直接记HF-05。
+  goodcase_result: PASS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: AMBIGUOUS
+  raw_output_path: eval/stage10/run/raw/E10-015.md
+  raw_output_sha256: 2877d7458d343d727c3f448fd0d48e1af90a98bdc6e30d6255533936837c842f
+  public_case_path: eval/stage10/public/E10-015.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-015
+- id: E10-016
+  primary_route_observed:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    overlays:
+    - integration
+    basis: Explicit migration-plan delta with schema contract and direct consumers
+    evidence_pointer: eval/stage10/run/raw/E10-016.md:L1
+  oracle_primary_route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 2
+    D3: 1
+    D4: 2
+    D5: N/A
+    D6: 1
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 主路由CHANGE_REVIEW/DP-003正确，但route只列integration，缺oracle evolution；正文检查spread不补route。
+      evidence_pointer: eval/stage10/run/raw/E10-016.md:L1
+    D2:
+      rationale: 将24/7接受订单作为权威OKR，区分必须完成的rename与可替换的停写执行方法。
+      evidence_pointer: eval/stage10/run/raw/E10-016.md:L5
+    D3:
+      rationale: origin/state及“usually works”与历史1/3成功的冲突处理良好；但先标40min锁估计NEEDS_EVIDENCE，随后将其强化为≥40min确定影响，类型不一致。保留前文限定，不判HF-10。
+      evidence_pointer: eval/stage10/run/raw/E10-016.md:L16-L25
+    D4:
+      rationale: 同时识别停写成功路径就违约，以及恢复备份2h RPO不能替代迁移回退；协调重启失败历史用于风险而非以九服务数量直接定罪。
+      evidence_pointer: eval/stage10/run/raw/E10-016.md:L20-L28
+    D5:
+      rationale: N/A：oracle评的是停写/备份回退的实质不合规迁移；rename本身已被同意并不构成需校准的GOOD CASE机制。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml:L545-L580
+    D6:
+      rationale: 分期加列、双写、回填、逐服务迁读符合最小纠正；但“rollback at every phase=redeploy/flip”未限定停止旧列写入/删列后的数据同步和不可逆边界，安全回退保证过宽。
+      evidence_pointer: eval/stage10/run/raw/E10-016.md:L34-L40
+    D7:
+      rationale: 保留24/7约束及rename功能，若坚持停机则必须business/OKR owner明确授权，没有默许downtime。
+      evidence_pointer: eval/stage10/run/raw/E10-016.md:L59-L68
+    D8:
+      rationale: N/A：oracle认为停写与24/7冲突及备份RPO已决定裁决；DDL时长/具体数据库行为只影响实现形状。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml:L545-L580
+    D9:
+      rationale: 两个BLOCKER均有项目证据11-16、机制/失败/影响25和28、GC20、反证25和28，六柱完整；全局MIN_SAFE_FIX_IDENTIFIED及intent冲突记录匹配。
+      evidence_pointer: eval/stage10/run/raw/E10-016.md:L59-L67
+    D10:
+      rationale: 建议限于当前共享DB迁移顺序和消费者兼容，没有附加服务平台或整体重构。
+      evidence_pointer: eval/stage10/run/raw/E10-016.md:L30-L42
+  hard_failures: []
+  key_strengths:
+  - 同时识别成功路径停机与失败路径数据损失
+  - 用具体分阶段双列机制替代big-bang
+  - 保留业务owner对停机豁免的权限
+  key_defects:
+  - summary: 40min锁从待证估计变成≥40min确定停机下界。
+    evidence_pointer: eval/stage10/run/raw/E10-016.md:L16-L25
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: every phase都能仅通过旧版本/toggle回退的断言未覆盖停止旧写和drop旧列后的兼容边界。
+    evidence_pointer: eval/stage10/run/raw/E10-016.md:L38-L40
+    likely_layer: REASONING_PLAYBOOK
+  - summary: route overlay遗漏evolution。
+    evidence_pointer: eval/stage10/run/raw/E10-016.md:L1
+    likely_layer: AGENT_PROMPT / MODE_ROUTING
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: false
+  adjudication_reason: []
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-016.md
+  raw_output_sha256: 20b3d5e3e79bb53373a293c0ac8b88e136e122d71163dfe24382539d7af346db
+  public_case_path: eval/stage10/public/E10-016.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-016
+- id: E10-017
+  primary_route_observed:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    overlays:
+    - trust
+    basis: '明确审查 PR #512 的部署集成增量。'
+    evidence_pointer: eval/stage10/run/raw/E10-017.md:1
+  oracle_primary_route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 1
+    D4: 2
+    D5: N/A
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 主 DP、增量对象依据与 trust overlay 均正确。
+      evidence_pointer: eval/stage10/run/raw/E10-017.md:1
+    D2:
+      rationale: 正确识别 accepted deployments-only 范围、user management 禁止项及三环境后果。
+      evidence_pointer: eval/stage10/run/raw/E10-017.md:5-13
+    D3:
+      rationale: 关键代码、配置、产品来源与状态均列出；但把 PUBLIC 明确为 real cost 的两 sprint 约束降为 HYPOTHESIS，证据权重不完全准确。
+      evidence_pointer: eval/stage10/run/raw/E10-017.md:11-14
+    D4:
+      rationale: 准确连接过宽 credential、model-decided invocation、缺少逐动作 authz 与越权后果，说明点击确认不收窄权限集合。
+      evidence_pointer: eval/stage10/run/raw/E10-017.md:16-18
+    D5:
+      rationale: N/A：本案现有集成不存在实质合规 non-alarm 组件；同团队语境与点击批准均不能消除实际 agent-action/privilege 边界。
+      evidence_pointer: eval/stage10/public/E10-017.md:7-12
+    D6:
+      rationale: scoped deploy credential、执行前 allowlist、负向验证与审计均局限 PR；明确比较两 sprint 身份基础设施，未要求平台重写。
+      evidence_pointer: eval/stage10/run/raw/E10-017.md:51-60
+    D7:
+      rationale: 保留部署辅助能力和 accepted scope，任何扩大权限均交 spec owner；未因成本宣布 ARCH_CONFLICT。
+      evidence_pointer: eval/stage10/run/raw/E10-017.md:63-66
+    D8:
+      rationale: N/A：oracle 对越权机制判定 clear，代码、配置与 accepted spec 已决定结论；身份建设成本不影响是否存在越权。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-017.expected.ambiguity_notes
+    D9:
+      rationale: BLOCKER 六柱齐备：evidence 11-13、mechanism 48、failure 49、material impact 50、GC 18/43、refutation 52；全局
+        terminal 正确。
+      evidence_pointer: eval/stage10/run/raw/E10-017.md:43-65
+    D10:
+      rationale: 仅审查部署工具增量与归因审计，minimum correction 清楚后停止。
+      evidence_pointer: eval/stage10/run/raw/E10-017.md:55-66
+  hard_failures: []
+  key_strengths:
+  - 逐动作授权与人工点击批准的区别清楚
+  - BLOCKER 六个实质支柱完整
+  - 保留部署能力并给出 PR 内最小修复
+  key_defects:
+  - summary: 把已明示为实际成本的两 sprint 约束标为假设，降低了输入约束的证据地位。
+    evidence_pointer: eval/stage10/run/raw/E10-017.md:14
+    likely_layer: EVIDENCE_DISCIPLINE
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: false
+  adjudication_reason: []
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-017.md
+  raw_output_sha256: 2d272b57569d4ed536dd810dba382c2e8b27b8c9d45b2f3aea1cae8b5232c23f
+  public_case_path: eval/stage10/public/E10-017.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-017
+- id: E10-018
+  primary_route_observed:
+    mode: ADR_REVIEW
+    dp: DP-004
+    overlays:
+    - evolution
+    basis: 对象是 inventory 模块拆分 ADR 的决策质量。
+    evidence_pointer: eval/stage10/run/raw/E10-018.md:1
+  oracle_primary_route:
+    mode: ADR_REVIEW
+    dp: DP-004
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 1
+    D4: 0
+    D5: N/A
+    D6: N/A
+    D7: 2
+    D8: 0
+    D9: 0
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: ADR_REVIEW/DP-004 与 evolution 对象匹配。
+      evidence_pointer: eval/stage10/run/raw/E10-018.md:1
+    D2:
+      rationale: 识别 change locality、真实 pricing/reservation 变化节奏与小团队可逆成本，拒绝 modularity 口号充当属性。
+      evidence_pointer: eval/stage10/run/raw/E10-018.md:7-12
+    D3:
+      rationale: 来源表基本完整，但把 shared schema 推导成确定的跨模块变更传播；正文又承认未验证实际 ripple，推论与事实边界不一致。
+      evidence_pointer: eval/stage10/run/raw/E10-018.md:22-38
+    D4:
+      rationale: 虽找到了变化轴和缺少 ADR 论证，仍把共享 schema 直接推成拆分无法提供 locality；实际 schema 触碰及传播尚未证实，HF-10 将本维置零。
+      evidence_pointer: eval/stage10/run/raw/E10-018.md:10
+    D5:
+      rationale: N/A：oracle 要求审查缺少 variation-axis/alternatives 的 ADR；未给出满足 GC 条件的现有模块边界或其他实质合规组件。
+      evidence_pointer: eval/stage10/public/E10-018.md:7-12
+    D6:
+      rationale: N/A：本案是纯 ADR 决策重做，correction 为重新论证拆分范围与备选，按冻结 rubric 计 D7。
+      evidence_pointer: eval/stage10/public/E10-018.md:3-8
+    D7:
+      rationale: 没有把 best practice 升为决策权威；明确 re-acceptance 属 ADR owner，等效方案余下取舍也交 owner。
+      evidence_pointer: eval/stage10/run/raw/E10-018.md:45-48
+    D8:
+      rationale: 确实命名 41 commits touch-analysis 并承认 current harm 未验证，但主 finding 确定声称收益无法交付，HF-10 触发本维零分。
+      evidence_pointer: eval/stage10/run/raw/E10-018.md:31-41
+    D9:
+      rationale: 保留原始 MIN_SAFE_FIX_IDENTIFIED；oracle 仅允许 OWNER_TRADE_OFF/NEEDS_EVIDENCE，且主 MUST_FIX 超出允许 disposition。六柱结构俱在，问题是因果确定性，非仅缺词的
+        HF-01。
+      evidence_pointer: eval/stage10/run/raw/E10-018.md:29-45
+    D10:
+      rationale: 分析限于 ADR 的变化轴、schema、备选与决策修订，没有扩展系统重构范围。
+      evidence_pointer: eval/stage10/run/raw/E10-018.md:17-20
+  hard_failures:
+  - code: HF-10
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-018.md
+      line_start: 31
+      line_end: 31
+      quote: shared schema keeps the volatile pricing decision shared, so FP-002's leak persists through the proposed
+        service-layer boundary
+    basis: 冻结 rubric HF-10；oracle E10-018 仅以真实 cadence 轴要求验证 3-way split 是否吻合，未确认 schema 变化传播。
+    affected_dimensions:
+    - D4
+    - D8
+    trigger_explanation: 缺少 pricing commits 实际触碰哪些表/接口及是否迫使 reservation 同改的证据，却在主 finding 中确定宣告 leak 持续和 only claimed
+      benefit 无法交付。38-41 行的保留针对 current harm，未收回该主 finding 的确定结论；不是因使用机制名称或风格扣分。
+  key_strengths:
+  - 识别 ADR 忽略的真实变化节奏
+  - 拒绝最佳实践作为充分论据
+  - 命名可检验的 commit touch-analysis
+  key_defects:
+  - summary: 把共享 schema 与跨边界变更传播等同，确定断言拟议拆分不提供 change locality；同文承认尚未验证 ripple。
+    evidence_pointer: eval/stage10/run/raw/E10-018.md:10
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 用 MIN_SAFE_FIX_IDENTIFIED 收敛仍需要比较与证据的 ADR 决策。
+    evidence_pointer: eval/stage10/run/raw/E10-018.md:43-48
+    likely_layer: OUTPUT_CONTRACT
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - OWNER_TRADE_OFF
+  - NEEDS_EVIDENCE
+  terminal_verdict: FAIL
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - HF-10：需统一复核后文 current-harm 保留是否足以限定主 finding 的确定性；本评分判断两者不一致。
+  - 全局 terminal 不在 oracle 允许集合。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: FAIL
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-018.md
+  raw_output_sha256: e5ff9397d8b220f0912e6be0c791d56210b5873f3cba698df0e8fb2ef301421f
+  public_case_path: eval/stage10/public/E10-018.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-018
+- id: E10-019
+  primary_route_observed:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    overlays:
+    - overload
+    - resources
+    - reliability
+    basis: 从实际 viral fan-out 事故逆向归因；可靠性在输出 contract 41 行明确激活。
+    evidence_pointer: eval/stage10/run/raw/E10-019.md:7
+  oracle_primary_route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 0
+    D4: 2
+    D5: N/A
+    D6: 1
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 按实际事故选择 DP-005；首行 resources 是有依据的补充，contract 明确 reliability，覆盖主机制所需 overlays。
+      evidence_pointer: eval/stage10/run/raw/E10-019.md:7; eval/stage10/run/raw/E10-019.md:40-43
+    D2:
+      rationale: 保留 DM contractual SLA、正常 viral 流量与 notification availability，未把正常业务成功当异常需求。
+      evidence_pointer: eval/stage10/run/raw/E10-019.md:24-29
+    D3:
+      rationale: HF-03：无流量或隔离成本证据却断言 DM volume small/cost trivial。其他基线来源标注完整，不能抵消该项目事实虚构。
+      evidence_pointer: eval/stage10/run/raw/E10-019.md:26
+    D4:
+      rationale: 正确区分 30k/s arrival 与 8k/s DB ceiling，揭示共享单类队列的 DM starvation，未以扩 worker 作为完整修复。
+      evidence_pointer: eval/stage10/run/raw/E10-019.md:11-20
+    D5:
+      rationale: N/A：队列与 fan-out 缺少治理边界，DM 隔离亦不存在，没有实质 compliant 组件；GC 检查不自动生成 D5 适用性。
+      evidence_pointer: eval/stage10/public/E10-019.md:7-12
+    D6:
+      rationale: DM 隔离、materialization bound 与 owner 决定的降级方向合理且比较重写；但逐 post cap 不等同总体 queue/admission bound，未明确整个
+        bulk backlog 的容量及超界行为。
+      evidence_pointer: eval/stage10/run/raw/E10-019.md:26-31
+    D7:
+      rationale: 明确 DM SLA 不参与降级取舍；drop/batch/read-time 的能力变化必须 product owner 批准。
+      evidence_pointer: eval/stage10/run/raw/E10-019.md:78-80
+    D8:
+      rationale: N/A：oracle 对 DB ceiling 与共享 starvation 判定决定性；剩余 ceiling 可调性只影响 sizing，非归因缺证据。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-019.expected.ambiguity_notes
+    D9:
+      rationale: 两 BLOCKER 均有代码/运行 evidence、机制、failure/impact、GC 20/53 与 61/68 的反证；全局 terminal 正确，非把 sizing NEEDS_EVIDENCE
+        当全局结果。
+      evidence_pointer: eval/stage10/run/raw/E10-019.md:55-79
+    D10:
+      rationale: 围绕 fan-out、DB ceiling、DM propagation 提出局部修复；其他机制被舍弃，未展开平台重构。
+      evidence_pointer: eval/stage10/run/raw/E10-019.md:76-80
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-019.md
+      line_start: 26
+      line_end: 26
+      quote: DM volume is small; cost is trivial.
+    basis: 冻结 rubric HF-03；PUBLIC E10-019 只给总 insert 到达率/上限、共享类、DM 延时及 SLA，没有 DM 独立量或隔离成本。
+    affected_dimensions:
+    - D3
+    trigger_explanation: 这句为直接项目事实断言，未标为设计假设或待测条件，并被用于支持 proposed isolation 的比例适当性。
+  key_strengths:
+  - 准确找出 DB insert ceiling
+  - 识别 DM 跨类饥饿及需要预留 DB 能力
+  - 降级选择交产品 owner
+  key_defects:
+  - summary: DM 流量小、隔离成本微小被当成事实，PUBLIC 没有相关测量。
+    evidence_pointer: eval/stage10/run/raw/E10-019.md:26
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 限制单 post materialization 后仍需明确整体 bulk backlog/admission 的容量边界。
+    evidence_pointer: eval/stage10/run/raw/E10-019.md:27-29
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：无依据的 DM volume/cost 项目事实。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-019.md
+  raw_output_sha256: 9dbc566c95437284a6ffd63b1af1e36c09ab93561e265f3c6b7b572c653b8306
+  public_case_path: eval/stage10/public/E10-019.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-019
+- id: E10-020
+  primary_route_observed:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    overlays:
+    - resources
+    - reliability
+    basis: 对象为现有 reporting 子系统；共享锁及 replica 备选。
+    evidence_pointer: eval/stage10/run/raw/E10-020.md:7
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 1
+    D4: 1
+    D5: N/A
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: as-is 评审 DP-002 与 resources/reliability overlays 正确。
+      evidence_pointer: eval/stage10/run/raw/E10-020.md:7
+    D2:
+      rationale: 区分 accepted <2s 在线查询与未声明报表 freshness，并质疑未限定的 consistency 要求。
+      evidence_pointer: eval/stage10/run/raw/E10-020.md:17-22
+    D3:
+      rationale: 基线 evidence/state 清楚；但 replica 必须保留原有在线锁依赖的推论未用条件标注，拟议 topology 未提供足够事实支持。
+      evidence_pointer: eval/stage10/run/raw/E10-020.md:11-20
+    D4:
+      rationale: 核心共享锁跨 PDF/SMTP 阶段阻塞 OLTP 的因果正确；但把 replica 作用局限为 data locality，过强宣称不能断开机制，未充分区分隔离可消除共享边与局部修复更经济。
+      evidence_pointer: eval/stage10/run/raw/E10-020.md:29-36
+    D5:
+      rationale: N/A：已知现有实现是不合规共享长锁；replica 尚属高成本提议而非证据确认的 materially compliant good case。
+      evidence_pointer: eval/stage10/public/E10-020.md:7-12
+    D6:
+      rationale: 给出 aggregation-only 锁、先验证 DB snapshot 语义、release 后 render/SMTP、测量在线 relief；与 replica 成本比较充分。
+      evidence_pointer: eval/stage10/run/raw/E10-020.md:31-40
+    D7:
+      rationale: 保留 <2s accepted contract，任何 nightly exemption 须显式 owner 决定，未默许以报表一致性口号削弱在线能力。
+      evidence_pointer: eval/stage10/run/raw/E10-020.md:19-22
+    D8:
+      rationale: N/A：oracle 的 lock scope 与运行分解决定归因；具体 DB semantics 是候选修复的条件性验证，不影响原缺陷是否存在。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-020.expected.ambiguity_notes
+    D9:
+      rationale: F1 六柱均具备：17-19 evidence、29 mechanism、30 failure/material impact、24 GC、32 refutation；全局最小修复 terminal
+        正确。
+      evidence_pointer: eval/stage10/run/raw/E10-020.md:28-36
+    D10:
+      rationale: 仅检查共享锁、必要一致性与 replica 对照；在局部修复已明确时停止。
+      evidence_pointer: eval/stage10/run/raw/E10-020.md:47-60
+  hard_failures: []
+  key_strengths:
+  - 指出 render/SMTP 不应占用数据一致性锁
+  - snapshot 建议保留实际 DB 保证的条件
+  - 保留在线 SLA 并命名测量验证
+  key_defects:
+  - summary: 对 replica 不会断开共享锁机制的表述过强，proposal 的具体锁拓扑并未给出。
+    evidence_pointer: eval/stage10/run/raw/E10-020.md:11
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - F2 一面承认 replica 可缓解症状，一面断言机制不会断开；需裁定这是局部修复优先的措辞不精确，还是对未知 topology 的实质错误。本评分扣 D3/D4、不据此触发 HF。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-020.md
+  raw_output_sha256: 6f19070049c2ebdc9dbbbc3aca4f6415adce079ac38d91f1ec42efff127e844e
+  public_case_path: eval/stage10/public/E10-020.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-020
+- id: E10-021
+  primary_route_observed:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    overlays:
+    - observability
+    basis: 间歇故障且缺少归因证据，选择事故分析。
+    evidence_pointer: eval/stage10/run/raw/E10-021.md:1
+  oracle_primary_route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 1
+    D4: 0
+    D5: N/A
+    D6: 2
+    D7: N/A
+    D8: 0
+    D9: 1
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: DP-005/observability 与 recurring incident 对象和缺证据问题匹配。
+      evidence_pointer: eval/stage10/run/raw/E10-021.md:1
+    D2:
+      rationale: 将 checkout availability 与 root-cause attribution 作为目标，未接受资深工程师的 inventory 确定归因。
+      evidence_pointer: eval/stage10/run/raw/E10-021.md:21-34
+    D3:
+      rationale: 工程师断言保持 HYPOTHESIS，单 trace 的代表性 UNKNOWN；但未证实 head sampling 方式/流量便推出 near-zero capture，并加入输入没有的
+        paging。
+      evidence_pointer: eval/stage10/run/raw/E10-021.md:11-12; eval/stage10/run/raw/E10-021.md:21-27; eval/stage10/run/raw/E10-021.md:42
+    D4:
+      rationale: 漏采及留存不足方向合理，但把 1% sampling 与 0.4% error 直接推出不能捕获、每次零证据，还把 1h retention>40min detection 说成无 live
+        window；缺流量、采样策略和时间关系支持。HF-10 置零。
+      evidence_pointer: eval/stage10/run/raw/E10-021.md:41-44
+    D5:
+      rationale: N/A：PUBLIC 明确现有证据缺失，未提供足以回答问题的合规 capture/retention 组件；GC-008 无 proof scope。
+      evidence_pointer: eval/stage10/public/E10-021.md:5-12
+    D6:
+      rationale: 提出 burst-window mesh 数据、registry 定位、定向 error/tail capture 及 retention 对齐，并明确无需 telemetry stack
+        重建或因果未明时调业务机制。
+      evidence_pointer: eval/stage10/run/raw/E10-021.md:7-15
+    D7:
+      rationale: N/A：本案给出诊断预算约束，但无 accepted product/architecture contract 的更改或真实 authority 冲突；条件性预算拒绝情境是输出额外假设。
+      evidence_pointer: eval/stage10/public/E10-021.md:7-12
+    D8:
+      rationale: 因果归因保持开放且给出具体下一观测，仍对抽样必然失败与每次零证据作确定断言；HF-10 对局部诊断机制同样适用，故置零。
+      evidence_pointer: eval/stage10/run/raw/E10-021.md:40-54
+    D9:
+      rationale: 全局 NEEDS_EVIDENCE 正确并与 F3 一致；F1 却用 BLOCKER 表达证据姿态缺陷，超出 oracle 的 NEEDS_EVIDENCE disposition。六柱文本均有实质内容，不因
+        severity 不同自动加 HF-01。
+      evidence_pointer: eval/stage10/run/raw/E10-021.md:40-71
+    D10:
+      rationale: 动作聚焦 checkout 故障归因、捕获和依赖识别，没有扩大为全系统仪表化或运行修复。
+      evidence_pointer: eval/stage10/run/raw/E10-021.md:62-75
+  hard_failures:
+  - code: HF-10
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-021.md
+      line_start: 43
+      line_end: 43
+      quote: head sampling at 1% cannot capture burst errors at 0.4%
+    basis: 冻结 rubric HF-10；oracle E10-021 测试缺证据时不作确定因果/语义推断，PUBLIC 仅给 sampler 比例、error 比例和已漏采结果。
+    affected_dimensions:
+    - D4
+    - D8
+    trigger_explanation: 该句及下一行 each recurrence yields zero attributable evidence 是绝对因果断言；缺少请求总量和实际 sampling 机制，两个百分比不能决定零捕获。此处扣的是明确的数学/诊断必然性，不是第7行
+      almost certainly 的有保留 mesh 线索，也不是对 inventory 根因的断言。
+  key_strengths:
+  - 未把工程师回忆升格为 inventory 根因
+  - 给出 registry 与按窗口 per-upstream telemetry 的具体判别证据
+  - 全局正确停在 NEEDS_EVIDENCE
+  key_defects:
+  - summary: 没有请求基数和采样方式证据，却断言抽样不能捕获 burst error 及每次都零证据。
+    evidence_pointer: eval/stage10/run/raw/E10-021.md:41-44
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 证据姿态被升级为 BLOCKER，而允许的 finding 为 NEEDS_EVIDENCE。
+    evidence_pointer: eval/stage10/run/raw/E10-021.md:40-47
+    likely_layer: OUTPUT_CONTRACT
+  terminal_outcome_observed:
+  - NEEDS_EVIDENCE
+  terminal_outcome_expected:
+  - NEEDS_EVIDENCE
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - HF-10：主要业务根因保持未知，但诊断机制局部出现绝对结论；需统一复核受影响维度。
+  - F1 BLOCKER 与 oracle NEEDS_EVIDENCE disposition 不一致；全局 terminal 仍为 PASS。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: FAIL
+  product_contract_result: NOT_APPLICABLE
+  raw_output_path: eval/stage10/run/raw/E10-021.md
+  raw_output_sha256: 0f40c519747ea6e9c219fc61f02192b68688f5887bfa14f50b9453f6030322c8
+  public_case_path: eval/stage10/public/E10-021.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-021
+- id: E10-022
+  primary_route_observed:
+    mode: ARCH_DESIGN
+    dp: DP-001
+    overlays:
+    - none
+    basis: greenfield 小 wiki storage architecture。
+    evidence_pointer: eval/stage10/run/raw/E10-022.md:3
+  oracle_primary_route:
+    mode: ARCH_DESIGN
+    dp: DP-001
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 1
+    D3: 0
+    D4: 1
+    D5: 2
+    D6: 2
+    D7: 1
+    D8: N/A
+    D9: 1
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 主 DP 与设计对象正确；route/contract 均写 overlays none，未声明 oracle resources，实际转向 state-data/reliability，故非满分。
+      evidence_pointer: eval/stage10/run/raw/E10-022.md:3
+    D2:
+      rationale: 识别 history、restore、business-hours/search；但把 brief maintenance tolerance 扩成整机丢失全过程停机均在容忍内，属性边界未保留。
+      evidence_pointer: eval/stage10/run/raw/E10-022.md:31-39
+    D3:
+      rationale: HF-03：把未给出的短事务、页总大小和实际写入率远低于 ceiling 当成当前项目 operating point；通用 SQLite 知识不能建立这些项目事实。
+      evidence_pointer: eval/stage10/run/raw/E10-022.md:23
+    D4:
+      rationale: 本设计要求解释 shape-fit、single-writer/WAL 与经济性机制，故 D4 适用。机制方向合理，但 user/page count 不能推出实际写负载余量；并列 optimistic
+        version check 与 last-writer-wins，未说明冲突处理如何一致。
+      evidence_pointer: eval/stage10/run/raw/E10-022.md:23-34
+    D5:
+      rationale: 正确接受 single-process SQLite 的经济性并限定 GC-005 的 embedded 形态；未将 SQLite 或共享进程标成 material defect。
+      evidence_pointer: eval/stage10/run/raw/E10-022.md:25-27
+    D6:
+      rationale: WAL、revision、FTS 与 scheduled/restorable backup 为局部结构；比较单 PostgreSQL 与 replicas，未强制平台扩张。
+      evidence_pointer: eval/stage10/run/raw/E10-022.md:31-46
+    D7:
+      rationale: 保留 edit history 与 restore 需求，但把 node loss 全部停机解释为已受产品授权，超出只允许 occasional brief maintenance 的证据；未建议明确废除可用性能力，按边界缺失计1，不触发
+        HF-05。
+      evidence_pointer: eval/stage10/run/raw/E10-022.md:32-37
+    D8:
+      rationale: N/A：oracle 将此 30-user single-process economics 设计判为证据充分的 non-alarm；额外虚构的 operating point 计 D3，不据此重写
+        oracle 的适用性。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-022.expected.ambiguity_notes
+    D9:
+      rationale: NO_DECISION_CHANGING_WORK 正确；但将 greenfield 备份待验证建议写成 restorability currently assumed, never exercised
+        的现状 NON_BLOCKING_IMPROVEMENT，finding/设计要求边界不准确。
+      evidence_pointer: eval/stage10/run/raw/E10-022.md:64-69
+    D10:
+      rationale: 停留在单服务存储设计、备份与明确 invalidation 条件；没有无用维度巡游或大规模复制平台。
+      evidence_pointer: eval/stage10/run/raw/E10-022.md:39-46
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-022.md
+      line_start: 23
+      line_end: 23
+      quote: 'Your operating point: 30 peak users, edits are short transactions, ~5k text pages (tens of MB).'
+    basis: 冻结 rubric HF-03；PUBLIC E10-022 提供 users/pages/功能与运维约束，没有事务形态、页大小或实际写入率。
+    affected_dimensions:
+    - D3
+    trigger_explanation: 30 users 和 5k pages 有依据，但同一句将 edits are short transactions、tens of MB 当成已知 operating point，后接
+      write rate orders below ceiling 强化该现状断言；不是标为建议的短事务设计，也不是条件性容量预测。
+  key_strengths:
+  - 正确拒绝无 shape 依据的 SQLite 不可生产论
+  - 保留单机经济性并给出升级失效条件
+  - 备份与恢复验证列入最小结构
+  key_defects:
+  - summary: 把未观测的 transaction length、data size 与 write headroom 写成项目事实。
+    evidence_pointer: eval/stage10/run/raw/E10-022.md:23
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 将 brief maintenance tolerance 扩写成 box/process loss 的整个 outage duration 都被容忍。
+    evidence_pointer: eval/stage10/run/raw/E10-022.md:37
+    likely_layer: REASONING_PLAYBOOK
+  - summary: 设计阶段的 backup 验证要求被表达成已存在系统的未验证缺陷。
+    evidence_pointer: eval/stage10/run/raw/E10-022.md:65
+    likely_layer: OUTPUT_CONTRACT
+  terminal_outcome_observed:
+  - NO_DECISION_CHANGING_WORK
+  terminal_outcome_expected:
+  - NO_DECISION_CHANGING_WORK
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：需统一复核 greenfield operating point 的未标注假设是否达到项目事实断言门槛，本评分认定达到。
+  - product availability 的 brief maintenance 与 node-loss outage 边界未获得授权，product_contract_result 记 AMBIGUOUS。
+  goodcase_result: PASS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: AMBIGUOUS
+  raw_output_path: eval/stage10/run/raw/E10-022.md
+  raw_output_sha256: f12fc4a721da72b81ebfa40b525890656fe46d8bfa03d12ed7cfec3b5e34c93a
+  public_case_path: eval/stage10/public/E10-022.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-022
+- id: E10-023
+  primary_route_observed:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    overlays:
+    - runtime/concurrency
+    - ownership/lifecycle
+    basis: 现有跨服务路径 as-is，deadline 后 stale completion 与 cleanup 所有权。
+    evidence_pointer: eval/stage10/run/raw/E10-023.md:7
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 2
+    D4: 2
+    D5: N/A
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: DP-002 正确，route stale async/concurrency 与 contract ownership/lifecycle 共同覆盖 oracle 两域；允许机制等价 overlay
+        表达。
+      evidence_pointer: eval/stage10/run/raw/E10-023.md:43-48
+    D2:
+      rationale: accepted cancelled-order stock invariant 与 500ms responsiveness 同时保留，未用抬高 deadline 回避要求。
+      evidence_pointer: eval/stage10/run/raw/E10-023.md:11-14
+    D3:
+      rationale: 关键代码、运行、accepted intent 各有 origin/state，gRPC cooperative guarantee 标为 GENERIC_KNOWLEDGE；未用 metadata
+        补充论据。
+      evidence_pointer: eval/stage10/run/raw/E10-023.md:49-55
+    D4:
+      rationale: 明确区分 deadline≠server abort 的 assumed guarantee 与没有取消补偿/清理所有者两因；覆盖 D-02 双机制，说明 cancel/commit race。
+      evidence_pointer: eval/stage10/run/raw/E10-023.md:18-25
+    D5:
+      rationale: N/A：现有 late reserve 路径没有 cancellation handler 或 compensation，local transaction 只原子提交并不提供本案所需的跨服务取消保证。
+      evidence_pointer: eval/stage10/public/E10-023.md:7-12
+    D6:
+      rationale: 利用已有 cancellation event 做幂等 release、前后提交竞态标记及 reconciliation，context check 仅减浪费；明确不需要 saga/分布式事务平台。
+      evidence_pointer: eval/stage10/run/raw/E10-023.md:35-38
+    D7:
+      rationale: 保留 500ms 与 no-held-stock 两项意图；对 release latency 歧义显式要求产品确认而非静默放宽。
+      evidence_pointer: eval/stage10/run/raw/E10-023.md:65-85
+    D8:
+      rationale: N/A：冻结 oracle 将双机制和修复方向视为决定性；输出额外询问 release-latency bound，不改变该 case 的归因适用性。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-023.expected.ambiguity_notes
+    D9:
+      rationale: BLOCKER evidence 49-54、mechanism 60、failure 61、impact 62、GC 56、refutation 64 六柱齐备；全局 MIN_SAFE_FIX_IDENTIFIED
+        正确，局部 latency NEEDS_EVIDENCE 未偷换为全局。
+      evidence_pointer: eval/stage10/run/raw/E10-023.md:55-82
+    D10:
+      rationale: 限定 order→inventory reserve/cancel 路径，在补偿机制和后续观测明确后停止。
+      evidence_pointer: eval/stage10/run/raw/E10-023.md:80-85
+  hard_failures: []
+  key_strengths:
+  - D-02 双机制区分准确
+  - 覆盖 cancel-before-commit 与重复消息的补偿竞态
+  - 明确 deadline 保持不变且 server context check 不能独自保证正确性
+  key_defects: []
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: false
+  adjudication_reason: []
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-023.md
+  raw_output_sha256: 69cd16e27bdc3d9687d3306ed7169e8363557532e1b8c63660e4e0d9371de78a
+  public_case_path: eval/stage10/public/E10-023.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-023
+- id: E10-024
+  primary_route_observed:
+    mode: ADR_REVIEW
+    dp: DP-004
+    overlays:
+    - none
+    basis: 把拟议暂缓已接受 freeze 的决定作为 ADR 审查对象，明确排除代码增量/事故。
+    evidence_pointer: eval/stage10/run/raw/E10-024.md:1
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: ALLOWED_ALTERNATE
+  scores:
+    D1: 2
+    D2: 1
+    D3: 1
+    D4: 1
+    D5: N/A
+    D6: N/A
+    D7: 1
+    D8: 1
+    D9: 1
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 采用 oracle 明确允许的 ADR_REVIEW/DP-004，基于 proposed freeze-suspension decision 给出对象依据；不触发 HF-06。
+      evidence_pointer: eval/stage10/run/raw/E10-024.md:1
+    D2:
+      rationale: 正确识别 leadership freeze 与 regulatory mandate 两权威，但把 fixed capacity/不能同时满足降为未验证前提，且将 no new features
+        重释为可重新排序的 reliability backlog。
+      evidence_pointer: eval/stage10/run/raw/E10-024.md:7-15
+    D3:
+      rationale: 来源表标注完整；却把用户给定 both cannot fit 归为 engineering lead 的 HYPOTHESIS，PUBLIC 没有把这项约束归给该 lead。
+      evidence_pointer: eval/stage10/run/raw/E10-024.md:24-29
+    D4:
+      rationale: 指出两个 authority-backed requirements 的冲突结构，但将冲突是否成立依赖估算；即使缩小 export 仍是 new feature，不自动满足 accepted
+        no-new-features freeze。
+      evidence_pointer: eval/stage10/run/raw/E10-024.md:47-51
+    D5:
+      rationale: N/A：纯 authority/requirements 冲突，没有技术实现的 materially compliant non-alarm 组件。
+      evidence_pointer: eval/stage10/public/E10-024.md:7-13
+    D6:
+      rationale: N/A：本案 correction 是 governance/decision rework，不是代码修复，按冻结 rubric 在 D7 评分。
+      evidence_pointer: eval/stage10/public/E10-024.md:3-13
+    D7:
+      rationale: 拒绝工程负责人单方跳过 freeze，保留 leadership+compliance authority；但应直接承认给定约束的根本冲突，输出却把 owner escalation 前置为再次证明容量。
+      evidence_pointer: eval/stage10/run/raw/E10-024.md:13-15
+    D8:
+      rationale: 有具体 scope/backlog/capacity 观测并最终报 ARCH_CONFLICT，但输入已给定 fixed capacity 冲突，把它降为 hypothesis 导致不必要的条件化；未作
+        falsecertainty，不触发 HF-10。
+      evidence_pointer: eval/stage10/run/raw/E10-024.md:48-58
+    D9:
+      rationale: 原始全局 ARCH_CONFLICT 匹配；仍附加 BLOCKER/NEEDS_EVIDENCE 并把实质冲突条件化，finding 与 terminal 的边界不完全一致。BLOCKER
+        33-39 配合 evidence/GC31 的六柱有内容，不因 oracle dispositions 空就触发 HF-01。
+      evidence_pointer: eval/stage10/run/raw/E10-024.md:31-58
+    D10:
+      rationale: 停留在本季度两个要求的决策记录、替代方案及 authority，不引入运行技术巡游。
+      evidence_pointer: eval/stage10/run/raw/E10-024.md:20-23
+  hard_failures: []
+  key_strengths:
+  - 替代路由有明确对象依据
+  - 拒绝工程负责人擅自废弃 accepted freeze
+  - 冲突记录涵盖 trade-offs、reversibility 与双 owner
+  key_defects:
+  - summary: 将已给定的 fixed-capacity conflict 降级为工程 lead 的未验证断言。
+    evidence_pointer: eval/stage10/run/raw/E10-024.md:13
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 把最小 export+可靠性 backlog 排序视为可能同时满足 no-new-features freeze，未区分容量够用与冻结条款被修订。
+    evidence_pointer: eval/stage10/run/raw/E10-024.md:48-51
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - ARCH_CONFLICT
+  terminal_outcome_expected:
+  - ARCH_CONFLICT
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - 采用有依据的非 oracle primary route，按要求必须裁定（该 alternate 明确允许）。
+  - 全局 ARCH_CONFLICT 正确但正文只条件性承认冲突，需统一复核 D2/D4/D7/D8/D9 部分得分及 product/uncertainty 的 AMBIGUOUS 结果。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: AMBIGUOUS
+  product_contract_result: AMBIGUOUS
+  raw_output_path: eval/stage10/run/raw/E10-024.md
+  raw_output_sha256: 4c8de3459167e8b1708d6c7766ef17db979316a14693a8e2c35a27ff2811f80c
+  public_case_path: eval/stage10/public/E10-024.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-024
+- id: E10-025
+  primary_route_observed:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    overlays:
+    - evolution
+    basis: 现有六周原型的现状审查；争点为模块边界，使用 evolution。
+    evidence_pointer: eval/stage10/run/raw/E10-025.md:L1
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 2
+    D4: 2
+    D5: 2
+    D6: 2
+    D7: N/A
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 模式、唯一 DP、overlay 与现状对象相符，AUTO 理由明确。
+      evidence_pointer: eval/stage10/run/raw/E10-025.md:L1
+    D2:
+      rationale: 以探索验证、迭代能力和两人工程容量为约束，区分咨询方层次偏好与实际要求。
+      evidence_pointer: eval/stage10/run/raw/E10-025.md:L13-L15
+    D3:
+      rationale: 代码和历史分别为 CONFIRMED；合作方与咨询判断保留 HYPOTHESIS，缺少运行证据明确 UNKNOWN。
+      evidence_pointer: eval/stage10/run/raw/E10-025.md:L28-L33
+    D4:
+      rationale: 适用：本案要求判断边界缺失的机制；正确以五次概念转向区分变化轴未形成与稳定变化轴泄漏。
+      evidence_pointer: eval/stage10/run/raw/E10-025.md:L11-L13
+    D5:
+      rationale: 按 GC-003 的变化轴限定条件拒绝误报，并明确大范围 pivot 重写不是缺陷。
+      evidence_pointer: eval/stage10/run/raw/E10-025.md:L11-L15
+    D6:
+      rationale: 正确 NO_DEFECT 不要求立即修复；命名重复同轴编辑、合作方形成契约和方向确定等重审触发，仅在触发后抽取局部 seam。
+      evidence_pointer: eval/stage10/run/raw/E10-025.md:L17
+    D7:
+      rationale: N/A：对象是仍在验证方向的内部原型；咨询报告及合作方期待均非需裁决的实质产品契约或权威冲突。
+      evidence_pointer: eval/stage10/public/E10-025.md:L5-L12
+    D8:
+      rationale: N/A：冻结 oracle 以五次 pivot 作为充分 GOOD CASE 限定证据，未要求补充证据；合作方主观信号不改变当前结论。
+      evidence_pointer: eval/stage10/public/E10-025.md:L7-L11
+    D9:
+      rationale: 咨询意见归 PERSONAL_PREFERENCE，未来清理为 NON_BLOCKING_IMPROVEMENT；全局原值 NO_DEFECT 符合 oracle。
+      evidence_pointer: eval/stage10/run/raw/E10-025.md:L35-L52
+    D10:
+      rationale: 限于是否现在模块化，未来 DP-001 仅作为触发后的工作说明，没有执行全面重设。
+      evidence_pointer: eval/stage10/run/raw/E10-025.md:L17-L27
+  hard_failures: []
+  key_strengths:
+  - 按真实变化轴而非脚本行数判断边界问题
+  - 将咨询意见与已接受意图区分
+  - 给出局部抽取的明确重审触发
+  key_defects: []
+  terminal_outcome_observed:
+  - NO_DEFECT
+  terminal_outcome_expected:
+  - NO_DEFECT
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: false
+  adjudication_reason: []
+  goodcase_result: PASS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: NOT_APPLICABLE
+  raw_output_path: eval/stage10/run/raw/E10-025.md
+  raw_output_sha256: 9d3db06fdc78acec2887a0f8f85b6a91f39763392e4fa966462d319c2c274062
+  public_case_path: eval/stage10/public/E10-025.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-025
+- id: E10-026
+  primary_route_observed:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    overlays:
+    - state-data
+    - resources
+    basis: 现有 CRDT 功能审查；状态与合并语义为主，无界 tombstone 激活 resources。
+    evidence_pointer: eval/stage10/run/raw/E10-026.md:L1
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 2
+    D4: 2
+    D5: 2
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 唯一 DP-002 与 oracle 一致；额外 resources 由无界保留状态直接支持，不是错误 overlay。
+      evidence_pointer: eval/stage10/run/raw/E10-026.md:L1
+    D2:
+      rationale: 保留核心离线与收敛要求，并区分 3.8 倍测量、增长机制和未给定资源预算。
+      evidence_pointer: eval/stage10/run/raw/E10-026.md:L5-L6
+    D3:
+      rationale: 代码、运行、测试、产品意图与评审者主张分别标注来源和状态；当前影响未证实，未把无事故当未来增长安全。
+      evidence_pointer: eval/stage10/run/raw/E10-026.md:L11-L25
+    D4:
+      rationale: 完整分离显式且测试过的合并语义与不压缩 tombstone 的单调增长机制。
+      evidence_pointer: eval/stage10/run/raw/E10-026.md:L24-L35
+    D5:
+      rationale: 以文档、400 项属性测试及实际收敛验证 GC-013，未将自定义或多写者本身误报警。
+      evidence_pointer: eval/stage10/run/raw/E10-026.md:L24-L25
+    D6:
+      rationale: 提出因果安全压缩与每板预算，对比并拒绝更大的 CRDT 替换；离线迟到者以快照重同步作为示例方案。
+      evidence_pointer: eval/stage10/run/raw/E10-026.md:L34-L37
+    D7:
+      rationale: 实质 authority surface 适用，尽管 coverage strict 标志为 false；拒绝破坏核心离线能力的中心权威替换，必要取舍归 owner。
+      evidence_pointer: eval/stage10/run/raw/E10-026.md:L37-L43
+    D8:
+      rationale: N/A：oracle 对已测试的合并及无界 tombstone 给出决定性分裂结论；缺少 SLO 仅限制当前损害和严重度，不阻止 HCR 与局部修复。
+      evidence_pointer: eval/stage10/public/E10-026.md:L7-L12
+    D9:
+      rationale: 合并 GOOD CASE 与保留状态 HIGH_CONFIDENCE_RISK 共存；材料影响未证实不升级 blocker；全局 MIN_SAFE_FIX_IDENTIFIED 正确。
+      evidence_pointer: eval/stage10/run/raw/E10-026.md:L29-L39
+    D10:
+      rationale: 限于状态语义和保留资源两维，未将性能审查扩成平台或权威模型重写。
+      evidence_pointer: eval/stage10/run/raw/E10-026.md:L43-L59
+  hard_failures: []
+  key_strengths:
+  - 完整给出 GOOD CASE 与增长风险的分裂结论
+  - 未将 3.8 倍比率等同于已违反 SLO
+  - 局部压缩保留离线产品能力
+  key_defects: []
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: false
+  adjudication_reason: []
+  goodcase_result: PASS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-026.md
+  raw_output_sha256: f7adf9d18fcc1228a6ce3d4320cf73a541f6a1d9db5162f46a46ab54dc1c9446
+  public_case_path: eval/stage10/public/E10-026.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-026
+- id: E10-027
+  primary_route_observed:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    overlays:
+    - trust
+    basis: 现有内部集成按现状审查；数据库权限超出只读职责构成 trust 边界。
+    evidence_pointer: eval/stage10/run/raw/E10-027.md:L1
+  oracle_primary_route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 1
+    D4: 2
+    D5: N/A
+    D6: 1
+    D7: N/A
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: AUTO 正确选择现状审查 DP-002，并用真实职责/权限差异说明 trust。
+      evidence_pointer: eval/stage10/run/raw/E10-027.md:L1-L7
+    D2:
+      rationale: 区分 SELECT-only 实际用途与跨表、跨环境 RW 授权，未将内部访问等同于无需最小权限。
+      evidence_pointer: eval/stage10/run/raw/E10-027.md:L7-L13
+    D3:
+      rationale: 主要 CODE/CONFIG/HISTORY 基线有来源及状态；路径修正与模板迁移的技术依赖表述未明确区分流程审批。结合16-19、44、51，不把该建议升级为明确的“免除所有票据”既成事实，记一次边界不清而非HF-03。
+      evidence_pointer: eval/stage10/run/raw/E10-027.md:L11-L19,L30-L35,L44,L51
+    D4:
+      rationale: 准确指出授予动作集合超出职责，错误或被攻陷时可破坏支付数据；不是声称报告服务已恶意写入。
+      evidence_pointer: eval/stage10/run/raw/E10-027.md:L7-L11
+    D5:
+      rationale: N/A：本案没有应维持为无缺陷的独立组件；SELECT-only 与无外部入口用于界定职责和校准风险，不能使实际 RW 授权合规。
+      evidence_pointer: eval/stage10/public/E10-027.md:L7-L12
+    D6:
+      rationale: 局部 SELECT-only 角色与连接切换合理并比较更大隔离方案，但未明确撤销/轮换报告服务仍可能持有的共享 RW 凭据，且无票据依赖被过度断言。
+      evidence_pointer: eval/stage10/run/raw/E10-027.md:L16-L19
+    D7:
+      rationale: N/A：未提供已接受产品能力或绑定安全权威记录；安全评审 medium 和 DBA 排期是历史分诊，不是需重决的产品契约。
+      evidence_pointer: eval/stage10/public/E10-027.md:L5-L12
+    D8:
+      rationale: N/A：代码用途和配置授权已决定权限过剩；是否另有合规制度仅影响升级严重度，冻结 oracle 未要求停止取证。
+      evidence_pointer: eval/stage10/public/E10-027.md:L7-L12
+    D9:
+      rationale: 采用 HIGH_CONFIDENCE_RISK 与 MIN_SAFE_FIX_IDENTIFIED，模板工作为后续，既未夸大为 blocker 也未仅等待模板修复。
+      evidence_pointer: eval/stage10/run/raw/E10-027.md:L39-L55
+    D10:
+      rationale: 限于当前只读连接和已知模板源，给出写入应失败的具体验证建议，没有进行安全体系重构。
+      evidence_pointer: eval/stage10/run/raw/E10-027.md:L44-L58
+  hard_failures: []
+  key_strengths:
+  - 正确识别内部真实权限边界
+  - 区分做了什么与被允许做什么
+  - HCR 严重度与现有证据相称
+  key_defects:
+  - summary: 模板迁移技术依赖与路径修正所需流程审批没有明确区分，存在执行边界歧义。
+    evidence_pointer: eval/stage10/run/raw/E10-027.md:L16-L19
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 切换 SELECT-only 连接后未明确撤销或轮换仍可能留存的共享 RW 凭据。
+    evidence_pointer: eval/stage10/run/raw/E10-027.md:L44
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - 初评将 the migration ticket 解释为项目全部流程票据；主复核按 raw16-19、44、51 的对照上下文视为特定模板迁移，未达到明确无依据项目事实 HF-03 门槛。D3=1、D6=1及流程解释仍待裁定。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: NOT_APPLICABLE
+  raw_output_path: eval/stage10/run/raw/E10-027.md
+  raw_output_sha256: 5ba965dbfa20e02bb661fabfd875b3cb3b043dc212fb88de15f211255fb8beb8
+  public_case_path: eval/stage10/public/E10-027.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-027
+- id: E10-028
+  primary_route_observed:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    overlays:
+    - state/data
+    - Q-INTG consumer check (DP-003 default)
+    basis: 'PR #99 是运行订单路径上的具体 delta；正文以 state/data 为 overlay 并附 integration 消费者检查。'
+    evidence_pointer: eval/stage10/run/raw/E10-028.md:L1
+  oracle_primary_route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 2
+    D3: 0
+    D4: 2
+    D5: 1
+    D6: 1
+    D7: 2
+    D8: N/A
+    D9: 1
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 模式和 DP-003 正确，route_verdict 按主路由为 EXACT；但显式 overlay 为 state/data，而冻结主域为 integration，仅以默认 Q-INTG
+        补充。
+      evidence_pointer: eval/stage10/run/raw/E10-028.md:L1
+    D2:
+      rationale: 明确一意图一订单的已接受要求覆盖共享 API 的 web/mobile，未把 UI 防重等同于服务端契约。
+      evidence_pointer: eval/stage10/run/raw/E10-028.md:L5-L13
+    D3:
+      rationale: HF-03：PUBLIC 仅说 mobile 重复率未知，正文额外断言未埋点，并据此建立新增 instrumentation finding；该断言不是标记为 UNKNOWN 的假设。
+      evidence_pointer: eval/stage10/run/raw/E10-028.md:L12
+    D4:
+      rationale: 正确说明 UI 防重不能控制其他提交路径，API 无幂等/重复窗口导致重复副作用；通用 resubmit 路径未声称已发生。
+      evidence_pointer: eval/stage10/run/raw/E10-028.md:L17-L19
+    D5:
+      rationale: 认可 UI 补丁是实际改善并允许重定范围后交付，但末尾又给 delta BLOCKER，部分修复可合并的边界不稳定。
+      evidence_pointer: eval/stage10/run/raw/E10-028.md:L29-L31
+    D6:
+      rationale: 本地服务端幂等/窗口方向正确且比较了更大重构；但 optional key 单独被称为充分时不覆盖不带 key 的 mobile，业务字段窗口也未证明能区分两次真实提交。
+      evidence_pointer: eval/stage10/run/raw/E10-028.md:L21-L27
+    D7:
+      rationale: 维护全客户端一意图一订单，明确残留风险的取舍交 owner；未直接授权静默删除该能力。
+      evidence_pointer: eval/stage10/run/raw/E10-028.md:L29
+    D8:
+      rationale: N/A：共享 API 缺乏去重、mobile 未覆盖与已接受要求已足以决定修复；未知 mobile 发生率不影响该判断，oracle 为明确案。
+      evidence_pointer: eval/stage10/public/E10-028.md:L7-L12
+    D9:
+      rationale: 全局 MIN_SAFE_FIX_IDENTIFIED 正确并与 findings 分开；但将缺失的既有服务端能力作为 delta blocker，与允许部分补丁的正文及 oracle 边界存在张力，扣边界分。
+      evidence_pointer: eval/stage10/run/raw/E10-028.md:L51-L68
+    D10:
+      rationale: 指明服务端问题为 delta 暴露的既有问题，额外 as-is 审查仅作为可选后续而未执行。
+      evidence_pointer: eval/stage10/run/raw/E10-028.md:L31-L39
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-028.md
+      line_start: 12
+      line_end: 12
+      quote: mobile duplicate rate UNKNOWN (no guard there, not instrumented).
+    basis: 冻结 HF-03；PUBLIC E10-028:8 只给 mobile duplicate rate unknown，没有声明不存在采集或埋点。
+    affected_dimensions:
+    - D3
+    trigger_explanation: 未知测量值被升级为项目内未埋点事实；raw:61 再用该事实支撑可验证性 finding。没有将其写为建议调查是否埋点。
+  key_strengths:
+  - 识别 web 与 mobile 共用 API 的防重缺口
+  - 正文承认前端补丁确有局部价值
+  - 保留全局 terminal 原值并说明产品 owner 的取舍权
+  key_defects:
+  - summary: 把 mobile 重复率未知写成项目未埋点。
+    evidence_pointer: eval/stage10/run/raw/E10-028.md:L12
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 主路由正确，但 overlay 未明确选用 integration。
+    evidence_pointer: eval/stage10/run/raw/E10-028.md:L1
+    likely_layer: AGENT_PROMPT / MODE_ROUTING
+  - summary: 允许重定范围合并与对 delta 标 BLOCKER 并存，部分修复的合并边界不清。
+    evidence_pointer: eval/stage10/run/raw/E10-028.md:L29-L31
+    likely_layer: OUTPUT_CONTRACT
+  - summary: optional key 被单独判为充分，且按业务字段的时间窗口未证明与真实提交意图一致。
+    evidence_pointer: eval/stage10/run/raw/E10-028.md:L23-L27
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：需统一复核无项目证据的事实断言及其 D3=0 处理。
+  - D5/D9：raw:29 允许重定范围后交付，而 raw:51 写 BLOCKER / MUST_FIX (on the delta)。需统一裁定是仅阻止宣称完全修复还是实质阻止部分 PR。未据此触发 HF-02。
+  - HF-01 六柱均见 raw:9-19、51-57：证据、机制、重复订单失败模式、契约损害、GC 检查和反证俱全，故不按 unsupported_blocker 触发。
+  goodcase_result: AMBIGUOUS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-028.md
+  raw_output_sha256: 99beefc45a6792cb2134ed59425ba1cf3f5e54f7fead3897d1f146aeefcaeaff
+  public_case_path: eval/stage10/public/E10-028.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-028
+- id: E10-029
+  primary_route_observed:
+    mode: ARCH_DESIGN
+    dp: DP-001
+    overlays:
+    - overload
+    - resources
+    basis: 显式设计任务采用 DP-001；流量治理为主，有限磁盘与队列边界为支撑。
+    evidence_pointer: eval/stage10/run/raw/E10-029.md:L1
+  oracle_primary_route:
+    mode: ARCH_DESIGN
+    dp: DP-001
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 0
+    D4: 2
+    D5: 2
+    D6: 2
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 模式、DP 与 overload/resources 相符，组合设计围绕任务对象进行。
+      evidence_pointer: eval/stage10/run/raw/E10-029.md:L1
+    D2:
+      rationale: 准确保留无静默丢失、允许明确 try-later 和 30 分钟延迟，并将固定池与有限磁盘映射到设计。
+      evidence_pointer: eval/stage10/run/raw/E10-029.md:L31-L40
+    D3:
+      rationale: HF-03：只给 spike 汇总值，正文却断言 2h lag 先于磁盘 94%，并说尚在提案阶段的 80% coupling 已失败过一次。
+      evidence_pointer: eval/stage10/run/raw/E10-029.md:L9
+    D4:
+      rationale: 正确区分容量/队列 bound、内部 backpressure 与入口 admission policy，组合两个提案，而非仅选其一。
+      evidence_pointer: eval/stage10/run/raw/E10-029.md:L11-L19
+    D5:
+      rationale: 实质 non-alarm 组件适用：认可入口控制是合法放置、明确拒绝为已授权产品行为，保留磁盘水位作为保护，并非误报 shedding。
+      evidence_pointer: eval/stage10/run/raw/E10-029.md:L9-L11
+    D6:
+      rationale: 组合双队列边界、credit、基于等待预算的接入与磁盘后备；比较水位独立方案及扩容，并排除不需要的新基础设施。
+      evidence_pointer: eval/stage10/run/raw/E10-029.md:L15-L24
+    D7:
+      rationale: try-later 是已有产品授权，方案保留已接受任务的延迟与不丢失要求，无需虚构 ARCH_CONFLICT。
+      evidence_pointer: eval/stage10/run/raw/E10-029.md:L50-L53
+    D8:
+      rationale: N/A：冻结 oracle 对缺 bound 与缺 policy 给出决定性设计方向；精确容量数字需要后续测量，但不构成当前决策缺证据。
+      evidence_pointer: eval/stage10/public/E10-029.md:L5-L9
+    D9:
+      rationale: 保留 sizing 的单项 NEEDS_EVIDENCE 而全局为 NO_DECISION_CHANGING_WORK，二者未混淆；组合设计 terminal 正确。
+      evidence_pointer: eval/stage10/run/raw/E10-029.md:L44-L53
+    D10:
+      rationale: 停在足够的队列与入口结构，未扩为优先级体系或新平台。
+      evidence_pointer: eval/stage10/run/raw/E10-029.md:L15-L24
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-029.md
+      line_start: 9
+      line_end: 9
+      quote: the last spike reached 2h lag *before* disk hit ~94%
+    basis: 冻结 HF-03；PUBLIC E10-029:9 仅列同次 spike 的三个汇总观测，没有时间顺序；A/B 在 PUBLIC:5 是提案。
+    affected_dimensions:
+    - D3
+    trigger_explanation: 将无时序的观测写成已知先后关系，用以声称本系统已证实 byte/wait decouple；raw:22 的 'already broke once' 又把提案 coupling
+      写成曾运行失败。风险推导本可成立，但这些历史事实未给证据。
+  key_strengths:
+  - 清楚区分 bound 与 policy
+  - 将明确拒绝映射到产品已授权行为
+  - 完整组合内部 credit、队列边界和入口 admission
+  key_defects:
+  - summary: 为强化设计论证补写 spike 指标的先后顺序，并暗示提案 A 的 coupling 已运行失败。
+    evidence_pointer: eval/stage10/run/raw/E10-029.md:L9-L22
+    likely_layer: EVIDENCE_DISCIPLINE
+  terminal_outcome_observed:
+  - NO_DECISION_CHANGING_WORK
+  terminal_outcome_expected:
+  - NO_DECISION_CHANGING_WORK
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：需统一复核无项目证据的事实断言及其 D3=0 处理。
+  goodcase_result: PASS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-029.md
+  raw_output_sha256: bee6ec00cd64c5b930be5d245b1d5d0fd5e0b855f5d79a0ec8cb678c8478e063
+  public_case_path: eval/stage10/public/E10-029.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-029
+- id: E10-030
+  primary_route_observed:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    overlays:
+    - reliability
+    - observability
+    basis: 显式 CHANGE_REVIEW；审查 health signal 与 criticality 的联合作用，以 observability 支撑语义区分。
+    evidence_pointer: eval/stage10/run/raw/E10-030.md:L1
+  oracle_primary_route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+  route_verdict: EXACT
+  scores:
+    D1: 2
+    D2: 2
+    D3: 0
+    D4: 2
+    D5: N/A
+    D6: 2
+    D7: N/A
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 模式和 DP 正确；增加 observability 直接服务信号语义，无未支持的额外主 DP。
+      evidence_pointer: eval/stage10/run/raw/E10-030.md:L1-L10
+    D2:
+      rationale: 正确以平台健康信号区分正常工作与故障，并用实际同步依赖约束平台 critical 权重。
+      evidence_pointer: eval/stage10/run/raw/E10-030.md:L5-L12
+    D3:
+      rationale: HF-03：HISTORY 的无下游同步依赖被写成没有任何东西同步向 runner 分配工作，后者是未提供的入站调用事实。
+      evidence_pointer: eval/stage10/run/raw/E10-030.md:L14
+    D4:
+      rationale: 覆盖 busy→500 的存活语义错误，以及 critical aggregation 放大正常状态为平台故障；其他机制类比注明局限。
+      evidence_pointer: eval/stage10/run/raw/E10-030.md:L7-L12
+    D5:
+      rationale: N/A：本案未给独立正确 readiness 接口；当前输出明确是 liveness 且连入平台 critical，两个被审查部分均不合规。正常 busy 是校准语义的事实，不是另一个待判无缺陷设计。
+      evidence_pointer: eval/stage10/public/E10-030.md:L5-L11
+    D6:
+      rationale: 局部修正 liveness 与 catalog 权重/路由，保留 busy 指标；不移除监控，也不扩展为监控平台。
+      evidence_pointer: eval/stage10/run/raw/E10-030.md:L16-L20
+    D7:
+      rationale: N/A：无已接受产品能力、ADR 或权威冲突需裁决；leadership 观看仅为社会压力背景，catalog CRITICAL 是本次待审配置。
+      evidence_pointer: eval/stage10/public/E10-030.md:L7-L12
+    D8:
+      rationale: N/A：两项 PR 内容与 nightly 行为已决定信号错误；未知自动消费者只可能增加影响，不影响 oracle 的确定结论。
+      evidence_pointer: eval/stage10/public/E10-030.md:L7-L11
+    D9:
+      rationale: MUST_FIX 的六柱完整：CODE/CONFIG/HISTORY、语义机制、夜间误红、平台信号损害、GC 限定、反证；MUST_FIX 与允许 BLOCKER 等价，全局 MIN_SAFE_FIX_IDENTIFIED
+        正确。
+      evidence_pointer: eval/stage10/run/raw/E10-030.md:L33-L58
+    D10:
+      rationale: 修复限定在本 PR 的两处，自动化消费者仅列为命名检查，未声称已发生重启。
+      evidence_pointer: eval/stage10/run/raw/E10-030.md:L16-L24
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-030.md
+      line_start: 14
+      line_end: 14
+      quote: nothing dispatches work to the runner synchronously (HISTORY)
+    basis: 冻结 HF-03；PUBLIC E10-030:9,11 只说 no downstream service depends on it synchronously，不说明工作如何入队、分配或被调度。
+    affected_dimensions:
+    - D3
+    trigger_explanation: 把下游消费依赖方向误换为上游调度方式，并作为项目 HISTORY 事实排除 readiness 解释；不是假设或建议，故 D3 归零。
+  key_strengths:
+  - 完整识别 liveness 语义与 criticality 配置的组合缺陷
+  - 保留监控并只改两处局部语义
+  - 未知自动重启影响保持为条件假设
+  key_defects:
+  - summary: 从没有同步下游依赖推成不存在同步入站调度，并错误归于 HISTORY。
+    evidence_pointer: eval/stage10/run/raw/E10-030.md:L14
+    likely_layer: EVIDENCE_DISCIPLINE
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：需统一复核无项目证据的事实断言及其 D3=0 处理。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: NOT_APPLICABLE
+  raw_output_path: eval/stage10/run/raw/E10-030.md
+  raw_output_sha256: 682847cc39672ce59954e9a04d9bc788f54d5a81947e09467786f98003cf72c9
+  public_case_path: eval/stage10/public/E10-030.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-030
+- id: E10-031
+  primary_route_observed:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    overlays:
+    - resources (per-work bounds)
+    basis: 事故已回滚恢复，当前对象是待重落地 PR；因果归属在变更审查中作为证据问题处理。
+    evidence_pointer: eval/stage10/run/raw/E10-031.md:L1
+  oracle_primary_route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 2
+    D3: 0
+    D4: 1
+    D5: N/A
+    D6: 1
+    D7: 2
+    D8: 2
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: 主路由完全符合 oracle 首选 DP-003，非备选 DP-005；但 overlay 仅 resources，且显式降低 overload/policy 作用，未完整覆盖冻结域。
+      evidence_pointer: eval/stage10/run/raw/E10-031.md:L1-L13
+    D2:
+      rationale: 保留 checkout 可用性与已批准 15% 成本目标，未把成本倡议本身作为 blocker。
+      evidence_pointer: eval/stage10/run/raw/E10-031.md:L5
+    D3:
+      rationale: HF-03：建议明确复用 'existing auto-rollback keyed to the checkout success SLO'，PUBLIC 仅给人工 on-call 回滚与支持
+        rollback 的流水线，无自动策略/SLO 触发证据。
+      evidence_pointer: eval/stage10/run/raw/E10-031.md:L46
+    D4:
+      rationale: 找到容量减少和无界排队；但将缺 overload policy 排为非主要问题，最小修复才部分补回 queue governance，D-04 双机制识别不完整。
+      evidence_pointer: eval/stage10/run/raw/E10-031.md:L11-L17
+    D5:
+      rationale: N/A：本案无 oracle 要求确认的已合规非报警组件；GC 排除、局部修正比较及产品约束分别在 D4/D6/D7/D9 评分，不因额外列 GC 获分。
+      evidence_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-031;
+        frozen rubric D5 na_when
+    D6:
+      rationale: 包括取证、分步重落地、队列边界和超基线压测，方向合理；但以 concurrency×hold time 给 pool floor 公式量纲不对，复用未证实自动回滚也降低可执行性。
+      evidence_pointer: eval/stage10/run/raw/E10-031.md:L46-L47
+    D7:
+      rationale: 两个权威目标共存，仅当需求下限确实不能达到节省目标时交 owner，不静默牺牲 availability 或成本。
+      evidence_pointer: eval/stage10/run/raw/E10-031.md:L62-L65
+    D8:
+      rationale: 适用：oracle 要求区分相关与因果；保留 HYPOTHESIS 并命名窗口内 pool utilization/acquire-wait、并行变更或 canary 等判别证据。
+      evidence_pointer: eval/stage10/run/raw/E10-031.md:L47-L54
+    D9:
+      rationale: BLOCKER 只针对原样重落地；证据、条件机制、失败模式、实际 -2%、GC 和反证六柱齐全。单项 NEEDS_EVIDENCE 不偷换全局 MIN_SAFE_FIX_IDENTIFIED。
+      evidence_pointer: eval/stage10/run/raw/E10-031.md:L39-L65
+    D10:
+      rationale: 停在 PR 与相关归因证据，成本倡议其他杠杆和全 checkout 架构明确排除。
+      evidence_pointer: eval/stage10/run/raw/E10-031.md:L5-L19
+  hard_failures:
+  - code: HF-03
+    evidence:
+      raw_path: eval/stage10/run/raw/E10-031.md
+      line_start: 46
+      line_end: 46
+      quote: the existing auto-rollback keyed to the checkout success SLO
+    basis: 冻结 HF-03；PUBLIC E10-031:5 是 on-call rolled it back，:11 仅 deploy pipeline with rollback，未说明自动回滚或 SLO 触发器。
+    affected_dimensions:
+    - D3
+    trigger_explanation: 虽然出现在修复建议里，'existing' 明确断言已有项目能力；不能把建议中的该既有能力断言视为待新增功能。
+  key_strengths:
+  - 事故已恢复时按待审 PR 选主路由
+  - 相关不等于因果，提出能反驳归因的明确观测
+  - 成本与可用性目标同时保留
+  key_defects:
+  - summary: 遗漏 overload overlay，并将缺接入策略降为 queue placement 问题。
+    evidence_pointer: eval/stage10/run/raw/E10-031.md:L13-L15
+    likely_layer: AGENT_PROMPT / MODE_ROUTING
+  - summary: 把回滚能力升级为已存在按 checkout SLO 触发的自动回滚。
+    evidence_pointer: eval/stage10/run/raw/E10-031.md:L46
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: pool floor 表述使用 concurrency×hold time，未给可用的正确量纲容量换算。
+    evidence_pointer: eval/stage10/run/raw/E10-031.md:L46
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: HIGH
+  adjudication_required: true
+  adjudication_reason:
+  - HF-03：需统一复核无项目证据的事实断言及其 D3=0 处理。
+  - 未触发 HF-10：raw:10、35、50、68 明确保留因果假设；未触发 HF-06：主 DP 正确，overlay/机制覆盖不足按 D1/D4 扣分。
+  goodcase_result: NOT_APPLICABLE
+  uncertainty_result: PASS
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-031.md
+  raw_output_sha256: 21d9c48736aff4d9b2ecc0409c320578a04a0864e6ed136bc1e18e9f4f98172b
+  public_case_path: eval/stage10/public/E10-031.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-031
+- id: E10-032
+  primary_route_observed:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    overlays:
+    - resources
+    - overload
+    basis: 具体 CI delta 引入共享资源上的 suite retry；正文声明以 per-work bounds/retry amplification 为路由机制族。
+    evidence_pointer: eval/stage10/run/raw/E10-032.md:L3
+  oracle_primary_route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+  route_verdict: EXACT
+  scores:
+    D1: 1
+    D2: 2
+    D3: 1
+    D4: 1
+    D5: 2
+    D6: 1
+    D7: 2
+    D8: N/A
+    D9: 2
+    D10: 2
+  dimension_rationales:
+    D1:
+      rationale: CHANGE_REVIEW/DP-003 正确；但 resources/overload 替代 oracle 的 resources/evolution，并称只有 retry/bounds
+        机制族，遗漏已知顺序依赖的变化维度。
+      evidence_pointer: eval/stage10/run/raw/E10-032.md:L3
+    D2:
+      rationale: 准确识别 CI 信号可靠性、归因和已明确的反馈延迟约束，未把团队延迟痛点当风格偏好。
+      evidence_pointer: eval/stage10/run/raw/E10-032.md:L5-L6
+    D3:
+      rationale: 证据大多标注并明确 contention/false-green 仅为 HYPOTHESIS；但提出 per-test 重跑只需几分钟、DB isolation 后续 'actually removes
+        the 8%' 时没有继续携带量化/因果保留。这些是未来方案预测，未按现存事实触发 HF-03。
+      evidence_pointer: eval/stage10/run/raw/E10-032.md:L27-L33
+    D4:
+      rationale: 识别六类已知顺序依赖、整套重跑掩盖与 40→90 延迟；却将 DB isolation 作为移除 8% 的确定根因轨道，未完整保留顺序依赖与资源争用的区分。
+      evidence_pointer: eval/stage10/run/raw/E10-032.md:L19-L33
+    D5:
+      rationale: 实质 non-alarm 适用：明确一次、有延迟的有限重试本身不是无界重试风暴，缺陷建立在掩盖/延迟机制而非 retry 标签。
+      evidence_pointer: eval/stage10/run/raw/E10-032.md:L17-L21
+    D6:
+      rationale: 用有限失败测试重跑替代整套重跑是局部改善；但六类根因修复被放在 follow-up，quarantine/mark 的门禁语义与保留失败证据未交代，不能确认最小修复完整打断信号失真。
+      evidence_pointer: eval/stage10/run/raw/E10-032.md:L27-L31
+    D7:
+      rationale: 实质 authority surface 适用：冻结 oracle 将 latency pain 视为要求；保持延迟约束，明确只有正式接受 90 分钟才可降级，未擅自豁免。
+      evidence_pointer: eval/stage10/run/raw/E10-032.md:L28
+    D8:
+      rationale: N/A：oracle 以六类已记录顺序依赖和确定 90 分钟重跑成本决定当前审查；争用和 false-green 作为附加假设，不要求等待其证实才能否决整套 retry。
+      evidence_pointer: eval/stage10/public/E10-032.md:L5-L12
+    D9:
+      rationale: F1/F2 具证据、机制、失败方式、实质信号/延迟损害、GC 检查及反证；延迟 finding 未误降 NON_BLOCKING，全局 MIN_SAFE_FIX_IDENTIFIED 正确。
+      evidence_pointer: eval/stage10/run/raw/E10-032.md:L17-L35
+    D10:
+      rationale: root-cause follow-up 限于六类与共享 DB；未扩成平台、分片或新基础设施工程。
+      evidence_pointer: eval/stage10/run/raw/E10-032.md:L29-L37
+  hard_failures: []
+  key_strengths:
+  - 读取并使用六类已记录顺序依赖
+  - 算出失败反馈从 40 分钟扩大至 90 分钟
+  - 没有把有限 retry 误报为 retry storm
+  key_defects:
+  - summary: overlay 遗漏 evolution，route 宣称机制族过窄。
+    evidence_pointer: eval/stage10/run/raw/E10-032.md:L3
+    likely_layer: AGENT_PROMPT / MODE_ROUTING
+  - summary: 已标假设的争用/根因在修复总结变成一定移除 8% 的预测，且局部重跑耗时未经测量。
+    evidence_pointer: eval/stage10/run/raw/E10-032.md:L28-L33
+    likely_layer: EVIDENCE_DISCIPLINE
+  - summary: 六类 root-cause fix 推迟，quarantine/mark 是否保留失败阻断与正确 CI 信号未说明。
+    evidence_pointer: eval/stage10/run/raw/E10-032.md:L27-L31
+    likely_layer: REASONING_PLAYBOOK
+  terminal_outcome_observed:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_outcome_expected:
+  - MIN_SAFE_FIX_IDENTIFIED
+  terminal_verdict: PASS
+  scoring_confidence: MEDIUM
+  adjudication_required: true
+  adjudication_reason:
+  - D4/D6 需统一裁定：quarantine/known-flaky marking 的实际门禁含义不明；按未充分说明信号保护、并把六类根因修复推迟扣分，未推断已静默删除测试能力。
+  - 不触发 HF-01：F1/F2 的六柱分别见 raw:9-21、27-28；false-green 明示为机制假设，不能仅因非已发生事故就认定缺失失败模式/影响柱。
+  goodcase_result: PASS
+  uncertainty_result: NOT_APPLICABLE
+  product_contract_result: PASS
+  raw_output_path: eval/stage10/run/raw/E10-032.md
+  raw_output_sha256: 38a68319a0a4222117ae2a82fbcd0fb3d1c3106fb17ef90f46544b9ae266345c
+  public_case_path: eval/stage10/public/E10-032.md
+  oracle_entry_pointer: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/private/oracle.yaml#E10-032
