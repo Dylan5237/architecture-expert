@@ -1,0 +1,302 @@
+id: STAGE11-HOLDOUT-COVERAGE
+version: 1
+status: FROZEN
+tag_semantics:
+  category: One exclusive primary holdout stress category per case; orthogonal tags may overlap.
+  strict_goodcase: A designated materially compliant form; its material false positives enter frozen pass criterion
+    5.
+  partial_nonalarm: A limited compliant component within a case that still needs correction.
+  ambiguity: Object/route or decision-changing missing evidence, not mere lack of every conceivable detail.
+  product_contract_surface: Designated authority/accepted-guarantee stress cases; this tag does not decide D7 applicability
+    for other cases.
+cases:
+- id: H11-001
+  category: H-EVIDENCE
+  mode: ARCH_DESIGN
+  dp: DP-001
+  shape: batch/ML platform
+  domains:
+  - resources
+  - overload
+  goodcase_nonalarm: false
+  strict_goodcase: false
+  partial_nonalarm: false
+  ambiguity: true
+  explicit_uncertainty_required: true
+  product_contract_surface: false
+  expected_terminal_family:
+  - NEEDS_EVIDENCE
+  scenario_family: new overnight astronomical-image classification capability
+- id: H11-002
+  category: H-EVIDENCE
+  mode: INCIDENT_ANALYSIS
+  dp: DP-005
+  shape: edge/IoT
+  domains:
+  - observability
+  - concurrency
+  goodcase_nonalarm: false
+  strict_goodcase: false
+  partial_nonalarm: false
+  ambiguity: true
+  explicit_uncertainty_required: true
+  product_contract_surface: false
+  expected_terminal_family:
+  - NEEDS_EVIDENCE
+  scenario_family: observed dark-frame incident on a remote wildlife camera network
+- id: H11-003
+  category: H-EVIDENCE
+  mode: CHANGE_REVIEW
+  dp: DP-003
+  shape: desktop/local
+  domains:
+  - security
+  - integration
+  goodcase_nonalarm: false
+  strict_goodcase: false
+  partial_nonalarm: false
+  ambiguity: true
+  explicit_uncertainty_required: true
+  product_contract_surface: false
+  expected_terminal_family:
+  - NEEDS_EVIDENCE
+  scenario_family: proposed desktop dictionary-cache loading PR
+- id: H11-004
+  category: H-EVIDENCE
+  mode: INCIDENT_ANALYSIS
+  dp: DP-005
+  shape: data pipeline
+  domains:
+  - integration
+  - observability
+  goodcase_nonalarm: false
+  strict_goodcase: false
+  partial_nonalarm: false
+  ambiguity: true
+  explicit_uncertainty_required: true
+  product_contract_surface: false
+  expected_terminal_family:
+  - MIN_SAFE_FIX_IDENTIFIED
+  scenario_family: observed incorrect scale in an agricultural parcel export
+- id: H11-005
+  category: H-TERMINAL
+  mode: ADR_REVIEW
+  dp: DP-004
+  shape: backend
+  domains:
+  - resources
+  goodcase_nonalarm: false
+  strict_goodcase: false
+  partial_nonalarm: false
+  ambiguity: false
+  explicit_uncertainty_required: false
+  product_contract_surface: true
+  expected_terminal_family:
+  - OWNER_TRADE_OFF
+  scenario_family: recorded alternatives for a parcel dispatch planning backend
+- id: H11-006
+  category: H-TERMINAL
+  mode: CHANGE_REVIEW
+  dp: DP-003
+  shape: embedded
+  domains:
+  - concurrency
+  - integration
+  goodcase_nonalarm: true
+  strict_goodcase: false
+  partial_nonalarm: true
+  ambiguity: true
+  explicit_uncertainty_required: true
+  product_contract_surface: true
+  expected_terminal_family:
+  - NEEDS_EVIDENCE
+  scenario_family: proposed firmware rollout for handheld barcode scanners
+- id: H11-007
+  category: H-GUARANTEE
+  mode: ARCH_REVIEW
+  dp: DP-002
+  shape: mobile/backend
+  domains:
+  - security
+  - integration
+  goodcase_nonalarm: true
+  strict_goodcase: false
+  partial_nonalarm: true
+  ambiguity: false
+  explicit_uncertainty_required: false
+  product_contract_surface: true
+  expected_terminal_family:
+  - MIN_SAFE_FIX_IDENTIFIED
+  scenario_family: existing mobile expense-attachment download path and a proposed access guard
+- id: H11-008
+  category: H-GUARANTEE
+  mode: CHANGE_REVIEW
+  dp: DP-003
+  shape: developer tooling
+  domains:
+  - evolution
+  - integration
+  goodcase_nonalarm: false
+  strict_goodcase: false
+  partial_nonalarm: false
+  ambiguity: true
+  explicit_uncertainty_required: true
+  product_contract_surface: true
+  expected_terminal_family:
+  - MIN_SAFE_FIX_IDENTIFIED
+  scenario_family: proposed cache-key revision in a deterministic build tool
+- id: H11-009
+  category: H-GOODCASE
+  mode: ARCH_REVIEW
+  dp: DP-002
+  shape: desktop/local
+  domains:
+  - concurrency
+  - state-data
+  goodcase_nonalarm: true
+  strict_goodcase: true
+  partial_nonalarm: false
+  ambiguity: false
+  explicit_uncertainty_required: false
+  product_contract_surface: false
+  expected_terminal_family:
+  - NO_DEFECT
+  scenario_family: existing offline stage-light cue editor as-is
+- id: H11-010
+  category: H-GOODCASE
+  mode: ARCH_REVIEW
+  dp: DP-002
+  shape: public API/integration
+  domains:
+  - state-data
+  - concurrency
+  goodcase_nonalarm: true
+  strict_goodcase: true
+  partial_nonalarm: false
+  ambiguity: false
+  explicit_uncertainty_required: false
+  product_contract_surface: false
+  expected_terminal_family:
+  - NO_DEFECT
+  scenario_family: existing immutable-map snapshot download client
+- id: H11-011
+  category: H-ROUTING
+  mode: CHANGE_REVIEW
+  dp: DP-003
+  shape: distributed workflow
+  domains:
+  - integration
+  - evolution
+  goodcase_nonalarm: true
+  strict_goodcase: true
+  partial_nonalarm: false
+  ambiguity: true
+  explicit_uncertainty_required: false
+  product_contract_surface: true
+  expected_terminal_family:
+  - NO_DEFECT
+  - NO_DECISION_CHANGING_WORK
+  - MIN_SAFE_FIX_IDENTIFIED
+  scenario_family: joint station-message decision note and prepared rollout change
+  expected_terminal_outcomes_by_route:
+  - mode: CHANGE_REVIEW
+    dp: DP-003
+    outcomes:
+    - NO_DEFECT
+    condition: Qualified delta review establishes no material defect; retain the supplied rollout gates.
+  - mode: ADR_REVIEW
+    dp: DP-004
+    outcomes:
+    - NO_DEFECT
+    - NO_DECISION_CHANGING_WORK
+    - MIN_SAFE_FIX_IDENTIFIED
+    condition: Qualified decision acceptance; NO_DEFECT is defensible under the global no-defect stop, NO_DECISION_CHANGING_WORK
+      closes acceptance, and MIN_SAFE_FIX_IDENTIFIED must be a justified decision-level accept-with-conditions closure
+      under frozen DP-004, not a fabricated runtime defect.
+- id: H11-012
+  category: H-CROSS
+  mode: CHANGE_REVIEW
+  dp: DP-003
+  shape: public API/integration
+  domains:
+  - concurrency
+  - integration
+  goodcase_nonalarm: false
+  strict_goodcase: false
+  partial_nonalarm: false
+  ambiguity: false
+  explicit_uncertainty_required: false
+  product_contract_surface: true
+  expected_terminal_family:
+  - MIN_SAFE_FIX_IDENTIFIED
+  scenario_family: proposed public-record export adapter for additional attachment formats
+summary:
+  total_cases: 12
+  category_counts:
+    H-EVIDENCE: 4
+    H-TERMINAL: 2
+    H-GUARANTEE: 2
+    H-GOODCASE: 2
+    H-ROUTING: 1
+    H-CROSS: 1
+  mode_counts:
+    ARCH_DESIGN: 1
+    INCIDENT_ANALYSIS: 2
+    CHANGE_REVIEW: 5
+    ADR_REVIEW: 1
+    ARCH_REVIEW: 3
+  dp_counts:
+    DP-001: 1
+    DP-005: 2
+    DP-003: 5
+    DP-004: 1
+    DP-002: 3
+  shape_count: 10
+  shapes:
+  - backend
+  - batch/ML platform
+  - data pipeline
+  - desktop/local
+  - developer tooling
+  - distributed workflow
+  - edge/IoT
+  - embedded
+  - mobile/backend
+  - public API/integration
+  goodcase_nonalarm_cases:
+  - H11-006
+  - H11-007
+  - H11-009
+  - H11-010
+  - H11-011
+  strict_goodcase_cases:
+  - H11-009
+  - H11-010
+  - H11-011
+  partial_nonalarm_cases:
+  - H11-006
+  - H11-007
+  explicit_uncertainty_cases:
+  - H11-001
+  - H11-002
+  - H11-003
+  - H11-004
+  - H11-006
+  - H11-008
+  ambiguity_cases:
+  - H11-001
+  - H11-002
+  - H11-003
+  - H11-004
+  - H11-006
+  - H11-008
+  - H11-011
+  product_contract_surface_cases:
+  - H11-005
+  - H11-006
+  - H11-007
+  - H11-008
+  - H11-011
+  - H11-012
+  allowed_alternate_route_cases:
+  - H11-011

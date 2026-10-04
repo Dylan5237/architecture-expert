@@ -1,0 +1,194 @@
+id: STAGE11-HOLDOUT-MANIFEST
+version: 1
+status: FROZEN
+stage: 11A design only
+branch: eval/stage11-holdout-design
+date: '2026-10-04'
+starting_head: 1621916b4f0bef8c5ceb7f43b30ca473416dea03
+design_freeze_identity: The Git commit containing this manifest; record its full SHA in the handoff, without a circular
+  self-hash.
+task_ref: b62a10e7cb364cfa27105a5b935caa9639b55bf4:tasks/stage11/CODEX_STAGE11_HOLDOUT_DESIGN.md
+canonical_inputs:
+  agent_v0_1_sut: 96d9ae333ffc5a8076d635b86634b5151ec0bbc5
+  stage10_evidence: d6ac48c16f7285f53fbc7af6e5aae4f64f83123b
+  stage10_scorer: c32adbdac7f4a74077d2ec3235e8feb76aadc0ce
+  chief_architect_adjudication: 1621916b4f0bef8c5ceb7f43b30ca473416dea03
+  frozen_rubric: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/rubric.md
+  rubric_sha256: c9929d7ab388547997cda66e5e50bd5be53009cdd2ea77d30aef44eee0a22a35
+case_ids:
+- H11-001
+- H11-002
+- H11-003
+- H11-004
+- H11-005
+- H11-006
+- H11-007
+- H11-008
+- H11-009
+- H11-010
+- H11-011
+- H11-012
+coverage_summary:
+  total_cases: 12
+  category_counts:
+    H-EVIDENCE: 4
+    H-TERMINAL: 2
+    H-GUARANTEE: 2
+    H-GOODCASE: 2
+    H-ROUTING: 1
+    H-CROSS: 1
+  mode_counts:
+    ARCH_DESIGN: 1
+    INCIDENT_ANALYSIS: 2
+    CHANGE_REVIEW: 5
+    ADR_REVIEW: 1
+    ARCH_REVIEW: 3
+  dp_counts:
+    DP-001: 1
+    DP-005: 2
+    DP-003: 5
+    DP-004: 1
+    DP-002: 3
+  shape_count: 10
+  shapes:
+  - backend
+  - batch/ML platform
+  - data pipeline
+  - desktop/local
+  - developer tooling
+  - distributed workflow
+  - edge/IoT
+  - embedded
+  - mobile/backend
+  - public API/integration
+  goodcase_nonalarm_cases:
+  - H11-006
+  - H11-007
+  - H11-009
+  - H11-010
+  - H11-011
+  strict_goodcase_cases:
+  - H11-009
+  - H11-010
+  - H11-011
+  partial_nonalarm_cases:
+  - H11-006
+  - H11-007
+  explicit_uncertainty_cases:
+  - H11-001
+  - H11-002
+  - H11-003
+  - H11-004
+  - H11-006
+  - H11-008
+  ambiguity_cases:
+  - H11-001
+  - H11-002
+  - H11-003
+  - H11-004
+  - H11-006
+  - H11-008
+  - H11-011
+  product_contract_surface_cases:
+  - H11-005
+  - H11-006
+  - H11-007
+  - H11-008
+  - H11-011
+  - H11-012
+  allowed_alternate_route_cases:
+  - H11-011
+pass_criteria:
+  all_criteria_required: true
+  comparison_scope: Both frozen candidate versions on these same 12 PUBLIC payloads; Stage 10 scores are not the
+    comparison baseline.
+  arithmetic: Use exact fractions before display rounding; D3 is always applicable, maximum=24 for each complete
+    run.
+  D3_evidence_discipline:
+    default: D3_pct(v0.2) - D3_pct(v0.1) >= 20 percentage points
+    exception_condition: HF03(v0.1) == 0 AND D3_pct(v0.1) >= 90
+    exception_rule: D3_pct(v0.2) >= D3_pct(v0.1) - 2 percentage points
+    no_other_ceiling_exception: true
+  HF03_reduction:
+    positive_baseline: 2 * HF03(v0.2) <= HF03(v0.1)
+    zero_baseline: HF03(v0.2) == 0
+    unit: distinct (case_id, HF-03) registrations; multiple substantiating quotes do not multiply the case/code
+      count
+  no_new_protected_HF:
+    codes:
+    - HF-02
+    - HF-05
+    - HF-06
+    - HF-07
+    - HF-09
+    rule: For each protected code, v0.2 case/code set is a subset of v0.1 case/code set. Same total with a newly
+      affected case fails.
+  primary_route_nonregression: Accepted primary route count(v0.2) >= count(v0.1); accept frozen alternate only with
+    a coherent object-based basis; overlay quality remains in D1.
+  strict_GOOD_CASE_nonregression:
+    case_ids:
+    - H11-009
+    - H11-010
+    - H11-011
+    rule: Material false-positive count(v0.2) <= count(v0.1), for the designated compliant component in each strict
+      case. Do not reclassify the group after outputs.
+  overall_nonregression: sum earned / sum applicable max(v0.2) >= corresponding v0.1 percentage, following the unchanged
+    frozen N/A and affected-dimension HF rules.
+  no_private_eval_leakage: Zero v0.2 cases revealing unavailable private holdout/eval information; any HF-11 fails
+    criterion 7.
+  invalid_run_policy: Incomplete, contaminated or unsealed-before-both-fixed evidence is not a comparable holdout
+    gate result. Preserve it and stop; do not invent scores or authorize a replacement attempt here.
+blindness_isolation:
+  repair_executor_forbidden:
+  - this design branch and all its holdout PUBLIC/private files
+  - reports/STAGE11_HOLDOUT_DESIGN.md
+  - this design manifest and its category/hash metadata
+  runner_allowed: Only the frozen candidate SUT and the selected PUBLIC case payload, in a fresh isolated context.
+  runner_forbidden:
+  - private/oracle.yaml
+  - private/coverage.yaml
+  - the scorer-only rubric
+  - design manifest except a controller-generated case-id/path-only projection
+  - reports/STAGE11_HOLDOUT_DESIGN.md
+  - designer/reviewer scratch files
+  unseal_condition: Both v0.1 and v0.2 complete canonical holdout runs, candidate/runtime identities, raw bytes
+    and per-case hashes are fixed before any oracle/rubric unseal or scoring.
+  branch_merge_rule: Do not merge the design branch before both fixed blinded runs.
+  sealing_meaning: A Git design freeze plus access-isolation policy, not encryption or proof that future runner
+    isolation has already been implemented.
+  future_execution_authorization: Design freeze does not authorize Agent v0.2 implementation, model calls, holdout
+    execution, repairs, retries or harness changes.
+run_preregistration:
+  required_before_any_measured_output:
+  - Both candidate SUT identities (v0.1 SHA above; v0.2 to be fixed in a separate authorized phase)
+  - Identical PUBLIC payload hashes for both versions
+  - One common harness/provider/model/settings contract apart from the candidate SUT
+  - Fresh-case isolation and private-path denial for both runs
+  - Raw-output locations/format, evidence identity rules and the plan to fix per-case hashes/completeness; actual
+    bytes and complete run identities are fixed after generation and before unsealing
+  v0_2_implementation_present_or_assumed: false
+  measured_outputs_at_design_freeze: 0
+  sut_model_calls_in_design_phase: 0
+integrity:
+  expected_public_files: 12
+  expected_oracle_entries: 12
+  expected_new_files: 16
+  rubric_copy: none; frozen SHA reference only
+  no_stage10_case_edits: true
+  no_agent_kb_harness_edits: true
+  no_run_output_creation: true
+payload_sha256:
+  private/coverage.yaml: 4b21418517941a819c4b8915e4794ecce385a03d7d0484488627e513ebffc9d3
+  private/oracle.yaml: 2e6966d57f1c902125bb61083a7e92cb2a6f8381344b9eb89c19b47516ee9143
+  public/H11-001.md: 0e55cdc6ac73aa221a5c226028c4b29e4d210b9b2456875602eaf039e19b2cda
+  public/H11-002.md: 54ca48e3719cd0cda714bd544d337b7f9bc45635b935d7f0323bde65e53c8e6b
+  public/H11-003.md: 9536f2dcf3c050716f63663b47fb7b2bde545498ecb0913cb795868cbcbf2fc7
+  public/H11-004.md: 196fdfd802786d0e7a4fdd4cd2f7f4dea1263d1f60725e630a67f36ac4edb011
+  public/H11-005.md: acd1d0d91933a1833029af682406002a28e9b013fab9db75ef6c3429ee837d7a
+  public/H11-006.md: ba1d9209b157dd181c2ae41f0ca29f7cf6489dbdd83e1ed019b6fcddd8474dce
+  public/H11-007.md: 777e932d52cf71492727659700c89cbb7ece2c1237964c23cf0533e9d3244fa6
+  public/H11-008.md: 71e3867cc12743784c8271b91ec9d4d6f14a5216b7aaddcb0a5134ca8733d736
+  public/H11-009.md: d2a809b1cf010e9b6e492cf31069610f64719a2d2d90326b4dc8dab90e02a888
+  public/H11-010.md: cd84f9956aa6076bc7ad26f49630f17c67928858c599f3d0dcd375e25ca5bb6c
+  public/H11-011.md: 1fffb18f692811dbb385105a3361ed42368e5fb5143d1b6ef93ca0131fbe9216
+  public/H11-012.md: 0b78f49f9ff7596febc60a7b28f9301be774388d15e9a1e28642dfa4111534eb

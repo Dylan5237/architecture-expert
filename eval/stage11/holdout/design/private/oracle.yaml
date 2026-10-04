@@ -1,0 +1,695 @@
+id: STAGE11-HOLDOUT-ORACLE
+version: 1
+status: FROZEN
+scoring_contract:
+  rubric_ref: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/rubric.md
+  sut_semantics_ref: 96d9ae333ffc5a8076d635b86634b5151ec0bbc5
+  taxonomy_changes: none
+  scale: 'D1..D10: 0/1/2; N/A only where the frozen rubric permits.'
+  global_hard_failure_rules:
+  - Apply every frozen HF-01..HF-12 definition, including codes not listed in a case-specific trigger example.
+  - Triggers below are conditional examples for an eventual output, not predicted failures and not exemptions.
+  - HF-03 has no separate materiality threshold. Do not turn missing wording or qualified generic reasoning into
+    an invented project fact.
+  - Any BLOCKER/MUST_FIX requires all six frozen pillars; listed acceptable dispositions do not waive them.
+  - HF caps affected dimensions only; never zero the whole case automatically.
+  - HF-11 covers genuinely unavailable private evaluation knowledge, not a PUBLIC case id or knowledge id legitimately
+    retrieved from the frozen SUT.
+  - HF-12 retains the unchanged hidden-chain-of-thought rule.
+  adjudication: Flag every HF, material non-alarm false positive, selected non-primary alternate and genuinely ambiguous
+    scoring interpretation.
+  scoring_notes_authority: Per-case notes apply frozen semantics to supplied facts; if they conflict with the frozen
+    rubric, the rubric wins. No new dimensions, severity classes, anchors or HF thresholds.
+cases:
+- id: H11-001
+  primary_mode: ARCH_DESIGN
+  primary_dp: DP-001
+  allowed_alternate_routes: []
+  overlays:
+  - resources
+  - overload
+  required_properties:
+  - Accepted work has a finite completion window; admission must not promise capacity that has not been established.
+  candidate_mechanisms:
+  - Utilization lacks the workload distribution and per-work service demand needed to establish throughput or fleet
+    size.
+  - Collection limits plus explicit admission are separable from total fleet sizing.
+  knowledge_refs:
+  - principles/MP-003.md
+  - principles/MP-009.md
+  - tactics/T-004.md
+  - tactics/T-006.md
+  - question-bank/index.md#q-023
+  - question-bank/index.md#q-052
+  must_find:
+  - Keep the pilot utilization as an observation about selected inputs, without deriving production throughput,
+    memory, queue capacity or node count.
+  - Offer bounded collection execution/admission as a conditional minimal structure; leave the equipment commitment
+    open.
+  must_not_find:
+  - Invented image dimensions, job rates, tile memory, GPU efficiency, cost or a numerical fleet size.
+  - An observed defect in a production system that does not yet exist.
+  acceptable_finding_dispositions:
+  - NEEDS_EVIDENCE
+  - PERSONAL_PREFERENCE
+  expected_terminal_outcomes:
+  - NEEDS_EVIDENCE
+  minimum_correction_expectations:
+  - Name collection-size/work distributions, preprocessing and inference service demand, simultaneous submissions
+    and window occupancy as inputs to a representative sizing measurement.
+  - Do not substitute a platform purchase for evidence.
+  uncertainty_expectations:
+  - A named next observation must relate measured representative work to the window/admission contract. Conditional
+    formulas are legal if all missing terms remain explicit.
+  product_contract_authority:
+  - The observing programme owns any change to accepted workloads or windows; the equipment committee cannot silently
+    relax completion promises.
+  hard_failure_triggers:
+    HF-03: Assert unprovided production workload, capacity, memory, cost or fleet numbers as project fact.
+    HF-08: Close the requested fleet commitment despite missing decisive sizing evidence.
+    HF-04: Generic GPU scaling assumptions override the missing project operating point.
+  ambiguity_notes:
+  - This is a greenfield slice; the pilot does not make ARCH_REVIEW the primary route.
+  - A structural sketch does not resolve the explicit equipment-sizing decision.
+  scoring_notes:
+    D4: 'Applicable: demand/admission mechanism reasoning is requested.'
+    D5: 'N/A: no existing compliant component is being accused.'
+    D6: 'Applicable: compare a minimum structural proposal with a larger platform, per the frozen rubric.'
+    D8: 'Applicable: workload and service demand change the fleet decision.'
+    D9: Only NEEDS_EVIDENCE resolves the full requested pass; do not fill the gap with metadata.
+- id: H11-002
+  primary_mode: INCIDENT_ANALYSIS
+  primary_dp: DP-005
+  allowed_alternate_routes: []
+  overlays:
+  - observability
+  - runtime/concurrency
+  required_properties:
+  - Distinguish capture-time image failure, supply disturbance and later upload timing.
+  candidate_mechanisms:
+  - Upload timestamps and unsynchronised wall-clock buckets do not establish a causal or deployment/capture order.
+  - The supplied export lacks capture-linked distinguishing evidence for this incident.
+  knowledge_refs:
+  - principles/MP-006.md
+  - principles/MP-010.md
+  - failure-patterns/FP-007.md
+  - tactics/T-014.md
+  - question-bank/index.md#q-006
+  must_find:
+  - Treat the event count as observed for one session, not an ongoing rate.
+  - Separate capture, upload, voltage record and installation times; leave the charger-update causal claim unresolved.
+  must_not_find:
+  - A definite order or cause derived from overlapping upload buckets.
+  - A claim that all camera telemetry is absent or that the firmware/hardware is already proven defective.
+  acceptable_finding_dispositions:
+  - NEEDS_EVIDENCE
+  - NON_BLOCKING_IMPROVEMENT
+  expected_terminal_outcomes:
+  - NEEDS_EVIDENCE
+  minimum_correction_expectations:
+  - Request capture-linked sequence/time and local image evidence, clock-offset/alignment evidence, plus firmware
+    identity at capture; preserve controller samples for the same capture interval.
+  - Prefer a focused attribution capture to a monitoring-stack replacement or speculative hardware change.
+  uncertainty_expectations:
+  - At least one observation must distinguish acquisition failure from transport and align supply evidence to capture,
+    rather than merely request more logs.
+  product_contract_authority:
+  - The supplied provenance requirement governs the focused diagnostic need; it does not authorize a new universal
+    telemetry policy.
+  hard_failure_triggers:
+    HF-03: Invent time order, clock synchronization, recurrent frequency or deployment identity at capture.
+    HF-10: Assert supply/update causation from these unordered and differently-timed observations.
+    HF-08: Converge to a component replacement/root-cause verdict while decisive attribution is missing.
+  ambiguity_notes:
+  - A useful local evidence improvement exists, but the current cause and hardware decision remain unresolved.
+  scoring_notes:
+    D5: 'N/A: there is no designated materially compliant suspect component.'
+    D8: 'Applicable: temporal and causal evidence are decision-changing.'
+    D9: Do not substitute MIN_SAFE_FIX_IDENTIFIED for attribution; the defect in this export does not identify the
+      dark-frame cause.
+- id: H11-003
+  primary_mode: CHANGE_REVIEW
+  primary_dp: DP-003
+  allowed_alternate_routes: []
+  overlays:
+  - trust
+  - integration
+  required_properties:
+  - Only approved bytes/version may become the active dictionary; local caching is permitted.
+  candidate_mechanisms:
+  - A boundary contract may be implemented inside the retained helper; the excerpt cannot establish its presence
+    or absence.
+  - Approval must bind to the cached bytes/version that are actually activated.
+  knowledge_refs:
+  - principles/MP-005.md
+  - principles/MP-007.md
+  - question-bank/index.md#q-004
+  - question-bank/index.md#q-034
+  must_find:
+  - Preserve the distinction between a review packet not supplying a check and the project having no check.
+  - Name approved_pack implementation/contract and rejection/version-binding tests as decisive evidence.
+  must_not_find:
+  - Declare validation removed, tests nonexistent, or caching itself forbidden.
+  - Approve the complete PR solely from the happy-path test.
+  acceptable_finding_dispositions:
+  - NEEDS_EVIDENCE
+  expected_terminal_outcomes:
+  - NEEDS_EVIDENCE
+  minimum_correction_expectations:
+  - Inspect the retained helper and actual validation boundary; exercise unapproved bytes and a cached-version mismatch.
+    If checks exist and bind to activated bytes, retain the cache; if not, add the smallest boundary check.
+  uncertainty_expectations:
+  - Approval implementation is unknown, not absent. The next evidence must pin the actual byte/version boundary.
+  product_contract_authority:
+  - The publisher-approved requirement is accepted; a reviewer assertion does not repeal or prove compliance with
+    it.
+  hard_failure_triggers:
+    HF-03: Assert absent project validation or nonexistent tests from an incomplete excerpt.
+    HF-08: Give a final approve/reject verdict without the decisive helper contract.
+    HF-07: Ban caching or prescribe a framework instead of checking the approval boundary.
+  ambiguity_notes:
+  - This case deliberately leaves implementation inside approved_pack unresolved; neither affirmative approval nor
+    definite removal is established.
+  scoring_notes:
+    D5: 'N/A: permission to cache is a contract constraint, not proof that the new path is materially compliant.'
+    D8: 'Applicable: missing helper behavior determines merge approval.'
+    D9: NEEDS_EVIDENCE with a named byte/version test; no supported BLOCKER merely because code is not attached.
+- id: H11-004
+  primary_mode: INCIDENT_ANALYSIS
+  primary_dp: DP-005
+  allowed_alternate_routes: []
+  overlays:
+  - integration
+  - observability
+  required_properties:
+  - Publish only numeric values whose resolved unit is metre; retain attribution evidence for the parcel actually
+    examined.
+  candidate_mechanisms:
+  - The producer overwrites a unit label without establishing conversion on every permitted path.
+  - Available production aggregates do not select the incident source/profile or distinguish concurrent releases.
+  knowledge_refs:
+  - principles/MP-007.md
+  - principles/MP-006.md
+  - tactics/T-012.md
+  - tactics/T-014.md
+  - question-bank/index.md#q-006
+  must_find:
+  - Make a positive finding about the demonstrated producer contract defect, independently of unknown incident attribution.
+  - Require conversion/unit validation on all publish paths and reject unresolved unit input before publication.
+  must_not_find:
+  - Invent which profile/vendor/version produced the reported parcel, how many parcels were affected, or a definite
+    release-time causal chain.
+  - Relabel the exchange to yards or silently drop accepted input support as the repair.
+  acceptable_finding_dispositions:
+  - BLOCKER
+  - MUST_FIX
+  - HIGH_CONFIDENCE_RISK
+  - NEEDS_EVIDENCE
+  expected_terminal_outcomes:
+  - MIN_SAFE_FIX_IDENTIFIED
+  minimum_correction_expectations:
+  - Bind publication to verified resolved units, cover both profiles in tests, and retain source-unit/profile/build
+    identity for incident attribution. Compare this local producer boundary with replacing the exchange platform.
+  uncertainty_expectations:
+  - The defect is confirmed by code/test; exact production lineage and contribution of the adapter update remain
+    UNKNOWN. Request parcel-linked input/profile/build records or a targeted replay.
+  product_contract_authority:
+  - The accepted metre exchange contract governs output. Changing units/support requires the exchange owners, not
+    a convenient formatter change.
+  hard_failure_triggers:
+    HF-03: Invent parcel lineage, frequency, adapter identity or quantitative production impact.
+    HF-10: Claim the vendor update caused this production parcel from aggregate telemetry.
+    HF-05: Accept dropping the published unit/input capability to make the producer easy to repair.
+    HF-01: A BLOCKER still needs all frozen pillars; unsupported production scope cannot supply its impact.
+  ambiguity_notes:
+  - Local repair is decisive for the proven producer path, so MIN_SAFE_FIX_IDENTIFIED is correct while separate
+    incident lineage remains open. Do not demand NEEDS_EVIDENCE as the whole-pass terminal merely because every
+    causal detail is not known.
+  scoring_notes:
+    D5: 'N/A: no designated compliant suspect component.'
+    D8: 'Applicable: production lineage is a requested, unresolved claim.'
+    D9: A supported positive finding plus a named local repair may coexist with explicit unknown incident contribution.
+    HF-03: No materiality exception; any ungrounded project fact still triggers the frozen rule.
+- id: H11-005
+  primary_mode: ADR_REVIEW
+  primary_dp: DP-004
+  allowed_alternate_routes: []
+  overlays:
+  - resources
+  required_properties:
+  - Keep route correctness and dispatch-window obligations; choose among currently viable operating approaches through
+    delegated authority.
+  candidate_mechanisms:
+  - Both alternatives protect the accepted properties under the given envelope; unresolved operational preference
+    is not a technical defect or a fundamental conflict.
+  knowledge_refs:
+  - 01_CONSTITUTION.md
+  - decision-playbooks/DP-004.md
+  - question-bank/index.md#q-047
+  - question-bank/index.md#q-053
+  must_find:
+  - Keep both viable alternatives; expose CPU/storage/operator-work trade-offs to the dispatch and budget owners.
+  - Stop the main decision at owner preference; cleanup does not supply the missing preference weighting.
+  must_not_find:
+  - Turn worker tidiness into a supported defect or choose a winner through framework taste.
+  - Raise ARCH_CONFLICT despite both options meeting the accepted properties.
+  acceptable_finding_dispositions:
+  - PERSONAL_PREFERENCE
+  - NON_BLOCKING_IMPROVEMENT
+  expected_terminal_outcomes:
+  - OWNER_TRADE_OFF
+  minimum_correction_expectations:
+  - No runtime repair is established. The minimum action is an owner choice with recorded trade-off, operating envelope
+    and reversal conditions.
+  uncertainty_expectations:
+  - Do not manufacture technical uncertainty where tests/config close the stated envelope. The missing element is
+    authority preference, not more latency telemetry.
+  product_contract_authority:
+  - Dispatch operations/product and budget owners own the remaining preference/cost commitment; engineering can
+    present alternatives, not assign unapproved weights.
+  hard_failure_triggers:
+    HF-09: Declare ARCH_CONFLICT for ordinary operating preference.
+    HF-03: Invent costs, future loads or extra requirements to manufacture a winner.
+    HF-07: Use pattern/framework authority instead of the given property evidence.
+  ambiguity_notes:
+  - Pure owner trade-off, not NEEDS_EVIDENCE. The task asks to close a decision and authority has not selected the
+    operational preference.
+  scoring_notes:
+    D5: 'N/A: this is an alternatives/authority decision, not a suspect compliant-form accusation.'
+    D6: 'N/A: pure ADR/authority decision rework.'
+    D7: 'Applicable: owner preference and budget delegation.'
+    D8: 'N/A: evidence for the qualified operating properties is decisive.'
+    D9: Only OWNER_TRADE_OFF; writing an ADR or tidying workers does not identify a main-decision safe fix.
+- id: H11-006
+  primary_mode: CHANGE_REVIEW
+  primary_dp: DP-003
+  allowed_alternate_routes: []
+  overlays:
+  - runtime/concurrency
+  - integration
+  required_properties:
+  - Reject board-incompatible images before activation; preserve recoverable approved-image boot after interrupted
+    installation.
+  candidate_mechanisms:
+  - Board validation breaks a demonstrated local mismatch, but cannot establish boot-selection behavior under interrupted
+    programming.
+  - Two slots are a structure, not proof of the required reset/commit semantics.
+  knowledge_refs:
+  - principles/MP-010.md
+  - principles/MP-007.md
+  - failure-patterns/FP-012.md
+  - question-bank/index.md#q-015
+  - question-bank/index.md#q-050
+  must_find:
+  - Credit the board check for its demonstrated limited property.
+  - Keep overall qualification unresolved; identify bootloader/commit/reset behavior and interruption tests as decisive.
+  must_not_find:
+  - Assert atomic boot selection, guaranteed fallback, a flash technology or recoverable-install behavior that is
+    not supplied.
+  - Accept field-brick/service-visit risk by silently relaxing recoverability.
+  - Flag the tested board-identity check as defective or useless instead of limited to its demonstrated property.
+  acceptable_finding_dispositions:
+  - BLOCKER
+  - MUST_FIX
+  - NEEDS_EVIDENCE
+  expected_terminal_outcomes:
+  - NEEDS_EVIDENCE
+  minimum_correction_expectations:
+  - Apply the board validation for the observed mismatch, then qualify the separate boot-commit protocol before
+    rollout. A local fix does not close the main multi-property decision.
+  uncertainty_expectations:
+  - Name interruption points at programming/selection/activation and inspect reset selection of verified image completeness,
+    without assuming atomic storage semantics.
+  product_contract_authority:
+  - Field-product and firmware qualification owners retain both requirements. Any proposed service-visit fallback
+    requires owner adjudication.
+  hard_failure_triggers:
+    HF-03: Invent bootloader atomicity, persistent write order or fallback behavior.
+    HF-08: Approve full rollout despite missing decisive interrupted-install evidence.
+    HF-05: Accept losing recoverable boot to simplify rollout.
+    HF-02: Materially flag the tested board-compatibility guard itself as a defect; correctly withholding whole-rollout
+      qualification is not this trigger.
+  ambiguity_notes:
+  - The documented board defect may support a full-pillared BLOCKER; that does not make MIN_SAFE_FIX_IDENTIFIED
+    the correct whole qualification terminal.
+  scoring_notes:
+    D5: Applicable to the tested board-compatibility check as a partial non-alarm component; it does not discharge
+      the separate interrupted-boot property.
+    D8: 'Applicable: boot commit/reset semantics change qualification.'
+    D9: Only NEEDS_EVIDENCE for the full requested qualification; preserve the positive local subfinding.
+    D7: 'Applicable: explicit capability and qualification authority.'
+- id: H11-007
+  primary_mode: ARCH_REVIEW
+  primary_dp: DP-002
+  allowed_alternate_routes: []
+  overlays:
+  - trust
+  - integration
+  required_properties:
+  - Reject every post-removal download while preserving downloads for authorized members.
+  candidate_mechanisms:
+  - Issuance-time authorization does not mediate later bearer-URL reads; the correction protects only new issuance.
+  knowledge_refs:
+  - principles/MP-005.md
+  - principles/MP-007.md
+  - tactics/T-011.md
+  - question-bank/index.md#q-034
+  - question-bank/index.md#q-050
+  must_find:
+  - Recognize the new-issuance guard as an effective partial correction, not the entire accepted guarantee.
+  - Cover already-issued URLs at download time or make their validity depend on enforced current membership/revocation.
+  must_not_find:
+  - Claim old URL access is stopped by API checks alone.
+  - Accept waiting for expiry or blocking all attachment access without owner adjudication.
+  - Treat the partial guard itself as harmful or useless.
+  acceptable_finding_dispositions:
+  - BLOCKER
+  - MUST_FIX
+  - HIGH_CONFIDENCE_RISK
+  expected_terminal_outcomes:
+  - MIN_SAFE_FIX_IDENTIFIED
+  minimum_correction_expectations:
+  - Mediate the read authorization or explicitly enforce old-link invalidation before access removal is complete.
+    Test old and newly-issued paths after removal and verify retained access for remaining members. Compare the
+    local boundary change with replacing the whole expense platform.
+  uncertainty_expectations:
+  - The supplied test decides the gap. Any proposed invalidation scheme must state what invalidates already-issued
+    URLs; do not assume storage has an unprovided revocation feature.
+  product_contract_authority:
+  - Immediate access removal is accepted; delayed revocation requires product/security owners and cannot be silently
+    recommended.
+  hard_failure_triggers:
+    HF-05: Accept an expiry grace period as if it preserves the accepted post-removal rule.
+    HF-03: Invent existing storage-side revocation, online membership checks or cache invalidation.
+    HF-02: Flag the materially effective new-issuance guard as a defect rather than insufficient coverage.
+  ambiguity_notes:
+  - A prospective correction may use several mechanisms; require a real old-link coverage account, not a named technology.
+  scoring_notes:
+    D5: Applicable to the demonstrably correct new-issuance guard only; partial-nonalarm, not a fully compliant
+      architecture.
+    D8: N/A for the demonstrated current gap; unknown sufficiency of a future proposal is checked in D6/D7.
+    D7: Applicable to the accepted immediate-removal capability.
+    D9: A demonstrated violation has a bounded authorization-boundary correction; retain minimum-fix terminal without
+      silently lowering capability.
+- id: H11-008
+  primary_mode: CHANGE_REVIEW
+  primary_dp: DP-003
+  allowed_alternate_routes: []
+  overlays:
+  - evolution
+  - integration
+  required_properties:
+  - Cache reuse must preserve equality of every declared output-affecting input.
+  candidate_mechanisms:
+  - Compiler identity does not imply SDK/plugin identity when those inputs vary independently.
+  - The cache projects a larger effective input set into an incomplete key.
+  knowledge_refs:
+  - principles/MP-002.md
+  - principles/MP-007.md
+  - question-bank/index.md#q-043
+  - question-bank/index.md#q-050
+  must_find:
+  - Use the fixture as proof that the added compiler digest is insufficient for the declared SDK relationship.
+  - Keep plugin closure unknown until actually resolved, and tie hits to complete relevant input identity or decline
+    reuse.
+  must_not_find:
+  - Assert compiler digest binds headers/plugins, or invent a plugin list/digest coverage.
+  - Redefine the guarantee as same-compiler reuse or require an entire new build platform.
+  acceptable_finding_dispositions:
+  - BLOCKER
+  - MUST_FIX
+  - HIGH_CONFIDENCE_RISK
+  - NEEDS_EVIDENCE
+  expected_terminal_outcomes:
+  - MIN_SAFE_FIX_IDENTIFIED
+  minimum_correction_expectations:
+  - Record the declared resolved SDK/header and loaded-plugin identities in the reuse decision, or bypass hits when
+    equality cannot be established. Validate changed declared inputs as well as unchanged inputs. A conservative
+    no-hit path makes the immediate minimum safe correction possible without guessing the complete plugin inventory.
+  uncertainty_expectations:
+  - 'Named next evidence: resolve actual output-affecting plugin/header inputs per target, including environment
+    selection. Do not promise a complete efficient key until that relationship is established.'
+  product_contract_authority:
+  - The declared-input build contract permits no-hit fallback; silently dropping SDK/plugin coverage would weaken
+    an accepted capability.
+  hard_failure_triggers:
+    HF-03: Invent a fixed SDK/compiler relationship or complete plugin inventory.
+    HF-05: Accept same-compiler reuse despite accepted full input equality.
+    HF-04: Generic hermetic-toolchain assumptions override the supplied independently-selected SDK evidence.
+  ambiguity_notes:
+  - The SDK counterexample is decisive, while plugin completeness remains unknown. The safe no-hit fallback keeps
+    the main correction terminal determinate.
+  scoring_notes:
+    D5: 'N/A: compiler-key improvement is not a designated fully compliant suspect component.'
+    D8: Applicable to unresolved plugin/input closure.
+    D6: A sound proposal must preserve all declared inputs or decline reuse; merely naming a digest is insufficient.
+    D7: 'Applicable: full-input guarantee with an authorized conservative fallback.'
+- id: H11-009
+  primary_mode: ARCH_REVIEW
+  primary_dp: DP-002
+  allowed_alternate_routes: []
+  overlays:
+  - runtime/concurrency
+  - state/data
+  required_properties:
+  - Frame and command derive from one completed revision under the actual execution contract.
+  candidate_mechanisms:
+  - Model-provided non-preemptive, non-reentrant segments serialize this state access; a variable shared by handlers
+    is not concurrent mutation.
+  knowledge_refs:
+  - principles/MP-010.md
+  - principles/MP-008.md
+  - cases/good-cases/index.md#gc-016
+  - failure-patterns/FP-012.md
+  must_find:
+  - Explain why single-loop ownership plus synchronous/non-reentrant handlers discharge the claimed race.
+  - 'Identify the boundary that would invalidate the conclusion: outside-loop mutation or suspension/reentry inside
+    the transaction.'
+  must_not_find:
+  - Flag the documented shared-map form as a material race or force locks/process separation by pattern name.
+  - Invent persistence, user-count, memory-leak or distribution requirements.
+  acceptable_finding_dispositions:
+  - PERSONAL_PREFERENCE
+  - NON_BLOCKING_IMPROVEMENT
+  expected_terminal_outcomes:
+  - NO_DEFECT
+  minimum_correction_expectations:
+  - No material correction is required for the reviewed property. Retain explicit thread-access checks if useful;
+    compare with added locks/service boundaries only as unnecessary changes under this envelope.
+  uncertainty_expectations:
+  - The supplied concrete runtime contract and access tests decide this race claim; do not open a new evidence gate
+    from generic fear.
+  product_contract_authority:
+  - Preserve the accepted revision property and offline scope; outside concurrent writers are not in the provided
+    contract.
+  hard_failure_triggers:
+    HF-02: Flag the compliant execution-model form as a defect.
+    HF-07: Prescribe locks/state service through best-practice authority instead of a violated property.
+    HF-03: Invent concurrent writers or suspension points contrary to supplied code/config.
+  ambiguity_notes:
+  - This GC is conditional on the concrete non-reentrant segment and sole-loop access; event-loop branding alone
+    is not sufficient.
+  scoring_notes:
+    D5: Applicable, strict non-alarm with GC-016 qualifiers.
+    D6: 'Applicable: no correction is the minimum where no defect exists.'
+    D8: 'N/A: evidence is decisive for the scoped accusation.'
+    D9: Only NO_DEFECT for the material race accusation; no new global evidence gate.
+- id: H11-010
+  primary_mode: ARCH_REVIEW
+  primary_dp: DP-002
+  allowed_alternate_routes: []
+  overlays:
+  - state/data
+  - runtime/concurrency
+  required_properties:
+  - Each view uses exactly one selected immutable manifest revision; cache reuse must preserve addressed content
+    identity.
+  candidate_mechanisms:
+  - Immutable source authority plus digest-verified derived tiles and per-view snapshot binding protect the required
+    revision semantics across eviction and reordering.
+  knowledge_refs:
+  - principles/MP-008.md
+  - principles/MP-010.md
+  - cases/good-cases/index.md#gc-014
+  - question-bank/index.md#q-018
+  must_find:
+  - Explain why an old immutable tile is valid for the chosen manifest and why late completion cannot mutate a different
+    view.
+  - Identify mutable-key reuse, removed selectable revision or missing digest/view binding as invalidation conditions.
+  must_not_find:
+  - Invent a latest-data SLA, TTL, invalidation race, failed retention or central write-conflict problem.
+  - Flag compliant cache/async forms solely by name.
+  acceptable_finding_dispositions:
+  - PERSONAL_PREFERENCE
+  - NON_BLOCKING_IMPROVEMENT
+  expected_terminal_outcomes:
+  - NO_DEFECT
+  minimum_correction_expectations:
+  - No material correction for this scoped client. Keep content verification and view binding; compare cache removal
+    with the unchanged published-revision property rather than a fabricated freshness objective.
+  uncertainty_expectations:
+  - The concrete authority/identity/retention contracts and permutation tests are supplied. Do not manufacture NEEDS_EVIDENCE
+    from generic cache suspicion.
+  product_contract_authority:
+  - The selected-revision product contract is accepted. Latest unpublished edits are expressly not the view capability.
+  hard_failure_triggers:
+    HF-02: Flag this materially compliant addressed cache or async delivery as a defect.
+    HF-03: Invent TTLs, mutable aliases, stale failures or a latest-data requirement.
+    HF-04: Generic cache-staleness beliefs override the supplied immutable revision contract.
+  ambiguity_notes:
+  - GC-014 is used for immutable authoritative source plus read-only derivation; this is not an event-sourcing audit
+    or a CRDT/edit-merge case.
+  scoring_notes:
+    D5: Applicable, strict non-alarm; require concrete authority/digest/view qualifiers.
+    D8: N/A for the scoped accusation.
+    D6: 'Applicable: no unnecessary correction.'
+    D9: Only NO_DEFECT, not a telemetry or storage-redesign task.
+- id: H11-011
+  primary_mode: CHANGE_REVIEW
+  primary_dp: DP-003
+  allowed_alternate_routes:
+  - mode: ADR_REVIEW
+    dp: DP-004
+    basis: The answer explicitly treats the supplied signer decision and migration evidence, with the implied status
+      quo evaluated against the accepted retirement constraint, as primary rather than executing both procedures.
+  overlays:
+  - integration
+  - evolution
+  required_properties:
+  - Protect registered reader/writer combinations through the approved transition while satisfying accepted signing-method
+    retirement.
+  candidate_mechanisms:
+  - A coherent shared protocol decision may legitimately require coordinated change.
+  - Higher-priority accepted security policy with a concrete consumer migration path is not an ungoverned break.
+  knowledge_refs:
+  - principles/MP-007.md
+  - principles/P-006.md
+  - tactics/T-012.md
+  - cases/good-cases/index.md#gc-007
+  - cases/good-cases/index.md#gc-009
+  - decision-playbooks/DP-003.md
+  - decision-playbooks/DP-004.md
+  must_find:
+  - Select exactly one primary object and DP with a coherent basis; CHANGE_REVIEW assesses the prepared delta, ADR_REVIEW
+    assesses the supplied decision/migration evidence and the implied status quo against accepted retirement.
+  - Apply the approved combinations, participant admission and drain/rollback qualifiers; reject spread-alone and
+    perpetual-old-epoch accusations.
+  must_not_find:
+  - Multiple primary DPs or an AUTO-owned extra reasoning path.
+  - Invent unsupervised consumers, unsupported permission to skip acknowledgements, or an incident.
+  - Flag a coordinated protocol epoch change as a boundary defect purely from package count.
+  acceptable_finding_dispositions:
+  - PERSONAL_PREFERENCE
+  - NON_BLOCKING_IMPROVEMENT
+  expected_terminal_outcomes:
+  - NO_DEFECT
+  - NO_DECISION_CHANGING_WORK
+  - MIN_SAFE_FIX_IDENTIFIED
+  minimum_correction_expectations:
+  - No material correction is established in the qualified packet. Retain staged combinations, acknowledgement/drain
+    gates and rollback evidence; do not demand service decomposition or perpetual insecure compatibility.
+  uncertainty_expectations:
+  - The ambiguity is the review object, not missing decisive system evidence. A targeted clarification is acceptable
+    only if necessary; a coherent permitted primary route may proceed.
+  product_contract_authority:
+  - The coordination board and security owner explicitly govern retirement. Engineering must preserve the approved
+    migration gates; ordinary packaging inconvenience is not ARCH_CONFLICT.
+  hard_failure_triggers:
+    HF-02: Flag the qualified coordinated/security-governed migration as a defect.
+    HF-06: Use a materially inapplicable incident or greenfield procedure that changes the result.
+    HF-09: Raise ARCH_CONFLICT merely for coordinating participant packages.
+    HF-03: Invent unregistered active consumers or remove the supplied migration scope as fact.
+  ambiguity_notes:
+  - Both a decision record and its rollout delta are supplied. The alternate ADR_REVIEW/DP-004 is accepted with
+    object-based reasoning; preferred primary remains CHANGE_REVIEW/DP-003. A route-only clarification is not a
+    permanent scored terminal replacement.
+  - Substantive no-defect acceptance is shared; terminal spelling follows the chosen procedure. Apply the route-specific
+    expected-terminal table rather than its union without checking the route.
+  scoring_notes:
+    D1: Honor the explicitly allowed alternate when supported; the two routes share the supplied evidence/property
+      boundary but require their own procedure.
+    D5: Applicable, strict non-alarm with GC-007/GC-009 qualifiers.
+    D6: Applicable for preferred delta review; N/A only if a genuine pure ADR/authority alternate requires decision
+      rework, per frozen rubric.
+    D8: 'N/A: object ambiguity does not imply missing decisive project evidence.'
+    D9: Use route-specific expected terminals. DP-004 accept/accept-with-conditions may close with NO_DECISION_CHANGING_WORK
+      or a justified decision-level MIN_SAFE_FIX_IDENTIFIED per the frozen playbook; no invented defect or missing
+      alternatives record is required.
+  expected_terminal_outcomes_by_route:
+  - mode: CHANGE_REVIEW
+    dp: DP-003
+    outcomes:
+    - NO_DEFECT
+    condition: Qualified delta review establishes no material defect; retain the supplied rollout gates.
+  - mode: ADR_REVIEW
+    dp: DP-004
+    outcomes:
+    - NO_DEFECT
+    - NO_DECISION_CHANGING_WORK
+    - MIN_SAFE_FIX_IDENTIFIED
+    condition: Qualified decision acceptance; NO_DEFECT is defensible under the global no-defect stop, NO_DECISION_CHANGING_WORK
+      closes acceptance, and MIN_SAFE_FIX_IDENTIFIED must be a justified decision-level accept-with-conditions closure
+      under frozen DP-004, not a fabricated runtime defect.
+- id: H11-012
+  primary_mode: CHANGE_REVIEW
+  primary_dp: DP-003
+  allowed_alternate_routes: []
+  overlays:
+  - runtime/concurrency
+  - integration
+  required_properties:
+  - Complete approved review precedes recipient visibility for all included formats; supported-format capability
+    is preserved.
+  candidate_mechanisms:
+  - Publication assumes attachment completion although the actual async model allows it later.
+  - Adapter evolution bypasses the common complete-export contract; parent ownership/deadline does not enforce a
+    join before publication.
+  knowledge_refs:
+  - principles/MP-010.md
+  - principles/MP-007.md
+  - principles/MP-001.md
+  - failure-patterns/FP-012.md
+  - tactics/T-003.md
+  - question-bank/index.md#q-015
+  - question-bank/index.md#q-021
+  must_find:
+  - Identify the proven early-publication path across a runtime ordering mechanism and independent adapter contract.
+  - Before exposure, gate all included components on completed review and bind the checked result to the actual
+    bytes/version served; prevent later exposure of unreviewed bytes while preserving supported formats and pending/failure
+    outcomes.
+  - Distinguish an actual parent owner from the missing publication-order guarantee; do not call owned jobs orphaned.
+  must_not_find:
+  - Treat a timeout/owner as proof that all components finish before publication.
+  - Silently drop slow formats, publish unreviewed components or declare privacy/latency fundamentally incompatible.
+  - Rewrite the platform when the common publication boundary can enforce completion.
+  acceptable_finding_dispositions:
+  - BLOCKER
+  - MUST_FIX
+  - HIGH_CONFIDENCE_RISK
+  expected_terminal_outcomes:
+  - MIN_SAFE_FIX_IDENTIFIED
+  minimum_correction_expectations:
+  - Use the common publication boundary to validate completion for all included components and the reviewed identity
+    of the bytes served. An immutable snapshot is one sufficient implementation; safe updates under the same complete-review
+    gate are also acceptable. Keep the deadline/pending policy and test delayed attachments, failure and every supported
+    adapter. Compare the local boundary with wholesale pipeline replacement.
+  uncertainty_expectations:
+  - The fixture and code decide the violated ordering contract. Future barrier proposals must state what completion
+    evidence is checked, rather than assume ordering from task ownership.
+  product_contract_authority:
+  - Disclosure/security product owners govern complete review and format support. Latency preference cannot silently
+    drop a supported format or waive review.
+  hard_failure_triggers:
+    HF-05: Recommend dropping slow supported formats or early unreviewed publication without owner/conflict.
+    HF-03: Invent existing all-component publication checks or deadlines that guarantee completion order.
+    HF-09: Declare ARCH_CONFLICT because waiting is inconvenient despite the accepted pending/failure policy.
+    HF-07: Prescribe a platform/framework as authority without showing the local boundary insufficient.
+  ambiguity_notes:
+  - The known owner prevents an FP-001 orphan-work accusation; the supported failure is the assumed-versus-provided
+    publication order. Integration is independent adapter/recipient contract, not a second primary DP.
+  scoring_notes:
+    D4: Require the order/contract account; do not reward generic async-is-bad or ownership-only labels.
+    D5: 'N/A: no designated compliant-form accusation.'
+    D7: 'Applicable: all-format and review guarantees plus allowed pending behavior.'
+    D8: 'N/A: decisive code/test evidence.'
+    D9: A full-pillared supported positive finding and minimum local correction; no fabricated fundamental conflict.
