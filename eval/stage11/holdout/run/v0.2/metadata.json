@@ -1,0 +1,4102 @@
+{
+  "stage": 11,
+  "phase": "C",
+  "run_kind": "isolated_api_blinded_reference",
+  "run_id": "stage11-20261008T060131Z-c3fe4596-v0.2",
+  "process_pid": 60776,
+  "sut_sha": "c12b67c7410878960c45a9934ded6ae52ae6c42f",
+  "suite_design_sha": "69cab5ab750c350ce719a0d37e7680bbc96bdf21",
+  "public_pack_sha": "69cab5ab750c350ce719a0d37e7680bbc96bdf21",
+  "harness_git_sha": "c3fe4596961cf3abf30296aac169ef73c71034cd",
+  "controller_sha256": "206f9f136eed6b2b83f612c3705dfd1850e244e78a44772d9ac49723d7d6e35a",
+  "runner_sha256": "17bc6afc9cda16570d29c91ae7ea43e33e9f67443196759b16357ca52c6c2654",
+  "provider_adapter_sha256": "8013d03289e34cb784eccb003cde04a7f92564731399953743451d52d919253f",
+  "provider": "company compute gateway",
+  "api_host": "http://192.168.3.77:13000/v1",
+  "authentication_source": "WorkBuddy models.json zoesoft entries",
+  "requested_model": "glm-5.3",
+  "generation_settings": {
+    "temperature": 0,
+    "max_tokens": 32000
+  },
+  "transport_policy": {
+    "transport_client": "httpx",
+    "transport_protocol": "OpenAI-compatible chat-completions",
+    "httpx_version": "0.28.1",
+    "transport_route": "DIRECT",
+    "timeout_policy": {
+      "connect": 30,
+      "read": 360,
+      "write": 30,
+      "pool": 30
+    },
+    "trust_env": false,
+    "proxy": null,
+    "follow_redirects": false,
+    "max_attempts_per_round": 3,
+    "backoff_seconds": [
+      1,
+      3
+    ],
+    "connect_error_policy": "retry all ConnectError except explicit TLS certificate verification failure",
+    "http_429_policy": "valid Retry-After once; capped at 120 seconds; otherwise fail closed; within 3 total attempts"
+  },
+  "max_tool_rounds": 24,
+  "prompt_precedence_mapping": "SYSTEM1=agent/system-prompt-v0.2.md; SYSTEM2=agent/modes/<MODE>.md; USER=exact PUBLIC UTF-8 bytes",
+  "fresh_context_mechanism": "new CaseRunner/messages/sandbox and unique session per case/attempt",
+  "model_visible_tools": [
+    "read_sut_file"
+  ],
+  "sut_snapshot_mechanism": "explicit Git archive whitelist; original bytes; read-only files",
+  "external_context_boundary": "only read_sut_file; no eval/reports/tasks/holdout/.git materialized; no alternative prompt",
+  "started_at": "2026-10-08T06:49:12Z",
+  "completed_at": "2026-10-08T07:30:38Z",
+  "status": "COMPLETE",
+  "cases": [
+    {
+      "id": "H11-001",
+      "requested_mode": "ARCH_DESIGN",
+      "start_order": 1,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        4
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-001",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-001.md",
+          "bytes": 5562,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "domains/overload/index.md",
+          "bytes": 611,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "domains/resources/index.md",
+          "bytes": 617,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-010.md",
+          "bytes": 1756,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-011.md",
+          "bytes": 1790,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-003.md",
+          "bytes": 1806,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "tactics/T-006.md",
+          "bytes": 1039,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-001",
+          "tool": "read_sut_file",
+          "path": "tactics/T-003.md",
+          "bytes": 1119,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-001.md",
+      "raw_output_sha256": "3bcbdb1cf913c862e2e4c594d4a5fc23da3f48878130f2861dd7540e5713a420",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 4,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 51.356,
+              "successful_response_elapsed_s": 51.356,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 97,
+              "reasoning_present": true,
+              "reasoning_length": 11951,
+              "usage_summary": {
+                "prompt_tokens": 3754,
+                "completion_tokens": 2535,
+                "total_tokens": 6289,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 2444
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 106.588,
+              "successful_response_elapsed_s": 106.586,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 423,
+              "reasoning_present": true,
+              "reasoning_length": 25020,
+              "usage_summary": {
+                "prompt_tokens": 24301,
+                "completion_tokens": 5375,
+                "total_tokens": 29676,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3712
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 5233
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 4.971,
+              "successful_response_elapsed_s": 4.971,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 213,
+              "reasoning_present": true,
+              "reasoning_length": 330,
+              "usage_summary": {
+                "prompt_tokens": 27472,
+                "completion_tokens": 278,
+                "total_tokens": 27750,
+                "prompt_tokens_details": {
+                  "cached_tokens": 24256
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 139
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 136.426,
+              "successful_response_elapsed_s": 136.423,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 8296,
+              "reasoning_present": true,
+              "reasoning_length": 25260,
+              "usage_summary": {
+                "prompt_tokens": 29825,
+                "completion_tokens": 6970,
+                "total_tokens": 36795,
+                "prompt_tokens_details": {
+                  "cached_tokens": 27456
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 5196
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "0e55cdc6ac73aa221a5c226028c4b29e4d210b9b2456875602eaf039e19b2cda",
+      "input_bytes": 1710,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "35fdf393244269ede8784b7dda6645910d7bb186f8bcb102b94553d40de1103e",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-001"
+      ]
+    },
+    {
+      "id": "H11-002",
+      "requested_mode": "AUTO",
+      "start_order": 2,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        5
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-002",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-005.md",
+          "bytes": 7051,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "domains/observability/index.md",
+          "bytes": 515,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "domains/concurrency/index.md",
+          "bytes": 626,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "principles/MP-006.md",
+          "bytes": 2115,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "principles/MP-010.md",
+          "bytes": 2378,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-007.md",
+          "bytes": 1788,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-012.md",
+          "bytes": 2155,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "tactics/T-014.md",
+          "bytes": 1210,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-002",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-002.md",
+      "raw_output_sha256": "57624dc1db8e00e838bd3b8c8267d883a4a81ef9c2f67d677e8cb84c4d06933a",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 5,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 8.24,
+              "successful_response_elapsed_s": 8.24,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 849,
+              "usage_summary": {
+                "prompt_tokens": 3839,
+                "completion_tokens": 245,
+                "total_tokens": 4084,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3072
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 212
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 7.641,
+              "successful_response_elapsed_s": 7.641,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 247,
+              "reasoning_present": true,
+              "reasoning_length": 406,
+              "usage_summary": {
+                "prompt_tokens": 18329,
+                "completion_tokens": 188,
+                "total_tokens": 18517,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3776
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 86
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 4.495,
+              "successful_response_elapsed_s": 4.495,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 200,
+              "reasoning_present": true,
+              "reasoning_length": 202,
+              "usage_summary": {
+                "prompt_tokens": 20839,
+                "completion_tokens": 238,
+                "total_tokens": 21077,
+                "prompt_tokens_details": {
+                  "cached_tokens": 18304
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 68
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 17.587,
+              "successful_response_elapsed_s": 17.587,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 161,
+              "reasoning_present": true,
+              "reasoning_length": 2881,
+              "usage_summary": {
+                "prompt_tokens": 28579,
+                "completion_tokens": 716,
+                "total_tokens": 29295,
+                "prompt_tokens_details": {
+                  "cached_tokens": 20800
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 666
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 164.564,
+              "successful_response_elapsed_s": 164.56,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 11763,
+              "reasoning_present": true,
+              "reasoning_length": 28903,
+              "usage_summary": {
+                "prompt_tokens": 33132,
+                "completion_tokens": 8457,
+                "total_tokens": 41589,
+                "prompt_tokens_details": {
+                  "cached_tokens": 28544
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 5975
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "54ca48e3719cd0cda714bd544d337b7f9bc45635b935d7f0323bde65e53c8e6b",
+      "input_bytes": 1798,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "44452231bb3b66661f194a18b55856c5f111d493f7bd35a576ba23c7e3e1f11a",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-002"
+      ]
+    },
+    {
+      "id": "H11-003",
+      "requested_mode": "CHANGE_REVIEW",
+      "start_order": 3,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        4
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-003",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-003.md",
+          "bytes": 5609,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "question-bank/index.md",
+          "bytes": 12968,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "domains/security/index.md",
+          "bytes": 533,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "domains/state-data/index.md",
+          "bytes": 493,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-006.md",
+          "bytes": 1712,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "tactics/T-011.md",
+          "bytes": 1170,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-003",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-009.md",
+          "bytes": 1807,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-003.md",
+      "raw_output_sha256": "fcd62d35641b98b34f2d19e60a4bb885c15c5cf41e489c51b392d6842646a8d4",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 4,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 47.37,
+              "successful_response_elapsed_s": 47.369,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 211,
+              "reasoning_present": true,
+              "reasoning_length": 10188,
+              "usage_summary": {
+                "prompt_tokens": 3768,
+                "completion_tokens": 2309,
+                "total_tokens": 6077,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3072
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 2156
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 53.457,
+              "successful_response_elapsed_s": 53.456,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 407,
+              "reasoning_present": true,
+              "reasoning_length": 11972,
+              "usage_summary": {
+                "prompt_tokens": 30603,
+                "completion_tokens": 2663,
+                "total_tokens": 33266,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3712
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 2542
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 6.232,
+              "successful_response_elapsed_s": 6.232,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 253,
+              "reasoning_present": true,
+              "reasoning_length": 117,
+              "usage_summary": {
+                "prompt_tokens": 31099,
+                "completion_tokens": 158,
+                "total_tokens": 31257,
+                "prompt_tokens_details": {
+                  "cached_tokens": 30592
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 49
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 75.601,
+              "successful_response_elapsed_s": 75.6,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 7514,
+              "reasoning_present": true,
+              "reasoning_length": 11180,
+              "usage_summary": {
+                "prompt_tokens": 32561,
+                "completion_tokens": 4104,
+                "total_tokens": 36665,
+                "prompt_tokens_details": {
+                  "cached_tokens": 31040
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 2405
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "9536f2dcf3c050716f63663b47fb7b2bde545498ecb0913cb795868cbcbf2fc7",
+      "input_bytes": 1631,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "ec9e03e219dbcfd5d67051b4b09df5a7f135824535aad29758d4c4ce68ef0eed",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-003"
+      ]
+    },
+    {
+      "id": "H11-004",
+      "requested_mode": "AUTO",
+      "start_order": 4,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        4
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-004",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-004",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-004",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-004",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-004",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-005.md",
+          "bytes": 7051,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-004",
+          "tool": "read_sut_file",
+          "path": "domains/integration/index.md",
+          "bytes": 641,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-004",
+          "tool": "read_sut_file",
+          "path": "domains/observability/index.md",
+          "bytes": 515,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-004",
+          "tool": "read_sut_file",
+          "path": "question-bank/index.md",
+          "bytes": 12968,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-004",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-008.md",
+          "bytes": 1887,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-004",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-007.md",
+          "bytes": 1788,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-004",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-004.md",
+      "raw_output_sha256": "dc50a01cc1586583ec4988bc92e5279ca78e929f90aec8f015a60b4f581b325c",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 4,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 79.667,
+              "successful_response_elapsed_s": 79.666,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 587,
+              "reasoning_present": true,
+              "reasoning_length": 18459,
+              "usage_summary": {
+                "prompt_tokens": 3875,
+                "completion_tokens": 4068,
+                "total_tokens": 7943,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3456
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 3875
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 16.832,
+              "successful_response_elapsed_s": 16.832,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 384,
+              "reasoning_present": true,
+              "reasoning_length": 1547,
+              "usage_summary": {
+                "prompt_tokens": 25060,
+                "completion_tokens": 466,
+                "total_tokens": 25526,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3840
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 333
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 14.481,
+              "successful_response_elapsed_s": 14.481,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 296,
+              "reasoning_present": true,
+              "reasoning_length": 1661,
+              "usage_summary": {
+                "prompt_tokens": 29160,
+                "completion_tokens": 600,
+                "total_tokens": 29760,
+                "prompt_tokens_details": {
+                  "cached_tokens": 25024
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 479
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 138.8,
+              "successful_response_elapsed_s": 138.798,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 11522,
+              "reasoning_present": true,
+              "reasoning_length": 22841,
+              "usage_summary": {
+                "prompt_tokens": 32842,
+                "completion_tokens": 7369,
+                "total_tokens": 40211,
+                "prompt_tokens_details": {
+                  "cached_tokens": 29120
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 4847
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "196fdfd802786d0e7a4fdd4cd2f7f4dea1263d1f60725e630a67f36ac4edb011",
+      "input_bytes": 1867,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "44452231bb3b66661f194a18b55856c5f111d493f7bd35a576ba23c7e3e1f11a",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-004"
+      ]
+    },
+    {
+      "id": "H11-005",
+      "requested_mode": "ADR_REVIEW",
+      "start_order": 5,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        2
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-005",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-005",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-005",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-005",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-004.md",
+          "bytes": 5932,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-005",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-005",
+          "tool": "read_sut_file",
+          "path": "question-bank/index.md",
+          "bytes": 12968,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-005",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-005.md",
+      "raw_output_sha256": "fddf9066c063c150bc658914dc7dacbb79d24900f2675fb8f4f0cdaf0f977405",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 2,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 65.743,
+              "successful_response_elapsed_s": 65.742,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 151,
+              "reasoning_present": true,
+              "reasoning_length": 12177,
+              "usage_summary": {
+                "prompt_tokens": 3773,
+                "completion_tokens": 2678,
+                "total_tokens": 6451,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3072
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 2536
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 152.129,
+              "successful_response_elapsed_s": 152.127,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 7988,
+              "reasoning_present": true,
+              "reasoning_length": 28693,
+              "usage_summary": {
+                "prompt_tokens": 30672,
+                "completion_tokens": 7441,
+                "total_tokens": 38113,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3712
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 5729
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "acd1d0d91933a1833029af682406002a28e9b013fab9db75ef6c3429ee837d7a",
+      "input_bytes": 1709,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "7fb1100b0a9919c163c1468a961bf61ca9dfaefeaafad6b7335b7cc544614ca7",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-005"
+      ]
+    },
+    {
+      "id": "H11-006",
+      "requested_mode": "AUTO",
+      "start_order": 6,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        4
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-006",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-006",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-006",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-006",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-006",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-003.md",
+          "bytes": 5609,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-006",
+          "tool": "read_sut_file",
+          "path": "domains/concurrency/index.md",
+          "bytes": 626,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-006",
+          "tool": "read_sut_file",
+          "path": "domains/reliability/index.md",
+          "bytes": 634,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-006",
+          "tool": "read_sut_file",
+          "path": "question-bank/index.md",
+          "bytes": 12968,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-006",
+          "tool": "read_sut_file",
+          "path": "principles/MP-010.md",
+          "bytes": 2378,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-006",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-012.md",
+          "bytes": 2155,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-006",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-006.md",
+      "raw_output_sha256": "748dd22928ba2fa7e77b4fc8e9ca9c3d6ad28a062434c4eab514dfebee0a7ee6",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 4,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 75.859,
+              "successful_response_elapsed_s": 75.859,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 117,
+              "reasoning_present": true,
+              "reasoning_length": 12442,
+              "usage_summary": {
+                "prompt_tokens": 3823,
+                "completion_tokens": 2625,
+                "total_tokens": 6448,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3456
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 2533
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 21.047,
+              "successful_response_elapsed_s": 21.047,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 140,
+              "reasoning_present": true,
+              "reasoning_length": 3878,
+              "usage_summary": {
+                "prompt_tokens": 24367,
+                "completion_tokens": 895,
+                "total_tokens": 25262,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3776
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 817
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 6.057,
+              "successful_response_elapsed_s": 6.057,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 814,
+              "usage_summary": {
+                "prompt_tokens": 28459,
+                "completion_tokens": 251,
+                "total_tokens": 28710,
+                "prompt_tokens_details": {
+                  "cached_tokens": 24320
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 192
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 122.329,
+              "successful_response_elapsed_s": 122.327,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 7911,
+              "reasoning_present": true,
+              "reasoning_length": 20587,
+              "usage_summary": {
+                "prompt_tokens": 33666,
+                "completion_tokens": 6215,
+                "total_tokens": 39881,
+                "prompt_tokens_details": {
+                  "cached_tokens": 28416
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 4456
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "ba1d9209b157dd181c2ae41f0ca29f7cf6489dbdd83e1ed019b6fcddd8474dce",
+      "input_bytes": 1642,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "44452231bb3b66661f194a18b55856c5f111d493f7bd35a576ba23c7e3e1f11a",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-006"
+      ]
+    },
+    {
+      "id": "H11-007",
+      "requested_mode": "ARCH_REVIEW",
+      "start_order": 7,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        4
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-007",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-007",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-007",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-007",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-007",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-002.md",
+          "bytes": 6470,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-007",
+          "tool": "read_sut_file",
+          "path": "domains/security/index.md",
+          "bytes": 533,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-007",
+          "tool": "read_sut_file",
+          "path": "question-bank/index.md",
+          "bytes": 12968,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-007",
+          "tool": "read_sut_file",
+          "path": "principles/MP-005.md",
+          "bytes": 1966,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-007",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-006.md",
+          "bytes": 1712,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-007",
+          "tool": "read_sut_file",
+          "path": "tactics/T-011.md",
+          "bytes": 1170,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-007",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-007.md",
+      "raw_output_sha256": "d1ec86a1da76e2338ead78029e52ec594a2f0861ccdd4fbf45e1b0b3df3b1602",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 4,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 11.718,
+              "successful_response_elapsed_s": 11.717,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 2419,
+              "usage_summary": {
+                "prompt_tokens": 3710,
+                "completion_tokens": 558,
+                "total_tokens": 4268,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3072
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 490
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 15.972,
+              "successful_response_elapsed_s": 15.971,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 299,
+              "reasoning_present": true,
+              "reasoning_length": 3057,
+              "usage_summary": {
+                "prompt_tokens": 24559,
+                "completion_tokens": 725,
+                "total_tokens": 25284,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3648
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 627
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 6.477,
+              "successful_response_elapsed_s": 6.477,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 133,
+              "reasoning_present": true,
+              "reasoning_length": 208,
+              "usage_summary": {
+                "prompt_tokens": 28450,
+                "completion_tokens": 174,
+                "total_tokens": 28624,
+                "prompt_tokens_details": {
+                  "cached_tokens": 24512
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 54
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 102.623,
+              "successful_response_elapsed_s": 102.621,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 7956,
+              "reasoning_present": true,
+              "reasoning_length": 18564,
+              "usage_summary": {
+                "prompt_tokens": 33419,
+                "completion_tokens": 5594,
+                "total_tokens": 39013,
+                "prompt_tokens_details": {
+                  "cached_tokens": 28416
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 3828
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "777e932d52cf71492727659700c89cbb7ece2c1237964c23cf0533e9d3244fa6",
+      "input_bytes": 1673,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "ee9ac26bac9aad1e6df7428850b7ab8dec85a2db2a44f9378b9fc9995752b94e",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-007"
+      ]
+    },
+    {
+      "id": "H11-008",
+      "requested_mode": "CHANGE_REVIEW",
+      "start_order": 8,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        3
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-008",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-008",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-008",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-003.md",
+          "bytes": 5609,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-008",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-008",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-008.md",
+      "raw_output_sha256": "48afbd2eea427d4d9faffc8d26d31eccfd7fd7c056f9fc23c9940b5fac492643",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 3,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 11.896,
+              "successful_response_elapsed_s": 11.896,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 2244,
+              "usage_summary": {
+                "prompt_tokens": 3816,
+                "completion_tokens": 529,
+                "total_tokens": 4345,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3392
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 476
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 92.664,
+              "successful_response_elapsed_s": 92.663,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 21738,
+              "usage_summary": {
+                "prompt_tokens": 19820,
+                "completion_tokens": 4674,
+                "total_tokens": 24494,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3776
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 4653
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 60.96,
+              "successful_response_elapsed_s": 60.959,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 5551,
+              "reasoning_present": true,
+              "reasoning_length": 9065,
+              "usage_summary": {
+                "prompt_tokens": 22460,
+                "completion_tokens": 3010,
+                "total_tokens": 25470,
+                "prompt_tokens_details": {
+                  "cached_tokens": 19776
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 1851
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "71e3867cc12743784c8271b91ec9d4d6f14a5216b7aaddcb0a5134ca8733d736",
+      "input_bytes": 1881,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "ec9e03e219dbcfd5d67051b4b09df5a7f135824535aad29758d4c4ce68ef0eed",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-008"
+      ]
+    },
+    {
+      "id": "H11-009",
+      "requested_mode": "AUTO",
+      "start_order": 9,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        6
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-009",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-002.md",
+          "bytes": 6470,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "question-bank/index.md",
+          "bytes": 12968,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "domains/index.md",
+          "bytes": 1454,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "domains/concurrency/index.md",
+          "bytes": 626,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "domains/lifecycle/index.md",
+          "bytes": 646,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "principles/MP-010.md",
+          "bytes": 2378,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-012.md",
+          "bytes": 2155,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-009",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-001.md",
+          "bytes": 2061,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-009.md",
+      "raw_output_sha256": "78b802cea6197d78b3feba973f976386786354eca21e0bfdfc200663aa635864",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 6,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 57.918,
+              "successful_response_elapsed_s": 57.917,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 14720,
+              "usage_summary": {
+                "prompt_tokens": 3870,
+                "completion_tokens": 3146,
+                "total_tokens": 7016,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3456
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 3097
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 8.743,
+              "successful_response_elapsed_s": 8.743,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 1013,
+              "usage_summary": {
+                "prompt_tokens": 22877,
+                "completion_tokens": 269,
+                "total_tokens": 23146,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3840
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 218
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 6.748,
+              "successful_response_elapsed_s": 6.748,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": false,
+              "reasoning_length": null,
+              "usage_summary": {
+                "prompt_tokens": 28780,
+                "completion_tokens": 34,
+                "total_tokens": 28814,
+                "prompt_tokens_details": {
+                  "cached_tokens": 22848
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 5.477,
+              "successful_response_elapsed_s": 5.476,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 242,
+              "usage_summary": {
+                "prompt_tokens": 29216,
+                "completion_tokens": 133,
+                "total_tokens": 29349,
+                "prompt_tokens_details": {
+                  "cached_tokens": 28736
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 74
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 89.499,
+              "successful_response_elapsed_s": 89.497,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 20566,
+              "usage_summary": {
+                "prompt_tokens": 34423,
+                "completion_tokens": 4529,
+                "total_tokens": 38952,
+                "prompt_tokens_details": {
+                  "cached_tokens": 29184
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 4508
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 74.574,
+              "successful_response_elapsed_s": 74.573,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 8893,
+              "reasoning_present": true,
+              "reasoning_length": 9641,
+              "usage_summary": {
+                "prompt_tokens": 35016,
+                "completion_tokens": 4154,
+                "total_tokens": 39170,
+                "prompt_tokens_details": {
+                  "cached_tokens": 34368
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 2218
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "d2a809b1cf010e9b6e492cf31069610f64719a2d2d90326b4dc8dab90e02a888",
+      "input_bytes": 1856,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "44452231bb3b66661f194a18b55856c5f111d493f7bd35a576ba23c7e3e1f11a",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-009"
+      ]
+    },
+    {
+      "id": "H11-010",
+      "requested_mode": "ARCH_REVIEW",
+      "start_order": 10,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        4
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-010",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-002.md",
+          "bytes": 6470,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "question-bank/index.md",
+          "bytes": 12968,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "domains/lifecycle/index.md",
+          "bytes": 646,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "domains/concurrency/index.md",
+          "bytes": 626,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-001.md",
+          "bytes": 2061,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-012.md",
+          "bytes": 2155,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/GC-016.md",
+          "bytes": 0,
+          "result": "deny: not a file"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "principles/MP-010.md",
+          "bytes": 2378,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-010",
+          "tool": "read_sut_file",
+          "path": "principles/MP-001.md",
+          "bytes": 2122,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-010.md",
+      "raw_output_sha256": "fa5385a65b52061e2851a65cc0f959396cbd19fa30f2dab95b7391226b116963",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 4,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 13.663,
+              "successful_response_elapsed_s": 13.663,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 143,
+              "reasoning_present": true,
+              "reasoning_length": 2191,
+              "usage_summary": {
+                "prompt_tokens": 3751,
+                "completion_tokens": 637,
+                "total_tokens": 4388,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3392
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 523
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 9.799,
+              "successful_response_elapsed_s": 9.799,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 256,
+              "reasoning_present": true,
+              "reasoning_length": 994,
+              "usage_summary": {
+                "prompt_tokens": 28258,
+                "completion_tokens": 444,
+                "total_tokens": 28702,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3712
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 282
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 11.487,
+              "successful_response_elapsed_s": 11.487,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 319,
+              "reasoning_present": true,
+              "reasoning_length": 1179,
+              "usage_summary": {
+                "prompt_tokens": 32584,
+                "completion_tokens": 390,
+                "total_tokens": 32974,
+                "prompt_tokens_details": {
+                  "cached_tokens": 28224
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 256
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 115.634,
+              "successful_response_elapsed_s": 115.632,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 8549,
+              "reasoning_present": true,
+              "reasoning_length": 21806,
+              "usage_summary": {
+                "prompt_tokens": 36155,
+                "completion_tokens": 6517,
+                "total_tokens": 42672,
+                "prompt_tokens_details": {
+                  "cached_tokens": 32576
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 4677
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "cd84f9956aa6076bc7ad26f49630f17c67928858c599f3d0dcd375e25ca5bb6c",
+      "input_bytes": 1858,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "ee9ac26bac9aad1e6df7428850b7ab8dec85a2db2a44f9378b9fc9995752b94e",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-010"
+      ]
+    },
+    {
+      "id": "H11-011",
+      "requested_mode": "AUTO",
+      "start_order": 11,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        4
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-011",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-011",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-011",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-011",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-011",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-003.md",
+          "bytes": 5609,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-011",
+          "tool": "read_sut_file",
+          "path": "domains/integration/index.md",
+          "bytes": 641,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-011",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-011",
+          "tool": "read_sut_file",
+          "path": "tactics/T-012.md",
+          "bytes": 1275,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-011.md",
+      "raw_output_sha256": "7399a22fe434bd65160b3979e47d5a9bbf2a82f614d0868f00c221f6c23579bd",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 4,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 62.24,
+              "successful_response_elapsed_s": 62.238,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 16590,
+              "usage_summary": {
+                "prompt_tokens": 3895,
+                "completion_tokens": 3437,
+                "total_tokens": 7332,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3456
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 3368
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 32.511,
+              "successful_response_elapsed_s": 32.511,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 6041,
+              "usage_summary": {
+                "prompt_tokens": 24416,
+                "completion_tokens": 1348,
+                "total_tokens": 25764,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3840
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 1312
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 7.702,
+              "successful_response_elapsed_s": 7.702,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 0,
+              "reasoning_present": true,
+              "reasoning_length": 906,
+              "usage_summary": {
+                "prompt_tokens": 27260,
+                "completion_tokens": 241,
+                "total_tokens": 27501,
+                "prompt_tokens_details": {
+                  "cached_tokens": 24384
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 221
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 88.117,
+              "successful_response_elapsed_s": 88.115,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 6736,
+              "reasoning_present": true,
+              "reasoning_length": 16519,
+              "usage_summary": {
+                "prompt_tokens": 27663,
+                "completion_tokens": 5055,
+                "total_tokens": 32718,
+                "prompt_tokens_details": {
+                  "cached_tokens": 27200
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 3573
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "1fffb18f692811dbb385105a3361ed42368e5fb5143d1b6ef93ca0131fbe9216",
+      "input_bytes": 2162,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "44452231bb3b66661f194a18b55856c5f111d493f7bd35a576ba23c7e3e1f11a",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-011"
+      ]
+    },
+    {
+      "id": "H11-012",
+      "requested_mode": "AUTO",
+      "start_order": 12,
+      "attempt_count": 1,
+      "technical_retry_count": 0,
+      "rounds_used": [
+        3
+      ],
+      "observed_models": [
+        [
+          "glm-5.3",
+          "glm-5.3",
+          "glm-5.3"
+        ]
+      ],
+      "final_observed_model": "glm-5.3",
+      "session_header": "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-012",
+      "tool_calls": [
+        {
+          "attempt": 1,
+          "case": "H11-012",
+          "tool": "read_sut_file",
+          "path": "00_ROUTER.md",
+          "bytes": 2377,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-012",
+          "tool": "read_sut_file",
+          "path": "01_CONSTITUTION.md",
+          "bytes": 16753,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-012",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/index.md",
+          "bytes": 17652,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-012",
+          "tool": "read_sut_file",
+          "path": "decision-playbooks/DP-003.md",
+          "bytes": 5609,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-012",
+          "tool": "read_sut_file",
+          "path": "question-bank/index.md",
+          "bytes": 12968,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-012",
+          "tool": "read_sut_file",
+          "path": "cases/good-cases/index.md",
+          "bytes": 8597,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-012",
+          "tool": "read_sut_file",
+          "path": "domains/lifecycle/index.md",
+          "bytes": 646,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-012",
+          "tool": "read_sut_file",
+          "path": "domains/concurrency/index.md",
+          "bytes": 626,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-012",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-001.md",
+          "bytes": 2061,
+          "result": "allow"
+        },
+        {
+          "attempt": 1,
+          "case": "H11-012",
+          "tool": "read_sut_file",
+          "path": "failure-patterns/FP-012.md",
+          "bytes": 2155,
+          "result": "allow"
+        }
+      ],
+      "raw_output_path": "eval/stage11/holdout/run/v0.2/raw/H11-012.md",
+      "raw_output_sha256": "26d6b50bf618de4b33ca5b622aa8c5e7b1db334a17464e0c1eef05645ada6b3f",
+      "runner_status": "OK",
+      "technical_errors": [],
+      "attempt_diagnostics": [
+        {
+          "attempt": 1,
+          "rounds": 3,
+          "final_finish_reason": "stop",
+          "substantive": true,
+          "rounds_metadata": [
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 79.497,
+              "successful_response_elapsed_s": 79.496,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 237,
+              "reasoning_present": true,
+              "reasoning_length": 16113,
+              "usage_summary": {
+                "prompt_tokens": 3933,
+                "completion_tokens": 3376,
+                "total_tokens": 7309,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3456
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 3221
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 17.908,
+              "successful_response_elapsed_s": 17.908,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "tool_calls",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 365,
+              "reasoning_present": true,
+              "reasoning_length": 2300,
+              "usage_summary": {
+                "prompt_tokens": 30770,
+                "completion_tokens": 663,
+                "total_tokens": 31433,
+                "prompt_tokens_details": {
+                  "cached_tokens": 3904
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 499
+                }
+              }
+            },
+            {
+              "transport_client": "httpx",
+              "transport_protocol": "OpenAI-compatible chat-completions",
+              "httpx_version": "0.28.1",
+              "transport_route": "DIRECT",
+              "timeout_policy": {
+                "connect": 30,
+                "read": 360,
+                "write": 30,
+                "pool": 30
+              },
+              "round_elapsed_s": 124.18,
+              "successful_response_elapsed_s": 124.176,
+              "successful_response_after_240s": false,
+              "transport_attempt_count": 1,
+              "transport_retry_count": 0,
+              "retry_errors": [],
+              "http_status": 200,
+              "provider_attempt_count": 1,
+              "provider_retry_count": 0,
+              "rate_limit_events": [],
+              "observed_model": "glm-5.3",
+              "finish_reason": "stop",
+              "content_field_present": true,
+              "content_present": true,
+              "content_length": 11593,
+              "reasoning_present": true,
+              "reasoning_length": 20547,
+              "usage_summary": {
+                "prompt_tokens": 32480,
+                "completion_tokens": 6785,
+                "total_tokens": 39265,
+                "prompt_tokens_details": {
+                  "cached_tokens": 30720
+                },
+                "completion_tokens_details": {
+                  "reasoning_tokens": 4377
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "input_sha256": "0b78f49f9ff7596febc60a7b28f9301be774388d15e9a1e28642dfa4111534eb",
+      "input_bytes": 2377,
+      "system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+      "mode_contract_sha256": "44452231bb3b66661f194a18b55856c5f111d493f7bd35a576ba23c7e3e1f11a",
+      "attempt_sessions": [
+        "stage10-ref-stage11-20261008T060131Z-c3fe4596-v0.2-a1-H11-012"
+      ]
+    }
+  ],
+  "version": "v0.2",
+  "task_source_sha": "477ea2ecf05a9e0512ba5432d837e98ed6cc3454",
+  "task_sha256": "6a257e58f33937a3e06397509bae230b2a6f6014336084ab1426df187149d6e5",
+  "adapter_git_sha": "c3fe4596961cf3abf30296aac169ef73c71034cd",
+  "adapter_sha256": "022f1ae8d9814e3785b34fe8bb0b9802b11251cbebf32887289b81ed24dbaff4",
+  "active_system_prompt_path": "agent/system-prompt-v0.2.md",
+  "active_system_prompt_sha256": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+  "mode_contract_sha256": {
+    "AUTO": "44452231bb3b66661f194a18b55856c5f111d493f7bd35a576ba23c7e3e1f11a",
+    "ARCH_DESIGN": "35fdf393244269ede8784b7dda6645910d7bb186f8bcb102b94553d40de1103e",
+    "ARCH_REVIEW": "ee9ac26bac9aad1e6df7428850b7ab8dec85a2db2a44f9378b9fc9995752b94e",
+    "CHANGE_REVIEW": "ec9e03e219dbcfd5d67051b4b09df5a7f135824535aad29758d4c4ce68ef0eed",
+    "ADR_REVIEW": "7fb1100b0a9919c163c1468a961bf61ca9dfaefeaafad6b7335b7cc544614ca7",
+    "INCIDENT_ANALYSIS": "a76af80134749c42e0ef826efe1ae81d31e943fc88fa2c44048a57698c19b79c"
+  },
+  "public_input_sha256": {
+    "H11-001": "0e55cdc6ac73aa221a5c226028c4b29e4d210b9b2456875602eaf039e19b2cda",
+    "H11-002": "54ca48e3719cd0cda714bd544d337b7f9bc45635b935d7f0323bde65e53c8e6b",
+    "H11-003": "9536f2dcf3c050716f63663b47fb7b2bde545498ecb0913cb795868cbcbf2fc7",
+    "H11-004": "196fdfd802786d0e7a4fdd4cd2f7f4dea1263d1f60725e630a67f36ac4edb011",
+    "H11-005": "acd1d0d91933a1833029af682406002a28e9b013fab9db75ef6c3429ee837d7a",
+    "H11-006": "ba1d9209b157dd181c2ae41f0ca29f7cf6489dbdd83e1ed019b6fcddd8474dce",
+    "H11-007": "777e932d52cf71492727659700c89cbb7ece2c1237964c23cf0533e9d3244fa6",
+    "H11-008": "71e3867cc12743784c8271b91ec9d4d6f14a5216b7aaddcb0a5134ca8733d736",
+    "H11-009": "d2a809b1cf010e9b6e492cf31069610f64719a2d2d90326b4dc8dab90e02a888",
+    "H11-010": "cd84f9956aa6076bc7ad26f49630f17c67928858c599f3d0dcd375e25ca5bb6c",
+    "H11-011": "1fffb18f692811dbb385105a3361ed42368e5fb5143d1b6ef93ca0131fbe9216",
+    "H11-012": "0b78f49f9ff7596febc60a7b28f9301be774388d15e9a1e28642dfa4111534eb"
+  },
+  "sut_snapshot_files_sha256": {
+    "00_ROUTER.md": "89c9dfb92b8af953b33093a8c01b19e025505a0dc271d96e55de198e760e8547",
+    "01_CONSTITUTION.md": "5e6b42aaa855566ee6de0e93b6ae70f88f5b796154f04bc27b2815c0a76d90e3",
+    "02_VOCABULARY.md": "f221fd3867d90c55c437dacadb0ef636e84d39ef71d1fc90fe2da418fab41332",
+    "agent/modes/ADR_REVIEW.md": "7fb1100b0a9919c163c1468a961bf61ca9dfaefeaafad6b7335b7cc544614ca7",
+    "agent/modes/ARCH_DESIGN.md": "35fdf393244269ede8784b7dda6645910d7bb186f8bcb102b94553d40de1103e",
+    "agent/modes/ARCH_REVIEW.md": "ee9ac26bac9aad1e6df7428850b7ab8dec85a2db2a44f9378b9fc9995752b94e",
+    "agent/modes/AUTO.md": "44452231bb3b66661f194a18b55856c5f111d493f7bd35a576ba23c7e3e1f11a",
+    "agent/modes/CHANGE_REVIEW.md": "ec9e03e219dbcfd5d67051b4b09df5a7f135824535aad29758d4c4ce68ef0eed",
+    "agent/modes/INCIDENT_ANALYSIS.md": "a76af80134749c42e0ef826efe1ae81d31e943fc88fa2c44048a57698c19b79c",
+    "agent/system-prompt-v0.2.md": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+    "cases/good-cases/index.md": "ffa452231f4fba10355ae7faf2ba3e5c3b75e63cddcb74edc1afea86f420c82d",
+    "decision-playbooks/DP-001.md": "905fd79c4b7ec1d87ac095db7014bda721fb98d622135864f0ad90e88d4db25b",
+    "decision-playbooks/DP-002.md": "413a60e50d3281eb7bdec1d39a5d54a3e538485750c92953ca48d567652ea5ed",
+    "decision-playbooks/DP-003.md": "e0dbe4660736a8f9133fef0f11fa4315cf61de64760e9ebe8ee46e3aba010f90",
+    "decision-playbooks/DP-004.md": "3f2ed6f86c64ffc2cf939f820af6c95426363f247f1a4e1fae4453d3e8500d4a",
+    "decision-playbooks/DP-005.md": "c9e2fe3705a76f32b2c6318d08e4bb9c47e9be0722d7f11d1ec7461177226dfd",
+    "decision-playbooks/index.md": "a4fcb36d88d2a44f457a7e460dc27b2d9fa37674e82b0ae4596bc7510a41a6e5",
+    "domains/concurrency/index.md": "df7cc382888941cb7fd36be94348f48219f93df4d7530af34ee61e163ed31a49",
+    "domains/evolution/index.md": "acae4cc6897fa451ac4da4459a1f02fe5baad2feea5c3ad6ef210218dc575b85",
+    "domains/index.md": "d2a3f4db7605ff887a6dbedef9d60d576c2f4e5974edb840d2a70900bb144493",
+    "domains/integration/index.md": "7efe78e2be7d8536cf082c6e377e9d4a86f0b770519aa6fd5ea43fc62ab725fb",
+    "domains/lifecycle/index.md": "2f8c353a8ed3ebe82c60615ab8799ba5d0cfa494d820a75ac0d27eb6fbd30278",
+    "domains/observability/index.md": "9263c339c8528e3b903596768c8bf45543c93da75fbc4eb305d2eb5a0849f7a4",
+    "domains/overload/index.md": "a1486406624024193362d20b5b257453ca9f3b3ef4654695b984a9687ce06949",
+    "domains/reliability/index.md": "f8ec9ce18aba541f24255227c1533e53ff4dad194f9263b534423ac9da251b47",
+    "domains/resources/index.md": "4b935483cd8169fffc4af2a64b4b1e5b632694b7e6747eb9fecf98b8a17300eb",
+    "domains/security/index.md": "24c0cc0f0edcacf393cc1a0bf2496607f53be3a904a43001759bc8dd77cd0e63",
+    "domains/state-data/index.md": "1b5bc177465250df745f7910acc8e57ff22ed409eb33db4055be94f3247f51ee",
+    "failure-patterns/FP-001.md": "f58efef9b00a0d818648c03a075db25d7c9e10a5ae29fbed0ffd5375bb27c8bd",
+    "failure-patterns/FP-002.md": "807ebf35866d32db1f32a4ae36f0a1e336181b20224fc552ae230233b07bae56",
+    "failure-patterns/FP-003.md": "36c53240a3595a91b2cb68b31c02d0f898fb8bf72849397eab1c956dc4042870",
+    "failure-patterns/FP-004.md": "af7ebc36d2f9cbe72304a2dceb84b35bf9ef64206a6c366fe29fb3c4ee51d4d7",
+    "failure-patterns/FP-005.md": "5f560d7f78e1f03e94b6d99af52516af22e0d3289d93b44576604d8606a4e541",
+    "failure-patterns/FP-006.md": "c3cc90591fce927666297bd9218414d426457bdb8da9e52f40d5275bb9ed5d45",
+    "failure-patterns/FP-007.md": "27f8266c757cfb2a392a65e230165835fa55f19b3f16e3a55979f871407dd87f",
+    "failure-patterns/FP-008.md": "ea1480e4cd73f44cd6f2a49d7631663cbe0d9c6c04045949fe9da8c71015f631",
+    "failure-patterns/FP-009.md": "32d7b44e339fe725182adfde4a63d4b1db313589c8a1e23f67b66c2f7664dab0",
+    "failure-patterns/FP-010.md": "fbeeb01f39fb1ee1529a49b5918c84265bb7f54661b934ad23320597377aeb2b",
+    "failure-patterns/FP-011.md": "140f4120245673b00a3c5d36bf931df391ef8b6903f48a031e343fd183244327",
+    "failure-patterns/FP-012.md": "e28295d6b4b484089e5748f9b59502757ac31a003be4d0d639c455183a0097bb",
+    "failure-patterns/index.md": "6851d4df5d2ad9d6bf1f0b733a0028ecf43fe4ed1c0a10c15368bcab48575776",
+    "principles/MP-001.md": "0e96928d5481e9fb4e9032953c82930f4417fd3a5e81b707bf5d7e544d772632",
+    "principles/MP-002.md": "b8dd9c9128a26610d70de9b93989d53c6964e322fb9024b02f4a71ba307e1590",
+    "principles/MP-003.md": "98a452de6faf195e3c16295c3e8dd64e354c8835c35060f1be3429c61ef8a01d",
+    "principles/MP-004.md": "fb6ccfbebd85a06ce393e9b73dd69c40bb19d41c0fd3acdef8f79f82e7077865",
+    "principles/MP-005.md": "179603897c2ad5bacd063991f0244b67b2d8ba2850f5844bc7221a7126728b62",
+    "principles/MP-006.md": "1b33d8dd29b0cee8e3615492a3ec83a2a9597ca0066bd1d6f44295ac476d8dbd",
+    "principles/MP-007.md": "5333d0550c3a50c45f1ebef8b1460ce3eda8893566a38510f6aabb8faa96c2d1",
+    "principles/MP-008.md": "762d1492a7e3722194713adf10967c66ace3901d60ea966e3314af758a99a799",
+    "principles/MP-009.md": "06d5f19caef7fdfc27d6c582278bde9d1c7b757abb05bd40800dca4c7d4d615a",
+    "principles/MP-010.md": "8370ed65a44ee51c57f234973fc521302953b47877015e01f4e06528ad6001ce",
+    "principles/P-001.md": "16a935fcab03a516672e9f53a9a08cb5b42c78458e4b22f0be6dd45401972383",
+    "principles/P-002.md": "3d9c9e22d1cfc77770ac92cad7ba922ee0b40ef41a3b781608903e6ce8cd4118",
+    "principles/P-003.md": "b93eaf02ff293204ba1e658652e54e28d8258946409e384179100c39236c8752",
+    "principles/P-004.md": "51b70bb5d55f89c19bba5c2aebd7302975becd2b52fd6c116277e6fc6c59abbf",
+    "principles/P-006.md": "08ed23e44130aa525d312246e31e511f69756bb4228717e5257fd2f87bb04bd9",
+    "principles/P-007.md": "260ffff18f64b7a452f100df671155a6d901413584ca0556e1dfbc745170865a",
+    "principles/P-008.md": "4ef7eb3ef829ea14b51153836102454a811394965644598b2b15a8d348650aaf",
+    "principles/P-009.md": "18593bc9d3a2787684268ad05422f120648e4cf80867f54d484288b6ff69683d",
+    "principles/P-010.md": "1cae213ef249fe156b245f35035269b2155523cf6403fda501c895d6894b335d",
+    "principles/P-012.md": "e12df587559d7baaec020f4a908461339ce82c6dbf5a9dd5e62abbe0c26f6dfe",
+    "principles/P-013.md": "f8f2341df633b05e856bbfe6047099cb3486df3cc0c629582ddef2a5ce523899",
+    "principles/index.md": "d13740158716862322566e8c097d79de9554057b802e4923387e81db2f988222",
+    "question-bank/index.md": "bdc3a5a292169788adc4a87e4d67afee3cf1d026337c06a47630abe7d9c466f2",
+    "relationship-map.yaml": "cb4529593ea817537f59c8b5bbb7ad84c2a06772de36a6bcca5c8fab064b9964",
+    "source-manifest.yaml": "7f2d98be2a4986d1633400f24feda0adeac36c14327b9f23a77a940668baa557",
+    "sources/S-001.md": "8768b01846500fe93685ce88d05085c78027c1c0736a84744ef0e685f1e6e6fc",
+    "sources/S-002.md": "e4c60e6eb98678898632e24373ced53f4a105ffa334ffbc9e718acf547ee7c1c",
+    "sources/S-003.md": "e0c34122a828dd19468c00742330f770e39a83f9e90a721047197115bca69089",
+    "sources/S-004.md": "42d2764efe15f3e0286662bf79de62bc6838715c65898e6b97cd696c39010e3c",
+    "sources/S-005.md": "599f3404a7378b98e83559239aa7fb4158768163412949c2378c83b818e0eb27",
+    "sources/S-006.md": "b51cfd0b2de1ed6270b39684c344b8c76b7dd55d6fdc23da5ede7b82a658d7da",
+    "sources/S-007.md": "f44b3c60781200a8442c43501463326ae98e7d20c22b6533c197bca7e142ecd1",
+    "sources/S-008.md": "69378249e8bba7c83c7f4ac4f7d094586fa214c8051af8bd5ae8675e944f9446",
+    "sources/S-009.md": "737764dfb61e0e719b3e1eb64bb9ed91055cbf87846560f884426c4600524884",
+    "sources/S-010.md": "8105c34fcce03501076c44ce8525e2d69d287654f0651a1b9c9f686fb0a0af9a",
+    "sources/S-011.md": "8a265ce7b297b481e69735671d4705658935c4c2536e78d438f7a132262d67d8",
+    "sources/S-012.md": "bddd8dab55568b4bedc1b6c7ce90701f9d80194bda5f2fef3d900a5a59041137",
+    "sources/S-013.md": "a1e02d788573cd6c774abee4eb1d12e2e27ac044f967833905c8a749f94f7f73",
+    "sources/S-014.md": "119b9ad7d0c046b4a0e1741ce03e08aedc2474c2ef77bd4f93103ed3033b4e52",
+    "sources/S-015.md": "8a6bd3e1debacec32db1c149672d7d21388c0f3a0bfe88dcc27539a19c9d1869",
+    "sources/S-016.md": "baa9c812a6754133ecb0cabb46a501bd3c847c77e7b3f0cc317509c27b6d5ffa",
+    "sources/S-017.md": "bca4b5c3b6e802fbed973c45161c75882c8e354d4b2d55203befa7b19fe8507e",
+    "sources/S-018.md": "fba3e756c4416795d8fdd7aa91e8304874b950beb5da6c6ed4a8a29d96f1e264",
+    "sources/S-019.md": "bb109d33cc6ab7bf73d9b61c783d935c111a0a026d64bb17ea2bf528d9c898a0",
+    "sources/S-020.md": "a4a11ba5d8d4aaf0ce03c326ae24cdb276cc58bfa39baa37880e0f08ebf47836",
+    "sources/S-021.md": "21a142e4bda863a8af4db77a26f4a57d6632d2472e0bb4037be22ecdb37fb148",
+    "sources/S-022.md": "0bfb08dd398677adbc7ef8e8c334d1fd123b05981f32623329f21a36a664875b",
+    "sources/S-023.md": "7457bc364fdfa6a0deb4b2a24f659192ea56eef11e57696389e2cfbe4f8df7eb",
+    "sources/S-024.md": "659d1688a336523b886e4cbd81bfcc74dc9b8997d936d2c5bc50703a065bf72c",
+    "sources/S-025.md": "2a478c752e75176903c4720d0d0646a3f7b861cc2cce9d757bde0476a32d1350",
+    "sources/S-026.md": "b9164a8992bfb9c16b9250b5cddbfde2ca83a98d477e835d47bb03362f94445d",
+    "sources/S-027.md": "1bad752a79bdf1f8d31f46557c4b24820b22cf59235b5ae5513bd4bf594532ba",
+    "sources/S-028.md": "86beebb59c554bbd7f014f690899e0547c458c9e65b587ac47b33d48c4404b75",
+    "sources/S-029.md": "5329266e9827be6a694454a0e8b9a356f050b5cdb787c443ac6914d3f824300c",
+    "sources/S-030.md": "8b76d85804b0c4180cb0e055e319bddfd8bbc0e9b13f89c7ebb7db1b36160f45",
+    "sources/S-031.md": "779052a0d913d353a46f7b8d512a3144ee9b84da1097317c90e5ea05220c01dd",
+    "sources/S-032.md": "59c939e9178ec14c291d3c133f9bcc9f89399071555a1a10bdafcbb52e8ea6c4",
+    "sources/S-033.md": "d19fa497cb9139b2cf849193f306957ae0f1763f8a624e07220138c6019d89eb",
+    "sources/S-034.md": "e164e4eafe88407a55434c40b64eff93253ee081b773e0dfb4764efc7cf56eeb",
+    "sources/S-035.md": "19c70aa51b3da7b1de33be31dbcdcb7a9fa6830f8663fcaecb91c7b9112bd31c",
+    "sources/S-036.md": "06e62c48ad30e676b057b56ba70cc78c8ca8b039bc9222b8a0f3a8e7ddc65ab7",
+    "sources/S-037.md": "f313dfab8ae0c83b4d0f414ba63a670fce1ea6494bb61efa9b51c15a54790d53",
+    "sources/S-038.md": "4d37e7c671d07eaa96a55c6ffaceef948673856dc1a88e70a433b57e593fca47",
+    "sources/S-039.md": "4b2943caaf67f09a28305ddb8b20ec1b05e6fde054651400cec1cb6f8b9735a7",
+    "sources/S-040.md": "3b5d0ffe47f53dc818b7ea49b55b36be86ed60c812d3f5f5de7e95235a721171",
+    "sources/S-041.md": "739e06eaef222eb10fb4570086529f3d664c384bb189d619e7fc73bcb9012ff6",
+    "sources/S-042.md": "05f383e971665e00e8babc670c904a668b89a33b2608902c610cce56b2617a99",
+    "sources/S-043.md": "b0c8567d3d2786d670fa5d2485926da757e00dc052f5327f1b7583bde25cc46b",
+    "sources/S-044.md": "dc475f1eb5c27bf59197f6194d31882d83139cab61c0bc61eb28cf490416d811",
+    "sources/S-045.md": "d94b11ed9c8e82716bc68c09ea57e3288f0dd520cffacbfa9e3606895bfa5ca5",
+    "sources/S-046.md": "91c29c9d119cd9b9f2db53a299d37557e473d8d9a027142e1a64515297795464",
+    "sources/S-047.md": "317dca8d0354610da807587de106a1c94645fb123559a792ac6a7264a2fe2ef7",
+    "sources/S-048.md": "5bb745a3257aff6314ecf466514b2ab53c5748dcd9c8d6d3327f2425fb4829a9",
+    "sources/S-049.md": "43a1f8b43451d5528ad82b546358e00a60a7e2ab5ab6c78f533d6a0397ad9bc9",
+    "sources/S-050.md": "fb39630690129755573d8c76f2b69136dc179a5101b5a1b2ffc6e71d6d281c0f",
+    "sources/S-051.md": "d03e82e4eef69940983509c32a54309070cf416becac7892789d1c346d71bc39",
+    "sources/S-052.md": "109fb253b8becbd7f6b1bd45d69ab95369cfff9234b1c7917cf7be2d2c4ada65",
+    "sources/S-053.md": "f40fb472d7ec506fbcc0320c40588e2166b111d272e6bda04554cf786244d26d",
+    "sources/S-054.md": "cea676dbdea6b387b4caa20779938860f5c1e6deee92e53a3d3b30cb93c46113",
+    "sources/S-055.md": "94fd7125d6521e14034aa9d63b8a5ed6d7ab9ee7736928a8cb6876fdd34f2f18",
+    "sources/S-056.md": "0f99b407472e2173b8ba9a38af55e4b5c6e5808bfee89976a40122170e2007ae",
+    "sources/S-057.md": "314b96bf92c00bd692a7b07162a8ae10610b8b7e22ea1d94328cce63d51e57f4",
+    "sources/S-058.md": "79ba6b6812a775238c026492a88ac1dd27f65d71f9449d4157f144795da18d5a",
+    "sources/S-059.md": "b90600f1ff153271ca9e0fdb2ea0748538eae6fed89f1d9deaad60ccb8c9c27b",
+    "sources/S-060.md": "e5b5f35d5e75750b58cffb87635b76fa60236f7a3b3ae63d03c5bd201e9e0384",
+    "sources/S-061.md": "5b25c27ef2c74068cccaffd0970cf7c86397ded1fe22424142cd80a0029af35a",
+    "sources/S-062.md": "c3128ca8636add53f87387f315abe39f4cadbec3c36856216d8c80109d56443b",
+    "sources/S-063.md": "5e7150fc22cfd68099971e981d0b82fda76457dcac831090c7b7dcb8f4d66d5e",
+    "sources/S-064.md": "92733e4d612b0fd133ed66554275b0554afac5d3ebec11187572f796b7aa8b09",
+    "sources/S-065.md": "e321095ba5ccc92e4520550cb0ab814d8aa0ac3451d17b8dfeae7f0b361ffacb",
+    "sources/S-066.md": "39283b7585f332f2298dbf2fc2b359ea07da940216ad7dbdaf4bb88c2acffa41",
+    "sources/S-067.md": "b06ff8d0134f2d46c42e34ca53149a61213cb53d77ed2ce8ffb50d62e4a57357",
+    "sources/S-068.md": "d3e05851bbcce1d01531f66592568a1ce146f1d0f05e9d1efa3579eda955173a",
+    "sources/S-069.md": "529188bf726bf64ce32b810b71d5ebec05734b149dff042ad2f89e715be2e9fc",
+    "sources/S-070.md": "ce74950102a53ac85e4c6609f7b000ff194a5b3f2a887810a08a62af8508c5e1",
+    "sources/S-071.md": "57769afc0d5b0c1627db3880dd37d688148f4ded8a4f4cfcedfcce688abae291",
+    "sources/S-072.md": "4768c485d77a633080975b10f5d4a3bc31741751098ed1891d56304319c9cd28",
+    "sources/S-073.md": "935d45f096ab50e9da4d91a10dd849ecdc7ca40d8ef2291de4191b154085837f",
+    "sources/S-074.md": "4a03a4f230e10b10bcaffd5f26c1ca0cd1cd10d7ad4640a9e30ec5385b7cc866",
+    "sources/S-075.md": "012ad5b5020acf93ea5fc1da0393218c6cfa21ec6361778fdc03f13e49dbf607",
+    "sources/S-076.md": "928a43f9f12e3e01446301e942cd05db2087cc8d8737fce3816262127cfb513e",
+    "sources/S-077.md": "2cded6a4e6f03c11c89d85d0bdaf3f33e8ff50ef61884c4de00b9306c6fac3dc",
+    "sources/S-078.md": "8db859fc293d39decd1cbdda005e719db395bec2930a990e6bace776ca684572",
+    "sources/S-079.md": "bf03e80478c6b8f8550974ca6fc82986c93556ae8dee8b8ae9d97435e5b7170b",
+    "sources/S-080.md": "50ea3f157219ae0b5a58ca4a6bf1f5da8a5e89c96522f2850afdeb0960f1a3d7",
+    "sources/S-081.md": "b899c5c1d7c79c0e1a67347c24f398495919bd326f99ad6724f98f56a01077eb",
+    "sources/S-082.md": "15835567643100f99b6fd076c05cd8ee186079295da13ca5c687ec2ac929d271",
+    "sources/S-083.md": "56117aec1f31a32c933ece619948c0f756ee0936bf3c4d2a4e4d96c751be9171",
+    "sources/S-084.md": "1b8d694c475959c56c34f41e09ed71cf8388d9d082d2aab199eaef0987ce66de",
+    "sources/S-085.md": "b5c3c5770281b3256c5ff6abd029a5447d2e8a49557602f9be28764fab09afa0",
+    "sources/S-086.md": "0e6f676052b30017fbd6d5547c94c200c4acff5c18940603efd3b8566e6d4a00",
+    "sources/S-087.md": "1c45fb7408d2398e23fcdbe17f0dc6cc4b7a9248144a89d5332e7c8a47322a75",
+    "sources/S-088.md": "d07e92444fb67ec0f2f7b425f29707bd558e5e259ffefdb28da652ec66d82668",
+    "sources/S-089.md": "2a7cbd33809cfbf59d01ca98b58bebaffd2cddf6b80f8a3e89bd1e28a84ccd97",
+    "sources/S-090.md": "fe63a3be5524b70f4b1506c06a1e27d61eda5a82e710c685dbfd26dee97d164e",
+    "sources/S-091.md": "994c44382ffceb21c893ebe31460ab391e7abd7914b68e125a6f08055c641b5a",
+    "sources/S-092.md": "8599791112dc3493498fab1ebcd4dca67f5a30d2d4b8958341c145a81a104b0b",
+    "sources/S-093.md": "f66d6f9de69fd7821365fd0a4c40ae12304330e9c988425775429a367c62a64b",
+    "sources/S-094.md": "91723fddd7873e41bd5a88da9b5a29431479460bbc6e58ccbc4e9e1d639c8e49",
+    "sources/S-095.md": "5799e44e76f562c056de9843657a65c9c67312040ac427d36439fc88b57ad025",
+    "sources/S-096.md": "6f65bc736a27db6260e89d44d01c21b8068c4f6856c40b5374bca291d267b033",
+    "sources/S-097.md": "c8fe91332f944b63b99b0db7341b91746cf85140ecd79edad40cef0b996bc11d",
+    "sources/S-098.md": "f28bad977038ee11599cabdf5efe187b2a9cf7e2113aaf27c1f4ac8df47b1532",
+    "sources/S-099.md": "e2a2a3970e723aee02874e812f886be205e714a83f7014ebe4da5d7d1c64beaf",
+    "sources/S-100.md": "676697909745b35765d48fbe78c6ff2e0c2a9822aba4b4ec2818307074258c85",
+    "sources/S-101.md": "86a5717b496c7f499d94cb7663d82d4d8984143c3117f8b19b0072cf7aa7ee62",
+    "sources/S-102.md": "9f6bf9c0dadd86f4395372b5284b153cb580150d343db56359829072beecff1f",
+    "sources/S-103.md": "282670182fa1c833e242d60b54a4e8413321daaacde4420364f44d3973f38f54",
+    "sources/S-104.md": "67671ec13e59cbb137a287497647961ed67e12fef6a39d2069daa3f3ffc14d5b",
+    "sources/S-105.md": "a54f5885792004e419de86ff9d91d8cb04d6d8a940d246f9bd53650ceea4e474",
+    "sources/S-106.md": "bb1a7639d24bac3fe2e16b5e08e66eb4b8ba4e519fc1f5c4290cb58834f6b9a4",
+    "sources/S-107.md": "15bbdd55e9e772bba17b997abd4ee7abd326d5fb994a65d1a6d4aba5a3dfc496",
+    "sources/S-108.md": "0a312f204ad1aada678700c7182f881d951fbb1520cee94597d569c9b4c7cc03",
+    "sources/S-109.md": "6c2f738ab961b311d0949f794dfe2444fae0b6103db46e033de8bc47892238df",
+    "sources/S-110.md": "4c938bdbe8d30db0ff240b44467075d655d78fc89110d3916fd14f950a7d1d51",
+    "sources/S-111.md": "d765154ba235bc2717b566ee8f270d9512538122972a42a46ed514691acfe65d",
+    "sources/S-112.md": "37b98b03ac8ca78792f0828e1fb75ec51cecfec86d923d01d8ff3d12d0a692ed",
+    "sources/S-113.md": "fa4cfe12d34c35b59f5721eb280260ef9e0d93bcc296ea3912ac9b77c79068ea",
+    "sources/S-114.md": "97b61b6d25d39d891871a7794f349c59f2b6e150a9669ce8784ba6eeb428c795",
+    "sources/S-115.md": "61ababb5b1a6cee364e1cf5524c4cbeb73ce2fc31e4a9fac515b754e3673c4a8",
+    "sources/S-116.md": "0c007b67e37d4a2f5c5932f66d86880d3dd70a169d5e4efa43abb2019b1275a5",
+    "sources/S-117.md": "154225bb9142c960d5bf51df6a028771432cdcacf4a431dc1de4089545b60eb7",
+    "sources/S-118.md": "0d5e138a5470400ca6b5db46201cc87f9741a9606fbc1584f6fbe62cfb12b52e",
+    "sources/S-119.md": "53e77e4bd8078d29074d379b229cffb1a2ddb5967739e0db65da9e5aea39852f",
+    "sources/S-120.md": "991a1a82535b6c16fc89f0d91c32cb2ddc5c2e914b372c303ba29213901537b2",
+    "sources/S-121.md": "60093bc45f9c9084f210052cdab38038b0f932f40386fee3158594c726f9b76f",
+    "sources/S-122.md": "4e94839f9ba3986997dc51e2e8de764dede0f5f2959b973622e407efcff81e77",
+    "sources/S-124.md": "76ab34cd4a8c7867922ddb73adbbecc7ef811c498449daa3eb915e09ee83d7aa",
+    "sources/index.md": "eee41a07d0f8a1664cfe26280402e74e8e7b7e328354cafcb9e67a6c5a29d16a",
+    "tactics/T-001.md": "2569f2a20bf1e16e6ae8ce64ee7278f5a86ac3e065411bc4416e08f3d0cc8219",
+    "tactics/T-002.md": "7db7bcacbc00616a02446306bfae9d3ef8698815eb64968bf53bbf0d4a503733",
+    "tactics/T-003.md": "9290c8d4f3008ba5887b8ff10c4b37048f37473e44daa5b67b53f05494cc1463",
+    "tactics/T-004.md": "70566fdcc6e2b9a0937d0b8bd519c3b690d2829b1b547c5bd59f61cc5a0c9626",
+    "tactics/T-005.md": "6780f22581d37e07bbad1506603432ff56996112488c524f50ce9bd7fac080a7",
+    "tactics/T-006.md": "67d63d66d463c2e9dc232cb36e28a9c0ca07b9b9a2e00f97775f96a1b8ad7a13",
+    "tactics/T-007.md": "666e704cadbb00f8e6d3f4ae41d06601a7ba48ab95c4c766f1c9762850ea1677",
+    "tactics/T-008.md": "730cd07667650ba85ece2cd0b0e5762f576d7c1406e92d78818a7ced5dc9605a",
+    "tactics/T-009.md": "a903ed0620104ddfcc32da8037b7784796a00825d3d28818b09974659e450e12",
+    "tactics/T-010.md": "7744edd8e89a1a6d13f14bb08eea945f0837e04ba5979b1dec59d04024cb36ea",
+    "tactics/T-011.md": "841e8a21cc8d878e53de6890b946a6d7b23714e4d6ccc9dd6e985db8add1ff6e",
+    "tactics/T-012.md": "fd8753bbd7bbfc359f74b8b55332cc4276cb3fd03c27338a5641297880596129",
+    "tactics/T-013.md": "67b9e5a891fdb27f8e141f2a61a3a8ba5b07bf4c27a44bef306b5adcc1997061",
+    "tactics/T-014.md": "75196a0cf9c464771d3beebe0f364778edb4c8f968c6a4866f2f207b292bcb4f",
+    "tactics/T-015.md": "d7e88671352970e3d77301edc2b72945968c355e0f0f8ecebb0b86b7ba4393ad",
+    "tactics/index.md": "a412cedf88548c7bd002f9b45e2d6d3d60aa82a46d1c8b7ad0266b6b34d5c9f8"
+  },
+  "mechanical_gate": {
+    "status": "PASS",
+    "syntax": "PASS",
+    "stage10_selftest": "38/38",
+    "stage10_integration_selftest": "9/9",
+    "adapter_fake_provider": "PASS: prompt/messages/tool/schema/sandbox/fresh attempts/serial close/raw/retry/failure/HOLD/tamper",
+    "readiness_fake_provider": "PASS: unchanged one-call request; marker-only PASS; model/empty/finish BLOCK; sanitized error persisted",
+    "recovery_task_source_sha": "3be72546265bcd8ace0aa538ed628888ac136468",
+    "prior_readiness_check_count": 1,
+    "readiness_check_count": 1,
+    "readiness": {
+      "ok": true,
+      "category": "READY",
+      "request_outcome": "SUCCESS",
+      "http_status": 200,
+      "observed_model": "glm-5.3",
+      "finish_reason": "stop",
+      "content_length": 27,
+      "marker_prefix_ok": true,
+      "marker_suffix_ok": true,
+      "error_class": null,
+      "provider_attempt_count": 1,
+      "transport_attempt_count": 1,
+      "provider_retry_count": 0,
+      "transport_retry_count": 0,
+      "elapsed_s": 5.902
+    },
+    "adapter_sha256": "022f1ae8d9814e3785b34fe8bb0b9802b11251cbebf32887289b81ed24dbaff4",
+    "stage10_working_hashes": {
+      "controller.py": "206f9f136eed6b2b83f612c3705dfd1850e244e78a44772d9ac49723d7d6e35a",
+      "runner.py": "17bc6afc9cda16570d29c91ae7ea43e33e9f67443196759b16357ca52c6c2654",
+      "provider_openai_compatible.py": "8013d03289e34cb784eccb003cde04a7f92564731399953743451d52d919253f",
+      "requirements.txt": "b74b60affa8b2087f451e1d0483451f567d54e3d5f0c861cb68e7422e8f51c1f"
+    },
+    "public_input_sha256": {
+      "H11-001": "0e55cdc6ac73aa221a5c226028c4b29e4d210b9b2456875602eaf039e19b2cda",
+      "H11-002": "54ca48e3719cd0cda714bd544d337b7f9bc45635b935d7f0323bde65e53c8e6b",
+      "H11-003": "9536f2dcf3c050716f63663b47fb7b2bde545498ecb0913cb795868cbcbf2fc7",
+      "H11-004": "196fdfd802786d0e7a4fdd4cd2f7f4dea1263d1f60725e630a67f36ac4edb011",
+      "H11-005": "acd1d0d91933a1833029af682406002a28e9b013fab9db75ef6c3429ee837d7a",
+      "H11-006": "ba1d9209b157dd181c2ae41f0ca29f7cf6489dbdd83e1ed019b6fcddd8474dce",
+      "H11-007": "777e932d52cf71492727659700c89cbb7ece2c1237964c23cf0533e9d3244fa6",
+      "H11-008": "71e3867cc12743784c8271b91ec9d4d6f14a5216b7aaddcb0a5134ca8733d736",
+      "H11-009": "d2a809b1cf010e9b6e492cf31069610f64719a2d2d90326b4dc8dab90e02a888",
+      "H11-010": "cd84f9956aa6076bc7ad26f49630f17c67928858c599f3d0dcd375e25ca5bb6c",
+      "H11-011": "1fffb18f692811dbb385105a3361ed42368e5fb5143d1b6ef93ca0131fbe9216",
+      "H11-012": "0b78f49f9ff7596febc60a7b28f9301be774388d15e9a1e28642dfa4111534eb"
+    },
+    "snapshot_files_sha256": {
+      "v0.1": {
+        "00_ROUTER.md": "89c9dfb92b8af953b33093a8c01b19e025505a0dc271d96e55de198e760e8547",
+        "01_CONSTITUTION.md": "5e6b42aaa855566ee6de0e93b6ae70f88f5b796154f04bc27b2815c0a76d90e3",
+        "02_VOCABULARY.md": "f221fd3867d90c55c437dacadb0ef636e84d39ef71d1fc90fe2da418fab41332",
+        "agent/modes/ADR_REVIEW.md": "7fb1100b0a9919c163c1468a961bf61ca9dfaefeaafad6b7335b7cc544614ca7",
+        "agent/modes/ARCH_DESIGN.md": "35fdf393244269ede8784b7dda6645910d7bb186f8bcb102b94553d40de1103e",
+        "agent/modes/ARCH_REVIEW.md": "ee9ac26bac9aad1e6df7428850b7ab8dec85a2db2a44f9378b9fc9995752b94e",
+        "agent/modes/AUTO.md": "2a6b36ca7fb2b2278ccf4d3139606702e299f6d3d45d2fc1223ebaef2d805d61",
+        "agent/modes/CHANGE_REVIEW.md": "ec9e03e219dbcfd5d67051b4b09df5a7f135824535aad29758d4c4ce68ef0eed",
+        "agent/modes/INCIDENT_ANALYSIS.md": "a76af80134749c42e0ef826efe1ae81d31e943fc88fa2c44048a57698c19b79c",
+        "agent/system-prompt-v0.1.md": "57b8f181429d316f88cf84edcc52b13d0a97eb89df7b0b0ecf5d7d0f0c032367",
+        "cases/good-cases/index.md": "ffa452231f4fba10355ae7faf2ba3e5c3b75e63cddcb74edc1afea86f420c82d",
+        "decision-playbooks/DP-001.md": "905fd79c4b7ec1d87ac095db7014bda721fb98d622135864f0ad90e88d4db25b",
+        "decision-playbooks/DP-002.md": "413a60e50d3281eb7bdec1d39a5d54a3e538485750c92953ca48d567652ea5ed",
+        "decision-playbooks/DP-003.md": "e0dbe4660736a8f9133fef0f11fa4315cf61de64760e9ebe8ee46e3aba010f90",
+        "decision-playbooks/DP-004.md": "3f2ed6f86c64ffc2cf939f820af6c95426363f247f1a4e1fae4453d3e8500d4a",
+        "decision-playbooks/DP-005.md": "c9e2fe3705a76f32b2c6318d08e4bb9c47e9be0722d7f11d1ec7461177226dfd",
+        "decision-playbooks/index.md": "a4fcb36d88d2a44f457a7e460dc27b2d9fa37674e82b0ae4596bc7510a41a6e5",
+        "domains/concurrency/index.md": "df7cc382888941cb7fd36be94348f48219f93df4d7530af34ee61e163ed31a49",
+        "domains/evolution/index.md": "acae4cc6897fa451ac4da4459a1f02fe5baad2feea5c3ad6ef210218dc575b85",
+        "domains/index.md": "d2a3f4db7605ff887a6dbedef9d60d576c2f4e5974edb840d2a70900bb144493",
+        "domains/integration/index.md": "7efe78e2be7d8536cf082c6e377e9d4a86f0b770519aa6fd5ea43fc62ab725fb",
+        "domains/lifecycle/index.md": "2f8c353a8ed3ebe82c60615ab8799ba5d0cfa494d820a75ac0d27eb6fbd30278",
+        "domains/observability/index.md": "9263c339c8528e3b903596768c8bf45543c93da75fbc4eb305d2eb5a0849f7a4",
+        "domains/overload/index.md": "a1486406624024193362d20b5b257453ca9f3b3ef4654695b984a9687ce06949",
+        "domains/reliability/index.md": "f8ec9ce18aba541f24255227c1533e53ff4dad194f9263b534423ac9da251b47",
+        "domains/resources/index.md": "4b935483cd8169fffc4af2a64b4b1e5b632694b7e6747eb9fecf98b8a17300eb",
+        "domains/security/index.md": "24c0cc0f0edcacf393cc1a0bf2496607f53be3a904a43001759bc8dd77cd0e63",
+        "domains/state-data/index.md": "1b5bc177465250df745f7910acc8e57ff22ed409eb33db4055be94f3247f51ee",
+        "failure-patterns/FP-001.md": "f58efef9b00a0d818648c03a075db25d7c9e10a5ae29fbed0ffd5375bb27c8bd",
+        "failure-patterns/FP-002.md": "807ebf35866d32db1f32a4ae36f0a1e336181b20224fc552ae230233b07bae56",
+        "failure-patterns/FP-003.md": "36c53240a3595a91b2cb68b31c02d0f898fb8bf72849397eab1c956dc4042870",
+        "failure-patterns/FP-004.md": "af7ebc36d2f9cbe72304a2dceb84b35bf9ef64206a6c366fe29fb3c4ee51d4d7",
+        "failure-patterns/FP-005.md": "5f560d7f78e1f03e94b6d99af52516af22e0d3289d93b44576604d8606a4e541",
+        "failure-patterns/FP-006.md": "c3cc90591fce927666297bd9218414d426457bdb8da9e52f40d5275bb9ed5d45",
+        "failure-patterns/FP-007.md": "27f8266c757cfb2a392a65e230165835fa55f19b3f16e3a55979f871407dd87f",
+        "failure-patterns/FP-008.md": "ea1480e4cd73f44cd6f2a49d7631663cbe0d9c6c04045949fe9da8c71015f631",
+        "failure-patterns/FP-009.md": "32d7b44e339fe725182adfde4a63d4b1db313589c8a1e23f67b66c2f7664dab0",
+        "failure-patterns/FP-010.md": "fbeeb01f39fb1ee1529a49b5918c84265bb7f54661b934ad23320597377aeb2b",
+        "failure-patterns/FP-011.md": "140f4120245673b00a3c5d36bf931df391ef8b6903f48a031e343fd183244327",
+        "failure-patterns/FP-012.md": "e28295d6b4b484089e5748f9b59502757ac31a003be4d0d639c455183a0097bb",
+        "failure-patterns/index.md": "6851d4df5d2ad9d6bf1f0b733a0028ecf43fe4ed1c0a10c15368bcab48575776",
+        "principles/MP-001.md": "0e96928d5481e9fb4e9032953c82930f4417fd3a5e81b707bf5d7e544d772632",
+        "principles/MP-002.md": "b8dd9c9128a26610d70de9b93989d53c6964e322fb9024b02f4a71ba307e1590",
+        "principles/MP-003.md": "98a452de6faf195e3c16295c3e8dd64e354c8835c35060f1be3429c61ef8a01d",
+        "principles/MP-004.md": "fb6ccfbebd85a06ce393e9b73dd69c40bb19d41c0fd3acdef8f79f82e7077865",
+        "principles/MP-005.md": "179603897c2ad5bacd063991f0244b67b2d8ba2850f5844bc7221a7126728b62",
+        "principles/MP-006.md": "1b33d8dd29b0cee8e3615492a3ec83a2a9597ca0066bd1d6f44295ac476d8dbd",
+        "principles/MP-007.md": "5333d0550c3a50c45f1ebef8b1460ce3eda8893566a38510f6aabb8faa96c2d1",
+        "principles/MP-008.md": "762d1492a7e3722194713adf10967c66ace3901d60ea966e3314af758a99a799",
+        "principles/MP-009.md": "06d5f19caef7fdfc27d6c582278bde9d1c7b757abb05bd40800dca4c7d4d615a",
+        "principles/MP-010.md": "8370ed65a44ee51c57f234973fc521302953b47877015e01f4e06528ad6001ce",
+        "principles/P-001.md": "16a935fcab03a516672e9f53a9a08cb5b42c78458e4b22f0be6dd45401972383",
+        "principles/P-002.md": "3d9c9e22d1cfc77770ac92cad7ba922ee0b40ef41a3b781608903e6ce8cd4118",
+        "principles/P-003.md": "b93eaf02ff293204ba1e658652e54e28d8258946409e384179100c39236c8752",
+        "principles/P-004.md": "51b70bb5d55f89c19bba5c2aebd7302975becd2b52fd6c116277e6fc6c59abbf",
+        "principles/P-006.md": "08ed23e44130aa525d312246e31e511f69756bb4228717e5257fd2f87bb04bd9",
+        "principles/P-007.md": "260ffff18f64b7a452f100df671155a6d901413584ca0556e1dfbc745170865a",
+        "principles/P-008.md": "4ef7eb3ef829ea14b51153836102454a811394965644598b2b15a8d348650aaf",
+        "principles/P-009.md": "18593bc9d3a2787684268ad05422f120648e4cf80867f54d484288b6ff69683d",
+        "principles/P-010.md": "1cae213ef249fe156b245f35035269b2155523cf6403fda501c895d6894b335d",
+        "principles/P-012.md": "e12df587559d7baaec020f4a908461339ce82c6dbf5a9dd5e62abbe0c26f6dfe",
+        "principles/P-013.md": "f8f2341df633b05e856bbfe6047099cb3486df3cc0c629582ddef2a5ce523899",
+        "principles/index.md": "d13740158716862322566e8c097d79de9554057b802e4923387e81db2f988222",
+        "question-bank/index.md": "bdc3a5a292169788adc4a87e4d67afee3cf1d026337c06a47630abe7d9c466f2",
+        "relationship-map.yaml": "cb4529593ea817537f59c8b5bbb7ad84c2a06772de36a6bcca5c8fab064b9964",
+        "source-manifest.yaml": "7f2d98be2a4986d1633400f24feda0adeac36c14327b9f23a77a940668baa557",
+        "sources/S-001.md": "8768b01846500fe93685ce88d05085c78027c1c0736a84744ef0e685f1e6e6fc",
+        "sources/S-002.md": "e4c60e6eb98678898632e24373ced53f4a105ffa334ffbc9e718acf547ee7c1c",
+        "sources/S-003.md": "e0c34122a828dd19468c00742330f770e39a83f9e90a721047197115bca69089",
+        "sources/S-004.md": "42d2764efe15f3e0286662bf79de62bc6838715c65898e6b97cd696c39010e3c",
+        "sources/S-005.md": "599f3404a7378b98e83559239aa7fb4158768163412949c2378c83b818e0eb27",
+        "sources/S-006.md": "b51cfd0b2de1ed6270b39684c344b8c76b7dd55d6fdc23da5ede7b82a658d7da",
+        "sources/S-007.md": "f44b3c60781200a8442c43501463326ae98e7d20c22b6533c197bca7e142ecd1",
+        "sources/S-008.md": "69378249e8bba7c83c7f4ac4f7d094586fa214c8051af8bd5ae8675e944f9446",
+        "sources/S-009.md": "737764dfb61e0e719b3e1eb64bb9ed91055cbf87846560f884426c4600524884",
+        "sources/S-010.md": "8105c34fcce03501076c44ce8525e2d69d287654f0651a1b9c9f686fb0a0af9a",
+        "sources/S-011.md": "8a265ce7b297b481e69735671d4705658935c4c2536e78d438f7a132262d67d8",
+        "sources/S-012.md": "bddd8dab55568b4bedc1b6c7ce90701f9d80194bda5f2fef3d900a5a59041137",
+        "sources/S-013.md": "a1e02d788573cd6c774abee4eb1d12e2e27ac044f967833905c8a749f94f7f73",
+        "sources/S-014.md": "119b9ad7d0c046b4a0e1741ce03e08aedc2474c2ef77bd4f93103ed3033b4e52",
+        "sources/S-015.md": "8a6bd3e1debacec32db1c149672d7d21388c0f3a0bfe88dcc27539a19c9d1869",
+        "sources/S-016.md": "baa9c812a6754133ecb0cabb46a501bd3c847c77e7b3f0cc317509c27b6d5ffa",
+        "sources/S-017.md": "bca4b5c3b6e802fbed973c45161c75882c8e354d4b2d55203befa7b19fe8507e",
+        "sources/S-018.md": "fba3e756c4416795d8fdd7aa91e8304874b950beb5da6c6ed4a8a29d96f1e264",
+        "sources/S-019.md": "bb109d33cc6ab7bf73d9b61c783d935c111a0a026d64bb17ea2bf528d9c898a0",
+        "sources/S-020.md": "a4a11ba5d8d4aaf0ce03c326ae24cdb276cc58bfa39baa37880e0f08ebf47836",
+        "sources/S-021.md": "21a142e4bda863a8af4db77a26f4a57d6632d2472e0bb4037be22ecdb37fb148",
+        "sources/S-022.md": "0bfb08dd398677adbc7ef8e8c334d1fd123b05981f32623329f21a36a664875b",
+        "sources/S-023.md": "7457bc364fdfa6a0deb4b2a24f659192ea56eef11e57696389e2cfbe4f8df7eb",
+        "sources/S-024.md": "659d1688a336523b886e4cbd81bfcc74dc9b8997d936d2c5bc50703a065bf72c",
+        "sources/S-025.md": "2a478c752e75176903c4720d0d0646a3f7b861cc2cce9d757bde0476a32d1350",
+        "sources/S-026.md": "b9164a8992bfb9c16b9250b5cddbfde2ca83a98d477e835d47bb03362f94445d",
+        "sources/S-027.md": "1bad752a79bdf1f8d31f46557c4b24820b22cf59235b5ae5513bd4bf594532ba",
+        "sources/S-028.md": "86beebb59c554bbd7f014f690899e0547c458c9e65b587ac47b33d48c4404b75",
+        "sources/S-029.md": "5329266e9827be6a694454a0e8b9a356f050b5cdb787c443ac6914d3f824300c",
+        "sources/S-030.md": "8b76d85804b0c4180cb0e055e319bddfd8bbc0e9b13f89c7ebb7db1b36160f45",
+        "sources/S-031.md": "779052a0d913d353a46f7b8d512a3144ee9b84da1097317c90e5ea05220c01dd",
+        "sources/S-032.md": "59c939e9178ec14c291d3c133f9bcc9f89399071555a1a10bdafcbb52e8ea6c4",
+        "sources/S-033.md": "d19fa497cb9139b2cf849193f306957ae0f1763f8a624e07220138c6019d89eb",
+        "sources/S-034.md": "e164e4eafe88407a55434c40b64eff93253ee081b773e0dfb4764efc7cf56eeb",
+        "sources/S-035.md": "19c70aa51b3da7b1de33be31dbcdcb7a9fa6830f8663fcaecb91c7b9112bd31c",
+        "sources/S-036.md": "06e62c48ad30e676b057b56ba70cc78c8ca8b039bc9222b8a0f3a8e7ddc65ab7",
+        "sources/S-037.md": "f313dfab8ae0c83b4d0f414ba63a670fce1ea6494bb61efa9b51c15a54790d53",
+        "sources/S-038.md": "4d37e7c671d07eaa96a55c6ffaceef948673856dc1a88e70a433b57e593fca47",
+        "sources/S-039.md": "4b2943caaf67f09a28305ddb8b20ec1b05e6fde054651400cec1cb6f8b9735a7",
+        "sources/S-040.md": "3b5d0ffe47f53dc818b7ea49b55b36be86ed60c812d3f5f5de7e95235a721171",
+        "sources/S-041.md": "739e06eaef222eb10fb4570086529f3d664c384bb189d619e7fc73bcb9012ff6",
+        "sources/S-042.md": "05f383e971665e00e8babc670c904a668b89a33b2608902c610cce56b2617a99",
+        "sources/S-043.md": "b0c8567d3d2786d670fa5d2485926da757e00dc052f5327f1b7583bde25cc46b",
+        "sources/S-044.md": "dc475f1eb5c27bf59197f6194d31882d83139cab61c0bc61eb28cf490416d811",
+        "sources/S-045.md": "d94b11ed9c8e82716bc68c09ea57e3288f0dd520cffacbfa9e3606895bfa5ca5",
+        "sources/S-046.md": "91c29c9d119cd9b9f2db53a299d37557e473d8d9a027142e1a64515297795464",
+        "sources/S-047.md": "317dca8d0354610da807587de106a1c94645fb123559a792ac6a7264a2fe2ef7",
+        "sources/S-048.md": "5bb745a3257aff6314ecf466514b2ab53c5748dcd9c8d6d3327f2425fb4829a9",
+        "sources/S-049.md": "43a1f8b43451d5528ad82b546358e00a60a7e2ab5ab6c78f533d6a0397ad9bc9",
+        "sources/S-050.md": "fb39630690129755573d8c76f2b69136dc179a5101b5a1b2ffc6e71d6d281c0f",
+        "sources/S-051.md": "d03e82e4eef69940983509c32a54309070cf416becac7892789d1c346d71bc39",
+        "sources/S-052.md": "109fb253b8becbd7f6b1bd45d69ab95369cfff9234b1c7917cf7be2d2c4ada65",
+        "sources/S-053.md": "f40fb472d7ec506fbcc0320c40588e2166b111d272e6bda04554cf786244d26d",
+        "sources/S-054.md": "cea676dbdea6b387b4caa20779938860f5c1e6deee92e53a3d3b30cb93c46113",
+        "sources/S-055.md": "94fd7125d6521e14034aa9d63b8a5ed6d7ab9ee7736928a8cb6876fdd34f2f18",
+        "sources/S-056.md": "0f99b407472e2173b8ba9a38af55e4b5c6e5808bfee89976a40122170e2007ae",
+        "sources/S-057.md": "314b96bf92c00bd692a7b07162a8ae10610b8b7e22ea1d94328cce63d51e57f4",
+        "sources/S-058.md": "79ba6b6812a775238c026492a88ac1dd27f65d71f9449d4157f144795da18d5a",
+        "sources/S-059.md": "b90600f1ff153271ca9e0fdb2ea0748538eae6fed89f1d9deaad60ccb8c9c27b",
+        "sources/S-060.md": "e5b5f35d5e75750b58cffb87635b76fa60236f7a3b3ae63d03c5bd201e9e0384",
+        "sources/S-061.md": "5b25c27ef2c74068cccaffd0970cf7c86397ded1fe22424142cd80a0029af35a",
+        "sources/S-062.md": "c3128ca8636add53f87387f315abe39f4cadbec3c36856216d8c80109d56443b",
+        "sources/S-063.md": "5e7150fc22cfd68099971e981d0b82fda76457dcac831090c7b7dcb8f4d66d5e",
+        "sources/S-064.md": "92733e4d612b0fd133ed66554275b0554afac5d3ebec11187572f796b7aa8b09",
+        "sources/S-065.md": "e321095ba5ccc92e4520550cb0ab814d8aa0ac3451d17b8dfeae7f0b361ffacb",
+        "sources/S-066.md": "39283b7585f332f2298dbf2fc2b359ea07da940216ad7dbdaf4bb88c2acffa41",
+        "sources/S-067.md": "b06ff8d0134f2d46c42e34ca53149a61213cb53d77ed2ce8ffb50d62e4a57357",
+        "sources/S-068.md": "d3e05851bbcce1d01531f66592568a1ce146f1d0f05e9d1efa3579eda955173a",
+        "sources/S-069.md": "529188bf726bf64ce32b810b71d5ebec05734b149dff042ad2f89e715be2e9fc",
+        "sources/S-070.md": "ce74950102a53ac85e4c6609f7b000ff194a5b3f2a887810a08a62af8508c5e1",
+        "sources/S-071.md": "57769afc0d5b0c1627db3880dd37d688148f4ded8a4f4cfcedfcce688abae291",
+        "sources/S-072.md": "4768c485d77a633080975b10f5d4a3bc31741751098ed1891d56304319c9cd28",
+        "sources/S-073.md": "935d45f096ab50e9da4d91a10dd849ecdc7ca40d8ef2291de4191b154085837f",
+        "sources/S-074.md": "4a03a4f230e10b10bcaffd5f26c1ca0cd1cd10d7ad4640a9e30ec5385b7cc866",
+        "sources/S-075.md": "012ad5b5020acf93ea5fc1da0393218c6cfa21ec6361778fdc03f13e49dbf607",
+        "sources/S-076.md": "928a43f9f12e3e01446301e942cd05db2087cc8d8737fce3816262127cfb513e",
+        "sources/S-077.md": "2cded6a4e6f03c11c89d85d0bdaf3f33e8ff50ef61884c4de00b9306c6fac3dc",
+        "sources/S-078.md": "8db859fc293d39decd1cbdda005e719db395bec2930a990e6bace776ca684572",
+        "sources/S-079.md": "bf03e80478c6b8f8550974ca6fc82986c93556ae8dee8b8ae9d97435e5b7170b",
+        "sources/S-080.md": "50ea3f157219ae0b5a58ca4a6bf1f5da8a5e89c96522f2850afdeb0960f1a3d7",
+        "sources/S-081.md": "b899c5c1d7c79c0e1a67347c24f398495919bd326f99ad6724f98f56a01077eb",
+        "sources/S-082.md": "15835567643100f99b6fd076c05cd8ee186079295da13ca5c687ec2ac929d271",
+        "sources/S-083.md": "56117aec1f31a32c933ece619948c0f756ee0936bf3c4d2a4e4d96c751be9171",
+        "sources/S-084.md": "1b8d694c475959c56c34f41e09ed71cf8388d9d082d2aab199eaef0987ce66de",
+        "sources/S-085.md": "b5c3c5770281b3256c5ff6abd029a5447d2e8a49557602f9be28764fab09afa0",
+        "sources/S-086.md": "0e6f676052b30017fbd6d5547c94c200c4acff5c18940603efd3b8566e6d4a00",
+        "sources/S-087.md": "1c45fb7408d2398e23fcdbe17f0dc6cc4b7a9248144a89d5332e7c8a47322a75",
+        "sources/S-088.md": "d07e92444fb67ec0f2f7b425f29707bd558e5e259ffefdb28da652ec66d82668",
+        "sources/S-089.md": "2a7cbd33809cfbf59d01ca98b58bebaffd2cddf6b80f8a3e89bd1e28a84ccd97",
+        "sources/S-090.md": "fe63a3be5524b70f4b1506c06a1e27d61eda5a82e710c685dbfd26dee97d164e",
+        "sources/S-091.md": "994c44382ffceb21c893ebe31460ab391e7abd7914b68e125a6f08055c641b5a",
+        "sources/S-092.md": "8599791112dc3493498fab1ebcd4dca67f5a30d2d4b8958341c145a81a104b0b",
+        "sources/S-093.md": "f66d6f9de69fd7821365fd0a4c40ae12304330e9c988425775429a367c62a64b",
+        "sources/S-094.md": "91723fddd7873e41bd5a88da9b5a29431479460bbc6e58ccbc4e9e1d639c8e49",
+        "sources/S-095.md": "5799e44e76f562c056de9843657a65c9c67312040ac427d36439fc88b57ad025",
+        "sources/S-096.md": "6f65bc736a27db6260e89d44d01c21b8068c4f6856c40b5374bca291d267b033",
+        "sources/S-097.md": "c8fe91332f944b63b99b0db7341b91746cf85140ecd79edad40cef0b996bc11d",
+        "sources/S-098.md": "f28bad977038ee11599cabdf5efe187b2a9cf7e2113aaf27c1f4ac8df47b1532",
+        "sources/S-099.md": "e2a2a3970e723aee02874e812f886be205e714a83f7014ebe4da5d7d1c64beaf",
+        "sources/S-100.md": "676697909745b35765d48fbe78c6ff2e0c2a9822aba4b4ec2818307074258c85",
+        "sources/S-101.md": "86a5717b496c7f499d94cb7663d82d4d8984143c3117f8b19b0072cf7aa7ee62",
+        "sources/S-102.md": "9f6bf9c0dadd86f4395372b5284b153cb580150d343db56359829072beecff1f",
+        "sources/S-103.md": "282670182fa1c833e242d60b54a4e8413321daaacde4420364f44d3973f38f54",
+        "sources/S-104.md": "67671ec13e59cbb137a287497647961ed67e12fef6a39d2069daa3f3ffc14d5b",
+        "sources/S-105.md": "a54f5885792004e419de86ff9d91d8cb04d6d8a940d246f9bd53650ceea4e474",
+        "sources/S-106.md": "bb1a7639d24bac3fe2e16b5e08e66eb4b8ba4e519fc1f5c4290cb58834f6b9a4",
+        "sources/S-107.md": "15bbdd55e9e772bba17b997abd4ee7abd326d5fb994a65d1a6d4aba5a3dfc496",
+        "sources/S-108.md": "0a312f204ad1aada678700c7182f881d951fbb1520cee94597d569c9b4c7cc03",
+        "sources/S-109.md": "6c2f738ab961b311d0949f794dfe2444fae0b6103db46e033de8bc47892238df",
+        "sources/S-110.md": "4c938bdbe8d30db0ff240b44467075d655d78fc89110d3916fd14f950a7d1d51",
+        "sources/S-111.md": "d765154ba235bc2717b566ee8f270d9512538122972a42a46ed514691acfe65d",
+        "sources/S-112.md": "37b98b03ac8ca78792f0828e1fb75ec51cecfec86d923d01d8ff3d12d0a692ed",
+        "sources/S-113.md": "fa4cfe12d34c35b59f5721eb280260ef9e0d93bcc296ea3912ac9b77c79068ea",
+        "sources/S-114.md": "97b61b6d25d39d891871a7794f349c59f2b6e150a9669ce8784ba6eeb428c795",
+        "sources/S-115.md": "61ababb5b1a6cee364e1cf5524c4cbeb73ce2fc31e4a9fac515b754e3673c4a8",
+        "sources/S-116.md": "0c007b67e37d4a2f5c5932f66d86880d3dd70a169d5e4efa43abb2019b1275a5",
+        "sources/S-117.md": "154225bb9142c960d5bf51df6a028771432cdcacf4a431dc1de4089545b60eb7",
+        "sources/S-118.md": "0d5e138a5470400ca6b5db46201cc87f9741a9606fbc1584f6fbe62cfb12b52e",
+        "sources/S-119.md": "53e77e4bd8078d29074d379b229cffb1a2ddb5967739e0db65da9e5aea39852f",
+        "sources/S-120.md": "991a1a82535b6c16fc89f0d91c32cb2ddc5c2e914b372c303ba29213901537b2",
+        "sources/S-121.md": "60093bc45f9c9084f210052cdab38038b0f932f40386fee3158594c726f9b76f",
+        "sources/S-122.md": "4e94839f9ba3986997dc51e2e8de764dede0f5f2959b973622e407efcff81e77",
+        "sources/S-124.md": "76ab34cd4a8c7867922ddb73adbbecc7ef811c498449daa3eb915e09ee83d7aa",
+        "sources/index.md": "eee41a07d0f8a1664cfe26280402e74e8e7b7e328354cafcb9e67a6c5a29d16a",
+        "tactics/T-001.md": "2569f2a20bf1e16e6ae8ce64ee7278f5a86ac3e065411bc4416e08f3d0cc8219",
+        "tactics/T-002.md": "7db7bcacbc00616a02446306bfae9d3ef8698815eb64968bf53bbf0d4a503733",
+        "tactics/T-003.md": "9290c8d4f3008ba5887b8ff10c4b37048f37473e44daa5b67b53f05494cc1463",
+        "tactics/T-004.md": "70566fdcc6e2b9a0937d0b8bd519c3b690d2829b1b547c5bd59f61cc5a0c9626",
+        "tactics/T-005.md": "6780f22581d37e07bbad1506603432ff56996112488c524f50ce9bd7fac080a7",
+        "tactics/T-006.md": "67d63d66d463c2e9dc232cb36e28a9c0ca07b9b9a2e00f97775f96a1b8ad7a13",
+        "tactics/T-007.md": "666e704cadbb00f8e6d3f4ae41d06601a7ba48ab95c4c766f1c9762850ea1677",
+        "tactics/T-008.md": "730cd07667650ba85ece2cd0b0e5762f576d7c1406e92d78818a7ced5dc9605a",
+        "tactics/T-009.md": "a903ed0620104ddfcc32da8037b7784796a00825d3d28818b09974659e450e12",
+        "tactics/T-010.md": "7744edd8e89a1a6d13f14bb08eea945f0837e04ba5979b1dec59d04024cb36ea",
+        "tactics/T-011.md": "841e8a21cc8d878e53de6890b946a6d7b23714e4d6ccc9dd6e985db8add1ff6e",
+        "tactics/T-012.md": "fd8753bbd7bbfc359f74b8b55332cc4276cb3fd03c27338a5641297880596129",
+        "tactics/T-013.md": "67b9e5a891fdb27f8e141f2a61a3a8ba5b07bf4c27a44bef306b5adcc1997061",
+        "tactics/T-014.md": "75196a0cf9c464771d3beebe0f364778edb4c8f968c6a4866f2f207b292bcb4f",
+        "tactics/T-015.md": "d7e88671352970e3d77301edc2b72945968c355e0f0f8ecebb0b86b7ba4393ad",
+        "tactics/index.md": "a412cedf88548c7bd002f9b45e2d6d3d60aa82a46d1c8b7ad0266b6b34d5c9f8"
+      },
+      "v0.2": {
+        "00_ROUTER.md": "89c9dfb92b8af953b33093a8c01b19e025505a0dc271d96e55de198e760e8547",
+        "01_CONSTITUTION.md": "5e6b42aaa855566ee6de0e93b6ae70f88f5b796154f04bc27b2815c0a76d90e3",
+        "02_VOCABULARY.md": "f221fd3867d90c55c437dacadb0ef636e84d39ef71d1fc90fe2da418fab41332",
+        "agent/modes/ADR_REVIEW.md": "7fb1100b0a9919c163c1468a961bf61ca9dfaefeaafad6b7335b7cc544614ca7",
+        "agent/modes/ARCH_DESIGN.md": "35fdf393244269ede8784b7dda6645910d7bb186f8bcb102b94553d40de1103e",
+        "agent/modes/ARCH_REVIEW.md": "ee9ac26bac9aad1e6df7428850b7ab8dec85a2db2a44f9378b9fc9995752b94e",
+        "agent/modes/AUTO.md": "44452231bb3b66661f194a18b55856c5f111d493f7bd35a576ba23c7e3e1f11a",
+        "agent/modes/CHANGE_REVIEW.md": "ec9e03e219dbcfd5d67051b4b09df5a7f135824535aad29758d4c4ce68ef0eed",
+        "agent/modes/INCIDENT_ANALYSIS.md": "a76af80134749c42e0ef826efe1ae81d31e943fc88fa2c44048a57698c19b79c",
+        "agent/system-prompt-v0.2.md": "775a9d1c0e918d031a48ee6ed3de6c58caefe610aec49a8f1e15b2c63c9dc698",
+        "cases/good-cases/index.md": "ffa452231f4fba10355ae7faf2ba3e5c3b75e63cddcb74edc1afea86f420c82d",
+        "decision-playbooks/DP-001.md": "905fd79c4b7ec1d87ac095db7014bda721fb98d622135864f0ad90e88d4db25b",
+        "decision-playbooks/DP-002.md": "413a60e50d3281eb7bdec1d39a5d54a3e538485750c92953ca48d567652ea5ed",
+        "decision-playbooks/DP-003.md": "e0dbe4660736a8f9133fef0f11fa4315cf61de64760e9ebe8ee46e3aba010f90",
+        "decision-playbooks/DP-004.md": "3f2ed6f86c64ffc2cf939f820af6c95426363f247f1a4e1fae4453d3e8500d4a",
+        "decision-playbooks/DP-005.md": "c9e2fe3705a76f32b2c6318d08e4bb9c47e9be0722d7f11d1ec7461177226dfd",
+        "decision-playbooks/index.md": "a4fcb36d88d2a44f457a7e460dc27b2d9fa37674e82b0ae4596bc7510a41a6e5",
+        "domains/concurrency/index.md": "df7cc382888941cb7fd36be94348f48219f93df4d7530af34ee61e163ed31a49",
+        "domains/evolution/index.md": "acae4cc6897fa451ac4da4459a1f02fe5baad2feea5c3ad6ef210218dc575b85",
+        "domains/index.md": "d2a3f4db7605ff887a6dbedef9d60d576c2f4e5974edb840d2a70900bb144493",
+        "domains/integration/index.md": "7efe78e2be7d8536cf082c6e377e9d4a86f0b770519aa6fd5ea43fc62ab725fb",
+        "domains/lifecycle/index.md": "2f8c353a8ed3ebe82c60615ab8799ba5d0cfa494d820a75ac0d27eb6fbd30278",
+        "domains/observability/index.md": "9263c339c8528e3b903596768c8bf45543c93da75fbc4eb305d2eb5a0849f7a4",
+        "domains/overload/index.md": "a1486406624024193362d20b5b257453ca9f3b3ef4654695b984a9687ce06949",
+        "domains/reliability/index.md": "f8ec9ce18aba541f24255227c1533e53ff4dad194f9263b534423ac9da251b47",
+        "domains/resources/index.md": "4b935483cd8169fffc4af2a64b4b1e5b632694b7e6747eb9fecf98b8a17300eb",
+        "domains/security/index.md": "24c0cc0f0edcacf393cc1a0bf2496607f53be3a904a43001759bc8dd77cd0e63",
+        "domains/state-data/index.md": "1b5bc177465250df745f7910acc8e57ff22ed409eb33db4055be94f3247f51ee",
+        "failure-patterns/FP-001.md": "f58efef9b00a0d818648c03a075db25d7c9e10a5ae29fbed0ffd5375bb27c8bd",
+        "failure-patterns/FP-002.md": "807ebf35866d32db1f32a4ae36f0a1e336181b20224fc552ae230233b07bae56",
+        "failure-patterns/FP-003.md": "36c53240a3595a91b2cb68b31c02d0f898fb8bf72849397eab1c956dc4042870",
+        "failure-patterns/FP-004.md": "af7ebc36d2f9cbe72304a2dceb84b35bf9ef64206a6c366fe29fb3c4ee51d4d7",
+        "failure-patterns/FP-005.md": "5f560d7f78e1f03e94b6d99af52516af22e0d3289d93b44576604d8606a4e541",
+        "failure-patterns/FP-006.md": "c3cc90591fce927666297bd9218414d426457bdb8da9e52f40d5275bb9ed5d45",
+        "failure-patterns/FP-007.md": "27f8266c757cfb2a392a65e230165835fa55f19b3f16e3a55979f871407dd87f",
+        "failure-patterns/FP-008.md": "ea1480e4cd73f44cd6f2a49d7631663cbe0d9c6c04045949fe9da8c71015f631",
+        "failure-patterns/FP-009.md": "32d7b44e339fe725182adfde4a63d4b1db313589c8a1e23f67b66c2f7664dab0",
+        "failure-patterns/FP-010.md": "fbeeb01f39fb1ee1529a49b5918c84265bb7f54661b934ad23320597377aeb2b",
+        "failure-patterns/FP-011.md": "140f4120245673b00a3c5d36bf931df391ef8b6903f48a031e343fd183244327",
+        "failure-patterns/FP-012.md": "e28295d6b4b484089e5748f9b59502757ac31a003be4d0d639c455183a0097bb",
+        "failure-patterns/index.md": "6851d4df5d2ad9d6bf1f0b733a0028ecf43fe4ed1c0a10c15368bcab48575776",
+        "principles/MP-001.md": "0e96928d5481e9fb4e9032953c82930f4417fd3a5e81b707bf5d7e544d772632",
+        "principles/MP-002.md": "b8dd9c9128a26610d70de9b93989d53c6964e322fb9024b02f4a71ba307e1590",
+        "principles/MP-003.md": "98a452de6faf195e3c16295c3e8dd64e354c8835c35060f1be3429c61ef8a01d",
+        "principles/MP-004.md": "fb6ccfbebd85a06ce393e9b73dd69c40bb19d41c0fd3acdef8f79f82e7077865",
+        "principles/MP-005.md": "179603897c2ad5bacd063991f0244b67b2d8ba2850f5844bc7221a7126728b62",
+        "principles/MP-006.md": "1b33d8dd29b0cee8e3615492a3ec83a2a9597ca0066bd1d6f44295ac476d8dbd",
+        "principles/MP-007.md": "5333d0550c3a50c45f1ebef8b1460ce3eda8893566a38510f6aabb8faa96c2d1",
+        "principles/MP-008.md": "762d1492a7e3722194713adf10967c66ace3901d60ea966e3314af758a99a799",
+        "principles/MP-009.md": "06d5f19caef7fdfc27d6c582278bde9d1c7b757abb05bd40800dca4c7d4d615a",
+        "principles/MP-010.md": "8370ed65a44ee51c57f234973fc521302953b47877015e01f4e06528ad6001ce",
+        "principles/P-001.md": "16a935fcab03a516672e9f53a9a08cb5b42c78458e4b22f0be6dd45401972383",
+        "principles/P-002.md": "3d9c9e22d1cfc77770ac92cad7ba922ee0b40ef41a3b781608903e6ce8cd4118",
+        "principles/P-003.md": "b93eaf02ff293204ba1e658652e54e28d8258946409e384179100c39236c8752",
+        "principles/P-004.md": "51b70bb5d55f89c19bba5c2aebd7302975becd2b52fd6c116277e6fc6c59abbf",
+        "principles/P-006.md": "08ed23e44130aa525d312246e31e511f69756bb4228717e5257fd2f87bb04bd9",
+        "principles/P-007.md": "260ffff18f64b7a452f100df671155a6d901413584ca0556e1dfbc745170865a",
+        "principles/P-008.md": "4ef7eb3ef829ea14b51153836102454a811394965644598b2b15a8d348650aaf",
+        "principles/P-009.md": "18593bc9d3a2787684268ad05422f120648e4cf80867f54d484288b6ff69683d",
+        "principles/P-010.md": "1cae213ef249fe156b245f35035269b2155523cf6403fda501c895d6894b335d",
+        "principles/P-012.md": "e12df587559d7baaec020f4a908461339ce82c6dbf5a9dd5e62abbe0c26f6dfe",
+        "principles/P-013.md": "f8f2341df633b05e856bbfe6047099cb3486df3cc0c629582ddef2a5ce523899",
+        "principles/index.md": "d13740158716862322566e8c097d79de9554057b802e4923387e81db2f988222",
+        "question-bank/index.md": "bdc3a5a292169788adc4a87e4d67afee3cf1d026337c06a47630abe7d9c466f2",
+        "relationship-map.yaml": "cb4529593ea817537f59c8b5bbb7ad84c2a06772de36a6bcca5c8fab064b9964",
+        "source-manifest.yaml": "7f2d98be2a4986d1633400f24feda0adeac36c14327b9f23a77a940668baa557",
+        "sources/S-001.md": "8768b01846500fe93685ce88d05085c78027c1c0736a84744ef0e685f1e6e6fc",
+        "sources/S-002.md": "e4c60e6eb98678898632e24373ced53f4a105ffa334ffbc9e718acf547ee7c1c",
+        "sources/S-003.md": "e0c34122a828dd19468c00742330f770e39a83f9e90a721047197115bca69089",
+        "sources/S-004.md": "42d2764efe15f3e0286662bf79de62bc6838715c65898e6b97cd696c39010e3c",
+        "sources/S-005.md": "599f3404a7378b98e83559239aa7fb4158768163412949c2378c83b818e0eb27",
+        "sources/S-006.md": "b51cfd0b2de1ed6270b39684c344b8c76b7dd55d6fdc23da5ede7b82a658d7da",
+        "sources/S-007.md": "f44b3c60781200a8442c43501463326ae98e7d20c22b6533c197bca7e142ecd1",
+        "sources/S-008.md": "69378249e8bba7c83c7f4ac4f7d094586fa214c8051af8bd5ae8675e944f9446",
+        "sources/S-009.md": "737764dfb61e0e719b3e1eb64bb9ed91055cbf87846560f884426c4600524884",
+        "sources/S-010.md": "8105c34fcce03501076c44ce8525e2d69d287654f0651a1b9c9f686fb0a0af9a",
+        "sources/S-011.md": "8a265ce7b297b481e69735671d4705658935c4c2536e78d438f7a132262d67d8",
+        "sources/S-012.md": "bddd8dab55568b4bedc1b6c7ce90701f9d80194bda5f2fef3d900a5a59041137",
+        "sources/S-013.md": "a1e02d788573cd6c774abee4eb1d12e2e27ac044f967833905c8a749f94f7f73",
+        "sources/S-014.md": "119b9ad7d0c046b4a0e1741ce03e08aedc2474c2ef77bd4f93103ed3033b4e52",
+        "sources/S-015.md": "8a6bd3e1debacec32db1c149672d7d21388c0f3a0bfe88dcc27539a19c9d1869",
+        "sources/S-016.md": "baa9c812a6754133ecb0cabb46a501bd3c847c77e7b3f0cc317509c27b6d5ffa",
+        "sources/S-017.md": "bca4b5c3b6e802fbed973c45161c75882c8e354d4b2d55203befa7b19fe8507e",
+        "sources/S-018.md": "fba3e756c4416795d8fdd7aa91e8304874b950beb5da6c6ed4a8a29d96f1e264",
+        "sources/S-019.md": "bb109d33cc6ab7bf73d9b61c783d935c111a0a026d64bb17ea2bf528d9c898a0",
+        "sources/S-020.md": "a4a11ba5d8d4aaf0ce03c326ae24cdb276cc58bfa39baa37880e0f08ebf47836",
+        "sources/S-021.md": "21a142e4bda863a8af4db77a26f4a57d6632d2472e0bb4037be22ecdb37fb148",
+        "sources/S-022.md": "0bfb08dd398677adbc7ef8e8c334d1fd123b05981f32623329f21a36a664875b",
+        "sources/S-023.md": "7457bc364fdfa6a0deb4b2a24f659192ea56eef11e57696389e2cfbe4f8df7eb",
+        "sources/S-024.md": "659d1688a336523b886e4cbd81bfcc74dc9b8997d936d2c5bc50703a065bf72c",
+        "sources/S-025.md": "2a478c752e75176903c4720d0d0646a3f7b861cc2cce9d757bde0476a32d1350",
+        "sources/S-026.md": "b9164a8992bfb9c16b9250b5cddbfde2ca83a98d477e835d47bb03362f94445d",
+        "sources/S-027.md": "1bad752a79bdf1f8d31f46557c4b24820b22cf59235b5ae5513bd4bf594532ba",
+        "sources/S-028.md": "86beebb59c554bbd7f014f690899e0547c458c9e65b587ac47b33d48c4404b75",
+        "sources/S-029.md": "5329266e9827be6a694454a0e8b9a356f050b5cdb787c443ac6914d3f824300c",
+        "sources/S-030.md": "8b76d85804b0c4180cb0e055e319bddfd8bbc0e9b13f89c7ebb7db1b36160f45",
+        "sources/S-031.md": "779052a0d913d353a46f7b8d512a3144ee9b84da1097317c90e5ea05220c01dd",
+        "sources/S-032.md": "59c939e9178ec14c291d3c133f9bcc9f89399071555a1a10bdafcbb52e8ea6c4",
+        "sources/S-033.md": "d19fa497cb9139b2cf849193f306957ae0f1763f8a624e07220138c6019d89eb",
+        "sources/S-034.md": "e164e4eafe88407a55434c40b64eff93253ee081b773e0dfb4764efc7cf56eeb",
+        "sources/S-035.md": "19c70aa51b3da7b1de33be31dbcdcb7a9fa6830f8663fcaecb91c7b9112bd31c",
+        "sources/S-036.md": "06e62c48ad30e676b057b56ba70cc78c8ca8b039bc9222b8a0f3a8e7ddc65ab7",
+        "sources/S-037.md": "f313dfab8ae0c83b4d0f414ba63a670fce1ea6494bb61efa9b51c15a54790d53",
+        "sources/S-038.md": "4d37e7c671d07eaa96a55c6ffaceef948673856dc1a88e70a433b57e593fca47",
+        "sources/S-039.md": "4b2943caaf67f09a28305ddb8b20ec1b05e6fde054651400cec1cb6f8b9735a7",
+        "sources/S-040.md": "3b5d0ffe47f53dc818b7ea49b55b36be86ed60c812d3f5f5de7e95235a721171",
+        "sources/S-041.md": "739e06eaef222eb10fb4570086529f3d664c384bb189d619e7fc73bcb9012ff6",
+        "sources/S-042.md": "05f383e971665e00e8babc670c904a668b89a33b2608902c610cce56b2617a99",
+        "sources/S-043.md": "b0c8567d3d2786d670fa5d2485926da757e00dc052f5327f1b7583bde25cc46b",
+        "sources/S-044.md": "dc475f1eb5c27bf59197f6194d31882d83139cab61c0bc61eb28cf490416d811",
+        "sources/S-045.md": "d94b11ed9c8e82716bc68c09ea57e3288f0dd520cffacbfa9e3606895bfa5ca5",
+        "sources/S-046.md": "91c29c9d119cd9b9f2db53a299d37557e473d8d9a027142e1a64515297795464",
+        "sources/S-047.md": "317dca8d0354610da807587de106a1c94645fb123559a792ac6a7264a2fe2ef7",
+        "sources/S-048.md": "5bb745a3257aff6314ecf466514b2ab53c5748dcd9c8d6d3327f2425fb4829a9",
+        "sources/S-049.md": "43a1f8b43451d5528ad82b546358e00a60a7e2ab5ab6c78f533d6a0397ad9bc9",
+        "sources/S-050.md": "fb39630690129755573d8c76f2b69136dc179a5101b5a1b2ffc6e71d6d281c0f",
+        "sources/S-051.md": "d03e82e4eef69940983509c32a54309070cf416becac7892789d1c346d71bc39",
+        "sources/S-052.md": "109fb253b8becbd7f6b1bd45d69ab95369cfff9234b1c7917cf7be2d2c4ada65",
+        "sources/S-053.md": "f40fb472d7ec506fbcc0320c40588e2166b111d272e6bda04554cf786244d26d",
+        "sources/S-054.md": "cea676dbdea6b387b4caa20779938860f5c1e6deee92e53a3d3b30cb93c46113",
+        "sources/S-055.md": "94fd7125d6521e14034aa9d63b8a5ed6d7ab9ee7736928a8cb6876fdd34f2f18",
+        "sources/S-056.md": "0f99b407472e2173b8ba9a38af55e4b5c6e5808bfee89976a40122170e2007ae",
+        "sources/S-057.md": "314b96bf92c00bd692a7b07162a8ae10610b8b7e22ea1d94328cce63d51e57f4",
+        "sources/S-058.md": "79ba6b6812a775238c026492a88ac1dd27f65d71f9449d4157f144795da18d5a",
+        "sources/S-059.md": "b90600f1ff153271ca9e0fdb2ea0748538eae6fed89f1d9deaad60ccb8c9c27b",
+        "sources/S-060.md": "e5b5f35d5e75750b58cffb87635b76fa60236f7a3b3ae63d03c5bd201e9e0384",
+        "sources/S-061.md": "5b25c27ef2c74068cccaffd0970cf7c86397ded1fe22424142cd80a0029af35a",
+        "sources/S-062.md": "c3128ca8636add53f87387f315abe39f4cadbec3c36856216d8c80109d56443b",
+        "sources/S-063.md": "5e7150fc22cfd68099971e981d0b82fda76457dcac831090c7b7dcb8f4d66d5e",
+        "sources/S-064.md": "92733e4d612b0fd133ed66554275b0554afac5d3ebec11187572f796b7aa8b09",
+        "sources/S-065.md": "e321095ba5ccc92e4520550cb0ab814d8aa0ac3451d17b8dfeae7f0b361ffacb",
+        "sources/S-066.md": "39283b7585f332f2298dbf2fc2b359ea07da940216ad7dbdaf4bb88c2acffa41",
+        "sources/S-067.md": "b06ff8d0134f2d46c42e34ca53149a61213cb53d77ed2ce8ffb50d62e4a57357",
+        "sources/S-068.md": "d3e05851bbcce1d01531f66592568a1ce146f1d0f05e9d1efa3579eda955173a",
+        "sources/S-069.md": "529188bf726bf64ce32b810b71d5ebec05734b149dff042ad2f89e715be2e9fc",
+        "sources/S-070.md": "ce74950102a53ac85e4c6609f7b000ff194a5b3f2a887810a08a62af8508c5e1",
+        "sources/S-071.md": "57769afc0d5b0c1627db3880dd37d688148f4ded8a4f4cfcedfcce688abae291",
+        "sources/S-072.md": "4768c485d77a633080975b10f5d4a3bc31741751098ed1891d56304319c9cd28",
+        "sources/S-073.md": "935d45f096ab50e9da4d91a10dd849ecdc7ca40d8ef2291de4191b154085837f",
+        "sources/S-074.md": "4a03a4f230e10b10bcaffd5f26c1ca0cd1cd10d7ad4640a9e30ec5385b7cc866",
+        "sources/S-075.md": "012ad5b5020acf93ea5fc1da0393218c6cfa21ec6361778fdc03f13e49dbf607",
+        "sources/S-076.md": "928a43f9f12e3e01446301e942cd05db2087cc8d8737fce3816262127cfb513e",
+        "sources/S-077.md": "2cded6a4e6f03c11c89d85d0bdaf3f33e8ff50ef61884c4de00b9306c6fac3dc",
+        "sources/S-078.md": "8db859fc293d39decd1cbdda005e719db395bec2930a990e6bace776ca684572",
+        "sources/S-079.md": "bf03e80478c6b8f8550974ca6fc82986c93556ae8dee8b8ae9d97435e5b7170b",
+        "sources/S-080.md": "50ea3f157219ae0b5a58ca4a6bf1f5da8a5e89c96522f2850afdeb0960f1a3d7",
+        "sources/S-081.md": "b899c5c1d7c79c0e1a67347c24f398495919bd326f99ad6724f98f56a01077eb",
+        "sources/S-082.md": "15835567643100f99b6fd076c05cd8ee186079295da13ca5c687ec2ac929d271",
+        "sources/S-083.md": "56117aec1f31a32c933ece619948c0f756ee0936bf3c4d2a4e4d96c751be9171",
+        "sources/S-084.md": "1b8d694c475959c56c34f41e09ed71cf8388d9d082d2aab199eaef0987ce66de",
+        "sources/S-085.md": "b5c3c5770281b3256c5ff6abd029a5447d2e8a49557602f9be28764fab09afa0",
+        "sources/S-086.md": "0e6f676052b30017fbd6d5547c94c200c4acff5c18940603efd3b8566e6d4a00",
+        "sources/S-087.md": "1c45fb7408d2398e23fcdbe17f0dc6cc4b7a9248144a89d5332e7c8a47322a75",
+        "sources/S-088.md": "d07e92444fb67ec0f2f7b425f29707bd558e5e259ffefdb28da652ec66d82668",
+        "sources/S-089.md": "2a7cbd33809cfbf59d01ca98b58bebaffd2cddf6b80f8a3e89bd1e28a84ccd97",
+        "sources/S-090.md": "fe63a3be5524b70f4b1506c06a1e27d61eda5a82e710c685dbfd26dee97d164e",
+        "sources/S-091.md": "994c44382ffceb21c893ebe31460ab391e7abd7914b68e125a6f08055c641b5a",
+        "sources/S-092.md": "8599791112dc3493498fab1ebcd4dca67f5a30d2d4b8958341c145a81a104b0b",
+        "sources/S-093.md": "f66d6f9de69fd7821365fd0a4c40ae12304330e9c988425775429a367c62a64b",
+        "sources/S-094.md": "91723fddd7873e41bd5a88da9b5a29431479460bbc6e58ccbc4e9e1d639c8e49",
+        "sources/S-095.md": "5799e44e76f562c056de9843657a65c9c67312040ac427d36439fc88b57ad025",
+        "sources/S-096.md": "6f65bc736a27db6260e89d44d01c21b8068c4f6856c40b5374bca291d267b033",
+        "sources/S-097.md": "c8fe91332f944b63b99b0db7341b91746cf85140ecd79edad40cef0b996bc11d",
+        "sources/S-098.md": "f28bad977038ee11599cabdf5efe187b2a9cf7e2113aaf27c1f4ac8df47b1532",
+        "sources/S-099.md": "e2a2a3970e723aee02874e812f886be205e714a83f7014ebe4da5d7d1c64beaf",
+        "sources/S-100.md": "676697909745b35765d48fbe78c6ff2e0c2a9822aba4b4ec2818307074258c85",
+        "sources/S-101.md": "86a5717b496c7f499d94cb7663d82d4d8984143c3117f8b19b0072cf7aa7ee62",
+        "sources/S-102.md": "9f6bf9c0dadd86f4395372b5284b153cb580150d343db56359829072beecff1f",
+        "sources/S-103.md": "282670182fa1c833e242d60b54a4e8413321daaacde4420364f44d3973f38f54",
+        "sources/S-104.md": "67671ec13e59cbb137a287497647961ed67e12fef6a39d2069daa3f3ffc14d5b",
+        "sources/S-105.md": "a54f5885792004e419de86ff9d91d8cb04d6d8a940d246f9bd53650ceea4e474",
+        "sources/S-106.md": "bb1a7639d24bac3fe2e16b5e08e66eb4b8ba4e519fc1f5c4290cb58834f6b9a4",
+        "sources/S-107.md": "15bbdd55e9e772bba17b997abd4ee7abd326d5fb994a65d1a6d4aba5a3dfc496",
+        "sources/S-108.md": "0a312f204ad1aada678700c7182f881d951fbb1520cee94597d569c9b4c7cc03",
+        "sources/S-109.md": "6c2f738ab961b311d0949f794dfe2444fae0b6103db46e033de8bc47892238df",
+        "sources/S-110.md": "4c938bdbe8d30db0ff240b44467075d655d78fc89110d3916fd14f950a7d1d51",
+        "sources/S-111.md": "d765154ba235bc2717b566ee8f270d9512538122972a42a46ed514691acfe65d",
+        "sources/S-112.md": "37b98b03ac8ca78792f0828e1fb75ec51cecfec86d923d01d8ff3d12d0a692ed",
+        "sources/S-113.md": "fa4cfe12d34c35b59f5721eb280260ef9e0d93bcc296ea3912ac9b77c79068ea",
+        "sources/S-114.md": "97b61b6d25d39d891871a7794f349c59f2b6e150a9669ce8784ba6eeb428c795",
+        "sources/S-115.md": "61ababb5b1a6cee364e1cf5524c4cbeb73ce2fc31e4a9fac515b754e3673c4a8",
+        "sources/S-116.md": "0c007b67e37d4a2f5c5932f66d86880d3dd70a169d5e4efa43abb2019b1275a5",
+        "sources/S-117.md": "154225bb9142c960d5bf51df6a028771432cdcacf4a431dc1de4089545b60eb7",
+        "sources/S-118.md": "0d5e138a5470400ca6b5db46201cc87f9741a9606fbc1584f6fbe62cfb12b52e",
+        "sources/S-119.md": "53e77e4bd8078d29074d379b229cffb1a2ddb5967739e0db65da9e5aea39852f",
+        "sources/S-120.md": "991a1a82535b6c16fc89f0d91c32cb2ddc5c2e914b372c303ba29213901537b2",
+        "sources/S-121.md": "60093bc45f9c9084f210052cdab38038b0f932f40386fee3158594c726f9b76f",
+        "sources/S-122.md": "4e94839f9ba3986997dc51e2e8de764dede0f5f2959b973622e407efcff81e77",
+        "sources/S-124.md": "76ab34cd4a8c7867922ddb73adbbecc7ef811c498449daa3eb915e09ee83d7aa",
+        "sources/index.md": "eee41a07d0f8a1664cfe26280402e74e8e7b7e328354cafcb9e67a6c5a29d16a",
+        "tactics/T-001.md": "2569f2a20bf1e16e6ae8ce64ee7278f5a86ac3e065411bc4416e08f3d0cc8219",
+        "tactics/T-002.md": "7db7bcacbc00616a02446306bfae9d3ef8698815eb64968bf53bbf0d4a503733",
+        "tactics/T-003.md": "9290c8d4f3008ba5887b8ff10c4b37048f37473e44daa5b67b53f05494cc1463",
+        "tactics/T-004.md": "70566fdcc6e2b9a0937d0b8bd519c3b690d2829b1b547c5bd59f61cc5a0c9626",
+        "tactics/T-005.md": "6780f22581d37e07bbad1506603432ff56996112488c524f50ce9bd7fac080a7",
+        "tactics/T-006.md": "67d63d66d463c2e9dc232cb36e28a9c0ca07b9b9a2e00f97775f96a1b8ad7a13",
+        "tactics/T-007.md": "666e704cadbb00f8e6d3f4ae41d06601a7ba48ab95c4c766f1c9762850ea1677",
+        "tactics/T-008.md": "730cd07667650ba85ece2cd0b0e5762f576d7c1406e92d78818a7ced5dc9605a",
+        "tactics/T-009.md": "a903ed0620104ddfcc32da8037b7784796a00825d3d28818b09974659e450e12",
+        "tactics/T-010.md": "7744edd8e89a1a6d13f14bb08eea945f0837e04ba5979b1dec59d04024cb36ea",
+        "tactics/T-011.md": "841e8a21cc8d878e53de6890b946a6d7b23714e4d6ccc9dd6e985db8add1ff6e",
+        "tactics/T-012.md": "fd8753bbd7bbfc359f74b8b55332cc4276cb3fd03c27338a5641297880596129",
+        "tactics/T-013.md": "67b9e5a891fdb27f8e141f2a61a3a8ba5b07bf4c27a44bef306b5adcc1997061",
+        "tactics/T-014.md": "75196a0cf9c464771d3beebe0f364778edb4c8f968c6a4866f2f207b292bcb4f",
+        "tactics/T-015.md": "d7e88671352970e3d77301edc2b72945968c355e0f0f8ecebb0b86b7ba4393ad",
+        "tactics/index.md": "a412cedf88548c7bd002f9b45e2d6d3d60aa82a46d1c8b7ad0266b6b34d5c9f8"
+      }
+    },
+    "tracked_clean": true,
+    "paired_root_absent": true,
+    "initial_head": "c12b67c7410878960c45a9934ded6ae52ae6c42f"
+  },
+  "reconciliation": {
+    "problems": [],
+    "duplicates": {},
+    "raw_count": 12,
+    "meta_count": 12
+  },
+  "stop_reason": null
+}
