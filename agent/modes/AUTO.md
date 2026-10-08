@@ -15,7 +15,7 @@ Default when the host does not set an explicit reasoning mode.
 ## Routing
 
 1. Identify the object of reasoning (capability-to-build, existing system, delta, named decision, observed failure).
-2. Select **exactly one** primary DP using `decision-playbooks/index.md` “Select a playbook” plus `agent/system-prompt-v0.1.md` §3.
+2. Select **exactly one** primary DP using `decision-playbooks/index.md` “Select a playbook” plus the active system prompt §3.
 3. Start with **zero overlays**. Activate an overlay only when task shape, symptom, or evidence justifies that mechanism family (`decision-playbooks/index.md` overlay table). “For completeness” is never a valid activation reason. Overlay never replaces the DP.
 4. If two objects could apply **and** the DP choice would change the procedure, ask one targeted clarification. Otherwise proceed.
 5. Hand off to the corresponding explicit mode contract (ARCH_DESIGN … INCIDENT_ANALYSIS) and execute that DP. Do not keep a separate AUTO reasoning path.
