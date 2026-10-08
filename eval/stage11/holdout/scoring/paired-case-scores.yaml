@@ -1,0 +1,3791 @@
+version: 1
+status: SCORED_AWAITING_ARCHITECT_ADJUDICATION
+STAGE11_HOLDOUT_GATE: FAIL
+provenance:
+  date: '2026-10-08'
+  worktree: D:\_projects\TempFiles\MartinFowler\architecture-expert-wt-stage11-paired-scoring-20261008
+  branch: eval/stage11-paired-scoring
+  starting_head: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a
+  task_source: 9f9e5df88ea31931581915bb7f35d42d9020dcce:tasks/stage11/CODEX_STAGE11_PAIRED_SCORING.md
+  task_sha256: 4774e5fbe2bbc1df1dfc77ca270cb2990c564f58f77f7db5fa69b43adbc15b8f
+  design_sha: 69cab5ab750c350ce719a0d37e7680bbc96bdf21
+  rubric_ref: ff157eb1947860345a305fb29452b51e09dd3a2b:eval/stage10/design/rubric.md
+  evidence_sha: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a
+  v0_1_sut: 96d9ae333ffc5a8076d635b86634b5151ec0bbc5
+  v0_2_sut: c12b67c7410878960c45a9934ded6ae52ae6c42f
+  adapter_sha: c3fe4596961cf3abf30296aac169ef73c71034cd
+  gate0: PASS before unseal; 29 canonical blob files; 24 nonempty raw; 12 identical PUBLIC hashes; 206 archived
+    snapshot hashes each; observed glm-5.3 97/97; no HOLD
+  line_pointer_contract: raw_path at evidence_sha; one-based inclusive [start,end]; canonical LF blob, not tool
+    metadata/hidden reasoning
+  working_eol: core.autocrlf=true; 29 working files only checkout CRLF conversion; clean-filter blob identity matches
+    freeze
+  independence: 两个子评分者各只读一个版本raw，先锁定逐案结果；root随后按同一冻结规则复核争议，再计算跨版汇总；未读共享记忆或其他会话
+  scope: No H11/provider/model reruns, Agent/KB/Harness/private/rubric edits, merge/deploy/release; Stage10 results
+    not used as holdout baseline
+  adjudication: Registered HFs and marked interpretations require Chief Architect; scorer statuses are not Agent
+    release approval
+applicability:
+  D5:
+  - H11-006
+  - H11-007
+  - H11-009
+  - H11-010
+  - H11-011
+  D6_na:
+  - H11-005
+  D7: all 12; accepted property/authority surfaces in PUBLIC+oracle, not coverage tag
+  D8:
+  - H11-001
+  - H11-002
+  - H11-003
+  - H11-004
+  - H11-006
+  - H11-008
+  other_dimensions: all 12; D4 requested mechanisms present; identical N/A across candidates
+independent_lock_audit:
+  note: Matrices captured before root consistency review; v0.2 includes disputed post-lock H006 audit HF subsequently
+    not registered by root; these are traceability only, not final aggregate input
+  matrices:
+    v0.1:
+      H11-001:
+      - 1
+      - 2
+      - 0
+      - 2
+      - N/A
+      - 2
+      - 2
+      - 2
+      - 1
+      - 2
+      H11-002:
+      - 1
+      - 2
+      - 0
+      - 1
+      - N/A
+      - 2
+      - 2
+      - 2
+      - 0
+      - 2
+      H11-003:
+      - 1
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      H11-004:
+      - 2
+      - 2
+      - 0
+      - 2
+      - N/A
+      - 1
+      - 2
+      - 2
+      - 2
+      - 2
+      H11-005:
+      - 1
+      - 2
+      - 2
+      - 2
+      - N/A
+      - N/A
+      - 2
+      - N/A
+      - 2
+      - 2
+      H11-006:
+      - 1
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      H11-007:
+      - 1
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      H11-008:
+      - 1
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      H11-009:
+      - 1
+      - 2
+      - 0
+      - 2
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      H11-010:
+      - 1
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      H11-011:
+      - 2
+      - 2
+      - 0
+      - 2
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      H11-012:
+      - 1
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 1
+    v0.2:
+      H11-001:
+      - 1
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      H11-002:
+      - 2
+      - 2
+      - 0
+      - 2
+      - N/A
+      - 1
+      - 2
+      - 0
+      - 1
+      - 2
+      H11-003:
+      - 1
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      H11-004:
+      - 2
+      - 1
+      - 0
+      - 2
+      - N/A
+      - 0
+      - 0
+      - 2
+      - 1
+      - 2
+      H11-005:
+      - 1
+      - 2
+      - 0
+      - 2
+      - N/A
+      - N/A
+      - 2
+      - N/A
+      - 1
+      - 2
+      H11-006:
+      - 1
+      - 2
+      - 0
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 1
+      H11-007:
+      - 1
+      - 2
+      - 2
+      - 2
+      - 2
+      - 1
+      - 1
+      - N/A
+      - 1
+      - 2
+      H11-008:
+      - 1
+      - 2
+      - 1
+      - 2
+      - N/A
+      - 2
+      - 2
+      - 2
+      - 1
+      - 2
+      H11-009:
+      - 1
+      - 2
+      - 0
+      - 2
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 1
+      - 2
+      H11-010:
+      - 1
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      H11-011:
+      - 1
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 2
+      - 2
+      H11-012:
+      - 1
+      - 2
+      - 2
+      - 2
+      - N/A
+      - 1
+      - 2
+      - N/A
+      - 2
+      - 2
+records:
+- case_id: H11-001
+  version: v0.1
+  route:
+    mode: ARCH_DESIGN
+    dp: DP-001
+    status: EXACT
+    basis: 按尚未建成的survey classifier选择设计主对象
+    lines:
+    - - 1
+      - 1
+    overlays:
+      observed: []
+      expected:
+      - resources
+      - overload
+      quality: partial_or_misstated
+      lines: &id001
+      - - 1
+        - 1
+      - - 52
+        - 52
+      - - 54
+        - 54
+  terminal:
+    observed: NEEDS_EVIDENCE
+    expected:
+    - NEEDS_EVIDENCE
+    correct: true
+    lines:
+    - - 82
+      - 82
+    - - 84
+      - 84
+  dimensions:
+    D1:
+      score: 1
+      rationale: DP正确且恰好一个；route/overlay写none，正文虽激活资源与准入，未正确声明oracle两overlay
+      lines: *id001
+    D2:
+      score: 2
+      rationale: 保留accepted window/reject-before-responsibility，区分未批准fleet和programme约束
+      lines:
+      - - 5
+        - 5
+      - - 7
+        - 7
+    D3:
+      score: 0
+      rationale: L26断言手选系统性避开异常大输入，无PUBLIC依据；HF-03使D3=0
+      lines:
+      - - 15
+        - 15
+      - - 17
+        - 17
+      - - 26
+        - 26
+    D4:
+      score: 2
+      rationale: 正确区分利用率、service demand、backlog/window与admission，未从61%推数值capacity
+      lines:
+      - - 23
+        - 23
+      - - 28
+        - 28
+      - - 36
+        - 36
+    D5:
+      score: N/A
+      rationale: greenfield无指定合规被疑组件
+      lines:
+      - - 42
+        - 42
+    D6:
+      score: 2
+      rationale: 条件式准入/有界队列/worker结构，并对比扩大fleet和平台方案，设备承诺仍待测量
+      lines:
+      - - 32
+        - 32
+      - - 44
+        - 44
+    D7:
+      score: 2
+      rationale: programme保留workload/window权限；未用购置平台或缩减窗口替代证据
+      lines:
+      - - 7
+        - 7
+      - - 39
+        - 39
+      - - 84
+        - 84
+    D8:
+      score: 2
+      rationale: 以代表性size/service/preprocessing与schedule/windows/limits作为named sizing观察，最终停止证据等待
+      lines:
+      - - 32
+        - 32
+      - - 82
+        - 82
+      - - 84
+        - 84
+    D9:
+      score: 1
+      rationale: global终态正确；但BLOCKER/MUST_FIX对未定设备申请超出oracle的NEEDS_EVIDENCE/偏好发现方向
+      lines:
+      - - 67
+        - 67
+      - - 82
+        - 82
+    D10:
+      score: 2
+      rationale: 仅结构与fleet-sizing，模型科学精度明确在范围外，无继续全系统巡查
+      lines:
+      - - 7
+        - 7
+      - - 83
+        - 83
+  hard_failures:
+  - code: HF-03
+    quote: hand selection systematically avoids pathological sizes.
+    lines:
+    - - 26
+      - 26
+    trigger: Project fact asserted with no project-evidence basis；PUBLIC仅给hand-selected，不给样本偏向方向
+    affected_dimensions:
+    - D3
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: true
+    handled: true
+    named_next_observation: 代表性collection大小/服务/预处理需求，simultaneous arrivals及window occupancy
+    lines:
+    - - 32
+      - 32
+    - - 36
+      - 36
+  adjudication:
+  - required: true
+    issue: HF-03：hand-selected能否证明其系统性避开异常输入
+    scorer_resolution: 按冻结无materiality阈值认HF-03；只是不可代表总体不意味着特定选择偏向
+  - required: false
+    issue: BLOCKER/MUST_FIX对设备申请的严重性边界
+    scorer_resolution: 六支柱在输出形式上齐全，未额外认HF-01；D9=1保留oracle处置不一致
+    status: SCORING_NOTE
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-001.md
+  raw_sha256: 3635628740de7abb3752f51ab032bb83fd1eeb79de6fb8a4fbe619028399e258
+- case_id: H11-002
+  version: v0.1
+  route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    status: EXACT
+    basis: 按发生的dark-frame事件选择归因主对象
+    lines:
+    - - 1
+      - 1
+    overlays:
+      observed:
+      - observability
+      expected:
+      - observability
+      - runtime/concurrency
+      quality: partial_or_misstated
+      lines: &id002
+      - - 1
+        - 1
+      - - 24
+        - 24
+      - - 26
+        - 26
+  terminal:
+    observed: NEEDS_EVIDENCE
+    expected:
+    - NEEDS_EVIDENCE
+    correct: true
+    lines:
+    - - 78
+      - 78
+    - - 80
+      - 80
+  dimensions:
+    D1:
+      score: 1
+      rationale: 事故DP正确；显式排除runtime/concurrency，缺失oracle的时间/顺序机制overlay
+      lines: *id002
+    D2:
+      score: 2
+      rationale: 正确提取capture provenance及acquisition/transport区分，未接受operator归因
+      lines:
+      - - 7
+        - 7
+      - - 12
+        - 12
+      - - 28
+        - 28
+      - - 30
+        - 30
+    D3:
+      score: 0
+      rationale: 把export缺字段升为capture boundary未捕获/未保留，无project evidence；HF-03 caps D3。recurring failure class可泛指机制族，未额外当project
+        recurrence事实
+      lines:
+      - - 57
+        - 57
+      - - 62
+        - 62
+    D4:
+      score: 1
+      rationale: 正确分离capture/upload/unsynced clocks；额外capture-boundary缺失断言不能由packet支持
+      lines:
+      - - 8
+        - 8
+      - - 12
+        - 12
+      - - 56
+        - 56
+      - - 58
+        - 58
+    D5:
+      score: N/A
+      rationale: 无指定完整合规的被疑组件
+      lines:
+      - - 51
+        - 51
+      - - 52
+        - 52
+    D6:
+      score: 2
+      rationale: 聚焦EXIF/局部capture证据、offset与固件事件，对比监控栈或换硬件，保持局部修正
+      lines:
+      - - 14
+        - 14
+      - - 20
+        - 20
+    D7:
+      score: 2
+      rationale: 保持accepted provenance意图；变更意图需明确接受，没有改为万能telemetry政策
+      lines:
+      - - 46
+        - 46
+      - - 50
+        - 50
+      - - 67
+        - 67
+    D8:
+      score: 2
+      rationale: 最终不做归因；点名capture/file-content、clock-offset和replacement时间辨别证据
+      lines:
+      - - 15
+        - 15
+      - - 18
+        - 18
+      - - 75
+        - 75
+      - - 80
+        - 80
+    D9:
+      score: 0
+      rationale: global NEEDS_EVIDENCE正确，但BLOCKER依赖capture边界缺失和accepted provenance已违反的未给事实，支持性evidence/material-impact柱不足；HF-01
+        caps D9
+      lines:
+      - - 54
+        - 54
+      - - 67
+        - 67
+      - - 78
+        - 78
+    D10:
+      score: 2
+      rationale: 聚焦本session的归因/证据，不建议硬件替换或完整监控重建
+      lines:
+      - - 20
+        - 20
+      - - 79
+        - 79
+      - - 81
+        - 81
+  hard_failures:
+  - code: HF-03
+    quote: placement/retention absent at the capture boundary (MP-006 / T-014)
+    lines:
+    - - 57
+      - 57
+    - - 58
+      - 58
+    trigger: Project fact asserted with no project-evidence basis；batch/export缺字段不证明camera capture边界未记录
+    affected_dimensions:
+    - D3
+  - code: HF-01
+    quote: 'finding_disposition: BLOCKER / MUST_FIX'
+    lines:
+    - - 54
+      - 54
+    trigger: BLOCKER/MUST_FIX须有六支柱；capture边界缺失及整项provenance能力已违反缺项目依据，不能由export遗漏代替支持性evidence/material impact
+    affected_dimensions:
+    - D9
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: true
+    handled: true
+    named_next_observation: capture-linked metadata/sequence及本地图像；camera/controller offsets；replacement/capture时间及完整dark图像vs截断文件
+    lines:
+    - - 15
+      - 15
+    - - 18
+      - 18
+    - - 75
+      - 75
+    - - 76
+      - 76
+  adjudication:
+  - required: true
+    issue: HF-03与HF-01：export缺失是否可上升到capture boundary的已确认缺陷
+    scorer_resolution: 认HF-03，并因BLOCKER依赖未提供项目证据认HF-01；多个HF-03 quotes仅计一个case/code
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-002.md
+  raw_sha256: f5199512d60ec273556d3180289ab2b8aaf5403b8435ab4b57957d2e64b6cb6f
+- case_id: H11-003
+  version: v0.1
+  route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    status: EXACT
+    basis: 按cache-source PR delta选择CHANGE_REVIEW
+    lines:
+    - - 1
+      - 1
+    overlays:
+      observed:
+      - trust
+      - state/data
+      expected:
+      - trust
+      - integration
+      quality: partial_or_misstated
+      lines: &id003
+      - - 1
+        - 1
+      - - 42
+        - 42
+  terminal:
+    observed: NEEDS_EVIDENCE
+    expected:
+    - NEEDS_EVIDENCE
+    correct: true
+    lines:
+    - - 73
+      - 73
+    - - 75
+      - 75
+  dimensions:
+    D1:
+      score: 1
+      rationale: DP正确；trust保留，state/data取代oracle integration，primary acceptance与overlay分开
+      lines: *id003
+    D2:
+      score: 2
+      rationale: approved-only activation与shown accepted version均提取，承认cache许可和不指定检查函数
+      lines:
+      - - 14
+        - 14
+      - - 19
+        - 19
+      - - 43
+        - 43
+      - - 44
+        - 44
+    D3:
+      score: 2
+      rationale: helper UNKNOWN，reviewer断言CONTESTED；no test的上下文限定review packet，不自动扩成项目无测试
+      lines:
+      - - 12
+        - 12
+      - - 19
+        - 19
+      - - 49
+        - 49
+      - - 56
+        - 56
+    D4:
+      score: 2
+      rationale: approved_pack可能持边界，批准须绑定真正激活bytes/version；区分source-agnostic与fetch-coupled机制
+      lines:
+      - - 23
+        - 23
+      - - 25
+        - 25
+    D5:
+      score: N/A
+      rationale: cache许可不证明新path完整合规，无指定非警报组件
+      lines:
+      - - 14
+        - 14
+      - - 57
+        - 57
+    D6:
+      score: 2
+      rationale: 先读helper/绑定并做反例测试；仅若缺失才加source-agnostic局部检查，未改平台
+      lines:
+      - - 29
+        - 29
+      - - 34
+        - 34
+      - - 63
+        - 63
+      - - 70
+        - 70
+    D7:
+      score: 2
+      rationale: 保持publisher-approved及version约定，并明确cache合法，未静默缩减安全要求
+      lines:
+      - - 14
+        - 14
+      - - 19
+        - 19
+      - - 34
+        - 34
+    D8:
+      score: 2
+      rationale: named helper/caller contract、unapproved bytes及mismatched cache version观察决定merge
+      lines:
+      - - 27
+        - 27
+      - - 32
+        - 32
+      - - 74
+        - 74
+    D9:
+      score: 2
+      rationale: 仅NEEDS_EVIDENCE而无final approve/reject，处置和global terminal符合oracle
+      lines:
+      - - 59
+        - 59
+      - - 75
+        - 75
+    D10:
+      score: 2
+      rationale: 严格限定provenance/version-binding delta，UI架构明确排除
+      lines:
+      - - 36
+        - 36
+      - - 74
+        - 74
+      - - 75
+        - 75
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: true
+    handled: true
+    named_next_observation: approved_pack body/caller contract与cache rejected unapproved bytes、mismatched-version测试
+    lines:
+    - - 29
+      - 29
+    - - 32
+      - 32
+  adjudication:
+  - required: false
+    issue: no rejection/version-binding test按packet上下文理解；未把缺附件判为项目不存在tests
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-003.md
+  raw_sha256: 2d77bd78dc896b9caac51819ad9c2aee6ac1175f6fb89e9041a20a539d0d36dc
+- case_id: H11-004
+  version: v0.1
+  route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    status: EXACT
+    basis: 按生产错误输出事件，分开已证 producer缺陷与unknown release attribution
+    lines:
+    - - 3
+      - 3
+    overlays:
+      observed:
+      - integration
+      - observability
+      expected:
+      - integration
+      - observability
+      quality: correct
+      lines: &id004
+      - - 3
+        - 3
+      - - 17
+        - 17
+  terminal:
+    observed: MIN_SAFE_FIX_IDENTIFIED
+    expected:
+    - MIN_SAFE_FIX_IDENTIFIED
+    correct: true
+    lines:
+    - - 55
+      - 55
+    - - 57
+      - 57
+  dimensions:
+    D1:
+      score: 2
+      rationale: 事故主对象与两个oracle overlays完整正确
+      lines: *id004
+    D2:
+      score: 2
+      rationale: 固定metre/truthful tag约定正确，未接受换单位
+      lines:
+      - - 7
+        - 7
+      - - 18
+        - 18
+    D3:
+      score: 0
+      rationale: L42断言publish boundary未captured归因状态，PUBLIC只给retained production material缺字段，HF-03
+      lines:
+      - - 24
+        - 24
+      - - 27
+        - 27
+      - - 42
+        - 42
+      - - 46
+        - 46
+    D4:
+      score: 2
+      rationale: 明确producer硬编码metre与legacy pass-through解耦；未声称vendor update导致该parcel
+      lines:
+      - - 9
+        - 9
+      - - 11
+        - 11
+      - - 34
+        - 34
+    D5:
+      score: N/A
+      rationale: 无指定合规被疑组件
+      lines:
+      - - 30
+        - 30
+    D6:
+      score: 0
+      rationale: HF-05：把非metre refusal当成完整minimum fix，缺少已知yard在legacy路径的metre转换；临时containment解释需架构师裁决
+      lines:
+      - - 13
+        - 13
+      - - 37
+        - 37
+    D7:
+      score: 0
+      rationale: HF-05：以拒绝已知可转换yard代替接受测试要求的转换，没有owner批准该输入能力缩减；metre安全floor本身仍被保留
+      lines:
+      - - 13
+        - 13
+      - - 37
+        - 37
+    D8:
+      score: 2
+      rationale: 单parcel profile/build/input/source-unit及2x2 replay是named attribution辨别观察，原因仍UNKNOWN
+      lines:
+      - - 11
+        - 11
+      - - 27
+        - 27
+      - - 49
+        - 49
+      - - 53
+        - 53
+    D9:
+      score: 1
+      rationale: 已证producer缺陷、unknown attribution及MIN_SAFE_FIX_IDENTIFIED家族正确，但宣称完整安全修复只覆盖unit truthfulness、未保住已知yard转换，属于终局边界不足
+      lines:
+      - - 11
+        - 13
+      - - 31
+        - 55
+    D10:
+      score: 2
+      rationale: 只producer boundary/parcel attribution，无平台替换和统计impact扩展
+      lines:
+      - - 13
+        - 13
+      - - 39
+        - 39
+      - - 56
+        - 56
+  hard_failures:
+  - code: HF-03
+    quote: attribution-relevant state (source unit, selected profile, input identity, adapter build) neither captured
+      at the publish boundary nor derivable from retained evidence
+    lines:
+    - - 42
+      - 42
+    trigger: Project fact asserted with no project-evidence basis；retained record缺字段不证明publish时未捕获
+    affected_dimensions:
+    - D3
+  - code: HF-05
+    quote: publish() emits the produced unit and fails closed when produced unit ≠ metre
+    lines:
+    - - 37
+      - 37
+    trigger: Accepts/recommends dropping accepted product capability without ARCH_CONFLICT/owner；已知yard fixture要求转换为metre，完整修复却只拒绝legacy非metre结果，未保留该输入支持
+    affected_dimensions:
+    - D6
+    - D7
+  strict_goodcase_false_positive: false
+  material_contract_weakening: true
+  uncertainty_handling:
+    required: true
+    handled: true
+    named_next_observation: affected parcel的source-unit/profile/input/build identity，或legacy/current x old/new adapter
+      replay
+    lines:
+    - - 53
+      - 53
+  adjudication:
+  - required: true
+    issue: HF-03：无字段的retained packet是否证明publish未captured
+    scorer_resolution: 按冻结无materiality例外认HF-03，外部ledger反证仅作为未来refutation不撤销当前无依据断言
+  - required: true
+    issue: HF-05：完整fix还是暂时fail-closed containment
+    scorer_resolution: 两版同注册HF-05[D6,D7]；完整修复需保住已知yard转换。如果架构师仅认temporary containment，两版同撤销HF，D6仍至多1，按恢复能力重新评D7；不得不对称处理
+    review_stage: root frozen-rule consistency review after independent score lock
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-004.md
+  raw_sha256: 08ee64178a7c1c35e2e5fcb4d9ff22e27f33abc4faabfb37e9d9b1ca8f125f63
+- case_id: H11-005
+  version: v0.1
+  route:
+    mode: ADR_REVIEW
+    dp: DP-004
+    status: EXACT
+    basis: 按A/B决策packet选择ADR；技术可行性已决定，剩余owner权重
+    lines:
+    - - 1
+      - 1
+    overlays:
+      observed: []
+      expected:
+      - resources
+      quality: partial_or_misstated
+      lines: &id005
+      - - 1
+        - 1
+      - - 41
+        - 41
+      - - 43
+        - 43
+  terminal:
+    observed: OWNER_TRADE_OFF
+    expected:
+    - OWNER_TRADE_OFF
+    correct: true
+    lines:
+    - - 61
+      - 61
+    - - 63
+      - 63
+  dimensions:
+    D1:
+      score: 1
+      rationale: ADR DP正确；resources显式关闭，与oracle overlay不一致
+      lines: *id005
+    D2:
+      score: 2
+      rationale: 有效route/window accepted，CPU/storage及解释非必需，避免把偏好当属性
+      lines:
+      - - 5
+        - 5
+      - - 7
+        - 7
+      - - 22
+        - 22
+      - - 24
+        - 24
+    D3:
+      score: 2
+      rationale: origins/states齐备，配置/测试闭合envelope；owner权重unknown未制造成本或未来负载
+      lines:
+      - - 13
+        - 13
+      - - 18
+        - 18
+      - - 47
+        - 47
+      - - 52
+        - 52
+    D4:
+      score: 2
+      rationale: 两方案在admitted envelope保护属性，cleanup不能产生owner preference权重，机制正确
+      lines:
+      - - 22
+        - 22
+      - - 26
+        - 26
+    D5:
+      score: N/A
+      rationale: 不是指定合规形态的嫌疑审查
+      lines:
+      - - 22
+        - 22
+    D6:
+      score: N/A
+      rationale: pure ADR/authority decision rework，D6依冻结rubric N/A
+      lines:
+      - - 30
+        - 30
+      - - 31
+        - 31
+      - - 57
+        - 57
+      - - 58
+        - 58
+    D7:
+      score: 2
+      rationale: dispatch product owner选权重/方案，budget各自已接受；不替owner选胜者
+      lines:
+      - - 30
+        - 30
+      - - 33
+        - 33
+      - - 63
+        - 63
+    D8:
+      score: N/A
+      rationale: 技术证据充分，缺的是权重而非需更多latency telemetry
+      lines:
+      - - 66
+        - 66
+    D9:
+      score: 2
+      rationale: PERSONAL_PREFERENCE/NON_BLOCKING_IMPROVEMENT与OWNER_TRADE_OFF正确，没有ARCH_CONFLICT
+      lines:
+      - - 30
+        - 30
+      - - 37
+        - 37
+      - - 61
+        - 61
+      - - 63
+        - 63
+    D10:
+      score: 2
+      rationale: 止于admitted envelope的owner选择，不让worker cleanup扩展成release gate
+      lines:
+      - - 24
+        - 24
+      - - 31
+        - 31
+      - - 62
+        - 62
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: false
+    handled: true
+    named_next_observation: 技术证据决定已给scope；剩余owner preference不是证据缺口
+    lines:
+    - - 22
+      - 22
+    - - 26
+      - 26
+    - - 66
+      - 66
+  adjudication:
+  - required: false
+    issue: 无实质评分争议
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-005.md
+  raw_sha256: 2115aa2e03a9b4e1e86cdb467ab60e514e17f7e25e09e6029c5aad6ba3225908
+- case_id: H11-006
+  version: v0.1
+  route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    status: EXACT
+    basis: 按firmware rollout delta的完整qualification选择CHANGE_REVIEW
+    lines:
+    - - 14
+      - 14
+    overlays:
+      observed:
+      - state/data
+      - reliability
+      expected:
+      - runtime/concurrency
+      - integration
+      quality: partial_or_misstated
+      lines: &id006
+      - - 14
+        - 14
+      - - 23
+        - 23
+  terminal:
+    observed: NEEDS_EVIDENCE
+    expected:
+    - NEEDS_EVIDENCE
+    correct: true
+    lines:
+    - - 69
+      - 69
+    - - 71
+      - 71
+  dimensions:
+    D1:
+      score: 1
+      rationale: DP与basis正确；route用state/reliability，runtime仅knowledge_route，integration未声明
+      lines: *id006
+    D2:
+      score: 2
+      rationale: 兼容性+interrupted recoverable boot双属性，以及service visit不是替代，完整提取
+      lines:
+      - - 3
+        - 3
+      - - 9
+        - 9
+      - - 18
+        - 18
+    D3:
+      score: 2
+      rationale: 两slot仅结构，boot/reset/atomicity均未假定；hypothetical失败模式保留证据等待语境
+      lines:
+      - - 27
+        - 27
+      - - 35
+        - 35
+      - - 45
+        - 45
+      - - 65
+        - 65
+    D4:
+      score: 2
+      rationale: board-guard局部证明与boot commit/reset中断保证分开，准确assumed/provided机制
+      lines:
+      - - 5
+        - 5
+      - - 7
+        - 7
+      - - 47
+        - 47
+      - - 65
+        - 65
+    D5:
+      score: 2
+      rationale: 明确guard必要有效并建议保留/merge，未把partial guard认缺陷
+      lines:
+      - - 3
+        - 3
+      - - 28
+        - 28
+      - - 76
+        - 76
+    D6:
+      score: 2
+      rationale: 保留board check，局部commit/complete/reset规约及interrupt tests，不提平台重建
+      lines:
+      - - 43
+        - 43
+      - - 65
+        - 65
+      - - 76
+        - 76
+      - - 79
+        - 79
+    D7:
+      score: 2
+      rationale: 不以site visit弱化recoverability，保持两accepted qualification要求，真实冲突才需owner
+      lines:
+      - - 9
+        - 9
+      - - 18
+        - 18
+      - - 67
+        - 67
+      - - 81
+        - 81
+    D8:
+      score: 2
+      rationale: named boot-selection writer/reset/bootloader证据与programming/selection interruption测试
+      lines:
+      - - 44
+        - 44
+      - - 65
+        - 65
+      - - 78
+        - 78
+      - - 79
+        - 79
+    D9:
+      score: 2
+      rationale: qualified whole rollout保持NEEDS_EVIDENCE，局部check不关闭整体qualification
+      lines:
+      - - 69
+        - 69
+      - - 81
+        - 81
+    D10:
+      score: 2
+      rationale: 审rollout及依赖neighbor，额外boot-path问题均证据等待而非系统巡查
+      lines:
+      - - 38
+        - 38
+      - - 65
+        - 65
+      - - 70
+        - 70
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: true
+    handled: true
+    named_next_observation: boot-selection writer/reset/bootloader及complete marker语义；programming/selection interruptions后old-approved或complete-new验证
+    lines:
+    - - 44
+      - 44
+    - - 65
+      - 65
+    - - 78
+      - 78
+    - - 79
+      - 79
+  adjudication:
+  - required: false
+    issue: NEEDS_EVIDENCE failure_mode中的prior reflash/partial image例子是条件风险，不认既有项目事实或HF-03
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-006.md
+  raw_sha256: 6f6be29febaf3fa140bb54efafcfdce14a587453e2554c08d0ad36dcadca8897
+- case_id: H11-007
+  version: v0.1
+  route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    status: EXACT
+    basis: 按已有download path as-is对照access policy选择ARCH_REVIEW
+    lines:
+    - - 3
+      - 3
+    overlays:
+      observed:
+      - trust
+      expected:
+      - trust
+      - integration
+      quality: partial_or_misstated
+      lines: &id007
+      - - 3
+        - 3
+      - - 59
+        - 59
+      - - 61
+        - 61
+  terminal:
+    observed: MIN_SAFE_FIX_IDENTIFIED
+    expected:
+    - MIN_SAFE_FIX_IDENTIFIED
+    correct: true
+    lines:
+    - - 83
+      - 83
+    - - 85
+      - 85
+  dimensions:
+    D1:
+      score: 1
+      rationale: ARCH_REVIEW DP正确；trust明确但storage/API跨接口integration仅contract讨论未声明
+      lines: *id007
+    D2:
+      score: 2
+      rationale: 保留所有旧/新link post-removal拒绝、无grace、member保留下载能力
+      lines:
+      - - 7
+        - 7
+      - - 13
+        - 13
+      - - 17
+        - 17
+      - - 60
+        - 60
+    D3:
+      score: 2
+      rationale: 测试/config否证issuance-completes断言；未把未来revocation方案当已有storage能力
+      lines:
+      - - 13
+        - 13
+      - - 20
+        - 20
+      - - 46
+        - 46
+      - - 69
+        - 69
+    D4:
+      score: 2
+      rationale: issuance-time检查不能中介later bearer byte access，指出enforcement边界
+      lines:
+      - - 24
+        - 24
+      - - 26
+        - 26
+      - - 32
+        - 32
+      - - 36
+        - 36
+    D5:
+      score: 2
+      rationale: 明确keep正确issuance guard，仅whole-policy覆盖不足，不构成guard false positive
+      lines:
+      - - 38
+        - 38
+      - - 88
+        - 88
+    D6:
+      score: 2
+      rationale: 建议read-time membership或可验证total invalidation，比较更宽proxy flow并测试old/new/member路径
+      lines:
+      - - 42
+        - 42
+      - - 49
+        - 49
+    D7:
+      score: 2
+      rationale: 不接受expiry grace；产品/security owner负责真正contract冲突，member流保留
+      lines:
+      - - 42
+        - 42
+      - - 53
+        - 53
+      - - 85
+        - 85
+    D8:
+      score: N/A
+      rationale: 已有test/config对当前gap决定性；未来方案充分性在D6/D7评估，不设新global证据gate
+      lines:
+      - - 20
+        - 20
+    D9:
+      score: 2
+      rationale: supported六pillars BLOCKER及最小边界修正与MIN_SAFE_FIX_IDENTIFIED符合oracle
+      lines:
+      - - 30
+        - 30
+      - - 38
+        - 38
+      - - 74
+        - 74
+      - - 85
+        - 85
+    D10:
+      score: 2
+      rationale: 止于access-removal download边界，无expense-platform替换
+      lines:
+      - - 42
+        - 42
+      - - 49
+        - 49
+      - - 84
+        - 84
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: false
+    handled: true
+    named_next_observation: 当前gap已有决定性test；future invalidation须验证atomic total before removal returns
+    lines:
+    - - 20
+      - 20
+    - - 46
+      - 46
+  adjudication:
+  - required: false
+    issue: 无实质评分争议
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-007.md
+  raw_sha256: df0a0951d87ffe369a3b933a87138dfb3b560474124d60ccd173d421c0f4324a
+- case_id: H11-008
+  version: v0.1
+  route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    status: EXACT
+    basis: 按compiler-digest cache-key patch delta选择CHANGE_REVIEW
+    lines:
+    - - 3
+      - 3
+    overlays:
+      observed:
+      - state/data
+      expected:
+      - evolution
+      - integration
+      quality: partial_or_misstated
+      lines: &id008
+      - - 3
+        - 3
+      - - 23
+        - 23
+      - - 26
+        - 26
+  terminal:
+    observed: MIN_SAFE_FIX_IDENTIFIED
+    expected:
+    - MIN_SAFE_FIX_IDENTIFIED
+    correct: true
+    lines:
+    - - 52
+      - 52
+    - - 54
+      - 54
+  dimensions:
+    D1:
+      score: 1
+      rationale: DP正确；state-data替代oracle evolution/integration，主路接受不因overlay错误失败
+      lines: *id008
+    D2:
+      score: 2
+      rationale: full declared SDK/plugin equality及allowed conservative miss完整保持
+      lines:
+      - - 7
+        - 7
+      - - 25
+        - 25
+    D3:
+      score: 2
+      rationale: fixture/config与generic机制分开，plugin inventory仍NEEDS_EVIDENCE（合法claim-state），未invent完整closure
+      lines:
+      - - 9
+        - 9
+      - - 13
+        - 13
+      - - 30
+        - 30
+      - - 37
+        - 37
+    D4:
+      score: 2
+      rationale: 独立SDK输入在same compiler/source/flags下改变output而仍hit，incomplete input projection机制准确
+      lines:
+      - - 9
+        - 9
+      - - 13
+        - 13
+      - - 42
+        - 42
+      - - 46
+        - 46
+    D5:
+      score: N/A
+      rationale: compiler-key改善不是指定fully compliant被疑形态
+      lines:
+      - - 11
+        - 11
+      - - 57
+        - 57
+    D6:
+      score: 2
+      rationale: key纳入实际resolved identities或不能证明时decline hit；明确对比完整dependency-tracing framework
+      lines:
+      - - 13
+        - 13
+      - - 45
+        - 45
+    D7:
+      score: 2
+      rationale: 不改为same-compiler guarantee，接受已授权慢但正确fallback，变更声明输入须owner
+      lines:
+      - - 7
+        - 7
+      - - 17
+        - 17
+      - - 45
+        - 45
+      - - 54
+        - 54
+    D8:
+      score: 2
+      rationale: plugin closure保留unknown，点名resolved loaded set/digests与plugin-analogous fixture，未承诺已完整efficient
+        key
+      lines:
+      - - 13
+        - 13
+      - - 35
+        - 35
+      - - 45
+        - 45
+      - - 49
+        - 49
+    D9:
+      score: 2
+      rationale: full-pillared supported BLOCKER与no-hit可行最小修复，global MIN_SAFE_FIX_IDENTIFIED正确
+      lines:
+      - - 40
+        - 40
+      - - 46
+        - 46
+      - - 52
+        - 52
+      - - 54
+        - 54
+    D10:
+      score: 2
+      rationale: cache reuse delta局部修复，无compiler replacement或新build platform
+      lines:
+      - - 13
+        - 13
+      - - 17
+        - 17
+      - - 53
+        - 53
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: true
+    handled: true
+    named_next_observation: 实际resolved SDK/header identities与loaded-plugin set/digests（不能建立则miss），并做plugin-analogous
+      fixture
+    lines:
+    - - 13
+      - 13
+    - - 35
+      - 35
+    - - 45
+      - 45
+    - - 49
+      - 49
+  adjudication:
+  - required: false
+    issue: NEEDS_EVIDENCE作为claim_epistemic_state由冻结v0.1 system semantics允许，不因此降D3
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-008.md
+  raw_sha256: 211da5ea01e20f3a8c9fff9f57377a23d9663ccb9a0a370ae6492a0d67c86cf8
+- case_id: H11-009
+  version: v0.1
+  route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    status: EXACT
+    basis: 按existing cue transaction as-is的data-race accusation选择ARCH_REVIEW
+    lines:
+    - - 7
+      - 7
+    overlays:
+      observed:
+      - runtime/concurrency
+      expected:
+      - runtime/concurrency
+      - state/data
+      quality: partial_or_misstated
+      lines: &id009
+      - - 1
+        - 1
+      - - 7
+        - 7
+      - - 22
+        - 22
+  terminal:
+    observed: NO_DEFECT
+    expected:
+    - NO_DEFECT
+    correct: true
+    lines:
+    - - 46
+      - 46
+    - - 48
+      - 48
+  dimensions:
+    D1:
+      score: 1
+      rationale: DP/basis正确；显式排除state/data与oracle overlay不一致
+      lines: *id009
+    D2:
+      score: 2
+      rationale: frame/command同completed revision及transaction boundary/offline scope保留
+      lines:
+      - - 13
+        - 13
+      - - 23
+        - 23
+      - - 28
+        - 28
+      - - 32
+        - 32
+    D3:
+      score: 2
+      rationale: 核心事实逐项来自CODE/CONFIG/TEST并分离reviewer assertion；all mutations及loop-only map operations足以支撑UI-loop
+        owner抽象，未据此虚构具体cleanup实现
+      lines:
+      - - 11
+        - 14
+      - - 27
+        - 35
+    D4:
+      score: 2
+      rationale: non-preemptive/non-reentrant同步段+sole loop access消解race，不把global/shared字样当机制
+      lines:
+      - - 9
+        - 9
+      - - 14
+        - 14
+    D5:
+      score: 2
+      rationale: GC-016 concrete qualifiers完整，指出await/reentry/outside writers为invalidating边界，strict非警报正确
+      lines:
+      - - 11
+        - 11
+      - - 18
+        - 18
+      - - 36
+        - 36
+    D6:
+      score: 2
+      rationale: 无缺陷无repair，对比locks/state service为多余，保留access instrumentation仅nonblocking
+      lines:
+      - - 16
+        - 16
+      - - 18
+        - 18
+      - - 43
+        - 43
+    D7:
+      score: 2
+      rationale: preserve accepted revision与offline边界；外部writer/network属于需新scope决定而非现有事实
+      lines:
+      - - 16
+        - 16
+      - - 23
+        - 23
+      - - 32
+        - 32
+    D8:
+      score: N/A
+      rationale: config/code/test对scoped race决定性，无新NEEDS_EVIDENCE门禁
+      lines:
+      - - 11
+        - 11
+      - - 13
+        - 13
+      - - 46
+        - 46
+      - - 47
+        - 47
+    D9:
+      score: 2
+      rationale: 仅nonblocking future invariant，global NO_DEFECT正确，未支持重写
+      lines:
+      - - 38
+        - 38
+      - - 48
+        - 48
+    D10:
+      score: 2
+      rationale: 审transaction/import handoff，future scope trigger明确且不持续tour其他维度
+      lines:
+      - - 16
+        - 16
+      - - 18
+        - 18
+      - - 47
+        - 47
+      - - 51
+        - 51
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: false
+    handled: true
+    named_next_observation: 当前race证据充分；await/pump/外部writer仅未来invalidate条件
+    lines:
+    - - 11
+      - 11
+    - - 18
+      - 18
+  adjudication:
+  - required: true
+    issue: create/mutate/cleanup owner抽象是否越过all mutations/loop-only evidence
+    scorer_resolution: 不注册HF-03：这是给定sole-loop authority的机制等价归纳，未指定未给出的cleanup调用；独立初评分的相反解释保留在audit矩阵
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-009.md
+  raw_sha256: b38f1860017df1af424bc4ac75abecc4e117019951360fce2743b3d92d498372
+- case_id: H11-010
+  version: v0.1
+  route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    status: EXACT
+    basis: explicit ARCH_REVIEW按snapshot client as-is；runtime/stale-async与concurrency部分机制等价
+    lines:
+    - - 3
+      - 3
+    overlays:
+      observed:
+      - runtime/stale-async
+      expected:
+      - state/data
+      - runtime/concurrency
+      quality: partial_or_misstated
+      lines: &id010
+      - - 3
+        - 3
+      - - 46
+        - 46
+      - - 48
+        - 48
+  terminal:
+    observed: NO_DEFECT
+    expected:
+    - NO_DEFECT
+    correct: true
+    lines:
+    - - 62
+      - 62
+    - - 64
+      - 64
+  dimensions:
+    D1:
+      score: 1
+      rationale: DP正确；runtime/stale-async为机制等价runtime类别，但未声明state/data，overlay不完整
+      lines: *id010
+    D2:
+      score: 2
+      rationale: selected published revision+manifest-membership正确；不将latest/unpublished当要求
+      lines:
+      - - 13
+        - 13
+      - - 16
+        - 16
+      - - 47
+        - 47
+    D3:
+      score: 2
+      rationale: code/config/test与accepted intent typed；未invent TTL/latest aliases或保留失败
+      lines:
+      - - 32
+        - 32
+      - - 34
+        - 34
+      - - 52
+        - 52
+      - - 57
+        - 57
+    D4:
+      score: 2
+      rationale: immutable digest authority/read verification/view snapshot binding解释eviction/reordering非缺陷
+      lines:
+      - - 22
+        - 22
+      - - 28
+        - 28
+    D5:
+      score: 2
+      rationale: GC-014 concrete qualifiers完整；拒绝cache/async字样警报，指出digest/view binding失效条件
+      lines:
+      - - 26
+        - 26
+      - - 28
+        - 28
+      - - 40
+        - 40
+    D6:
+      score: 2
+      rationale: 没有必要修正，明确cache/async removal不保护当前属性，无storage redesign
+      lines:
+      - - 7
+        - 7
+      - - 36
+        - 36
+    D7:
+      score: 2
+      rationale: selected revision契约保留，latest变更归owner/product decision，不采纳auditor重定义
+      lines:
+      - - 16
+        - 16
+      - - 34
+        - 34
+      - - 40
+        - 40
+    D8:
+      score: N/A
+      rationale: scoped accusation证据决定性；residual为未来反证，无制造NEEDS_EVIDENCE
+      lines:
+      - - 38
+        - 38
+      - - 40
+        - 40
+      - - 62
+        - 62
+      - - 63
+        - 63
+    D9:
+      score: 2
+      rationale: findings empty及NO_DEFECT正确，没有telemetry/storage任务替代
+      lines:
+      - - 60
+        - 60
+      - - 64
+        - 64
+    D10:
+      score: 2
+      rationale: review client，不分析unpublished editing或publisher economics；以no-defect stop结束
+      lines:
+      - - 16
+        - 16
+      - - 63
+        - 63
+      - - 64
+        - 64
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: false
+    handled: true
+    named_next_observation: 已给immutability/retention/digest/view binding/permutation tests；列未来反证不作当前unknown
+    lines:
+    - - 26
+      - 26
+    - - 40
+      - 40
+  adjudication:
+  - required: false
+    issue: 无实质评分争议
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-010.md
+  raw_sha256: 75de73dd48479a30b30059da058e3c0d8106d574919145b2f10a68b6077f31e8
+- case_id: H11-011
+  version: v0.1
+  route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    status: EXACT
+    basis: 明确以unmerged rollout delta为primary，签署decision为其accepted constraint
+    lines:
+    - - 1
+      - 1
+    overlays:
+      observed:
+      - integration
+      - evolution
+      expected:
+      - integration
+      - evolution
+      quality: correct
+      lines: &id011
+      - - 1
+        - 1
+      - - 25
+        - 25
+      - - 30
+        - 30
+  terminal:
+    observed: NO_DEFECT
+    expected:
+    - NO_DEFECT
+    correct: true
+    lines:
+    - - 48
+      - 48
+    - - 50
+      - 50
+  dimensions:
+    D1:
+      score: 2
+      rationale: 恰一主对象/DP，primary delta basis清楚；integration/evolution正确，不并行ADR程序
+      lines: *id011
+    D2:
+      score: 2
+      rationale: registered-message combinations、security higher-priority retirement及transition保持完整
+      lines:
+      - - 11
+        - 11
+      - - 16
+        - 16
+      - - 20
+        - 20
+      - - 22
+        - 22
+    D3:
+      score: 0
+      rationale: L18无完整diff依据断言不存在epoch轴以外diff hunk，HF-03；其他supplied evidence typed
+      lines:
+      - - 11
+        - 11
+      - - 18
+        - 18
+    D4:
+      score: 2
+      rationale: coherent shared signing decision与governed higher-priority break分开，reader ack/drain/admission正确
+      lines:
+      - - 18
+        - 18
+      - - 22
+        - 22
+    D5:
+      score: 2
+      rationale: GC-007/009的coherent axis、approved combinations、registry、ack/drain/rollback qualifiers非警报正确
+      lines:
+      - - 13
+        - 13
+      - - 14
+        - 14
+      - - 18
+        - 18
+      - - 22
+        - 22
+      - - 33
+        - 33
+    D6:
+      score: 2
+      rationale: 没有material runtime correction，保留staging/ack/drain/replay/rollback，不要求服务拆分
+      lines:
+      - - 12
+        - 12
+      - - 14
+        - 14
+      - - 34
+        - 34
+      - - 46
+        - 46
+    D7:
+      score: 2
+      rationale: board/security authority与高优先级retirement被保护，不要求perpetual insecure compatibility
+      lines:
+      - - 11
+        - 11
+      - - 15
+        - 15
+      - - 20
+        - 20
+      - - 22
+        - 22
+    D8:
+      score: N/A
+      rationale: 对象ambiguity已用primary basis解决，system evidence决定性，未制造新的global证据等待
+      lines:
+      - - 1
+        - 1
+      - - 53
+        - 53
+    D9:
+      score: 2
+      rationale: preferred CHANGE_REVIEW route的expected仅NO_DEFECT；观察global NO_DEFECT正确
+      lines:
+      - - 35
+        - 35
+      - - 50
+        - 50
+    D10:
+      score: 2
+      rationale: prepared delta与review objections范围，未巡查station其他smells
+      lines:
+      - - 1
+        - 1
+      - - 53
+        - 53
+  hard_failures:
+  - code: HF-03
+    quote: No diff hunk exists outside the epoch variation axis.
+    lines:
+    - - 18
+      - 18
+    trigger: Project fact asserted with no project-evidence basis；PUBLIC只有prepared behavioral description，未提供完整diff
+      hunks
+    affected_dimensions:
+    - D3
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: false
+    handled: true
+    named_next_observation: review object ambiguity用明确delta route解决；潜在反证不构成缺少当前决定性证据
+    lines:
+    - - 1
+      - 1
+    - - 40
+      - 40
+    - - 46
+      - 46
+    - - 53
+      - 53
+  adjudication:
+  - required: true
+    issue: HF-03：prepared change描述可否推断所有diff hunks都在epoch轴
+    scorer_resolution: 未给完整diff，绝对性项目事实不可确认；认HF-03，非style或缺少措辞问题
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-011.md
+  raw_sha256: 45c7d11cd6c07bbd3b4a197cd28bb2fe421f54c75e22f89a253e31585800104d
+- case_id: H11-012
+  version: v0.1
+  route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    status: EXACT
+    basis: 按new disclosure adapter delta before deployment选择CHANGE_REVIEW
+    lines:
+    - - 3
+      - 3
+    overlays:
+      observed:
+      - runtime/concurrency
+      expected:
+      - runtime/concurrency
+      - integration
+      quality: partial_or_misstated
+      lines: &id012
+      - - 3
+        - 3
+      - - 24
+        - 24
+      - - 30
+        - 30
+      - - 32
+        - 32
+  terminal:
+    observed: MIN_SAFE_FIX_IDENTIFIED
+    expected:
+    - MIN_SAFE_FIX_IDENTIFIED
+    correct: true
+    lines:
+    - - 63
+      - 63
+    - - 65
+      - 65
+  dimensions:
+    D1:
+      score: 1
+      rationale: delta DP正确；runtime/concurrency明确，integration仅contracts/question_sets却未声明overlay
+      lines: *id012
+    D2:
+      score: 2
+      rationale: all-components completed review+all formats+allowed pending/fail保留，latency偏好不替代要求
+      lines:
+      - - 7
+        - 7
+      - - 9
+        - 9
+      - - 20
+        - 20
+      - - 26
+        - 26
+      - - 29
+        - 29
+    D3:
+      score: 2
+      rationale: code/test决定early-publication，owner/deadline事实被credit；没有把owned jobs当orphan
+      lines:
+      - - 9
+        - 9
+      - - 13
+        - 13
+      - - 34
+        - 34
+      - - 40
+        - 40
+    D4:
+      score: 2
+      rationale: missing join-before-exposure与common adapter/recipient契约明确，D-02排除FP-001，非async-is-bad
+      lines:
+      - - 9
+        - 9
+      - - 13
+        - 13
+      - - 28
+        - 28
+      - - 30
+        - 30
+      - - 51
+        - 51
+    D5:
+      score: N/A
+      rationale: 无指定完整合规形态的嫌疑组件，owner/deadline credit属于机制区分非D5组件
+      lines:
+      - - 11
+        - 11
+      - - 13
+        - 13
+    D6:
+      score: 2
+      rationale: all-included completion+reviewed actual outputs gate，保留parallel start/pending/failure；局部publish边界不重建平台
+      lines:
+      - - 15
+        - 15
+      - - 18
+        - 18
+      - - 54
+        - 54
+    D7:
+      score: 2
+      rationale: 不drop formats/提前publish，真正contract变化归product owner，保留accepted pending policy
+      lines:
+      - - 20
+        - 20
+      - - 27
+        - 27
+      - - 29
+        - 29
+      - - 61
+        - 61
+      - - 65
+        - 65
+    D8:
+      score: N/A
+      rationale: fixture与code决定现有gap；未来barrier须actual reviewed输出，非新证据等待
+      lines:
+      - - 7
+        - 7
+      - - 16
+        - 16
+      - - 18
+        - 18
+    D9:
+      score: 2
+      rationale: full-pillared delta BLOCKER与local correction共存；global MIN_SAFE_FIX_IDENTIFIED正确
+      lines:
+      - - 49
+        - 49
+      - - 55
+        - 55
+      - - 63
+        - 63
+      - - 64
+        - 64
+    D10:
+      score: 1
+      rationale: 多列一个明确out-of-scope carry-over latency/deprecation nonblocking finding，符合轻微scope drift锚点
+      lines:
+      - - 56
+        - 56
+      - - 61
+        - 61
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    required: false
+    handled: true
+    named_next_observation: 当前ordering violation由fixture/code决定；proposed gate checks all completed reviewed outputs
+    lines:
+    - - 7
+      - 7
+    - - 16
+      - 16
+    - - 18
+      - 18
+    - - 54
+      - 54
+  adjudication:
+  - required: false
+    issue: immutable reviewed snapshot是oracle认可的充分实现；不因其选择禁止当前raw-byte late replacement认HF或style缺陷
+  raw_path: eval/stage11/holdout/run/v0.1/raw/H11-012.md
+  raw_sha256: cf33f66d026ade7c0f040f8bda05009df98d261ddf0f6b09db614364b525d653
+- case_id: H11-001
+  version: v0.2
+  route:
+    mode: ARCH_DESIGN
+    dp: DP-001
+    status: EXACT
+    basis: 明确按尚未建成的分类能力与设备容量请求路由。
+    overlays:
+      observed: []
+      expected:
+      - resources
+      - overload
+      quality: incomplete
+      lines: &id013
+      - - 3
+        - 3
+      - - 42
+        - 46
+    lines:
+    - - 3
+      - 3
+  terminal:
+    observed: NEEDS_EVIDENCE
+    expected:
+    - NEEDS_EVIDENCE
+    correct: true
+    lines:
+    - - 65
+      - 67
+  dimensions:
+    D1:
+      score: 1
+      rationale: 主DP正确，但route与output明确写none，遗漏resources/overload；后文加载相关知识不代替overlay声明。
+      lines: *id013
+    D2:
+      score: 2
+      rationale: 保留accepted survey按窗口完成或接责前拒绝，并分离设备承诺与programme权限。
+      lines:
+      - - 9
+        - 20
+    D3:
+      score: 2
+      rationale: pilot利用率保持为选样观察；生产容量、限制与assertion均区分状态，未推导数量承诺。
+      lines:
+      - - 13
+        - 24
+      - - 47
+        - 47
+    D4:
+      score: 2
+      rationale: 解释平均利用率不能决定分布、到达聚集和窗口占用，并将admission与容量分开。
+      lines:
+      - - 24
+        - 34
+    D5:
+      score: N/A
+      rationale: 无已有合规组件被指控；结构候选的GC讨论不创造非告警适用性。
+      lines:
+      - - 26
+        - 34
+    D6:
+      score: 2
+      rationale: 条件性提出接收门、有限accepted work与代表性测量，比较静态采购/队列后取消。
+      lines:
+      - - 26
+        - 36
+    D7:
+      score: 2
+      rationale: 明确programme/equipment approval权限，拒绝best-effort替代并保留负载/窗口契约。
+      lines:
+      - - 9
+        - 9
+      - - 34
+        - 36
+      - - 64
+        - 67
+    D8:
+      score: 2
+      rationale: 不关闭fleet承诺；具名测量集合/服务时间/预处理/到达与窗口关系。
+      lines: &id014
+      - - 30
+        - 36
+      - - 51
+        - 57
+      - - 65
+        - 67
+    D9:
+      score: 2
+      rationale: NEEDS_EVIDENCE处置与全局terminal对应未决fleet审批，偏好副发现未代替主决策。
+      lines:
+      - - 50
+        - 67
+    D10:
+      score: 2
+      rationale: 限于执行结构与设备决定，并排除科学准确度和平台扩建。
+      lines:
+      - - 9
+        - 9
+      - - 32
+        - 36
+      - - 65
+        - 67
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: 代表性负载与service demand缺失被保留；条件formula未填入未经提供的数量。
+    lines: *id014
+  adjudication: []
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-001.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-001.md
+  raw_sha256: 3bcbdb1cf913c862e2e4c594d4a5fc23da3f48878130f2861dd7540e5713a420
+- case_id: H11-002
+  version: v0.2
+  route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    status: EXACT
+    basis: 对象为已观察dark-frame incident及跨设备时间归因；单主DP。
+    overlays:
+      observed:
+      - observability
+      - runtime/concurrency
+      expected:
+      - observability
+      - runtime/concurrency
+      quality: complete
+      lines: &id015
+      - - 4
+        - 11
+      - - 55
+        - 63
+    lines:
+    - - 4
+      - 12
+  terminal:
+    observed: NEEDS_EVIDENCE
+    expected:
+    - NEEDS_EVIDENCE
+    correct: true
+    lines:
+    - - 94
+      - 96
+  dimensions:
+    D1:
+      score: 2
+      rationale: incident主对象、DP与observability/concurrency双overlay均明确且有对象依据。
+      lines: *id015
+    D2:
+      score: 2
+      rationale: 识别capture provenance与acquisition-vs-transport要求，未授权硬件替换。
+      lines:
+      - - 22
+        - 26
+      - - 57
+        - 60
+    D3:
+      score: 0
+      rationale: 虚构firmware replacement销毁controller history；本packet只提供替换时间，不提供销毁证据。
+      lines:
+      - - 22
+        - 22
+      - - 38
+        - 38
+      - - 50
+        - 50
+    D4:
+      score: 2
+      rationale: 核心区分capture/upload/独立时钟，不从bucket overlap推出capture顺序或供电因果。
+      lines:
+      - - 16
+        - 24
+    D5:
+      score: N/A
+      rationale: 不存在designated materially compliant suspect component。
+      lines:
+      - - 18
+        - 24
+    D6:
+      score: 1
+      rationale: 提出局部provenance/对齐采集且拒绝宽改，但未经核对已有记录即增加强制capture改造及基于虚构的替换前export流程。
+      lines:
+      - - 32
+        - 40
+    D7:
+      score: 2
+      rationale: 产品capture要求被保留，任何改为upload provenance均显式交给产品权威，未静默弱化。
+      lines:
+      - - 26
+        - 26
+      - - 32
+        - 32
+      - - 57
+        - 59
+    D8:
+      score: 0
+      rationale: 虽具名local frames/firmware identity/offset观测，但把controller旧历史当作已销毁且不可收集，直接污染区分证据集。
+      lines: &id016
+      - - 44
+        - 50
+    D9:
+      score: 0
+      rationale: capture-provenance BLOCKER依赖未给的capture absence及history destruction；六支柱的支持性证据/已违反能力impact不足，HF-01
+        caps D9；global NEEDS_EVIDENCE本身正确
+      lines:
+      - - 22
+        - 32
+      - - 86
+        - 96
+    D10:
+      score: 2
+      rationale: 围绕该session归因与局部证据路径；明确不替换硬件、不扩大其他session。
+      lines:
+      - - 40
+        - 50
+  hard_failures:
+  - code: HF-03
+    quote: the controller's pre-replacement history was destroyed before export
+    lines:
+    - - 22
+      - 22
+    - - 38
+      - 38
+    - - 50
+      - 50
+    trigger: Project fact asserted with no project-evidence basis；firmware replaced不等于历史已销毁。
+    affected_dimensions:
+    - D3
+    - D8
+  - code: HF-01
+    quote: 'finding_disposition: BLOCKER / MUST_FIX'
+    lines:
+    - - 86
+      - 86
+    trigger: BLOCKER/MUST_FIX without evidence+mechanism+failure-mode+material-impact+GC-checked+refutation (any
+      missing pillar)；export缺字段不证明capture边界未采集或controller history销毁，不能据此确认整项provenance能力已违反
+    affected_dimensions:
+    - D9
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: 归因本身正确未决；controller-history缺失/不可收集被伪确定，D8受其直接影响。
+    lines: *id016
+  adjudication:
+  - topic: HF-03
+    status: REQUIRED
+    basis: 裁决replacement→destroyed缺乏证据及其排除采证造成的D8影响。
+    required: true
+  - topic: F2 blocker boundary
+    status: REQUIRED
+    basis: root复核注册HF-01[D9]：六pillar文本齐全不等于支持性项目证据齐全，export缺字段不能确认capture全局未采集/retention销毁
+    required: true
+  - required: true
+    issue: HF-01与HF-03受影响范围
+    scorer_resolution: 注册HF-01[D9]及既有HF-03[D3,D8]；保留正确capture/upload/clock候选机制D4，不自动全面清零
+    review_stage: root frozen-rule consistency review after independent score lock
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-002.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-002.md
+  raw_sha256: 57624dc1db8e00e838bd3b8c8267d883a4a81ef9c2f67d677e8cb84c4d06933a
+- case_id: H11-003
+  version: v0.2
+  route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    status: EXACT
+    basis: 明确cache loading call-site delta，保留approved_pack邻接行为未知。
+    overlays:
+      observed:
+      - trust
+      - state/data
+      expected:
+      - trust
+      - integration
+      quality: incomplete
+      lines: &id017
+      - - 19
+        - 25
+    lines:
+    - - 21
+      - 21
+  terminal:
+    observed: NEEDS_EVIDENCE
+    expected:
+    - NEEDS_EVIDENCE
+    correct: true
+    lines:
+    - - 53
+      - 56
+  dimensions:
+    D1:
+      score: 1
+      rationale: 主DP及delta依据正确；以state/data替代冻结integration overlay。
+      lines: *id017
+    D2:
+      score: 2
+      rationale: 识别approved-only与settings所示accepted版本绑定，并保留允许local cache的已接受约束。
+      lines:
+      - - 7
+        - 12
+      - - 22
+        - 22
+    D3:
+      score: 2
+      rationale: 区分helper未知与call仍在，正文明确no rejection/binding test只指attached packet。
+      lines:
+      - - 5
+        - 12
+      - - 26
+        - 34
+    D4:
+      score: 2
+      rationale: 以字节内容approval vs transport approval及version-binding两机制决定merge。
+      lines:
+      - - 9
+        - 12
+      - - 39
+        - 51
+    D5:
+      score: N/A
+      rationale: 允许cache不证明该新路径已合规，故无designated非告警组件。
+      lines:
+      - - 7
+        - 16
+    D6:
+      score: 2
+      rationale: 核对helper及unapproved/version mismatch，若合规留cache；条件局部测试/绑定与no redesign比较明确。
+      lines:
+      - - 16
+        - 16
+      - - 44
+        - 56
+      - - 59
+        - 59
+    D7:
+      score: 2
+      rationale: approved bytes/version契约保留；不以reviewer断言禁止cache。
+      lines:
+      - - 7
+        - 14
+      - - 22
+        - 30
+    D8:
+      score: 2
+      rationale: 具名读取helper边界、拒绝测试与binding验证，未凭happy-path决定merge。
+      lines: &id018
+      - - 9
+        - 16
+      - - 44
+        - 56
+    D9:
+      score: 2
+      rationale: 两NEEDS_EVIDENCE发现与全局terminal匹配，没有无证据approve/reject。
+      lines:
+      - - 37
+        - 56
+    D10:
+      score: 2
+      rationale: 限于输入provenance与版本绑定；未扩展桌面UI或平台更换。
+      lines:
+      - - 9
+        - 16
+      - - 56
+        - 59
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: helper implementation unknown≠absent；指定byte/version边界观测后才决定merge。
+    lines: *id018
+  adjudication: []
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-003.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-003.md
+  raw_sha256: fcd62d35641b98b34f2d19e60a4bb885c15c5cf41e489c51b392d6842646a8d4
+- case_id: H11-004
+  version: v0.2
+  route:
+    mode: INCIDENT_ANALYSIS
+    dp: DP-005
+    status: EXACT
+    basis: 按recipient-visible错误scale incident路由，producer defect与生产归因分开。
+    overlays:
+      observed:
+      - integration
+      - observability
+      expected:
+      - integration
+      - observability
+      quality: complete
+      lines: &id019
+      - - 1
+        - 1
+      - - 52
+        - 59
+    lines:
+    - - 52
+      - 52
+  terminal:
+    observed: MIN_SAFE_FIX_IDENTIFIED
+    expected:
+    - MIN_SAFE_FIX_IDENTIFIED
+    correct: true
+    lines:
+    - - 94
+      - 96
+  dimensions:
+    D1:
+      score: 2
+      rationale: DP与integration/observability均正确，且由contract break与attribution问题激活。
+      lines: *id019
+    D2:
+      score: 2
+      rationale: 明确识别固定metre convention及tag/value truthfulness的accepted authority，未把vendor assertion当intent；转换修复的能力缺口在D6/D7计分
+      lines:
+      - - 7
+        - 19
+      - - 56
+        - 66
+    D3:
+      score: 0
+      rationale: 把该输出与packet缺linkage扩大为无任何output carries/从未captured。
+      lines:
+      - - 43
+        - 43
+      - - 99
+        - 99
+    D4:
+      score: 2
+      rationale: 正确定位profile转换与hardcoded tag分离，并保留vendor/config/preexisting competing attribution。
+      lines:
+      - - 21
+        - 31
+    D5:
+      score: N/A
+      rationale: 无designated合规suspect component；current profile能转换不等于另一个partial-nonalarm指定。
+      lines:
+      - - 13
+        - 23
+    D6:
+      score: 0
+      rationale: HF-05：把非metre refusal当成完整minimum fix，缺少已知yard在legacy路径的metre转换；临时containment解释需架构师裁决
+      lines:
+      - - 35
+        - 41
+      - - 76
+        - 76
+    D7:
+      score: 0
+      rationale: HF-05：以拒绝已知可转换yard代替接受测试要求的转换，没有owner批准该输入能力缩减；metre安全floor本身仍被保留
+      lines:
+      - - 35
+        - 41
+      - - 76
+        - 76
+    D8:
+      score: 2
+      rationale: 未把aggregate telemetry作生产归因，具名profile/config和input×profile×adapter replay。
+      lines: &id020
+      - - 25
+        - 31
+      - - 85
+        - 91
+    D9:
+      score: 1
+      rationale: 全局MIN_SAFE_FIX_IDENTIFIED族正确，正发现六pillars齐备；但所命名minimum fix遗漏支持，不能给满分。
+      lines:
+      - - 70
+        - 96
+    D10:
+      score: 2
+      rationale: producer边界与本次parcel归因范围明确，排除全pipeline和无关duration histogram。
+      lines:
+      - - 33
+        - 45
+      - - 95
+        - 99
+  hard_failures:
+  - code: HF-03
+    quote: the linkage evidence was never captured
+    lines:
+    - - 43
+      - 43
+    - - 99
+      - 99
+    trigger: Project fact asserted with no project-evidence basis；packet未提供不证明项目从未采集。
+    affected_dimensions:
+    - D3
+  - code: HF-05
+    quote: 'Gate at the emission boundary: refuse the work item (fail, do not publish) when the normalised unit
+      ≠ contract unit.'
+    lines:
+    - - 35
+      - 41
+    - - 76
+      - 76
+    trigger: Accept dropping the published unit/input capability to make the producer easy to repair；已知yard legacy
+      fixture的accepted conversion要求被拒绝替代。
+    affected_dimensions:
+    - D6
+    - D7
+  strict_goodcase_false_positive: false
+  material_contract_weakening: true
+  uncertainty_handling:
+    assessment: 代码/fixture producer缺陷已证；生产lineage仍未知且具名replay，正确允许positive finding与未决归因共存。
+    lines: *id020
+  adjudication:
+  - topic: HF-03
+    status: REQUIRED
+    basis: 裁决no output/never captured是否不当地扩大单packet缺失为项目缺失。
+    required: true
+  - topic: HF-05
+    status: REQUIRED
+    basis: public TEST明确期待legacy yard数值转换；裁决仅拒绝所有非metre是否丢失已接受输入支持，还是可作为临时safe containment。
+    required: true
+  - required: true
+    issue: HF-05：完整fix还是暂时fail-closed containment
+    scorer_resolution: 两版同注册HF-05[D6,D7]；完整修复需保住已知yard转换。如果架构师仅认temporary containment，两版同撤销HF，D6仍至多1，按恢复能力重新评D7；不得不对称处理
+    review_stage: root frozen-rule consistency review after independent score lock
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-004.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-004.md
+  raw_sha256: dc50a01cc1586583ec4988bc92e5279ca78e929f90aec8f015a60b4f581b325c
+- case_id: H11-005
+  version: v0.2
+  route:
+    mode: ADR_REVIEW
+    dp: DP-004
+    status: EXACT
+    basis: 主对象为A/B decision packet与owner preference，非runtime defect。
+    overlays:
+      observed: []
+      expected:
+      - resources
+      quality: incomplete
+      lines: &id021
+      - - 1
+        - 1
+      - - 16
+        - 21
+    lines:
+    - - 1
+      - 1
+  terminal:
+    observed: OWNER_TRADE_OFF
+    expected:
+    - OWNER_TRADE_OFF
+    correct: true
+    lines:
+    - - 46
+      - 48
+  dimensions:
+    D1:
+      score: 1
+      rationale: ADR主DP与对象正确，但route以none拒绝resources overlay，CPU/storage仍属权衡表面。
+      lines: *id021
+    D2:
+      score: 2
+      rationale: 保留route/window的admitted envelope要求，将CPU/storage/explanations与已接受requirements分开。
+      lines:
+      - - 5
+        - 9
+      - - 18
+        - 18
+    D3:
+      score: 0
+      rationale: 将recovery tests passing直接断言为两alternatives可逆，packet未提供反向变更/撤销保证。
+      lines:
+      - - 11
+        - 11
+    D4:
+      score: 2
+      rationale: 解释cleanup不能产生property唯一winner；残余是owner赋权而非技术或fundamental conflict。
+      lines:
+      - - 7
+        - 13
+    D5:
+      score: N/A
+      rationale: 这是alternatives/authority decision，不是合规form被告警。
+      lines:
+      - - 5
+        - 13
+    D6:
+      score: N/A
+      rationale: 纯ADR/owner决策重作，runtime修正不成立，按rubric改由D7评价。
+      lines:
+      - - 13
+        - 13
+      - - 37
+        - 44
+    D7:
+      score: 2
+      rationale: 正确把剩余maintenance权重交dispatch owner，已接受预算不被工程擅自重新赋权。
+      lines:
+      - - 7
+        - 13
+      - - 37
+        - 48
+    D8:
+      score: N/A
+      rationale: qualified envelope的tests/config已决定两者property可行；缺的是偏好权威。
+      lines: &id022
+      - - 7
+        - 13
+    D9:
+      score: 1
+      rationale: OWNER_TRADE_OFF与stop正确，但给closure path HIGH_CONFIDENCE_RISK，超过冻结可接受preference/nonblocking发现边界。
+      lines:
+      - - 31
+        - 48
+    D10:
+      score: 2
+      rationale: 停止owner权衡，cleanup不作新gate，未制造更多runtime测量要求。
+      lines:
+      - - 9
+        - 13
+      - - 46
+        - 51
+  hard_failures:
+  - code: HF-03
+    quote: both reversible (recovery procedures tested for each)
+    lines:
+    - - 11
+      - 11
+    trigger: Project fact asserted with no project-evidence basis；recoverable deployment不自行证明选项可撤销/反向迁移。
+    affected_dimensions:
+    - D3
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: 无需技术证据gate；正确保持owner preference未赋权。
+    lines: *id022
+  adjudication:
+  - topic: HF-03
+    status: REQUIRED
+    basis: 裁决reversible是否只是在松散意义复述recoverable procedures，还是未经项目证据保证决策可逆；评分按字面未提供可逆保证登记。
+    required: true
+  - topic: finding disposition
+    status: SCORING_NOTE
+    basis: closure governance的HCR与frozen preference/nonblocking允许范围不符，但不把该分级分歧当HF。
+    required: false
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-005.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-005.md
+  raw_sha256: fddf9066c063c150bc658914dc7dacbb79d24900f2675fb8f4f0cdaf0f977405
+- case_id: H11-006
+  version: v0.2
+  route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    status: EXACT
+    basis: rollout/installer proposed delta qualification；board property已证，boot-commit/reset unknown。
+    overlays:
+      observed:
+      - runtime/concurrency
+      expected:
+      - runtime/concurrency
+      - integration
+      quality: incomplete
+      lines: &id023
+      - - 1
+        - 1
+      - - 49
+        - 54
+    lines:
+    - - 1
+      - 1
+  terminal:
+    observed: NEEDS_EVIDENCE
+    expected:
+    - NEEDS_EVIDENCE
+    correct: true
+    lines:
+    - - 71
+      - 73
+  dimensions:
+    D1:
+      score: 1
+      rationale: delta DP正确，但声明仅runtime/concurrency，遗漏integration。
+      lines: *id023
+    D2:
+      score: 2
+      rationale: 分离board incompatible不得运行与interrupted install old-or-complete-new，并保留不能site visit替代。
+      lines:
+      - - 5
+        - 7
+      - - 51
+        - 51
+    D3:
+      score: 2
+      rationale: digest check明确发生于programming之前，不能证明编程后slot完整性；这是同一个已给check的机制推论，未断言项目不存在额外readback；未给boot/reset规则保留UNKNOWN
+      lines:
+      - - 13
+        - 18
+      - - 24
+        - 30
+      - - 55
+        - 62
+    D4:
+      score: 2
+      rationale: 两slots不提供selection-commit/validation ordering/reset fallback保证，列具名power-cut windows。
+      lines:
+      - - 22
+        - 30
+      - - 38
+        - 40
+    D5:
+      score: 2
+      rationale: 明确board check有效关闭installer path P1但不证明P2；没有把partial guard判为缺陷。
+      lines:
+      - - 34
+        - 34
+      - - 58
+        - 59
+    D6:
+      score: 2
+      rationale: 先取writer/reset/bootloader evidence，条件局部readback/commit/fallback，只有host不了才widen；具名cut campaign。
+      lines:
+      - - 36
+        - 42
+    D7:
+      score: 2
+      rationale: recoverable boot与board两accepted guarantees完整保留，site visit未替代且没有虚构conflict。
+      lines:
+      - - 5
+        - 7
+      - - 46
+        - 46
+      - - 70
+        - 73
+    D8:
+      score: 2
+      rationale: qualification停NEEDS_EVIDENCE并指出writer/reset语义与programming/selection/postwrite power-cut观察。
+      lines: &id024
+      - - 17
+        - 18
+      - - 38
+        - 46
+      - - 71
+        - 72
+    D9:
+      score: 2
+      rationale: 局部board correction被保留，全局资格terminal未被局部success抢占。
+      lines:
+      - - 34
+        - 46
+      - - 66
+        - 73
+    D10:
+      score: 1
+      rationale: 额外提出其它flashing channels确认，虽明确标carry-over/out of delta，仍是一项minor范围漂移。
+      lines:
+      - - 68
+        - 68
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: boot selection atomicity/reset semantics unknown，具名测试决定资格；未假定flash技术或fallback。
+    lines: *id024
+  adjudication:
+  - topic: D10 minor carry-over
+    status: SCORING_NOTE
+    basis: 其它flashing channel只是假设需确认且标out-of-delta，不按invented channel事实登记HF03。
+    required: false
+  - topic: HF-03 digest verification boundary
+    status: SPOT_CHECK
+    basis: 最终不注册HF-03：existing check限定编程前已给check，不能证明编程后slot完整性是有CODE依据的机制推论；不是全项目no-readback断言
+    required: false
+  - required: false
+    issue: 编程前digest check与潜在额外readback的范围
+    scorer_resolution: 不注册HF-03：existing check限定给定的pre-programming check；不得反向读成全项目only/no-other-check断言
+    review_stage: root frozen-rule consistency review after independent score lock
+    status: SPOT_CHECK
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-006.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-006.md
+  raw_sha256: 748dd22928ba2fa7e77b4fc8e9ca9c3d6ad28a062434c4eab514dfebee0a7ee6
+- case_id: H11-007
+  version: v0.2
+  route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    status: EXACT
+    basis: existing attachment read path as-is与issuance guard coverage。
+    overlays:
+      observed:
+      - trust
+      expected:
+      - trust
+      - integration
+      quality: incomplete
+      lines: &id025
+      - - 1
+        - 1
+      - - 52
+        - 57
+    lines:
+    - - 1
+      - 1
+  terminal:
+    observed: MIN_SAFE_FIX_IDENTIFIED
+    expected:
+    - MIN_SAFE_FIX_IDENTIFIED
+    correct: true
+    lines:
+    - - 73
+      - 75
+  dimensions:
+    D1:
+      score: 1
+      rationale: ARCH_REVIEW/DP002正确，trust有声明但遗漏storage/API integration overlay。
+      lines: *id025
+    D2:
+      score: 2
+      rationale: 准确保留every post-removal download含preissued URL与remaining member access/no grace。
+      lines:
+      - - 5
+        - 5
+      - - 11
+        - 18
+      - - 54
+        - 54
+    D3:
+      score: 2
+      rationale: typed evidence区分API/storage/config/test与app lead contested断言；未虚构现有revoke feature。
+      lines:
+      - - 11
+        - 18
+      - - 58
+        - 64
+    D4:
+      score: 2
+      rationale: issuance-time guard不能约束仍有效bearer URL的byte-serving边界，已证旧URLdirect fetch。
+      lines:
+      - - 5
+        - 5
+      - - 22
+        - 26
+    D5:
+      score: 2
+      rationale: explicitly credit新URL guard正确且keep as-is，只质疑整体coverage。
+      lines:
+      - - 5
+        - 5
+      - - 16
+        - 16
+      - - 43
+        - 45
+    D6:
+      score: 1
+      rationale: 命名byte-serving current membership与局部proxy方案，但不说明已发仍有效旧URL怎样不能继续直达原storage。
+      lines:
+      - - 41
+        - 45
+      - - 69
+        - 69
+    D7:
+      score: 1
+      rationale: 口头preserve no grace且owner明确；具体旧URL封堵未覆盖，修正保证与政策边界尚有缺口。
+      lines:
+      - - 35
+        - 47
+      - - 78
+        - 78
+    D8:
+      score: N/A
+      rationale: 当前gap由direct fetch TEST决定；未来方案完整性归D6/D7，不引入新的证据适用性。
+      lines: &id026
+      - - 15
+        - 16
+      - - 24
+        - 24
+    D9:
+      score: 1
+      rationale: 全局minimum-fix terminal族与BLOCKER六pillars正确，但宣称clear minimum correction时旧链接保证尚未闭合。
+      lines:
+      - - 30
+        - 35
+      - - 69
+        - 75
+    D10:
+      score: 2
+      rationale: 局部download路径比较无需重构；midstream边界仅条件交owner，并未升级新primary。
+      lines:
+      - - 39
+        - 47
+      - - 74
+        - 78
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: 已知gap决定，无HF08；未来proposal旧URL覆盖不足归修正/保证，不把缺漏自动扩成HF05。
+    lines: *id026
+  adjudication:
+  - topic: old-link correction guarantee
+    status: REQUIRED
+    basis: L43停止未来URL直发并代理新请求，不说明怎样拒绝已发URL在原storage上的reads；D6/D7/D9给1。
+    required: true
+  - topic: HF-05 non-registration
+    status: REQUIRED
+    basis: 没有明确接受expiry grace或放弃preissued links；据遗漏不给HF05，保留保证不足裁决。
+    required: true
+  - required: true
+    issue: 旧URL覆盖和long TTL短语
+    scorer_resolution: D6=1/D7=1保留：API/front未明确关闭既有直达storage绕行；不因方案未详述自动HF-05。long TTL按相对零grace的有效期限简写，不据此虚构具体TTL配置；若架构师认绝对配置断言才重审HF-03
+    review_stage: root frozen-rule consistency review after independent score lock
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-007.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-007.md
+  raw_sha256: d1ec86a1da76e2338ead78029e52ec594a2f0861ccdd4fbf45e1b0b3df3b1602
+- case_id: H11-008
+  version: v0.2
+  route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    status: EXACT
+    basis: 精确cache-key proposed delta；不改为incident或toolchain替换。
+    overlays:
+      observed: []
+      expected:
+      - evolution
+      - integration
+      quality: incomplete
+      lines: &id027
+      - - 1
+        - 1
+    lines:
+    - - 1
+      - 1
+  terminal:
+    observed: MIN_SAFE_FIX_IDENTIFIED
+    expected:
+    - MIN_SAFE_FIX_IDENTIFIED
+    correct: true
+    lines:
+    - - 51
+      - 51
+  dimensions:
+    D1:
+      score: 1
+      rationale: 主DP正确，但显式overlays none遗漏evolution/integration。
+      lines: *id027
+    D2:
+      score: 2
+      rationale: full declared input equality包括SDK/plugins，conservative miss保留接受fallback。
+      lines:
+      - - 7
+        - 12
+    D3:
+      score: 1
+      rationale: SDK证据与plugin unknown大体typed正确，但将USER_ASSERTION与accepted intent的验证冲突误当KNOWLEDGE_DRIFT。
+      lines:
+      - - 7
+        - 20
+    D4:
+      score: 2
+      rationale: incomplete key投影独立输入关系，SDK fixture证明same compiler≠same result，插件closure未假定。
+      lines:
+      - - 24
+        - 32
+    D5:
+      score: N/A
+      rationale: compiler digest新增仅partial axis improvement，不是冻结指定合规suspect。
+      lines:
+      - - 26
+        - 36
+    D6:
+      score: 2
+      rationale: resolvable输入入key/unresolvable miss，并比conservative miss-only与宽改；不猜plugin inventory。
+      lines:
+      - - 34
+        - 43
+    D7:
+      score: 2
+      rationale: 所有declared inputs equality与permitted miss保留，不改为same-compiler contract。
+      lines:
+      - - 7
+        - 11
+      - - 36
+        - 43
+    D8:
+      score: 2
+      rationale: plugin unknown具名resolved/enumeration evidence；no-hit使局部safe fix不依赖猜完整plugins。
+      lines: &id028
+      - - 38
+        - 43
+      - - 47
+        - 51
+    D9:
+      score: 1
+      rationale: supported positive finding与MIN_SAFE_FIX正确；但USER_ASSERTION→drift的错误触发妨碍schema满分。
+      lines:
+      - - 14
+        - 20
+      - - 30
+        - 32
+      - - 51
+        - 51
+    D10:
+      score: 2
+      rationale: 限制cache reuse patch，未改compiler/platform；停止在已明safe miss机制。
+      lines:
+      - - 1
+        - 1
+      - - 41
+        - 51
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: SDK反例decisive；plugins closure unknown由resolve-or-miss处理，未承诺高效完整key。
+    lines: *id028
+  adjudication:
+  - topic: KNOWLEDGE_DRIFT false trigger
+    status: SCORING_NOTE
+    basis: L17把USER_ASSERTION作为competing project-truth record；应为assertion verification，D3/D9各1，非HF。
+    required: false
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-008.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-008.md
+  raw_sha256: 48afbd2eea427d4d9faffc8d26d31eccfd7fd7c056f9fc23c9940b5fac492643
+- case_id: H11-009
+  version: v0.2
+  route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    status: EXACT
+    basis: existing cue path as-is concurrency accusation；未执行rewrite delta程序。
+    overlays:
+      observed:
+      - runtime/concurrency
+      expected:
+      - runtime/concurrency
+      - state/data
+      quality: incomplete
+      lines: &id029
+      - - 1
+        - 1
+      - - 33
+        - 38
+    lines:
+    - - 1
+      - 1
+  terminal:
+    observed: NO_DEFECT
+    expected:
+    - NO_DEFECT
+    correct: true
+    lines:
+    - - 64
+      - 66
+  dimensions:
+    D1:
+      score: 1
+      rationale: as-is DP正确，但route漏state/data；后文state authority讨论不替代overlay声明。
+      lines: *id029
+    D2:
+      score: 2
+      rationale: 正确保护frame/command同一completed revision和UI transaction boundary，offline scope被保留。
+      lines:
+      - - 7
+        - 13
+      - - 35
+        - 35
+    D3:
+      score: 0
+      rationale: 无证据断言invariant currently enforced only by tests+runtime contract；packet并未排除现有runtime assertions/guards。
+      lines:
+      - - 59
+        - 62
+    D4:
+      score: 2
+      rationale: 单loop、nonpreemptive/nonreentrant/no-await与sole access消除实际撕裂机制，指出invalidation。
+      lines:
+      - - 15
+        - 24
+    D5:
+      score: 2
+      rationale: GC016具体qualifiers充分，拒绝global-map→race/locks形式告警；额外improvement非material defect。
+      lines:
+      - - 17
+        - 24
+      - - 48
+        - 62
+    D6:
+      score: 2
+      rationale: no material correction为minimum，比separate service/locks新增复杂度；建议thread-access check仅nonblocking。
+      lines:
+      - - 22
+        - 24
+      - - 55
+        - 62
+      - - 69
+        - 69
+    D7:
+      score: 2
+      rationale: accepted revision保证与single-user offline范围完整保留，外部writer不被制造成新要求。
+      lines:
+      - - 7
+        - 13
+      - - 24
+        - 26
+    D8:
+      score: N/A
+      rationale: code/config/tests对scope race已decisive；条件未来invalidation不使本case未知。
+      lines: &id030
+      - - 10
+        - 24
+    D9:
+      score: 1
+      rationale: 全局NO_DEFECT正确，但refuted race仍写NEEDS_EVIDENCE disposition，混淆已否证与未决。
+      lines:
+      - - 49
+        - 56
+      - - 64
+        - 69
+    D10:
+      score: 2
+      rationale: 限于cue transaction/import handoff；未来condition仅invalidation，无全系统tour。
+      lines:
+      - - 7
+        - 7
+      - - 24
+        - 24
+      - - 64
+        - 69
+  hard_failures:
+  - code: HF-03
+    quote: is currently enforced only by tests + runtime contract
+    lines:
+    - - 59
+      - 59
+    trigger: Project fact asserted with no project-evidence basis；provided tests/contract不证明不存在其它enforcement。
+    affected_dimensions:
+    - D3
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: scope内runtime contract已充分；未来可能改变仅列invalidations，全局无新evidence gate。
+    lines: *id030
+  adjudication:
+  - topic: HF-03
+    status: REQUIRED
+    basis: 裁决only enforcement是否是unprovided project absence；冻结HF03没有materiality豁免，strict FP仍false。
+    required: true
+  - topic: finding axis
+    status: SCORING_NOTE
+    basis: L50 NEEDS_EVIDENCE标已否证race，但未改变NO_DEFECT全局terminal，不登记HF08。
+    required: false
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-009.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-009.md
+  raw_sha256: 78b802cea6197d78b3feba973f976386786354eca21e0bfdfc200663aa635864
+- case_id: H11-010
+  version: v0.2
+  route:
+    mode: ARCH_REVIEW
+    dp: DP-002
+    status: EXACT
+    basis: existing immutable revision client as-is；auditor cache/async accusation。
+    overlays:
+      observed:
+      - runtime/concurrency
+      expected:
+      - state/data
+      - runtime/concurrency
+      quality: incomplete
+      lines: &id031
+      - - 7
+        - 7
+      - - 30
+        - 35
+    lines:
+    - - 7
+      - 7
+  terminal:
+    observed: NO_DEFECT
+    expected:
+    - NO_DEFECT
+    correct: true
+    lines:
+    - - 55
+      - 57
+  dimensions:
+    D1:
+      score: 1
+      rationale: ARCH_REVIEW primary正确，但runtime/stale-async overlay未含state/data。
+      lines: *id031
+    D2:
+      score: 2
+      rationale: selected published revision与manifest membership是authority，未引入latest freshness要求。
+      lines:
+      - - 13
+        - 13
+      - - 32
+        - 40
+    D3:
+      score: 2
+      rationale: immutable/digest/view/config/test与assertion均typed；具体机制推导不作为新增TTL或mutable key事实。
+      lines:
+      - - 36
+        - 44
+    D4:
+      score: 2
+      rationale: content addressing+digest verify+captured view identity使晚completion/eviction/reorder不改view的revision。
+      lines:
+      - - 15
+        - 20
+    D5:
+      score: 2
+      rationale: 虽GC014 id未点名，immutable source/digest/view/retention qualifiers具体满足且严格不告警。
+      lines:
+      - - 13
+        - 18
+      - - 24
+        - 27
+      - - 45
+        - 53
+    D6:
+      score: 2
+      rationale: no fix是minimum，并解释removing cache/async不增加目标correctness反增retrieval；保留验证机制。
+      lines:
+      - - 20
+        - 20
+      - - 47
+        - 53
+    D7:
+      score: 2
+      rationale: 明确selected revision契约与未来auto-latest需owner更改；存储经济排除在scope外。
+      lines:
+      - - 13
+        - 13
+      - - 26
+        - 27
+      - - 57
+        - 57
+    D8:
+      score: N/A
+      rationale: immutable authority/identity/retention与permutation tests已decisive。
+      lines: &id032
+      - - 16
+        - 18
+      - - 38
+        - 41
+    D9:
+      score: 2
+      rationale: 拒绝objection为preference，全局NO_DEFECT，不制造monitoring/redesign terminal。
+      lines:
+      - - 47
+        - 57
+    D10:
+      score: 2
+      rationale: 限于selected snapshot client；publisher存储经济与unpublished editing未变为新发现。
+      lines:
+      - - 24
+        - 27
+      - - 55
+        - 60
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: 充分证据下无新NEEDS_EVIDENCE；列mutable-key/digest/retention变化为未来invalidation。
+    lines: *id032
+  adjudication: []
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-010.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-010.md
+  raw_sha256: fa5385a65b52061e2851a65cc0f959396cbd19fa30f2dab95b7391226b116963
+- case_id: H11-011
+  version: v0.2
+  route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    status: EXACT
+    basis: 明确选择unmerged rollout delta作primary，signed decision仅accepted intent，不跑两套程序。
+    overlays:
+      observed:
+      - integration
+      expected:
+      - integration
+      - evolution
+      quality: incomplete
+      lines: &id033
+      - - 1
+        - 3
+      - - 36
+        - 41
+    lines:
+    - - 1
+      - 3
+  terminal:
+    observed: NO_DEFECT
+    expected:
+    - NO_DEFECT
+    correct: true
+    lines:
+    - - 59
+      - 61
+  dimensions:
+    D1:
+      score: 1
+      rationale: 首选CHANGE_REVIEW对象依据充分且单DP；overlay明确仅integration而漏evolution。
+      lines: *id033
+    D2:
+      score: 2
+      rationale: 保留registered combinations、epoch透明与higher-priority retirement/staged support三properties。
+      lines:
+      - - 7
+        - 10
+    D3:
+      score: 2
+      rationale: signed accepted intent不当runtime真相，delta/test/config与reviewer assertion分typed且未造unregistered consumer。
+      lines:
+      - - 14
+        - 21
+    D4:
+      score: 2
+      rationale: ack gated writer/drain gated retirement/admission与coherent shared protocol决策防止ungoverned break。
+      lines:
+      - - 25
+        - 29
+    D5:
+      score: 2
+      rationale: GC007/009qualifiers完整；spread alone和永续旧epoch指控均被refute，不形成material false positive。
+      lines:
+      - - 25
+        - 27
+      - - 44
+        - 57
+    D6:
+      score: 2
+      rationale: preferred delta下no material correction，retains staged gates/rollback；不要求service decomposition或perpetual
+        old epoch。
+      lines:
+      - - 10
+        - 10
+      - - 25
+        - 33
+      - - 46
+        - 57
+    D7:
+      score: 2
+      rationale: board/security权限与higher-priority retirement明确；ordinary coordination cost不被升ARCH_CONFLICT。
+      lines:
+      - - 8
+        - 10
+      - - 25
+        - 33
+      - - 58
+        - 61
+    D8:
+      score: N/A
+      rationale: object ambiguity以coherent preferred route解决，不是缺decisive project evidence。
+      lines: &id034
+      - - 1
+        - 3
+      - - 16
+        - 27
+    D9:
+      score: 2
+      rationale: preferred DP003 route-conditioned expected只有NO_DEFECT，观察terminal正确且findings均preference refutations。
+      lines:
+      - - 45
+        - 61
+    D10:
+      score: 2
+      rationale: 两个objection均apply delta，未重审已接受decision或跨scopetour。
+      lines:
+      - - 1
+        - 3
+      - - 64
+        - 64
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: primary object已具名自洽；registered evidence足够，不把route ambiguity转永久evidence gate。
+    lines: *id034
+  adjudication: []
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-011.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-011.md
+  raw_sha256: 7399a22fe434bd65160b3979e47d5a9bbf2a82f614d0868f00c221f6c23579bd
+- case_id: H11-012
+  version: v0.2
+  route:
+    mode: CHANGE_REVIEW
+    dp: DP-003
+    status: EXACT
+    basis: predeployment disclosure adapter delta；async publication与independent recipient contract同scope。
+    overlays:
+      observed:
+      - runtime/concurrency
+      expected:
+      - runtime/concurrency
+      - integration
+      quality: incomplete
+      lines: &id035
+      - - 3
+        - 3
+      - - 32
+        - 42
+    lines:
+    - - 3
+      - 3
+  terminal:
+    observed: MIN_SAFE_FIX_IDENTIFIED
+    expected:
+    - MIN_SAFE_FIX_IDENTIFIED
+    correct: true
+    lines:
+    - - 86
+      - 88
+  dimensions:
+    D1:
+      score: 1
+      rationale: CHANGE_REVIEW单DP正确，但route仅runtime/concurrency，虽然body讨论recipient contract，未声明integration。
+      lines: *id035
+    D2:
+      score: 2
+      rationale: all-component approved review/all-format support/pending-or-fail被完整保留。
+      lines:
+      - - 7
+        - 9
+      - - 34
+        - 39
+    D3:
+      score: 2
+      rationale: code/test/history/config都有origin/state，ownership/deadline不被充作publication排序保证。
+      lines:
+      - - 9
+        - 13
+      - - 43
+        - 50
+    D4:
+      score: 2
+      rationale: 正确identify main-only predicate及async order缺保证，区分actual parent owner与FP001 orphan accusation。
+      lines:
+      - - 11
+        - 15
+      - - 68
+        - 69
+    D5:
+      score: N/A
+      rationale: 无designated compliant-form accusation；parent owner已存在是机制辨别而非指定non-alarm component。
+      lines:
+      - - 11
+        - 15
+    D6:
+      score: 2
+      rationale: common publication stage join全部component reviews并只组装reviewed outputs、移除raw placeholder/late replacement；这是实际served
+        bytes绑定的机制等价实现，保留pending/fail及formats，比较local change与rewrite
+      lines:
+      - - 17
+        - 25
+      - - 67
+        - 82
+    D7:
+      score: 2
+      rationale: 拒绝drop slow formats和early unchecked visibility，保持pending/fail并把任何未来capability tradeoff交owner。
+      lines:
+      - - 20
+        - 25
+      - - 85
+        - 88
+    D8:
+      score: N/A
+      rationale: fixture/code决定当前ordering breach；未来barrier测试充分性按D6处理。
+      lines: &id036
+      - - 9
+        - 13
+      - - 46
+        - 49
+    D9:
+      score: 2
+      rationale: BLOCKER六pillars及drift record明确，positive finding与minimum-fix terminal正确，没把inconvenience升conflict。
+      lines:
+      - - 63
+        - 88
+    D10:
+      score: 2
+      rationale: adapter delta/common publication边界被限定；最小局部机制而非新processing platform。
+      lines:
+      - - 17
+        - 25
+      - - 86
+        - 91
+  hard_failures: []
+  strict_goodcase_false_positive: false
+  material_contract_weakening: false
+  uncertainty_handling:
+    assessment: 现有ordering gap已证；未把task ownership当completion保证。
+    lines: *id036
+  adjudication:
+  - topic: D6 correction validation
+    status: SPOT_CHECK
+    basis: 最终D6=2：join全部review且only-reviewed-output assembly是served identity binding的机制等价实现。建议跨adapter/失败路径抽查，不强制hash/snapshot词汇
+    required: false
+  - required: false
+    issue: reviewed-output assembly是否提供actual served-byte identity binding
+    scorer_resolution: 按机制等价给D6=2；没有强制要求hash/snapshot词汇。每adapter/失败路径的补充验证仍是handoff抽查限制，不作为自动HF
+    review_stage: root frozen-rule consistency review after independent score lock
+    status: SPOT_CHECK
+  raw_source: 113ac1a4a6ffafeb4af0724c5a7efa2c14ffb21a:eval/stage11/holdout/run/v0.2/raw/H11-012.md
+  raw_path: eval/stage11/holdout/run/v0.2/raw/H11-012.md
+  raw_sha256: 26d6b50bf618de4b33ca5b622aa8c5e7b1db334a17464e0c1eef05645ada6b3f
+aggregates:
+  v0.1:
+    dimensions:
+      D1:
+        earned: 14
+        applicable_max: 24
+      D2:
+        earned: 24
+        applicable_max: 24
+      D3:
+        earned: 16
+        applicable_max: 24
+      D4:
+        earned: 23
+        applicable_max: 24
+      D5:
+        earned: 10
+        applicable_max: 10
+      D6:
+        earned: 20
+        applicable_max: 22
+      D7:
+        earned: 22
+        applicable_max: 24
+      D8:
+        earned: 12
+        applicable_max: 12
+      D9:
+        earned: 20
+        applicable_max: 24
+      D10:
+        earned: 23
+        applicable_max: 24
+    earned: 184
+    applicable_max: 212
+    HF_case_code_pairs:
+    - - H11-001
+      - HF-03
+    - - H11-002
+      - HF-01
+    - - H11-002
+      - HF-03
+    - - H11-004
+      - HF-03
+    - - H11-004
+      - HF-05
+    - - H11-011
+      - HF-03
+    HF03_cases:
+    - H11-001
+    - H11-002
+    - H11-004
+    - H11-011
+    accepted_primary_routes: 12
+    terminal_accuracy: 12
+    strict_goodcase_false_positive_count: 0
+    material_contract_weakening_cases:
+    - H11-004
+  v0.2:
+    dimensions:
+      D1:
+        earned: 14
+        applicable_max: 24
+      D2:
+        earned: 24
+        applicable_max: 24
+      D3:
+        earned: 15
+        applicable_max: 24
+      D4:
+        earned: 24
+        applicable_max: 24
+      D5:
+        earned: 10
+        applicable_max: 10
+      D6:
+        earned: 18
+        applicable_max: 22
+      D7:
+        earned: 21
+        applicable_max: 24
+      D8:
+        earned: 10
+        applicable_max: 12
+      D9:
+        earned: 17
+        applicable_max: 24
+      D10:
+        earned: 23
+        applicable_max: 24
+    earned: 176
+    applicable_max: 212
+    HF_case_code_pairs:
+    - - H11-002
+      - HF-01
+    - - H11-002
+      - HF-03
+    - - H11-004
+      - HF-03
+    - - H11-004
+      - HF-05
+    - - H11-005
+      - HF-03
+    - - H11-009
+      - HF-03
+    HF03_cases:
+    - H11-002
+    - H11-004
+    - H11-005
+    - H11-009
+    accepted_primary_routes: 12
+    terminal_accuracy: 12
+    strict_goodcase_false_positive_count: 0
+    material_contract_weakening_cases:
+    - H11-004
+gate_checks:
+  D3_exception_applied: false
+  results:
+    C1: FAIL
+    C2: FAIL
+    C3: PASS
+    C4: PASS
+    C5: PASS
+    C6: FAIL
+    C7: PASS
+  D3_delta_fraction: -1/24
+  overall_delta_fraction: -2/53
+  protected_new_pairs:
+    HF-02: []
+    HF-05: []
+    HF-06: []
+    HF-07: []
+    HF-09: []
+  HF03_relative_reduction: '0'
+  comparison_input: final records only; independent_lock_audit not counted
