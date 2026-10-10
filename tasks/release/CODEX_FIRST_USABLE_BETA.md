@@ -1,3 +1,5 @@
+> **SUPERSEDED — DO NOT EXECUTE.** Stage 11D final adjudication rejected v0.2 for default Beta packaging. Use `tasks/release/CODEX_FIRST_USABLE_V01_BETA.md` on `release/architecture-expert-v0.1-beta` instead. This historical task is preserved for traceability.
+
 # Architecture Expert — First Usable Beta (Codex-first)
 
 ## Objective
